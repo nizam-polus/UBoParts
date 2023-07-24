@@ -1,0 +1,200 @@
+@font-face {
+  font-family: 'poppinsblack';
+  src: url('../fonts/poppins-black-webfont.woff2') format('woff2'),
+       url('../fonts/poppins-black-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+
+
+
+@font-face {
+  font-family: 'poppinsbold';
+  src: url('../fonts/poppins-bold-webfont.woff2') format('woff2'),
+       url('../fonts/poppins-bold-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+
+
+
+@font-face {
+  font-family: 'poppinssemibold';
+  src: url('../fonts/poppins-semibold-webfont.woff2') format('woff2'),
+       url('../fonts/poppins-semibold-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+
+
+
+@font-face {
+  font-family: 'poppinslight';
+  src: url('../fonts/poppins-light-webfont.woff2') format('woff2'),
+       url('../fonts/poppins-light-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+@font-face {
+  font-family: 'poppinsmedium';
+  src: url('../fonts/poppins-medium-webfont.woff2') format('woff2'),
+       url('../fonts/poppins-medium-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+#forgotmodal .ac-modal-content,#loginmodal .ac-modal-content,#registermodal .ac-modal-content{
+background-color:#151414;
+}
+#forgotmodal p,#forgotmodal h3,#forgotmodal a,#forgotmodal label,#forgotmodal button[type="submit"],
+#loginmodal p,#loginmodal h3,#loginmodal a,#loginmodal label,#loginmodal button[type="submit"],.remember_me,#forgot_password,
+#registermodal p,#registermodal h3,#registermodal a,#registermodal label,#registermodal button[type="submit"],.agree{
+color:#fff;
+}
+input::placeholder{
+  font-family: poppinsmedium;
+}
+input[type="text"],input[type="email"],input[type="password"]{
+  background-color: #D9D9D9;
+}
+#forgotmodal .modal-dialog,#loginmodal .modal-dialog,#registermodal .modal-dialog{
+  margin: 60px auto;
+}
+#forgotmodal button[type="submit"],#loginmodal button[type="submit"],#registermodal button[type="submit"]{
+  background-color: #587E50;
+  width:100%;
+  border:0;
+}
+#forgotmodal .ac-modal-content,#loginmodal .ac-modal-content,#registermodal .ac-modal-content{
+  padding:15px 30px;
+}
+.ac-card-body {
+  background-color:#151414;
+}
+.ac-card-sub-title{
+  padding: 10px 50px 20px 50px;
+}
+#forgotmodal button[type="submit"],#loginmodal button[type="submit"],#registermodal button[type="submit"]{
+  margin-top: 15px;
+}
+.ac-card-footer{
+  padding:20px 0;
+}
+.ac-card-footer p{
+  margin-bottom:0;
+}
+input[type="text"],input[type="email"],input[type="password"],button[type="submit"]{
+  height: 40px;
+  padding: 10px 20px;
+}
+.remember_me,.agree{
+  padding-left: 8px;
+}
+#forgot_password{
+  background: none;
+  border: 0;
+  float: right;
+  clear: both;
+}
+.mediumfont{
+  font-family: poppinsmedium;
+}
+.lightfont{
+  font-family: poppinslight;
+}
+.semifont{
+  font-family: poppinssemibold;
+}
+.ac-heading_text{
+  font-size: 32px;  
+}
+.subtitles{
+  font-size: 18px;
+}
+.sub-subtext{
+  font-size: 16px;
+}
+@media screen and (max-width: 768px){
+  .ac-heading_text{
+      font-size: 24px;  
+  }
+  .subtitles{
+      font-size: 16px;
+  }
+  .sub-subtext{
+      font-size: 15px;
+  }
+}
+@media screen and (max-width: 480px){
+  #forgot_password{
+      float: none;
+      width: 100%;
+      padding: 30px 0 0 0;
+  }
+  #registermodal .ac-card-sub-title{
+      padding: 10px 10px 20px 10px;
+  }
+}
+@media screen and (min-width : 1200px){
+  #forgotmodal .modal-dialog,#loginmodal .modal-dialog,#registermodal .modal-dialog{
+      width: 500px;
+  }
+  .marginb40{
+      margin-bottom: 25px;
+  }
+  #registermodal .ac-card-sub-title{
+      padding: 10px 30px 20px 30px;
+  }
+}
+@media screen and (min-width : 1920px){
+  .ac-heading_text{
+      font-size: 74px;  
+  }
+  .subtitles{
+      font-size: 32px;
+  }
+  .sub-subtext{
+      font-size: 26px;
+  }
+  #forgotmodal .modal-dialog,#loginmodal .modal-dialog,#registermodal .modal-dialog{
+      width: 900px;
+  }
+  #forgotmodal .ac-modal-content,#loginmodal .ac-modal-content,#registermodal .ac-modal-content{
+      padding:30px 60px;
+  }
+  input[type="text"],input[type="email"],input[type="password"],button[type="submit"]{
+      height: 80px;
+      padding: 15px 30px;
+  }
+  .ac-card-sub-title{
+      padding: 20px 0px 40px 0px;
+  }
+  #registermodal .ac-card-sub-title{
+      padding: 20px 52px 40px 52px;
+  }
+  #forgotmodal button[type="submit"],#loginmodal button[type="submit"],#registermodal button[type="submit"]{
+      margin-top: 30px;
+  }
+  .ac-card-footer{
+      padding:35px 0 0 0;
+  }
+  .marginb40{
+      margin-bottom: 40px;
+  }
+  #loginmodal input[type="checkbox"],#registermodal input[type="checkbox"]{
+      width:20px;
+      height:20px;
+  }
+  .remember_me{
+      padding-left: 12px;
+  }
+}
