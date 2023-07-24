@@ -19,6 +19,9 @@ import { useCart } from '~/store/cart/cartHooks';
 import { useOptions } from '~/store/options/optionsHooks';
 import { useUser } from '~/store/user/userHooks';
 import { useWishlist } from '~/store/wishlist/wishlistHooks';
+import { useState } from 'react';
+import Forgotpass from '../forgot/Forgotpass';
+import Login from '../account/Login';
 
 function Header() {
     const user = useUser();
@@ -40,8 +43,39 @@ function Header() {
     const cartIndicatorLabel = <FormattedMessage id="TEXT_INDICATOR_CART_LABEL" />;
     const cartIndicatorCtrl = useRef<IIndicatorController | null>(null);
 
+    const [vehiclePickerIsOpen, setVehiclePickerIsOpen] = useState(false);
+    const showVehiclePicker = () => {
+        setVehiclePickerIsOpen(true);
+    };
+
+    const onVehiclePickerClose = () => {
+        setVehiclePickerIsOpen(false);
+    };
+    
+    const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
+    const showLoginModal = () => {
+        setLoginModalIsOpen(true);
+    };
+
+    const onLoginModalClose = () => {
+        setLoginModalIsOpen(false);
+    };
+
+
     return (
+        
         <div className="header">
+        <Forgotpass
+        
+        isOpen={vehiclePickerIsOpen}
+        onClose={onVehiclePickerClose}
+       
+        />
+        <Login
+        
+        isOpen={loginModalIsOpen}
+        onClose={onLoginModalClose}
+        />
             <div className="header__megamenu-area megamenu-area" />
             {desktopLayout === 'spaceship' && (
                 <React.Fragment>
@@ -115,6 +149,26 @@ function Header() {
                 >
                     <Dropcart onCloseMenu={() => cartIndicatorCtrl.current?.close()} />
                 </Indicator>
+                <div>
+                {/* <AsyncAction
+                    action={() => forgotOpen()}
+                    render={({ run, loading }) => (
+                        <button
+                            type="button"
+                            className={classNames('btn btn-primary btn-sm', {
+                                'product-card__action--loading': loading,
+                            })}
+                            onClick={run}
+                        >
+                        </button>
+                    )}
+                /> */}
+                   
+                <button onClick={showVehiclePicker} className="btn btn-primary btn-sm">Forgot</button>
+                <button onClick={showLoginModal} className="btn btn-primary btn-sm">Login</button>
+
+                    
+                </div>
             </div>
         </div>
     );

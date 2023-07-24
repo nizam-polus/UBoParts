@@ -247,6 +247,7 @@ const dataHeaderMainMenu: IMainMenuLink[] = [
             type: 'menu',
             links: [
                 { title: 'About Us', url: '/about-us' },
+                { title: 'Homepage', url: '/homepage' },
                 { title: 'Contact Us v1', url: '/demo/site/contact-us-v1' },
                 { title: 'Contact Us v2', url: '/demo/site/contact-us-v2' },
                 { title: '404', url: '/demo/site/not-found' },
