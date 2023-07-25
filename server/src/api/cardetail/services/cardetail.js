@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * car-detail service
+ * cardetail service
  */
 
 const { createCoreService } = require('@strapi/strapi').factories;
 
-module.exports = createCoreService('api::car-detail.car-detail');
+module.exports = createCoreService('api::cardetail.cardetail');
