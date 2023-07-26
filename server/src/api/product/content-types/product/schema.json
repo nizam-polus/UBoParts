@@ -150,12 +150,6 @@
         }
       }
     },
-    "car_detail": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::car-detail.car-detail",
-      "inversedBy": "product"
-    },
     "category": {
       "type": "relation",
       "relation": "manyToOne",
@@ -180,6 +174,12 @@
         "featured",
         "trending"
       ]
+    },
+    "cardetail": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::cardetail.cardetail",
+      "inversedBy": "products"
     }
   }
 }
