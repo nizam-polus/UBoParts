@@ -19,9 +19,6 @@
 
 }
 
-
-
-
 @font-face {
   font-family: 'poppinssemibold';
   src: url('../fonts/poppins-semibold-webfont.woff2') format('woff2'),
@@ -30,9 +27,6 @@
   font-style: normal;
 
 }
-
-
-
 
 @font-face {
   font-family: 'poppinslight';
@@ -52,149 +46,392 @@
 
 }
 
-#forgotmodal .ac-modal-content,#loginmodal .ac-modal-content,#registermodal .ac-modal-content{
-background-color:#151414;
+@font-face {
+  font-family: 'poppinsregular';
+  src: url('../fonts/poppins-regular.woff2') format('woff2'),
+       url('../fonts/poppins-regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+// @font-face {
+// 	font-family: 'poppinsblack';
+// 	src: url('../fonts/poppins-black-webfont.woff2') format('woff2'),
+//          url('../fonts/poppins-black-webfont.woff') format('woff');
+// 	font-weight: normal;
+// 	font-style: normal;
+// 	font-family: 'poppinsbold';
+// 	src: url('../fonts/poppins-bold-webfont.woff2') format('woff2'),
+//          url('../fonts/poppins-bold-webfont.woff') format('woff');
+// 	font-weight: normal;
+// 	font-style: normal;
+// 	font-family: 'poppinssemibold';
+// 	src: url('../fonts/poppins-semibold-webfont.woff2') format('woff2'),
+//          url('../fonts/poppins-semibold-webfont.woff') format('woff');
+// 	font-weight: normal;
+// 	font-style: normal;
+// 	font-family: 'poppinslight';
+// 	src: url('../fonts/poppins-light-webfont.woff2') format('woff2'),
+//          url('../fonts/poppins-light-webfont.woff') format('woff');
+// 	font-weight: normal;
+// 	font-style: normal;
+// 	font-family: 'poppinsmedium';
+// 	src: url('../fonts/poppins-medium-webfont.woff2') format('woff2'),
+//          url('../fonts/poppins-medium-webfont.woff') format('woff');
+// 	font-weight: normal;
+// 	font-style: normal;
+// 	font-family: 'poppinsregular';
+// 	src: url('../fonts/poppins-Regular.woff2') format('woff2'),
+//         url('../fonts/poppins-Regular.woff') format('woff');
+// 	font-weight: normal;
+// 	font-style: normal;
+// 	font-display: swap;
+// }
+.mediumfont {
+	font-family: poppinsmedium;
+}
+.lightfont {
+	font-family: poppinslight;
+}
+.semifont {
+	font-family: poppinssemibold;
+}
+.regularfont {
+	font-family: poppinsregular;
+}
+.boldfont {
+	font-family: poppinsbold;
+}
+.heading_text {
+	font-size: 32px;
+}
+.boldfontsize {
+	font-size: 18px;
+	font-size: 20px;
+}
+.subtitles {
+	font-size: 18px;
+	font-size: 16px;
+	font-size: 32px;
+}
+.sub-subtext {
+	font-size: 16px;
+	font-size: 15px;
+	font-size: 26px;
+}
+.menu_font_size {
+	font-size: 22px;
+}
+.mini-text {
+	font-size: 11px;
+	color: #999;
+}
+.mini-text-1 {
+	font-size: 12px;
+}
+.products-name {
+	font-size: 16px;
+	font-size: 18px;
+}
+.product-price {
+	font-size: 20px;
+}
+.body-sub-titles {
+	font-size: 18px;
+	font-size: 24px;
+}
+a {
+	text-decoration: none;
+}
+body {
+	background-color: #F5F5F5;
+}
+.fa-star {
+	color: #d9d9d9;
+	&.active {
+		color: #FFA41C;
+	}
+}
+.modal {
+	&.in {
+		opacity: 0.9;
+		.modal-content {
+			border-radius: 12px;
+		}
+	}
+}
+#forgotmodal .modal-content,#loginmodal .modal-content,#registermodal .modal-content {
+	background-color: #151414;
+	padding: 15px 30px;
+	padding: 30px 60px;
 }
 #forgotmodal p,#forgotmodal h3,#forgotmodal a,#forgotmodal label,#forgotmodal button[type="submit"],
 #loginmodal p,#loginmodal h3,#loginmodal a,#loginmodal label,#loginmodal button[type="submit"],.remember_me,#forgot_password,
-#registermodal p,#registermodal h3,#registermodal a,#registermodal label,#registermodal button[type="submit"],.agree{
-color:#fff;
+#registermodal p,#registermodal h3,#registermodal a,#registermodal label,#registermodal button[type="submit"],.agree,
+.bar ul li,.bar ul li a,button.search {
+	color: #fff;
 }
-input::placeholder{
-  font-family: poppinsmedium;
+input {
+	&::placeholder {
+		font-family: poppinsmedium;
+	}
 }
-input[type="text"],input[type="email"],input[type="password"]{
-  background-color: #D9D9D9;
+input[type="text"],input[type="email"],input[type="password"] {
+	background-color: #D9D9D9;
 }
-#forgotmodal .modal-dialog,#loginmodal .modal-dialog,#registermodal .modal-dialog{
-  margin: 60px auto;
+#forgotmodal .modal-dialog,#loginmodal .modal-dialog,#registermodal .modal-dialog {
+	margin: 60px auto;
+	margin: 60px 20px;
+	width: 900px;
 }
-#forgotmodal button[type="submit"],#loginmodal button[type="submit"],#registermodal button[type="submit"]{
-  background-color: #587E50;
-  width:100%;
-  border:0;
+#forgotmodal button[type="submit"],#loginmodal button[type="submit"],#registermodal button[type="submit"],
+button.search {
+	background-color: #587E50;
+	width: 100%;
+	border: 0;
 }
-#forgotmodal .ac-modal-content,#loginmodal .ac-modal-content,#registermodal .ac-modal-content{
-  padding:15px 30px;
+.card-sub-title {
+	padding: 10px 50px 20px 50px;
+	padding: 20px 0px 40px 0px;
 }
-.ac-card-body {
-  background-color:#151414;
+#forgotmodal button[type="submit"],#loginmodal button[type="submit"],#registermodal button[type="submit"] {
+	margin-top: 15px;
+	margin-top: 30px;
 }
-.ac-card-sub-title{
-  padding: 10px 50px 20px 50px;
+.card-footer {
+	padding: 20px 0;
+	padding: 35px 0 0 0;
+	p {
+		margin-bottom: 0;
+	}
 }
-#forgotmodal button[type="submit"],#loginmodal button[type="submit"],#registermodal button[type="submit"]{
-  margin-top: 15px;
+input[type="text"],input[type="email"],input[type="password"],button[type="submit"] {
+	height: 40px;
+	padding: 10px 20px;
+	height: 80px;
+	padding: 15px 30px;
 }
-.ac-card-footer{
-  padding:20px 0;
+.remember_me,.agree {
+	padding-left: 8px;
 }
-.ac-card-footer p{
-  margin-bottom:0;
+#forgot_password {
+	background: none;
+	border: 0;
+	float: right;
+	clear: both;
 }
-input[type="text"],input[type="email"],input[type="password"],button[type="submit"]{
-  height: 40px;
-  padding: 10px 20px;
+header {
+	background-color: #181C19;
+	padding: 25px 0;
+	.bar {
+		width: 80%;
+		text-align: right;
+		align-self: center;
+	}
+	&.ub_mobile_header {
+		display: none;
+		display: block;
+	}
+	&.ub_desktop_header {
+		display: none;
+	}
 }
-.remember_me,.agree{
-  padding-left: 8px;
+.container-wrapper {
+	display: flex;
 }
-#forgot_password{
-  background: none;
-  border: 0;
-  float: right;
-  clear: both;
+.logo {
+	width: 20%;
 }
-.mediumfont{
-  font-family: poppinsmedium;
+.bar {
+	ul {
+		list-style: none;
+		display: inline-flex;
+		gap: 50px;
+		margin-bottom: 0;
+		li {
+			align-self: center;
+			position: relative;
+		}
+	}
 }
-.lightfont{
-  font-family: poppinslight;
+.ub_login {
+	background-color: #fff;
+	border-radius: 20px;
+	color: #181C19;
+	border: 0;
+	padding: 6px 24px;
 }
-.semifont{
-  font-family: poppinssemibold;
+img {
+	&.my-account {
+		padding-left: 16px;
+	}
 }
-.ac-heading_text{
-  font-size: 32px;  
+.fa {
+	&.fa-shopping-cart {
+		font-size: 32px;
+	}
 }
-.subtitles{
-  font-size: 18px;
+span {
+	&.count {
+		background-color: #287125;
+		border-radius: 20px;
+		font-size: 10px;
+		padding: 3px 4px;
+		width: 20px;
+		height: 20px;
+		display: inline-block;
+		text-align: center;
+		position: absolute;
+		right: -10px;
+		bottom: -5px;
+	}
 }
-.sub-subtext{
-  font-size: 16px;
+.home-header {
+	background-image: url('../images/young-man-mechanic-repairing-car-parts-on-worktabl-2023-05-12-20-24-56-utc 1.png');
+	background-size: cover;
+	height: 500px;
+	background-blend-mode: overlay;
+	background-color: #4c4c4c;
 }
-@media screen and (max-width: 768px){
-  .ac-heading_text{
-      font-size: 24px;  
-  }
-  .subtitles{
-      font-size: 16px;
-  }
-  .sub-subtext{
-      font-size: 15px;
-  }
+.search-wrapper {
+	background-color: #fff;
+	border-radius: 30px;
+	padding: 30px;
+	margin-top: -60px;
+	-webkit-box-shadow: 0px 4px 14px 0px rgba(145,145,145,1);
+	-moz-box-shadow: 0px 4px 14px 0px rgba(145,145,145,1);
+	box-shadow: 0px 4px 14px 0px rgba(145,145,145,1);
+	button {
+		padding: 18px 24px;
+		padding: 12px 20px;
+	}
+	.right-column {
+		width: 20%;
+		padding-left: 30px;
+	}
+	.left-column {
+		width: 80%;
+	}
+	.row-1 {
+		display: inline-flex;
+		align-items: baseline;
+		width: 100%;
+	}
 }
-@media screen and (max-width: 480px){
-  #forgot_password{
-      float: none;
-      width: 100%;
-      padding: 30px 0 0 0;
-  }
-  #registermodal .ac-card-sub-title{
-      padding: 10px 10px 20px 10px;
-  }
+.search-wrapper input,.search-wrapper select,
+.search-wrapper input:focus-visible,.search-wrapper select:focus-visible,
+.search-wrapper input:focus,.search-wrapper select:focus {
+	background-color: #F5F5F5;
+	border: 0;
+	padding: 20px 24px;
+	width: 100%;
+	color: #4C4C4C;
+	font-weight: 600;
+	outline: 0;
+	box-shadow: none;
 }
-@media screen and (min-width : 1200px){
-  #forgotmodal .modal-dialog,#loginmodal .modal-dialog,#registermodal .modal-dialog{
-      width: 500px;
-  }
-  .marginb40{
-      margin-bottom: 25px;
-  }
-  #registermodal .ac-card-sub-title{
-      padding: 10px 30px 20px 30px;
-  }
+.search-wrapper button.search,.search-wrapper input {
+	border-radius: 5px;
+	height: auto;
 }
-@media screen and (min-width : 1920px){
-  .ac-heading_text{
-      font-size: 74px;  
-  }
-  .subtitles{
-      font-size: 32px;
-  }
-  .sub-subtext{
-      font-size: 26px;
-  }
-  #forgotmodal .modal-dialog,#loginmodal .modal-dialog,#registermodal .modal-dialog{
-      width: 900px;
-  }
-  #forgotmodal .ac-modal-content,#loginmodal .ac-modal-content,#registermodal .ac-modal-content{
-      padding:30px 60px;
-  }
-  input[type="text"],input[type="email"],input[type="password"],button[type="submit"]{
-      height: 80px;
-      padding: 15px 30px;
-  }
-  .ac-card-sub-title{
-      padding: 20px 0px 40px 0px;
-  }
-  #registermodal .ac-card-sub-title{
-      padding: 20px 52px 40px 52px;
-  }
-  #forgotmodal button[type="submit"],#loginmodal button[type="submit"],#registermodal button[type="submit"]{
-      margin-top: 30px;
-  }
-  .ac-card-footer{
-      padding:35px 0 0 0;
-  }
-  .marginb40{
-      margin-bottom: 40px;
-  }
-  #loginmodal input[type="checkbox"],#registermodal input[type="checkbox"]{
-      width:20px;
-      height:20px;
-  }
-  .remember_me{
-      padding-left: 12px;
-  }
+.or_block {
+	align-self: center;
+}
+.advanced_search {
+	color: #CB1818;
+}
+.specific_part,.start_selling {
+	background-size: cover;
+	height: 250px;
+	border-radius: 30px;
+	position: relative;
+	height: 200px;
+	height: 400px;
+}
+.specific_part {
+	background-image: url('../svg/professional-master-turning-the-nuts-with-spanner-2021-09-03-14-18-09-utc 1.svg');
+}
+.start_selling {
+	background-image: url('../svg/a-white-leather-car-interior-inside-the-vintage-o-2022-12-13-03-20-34-utc 1.svg');
+}
+.bg-image-text {
+	font-size: 32px;
+	font-size: 24px;
+	font-size: 20px;
+	font-size: 48px;
+}
+.selling-text {
+	position: absolute;
+	bottom: 35px;
+	left: 45px;
+	left: 35px;
+	left: 20px;
+}
+.popular_categories {
+	color: #181C19;
+}
+.saleoffers {
+	color: #767971;
+	border: 0;
+	background-color: transparent;
+	margin: 0 20px;
+	&:last-child {
+		margin-right: 0;
+	}
+	&.active {
+		background-color: #587E50;
+		color: #fff;
+		border-radius: 6px;
+		padding: 4px 18px;
+	}
+}
+.prod-cats {
+	background-color: #fff;
+	padding: 10px 10px 2px;
+	border-radius: 30px;
+	border: 0;
+	img {
+		padding: 15px;
+	}
+}
+.prod-cats a,.products-name {
+	color: #262626;
+}
+.latest-prods {
+	border: 0;
+	background-color: transparent;
+	border-radius: 30px;
+	.card-body {
+		background-color: #fff;
+	}
+}
+.brands-section {
+	background-color: #fff;
+	padding: 30px 0;
+}
+
+#registermodal {
+	.card-sub-title {
+		padding: 10px 10px 20px 10px;
+		padding: 10px 30px 20px 30px;
+		padding: 20px 52px 40px 52px;
+	}
+}
+.marginb40 {
+	margin-bottom: 25px;
+	margin-bottom: 40px;
+}
+.placeholderfontsize {
+	font-size: 16px;
+	font-size: 16px;
+}
+.search-wrapper input, .search-wrapper select {
+	padding: 15px 20px;
+}
+#loginmodal input[type="checkbox"],#registermodal input[type="checkbox"] {
+	width: 20px;
+	height: 20px;
+}
+.remember_me {
+	padding-left: 12px;
 }

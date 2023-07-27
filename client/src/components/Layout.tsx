@@ -31,21 +31,21 @@ function Layout(props: Props) {
             <ToastContainer autoClose={5000} hideProgressBar />
 
             <div className="site__container">
-                <header className="site__mobile-header">
+                {/* <header className="site__mobile-header">
                     <MobileHeader />
                 </header>
 
                 <header className="site__header">
                     <Header />
-                </header>
+                </header> */}
 
                 <div className="site__body">
                     {children}
                 </div>
 
-                <footer className="site__footer">
+                {/* <footer className="site__footer">
                     <Footer />
-                </footer>
+                </footer> */}
             </div>
 
             <MobileMenu />
