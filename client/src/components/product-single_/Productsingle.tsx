@@ -16,13 +16,13 @@ function Productsingle() {
                         <div className="row">
                             <div className="col-12 col-md-6 col-lg-4">
                                 <div className="row">
-                                <AppImage className="rounded-0 w-100" src="/images/svg/cat-prod-1.svg"/>
+                                <AppImage className="rounded w-100" src="/images/svg/cat-prod-1.svg"/>
                                 </div>
                                 <div className="row product-thumbnails g-3 mt-3 justify-content-center">
-                                    <div className="col-auto"><img className="rounded" src="/images/svg/cat-prod-1.svg"/></div>
-                                    <div className="col-auto"><img className="rounded" src="/images/svg/cat-prod-1.svg"/></div>
-                                    <div className="col-auto"><img className="rounded" src="/images/svg/cat-prod-1.svg"/></div>
-                                    <div className="col-auto"><img className="rounded" src="/images/svg/cat-prod-1.svg"/></div>
+                                    <div className="col-auto px-2"><img className="rounded" src="/images/svg/cat-prod-1.svg"/></div>
+                                    <div className="col-auto px-2"><img className="rounded" src="/images/svg/cat-prod-1.svg"/></div>
+                                    <div className="col-auto px-2"><img className="rounded" src="/images/svg/cat-prod-1.svg"/></div>
+                                    <div className="col-auto px-2"><img className="rounded" src="/images/svg/cat-prod-1.svg"/></div>
                                 </div>
                             </div>
                             <div className="col-12 col-md-6 col-lg-5 p-lg-5 pb-lg-0 pt-lg-0 mt-5 mt-md-0 mt-lg-0">
@@ -48,7 +48,7 @@ function Productsingle() {
                                 <p className="custom-color-6 regularfont mini-text-2">See Full Specifications</p>
                             </div>
                             <div className="col-12 col-md-12 col-lg-3 mt-5 mt-lg-0">
-                                <div className="more-info p-3">
+                                <div className="more-info p-3 rounded">
                                     <div className="row d-flex justify-content-between">
                                         <div className="col-auto"><span className="product-price custom-color-3 regularfont subtitles">€230</span></div>
                                         <div className="col-auto"><span className="in-stock custom-color-6 rounded-pill p-3 pb-1 pt-1 d-flex">In Stock</span></div>

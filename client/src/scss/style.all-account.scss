@@ -448,7 +448,198 @@ input[type="text"].inputformtxt ,input[type="email"].inputformtxt ,input[type="p
 	clear: both;
 }
 /* login, register, forgot ends */
-/* header starts */
+/* home - search starts */
+.search-wrapper {
+	background-color: #fff;
+	border-radius: 30px;
+	padding: 30px;
+	margin-top: -60px;
+	-webkit-box-shadow: 0px 0px 8px 0px rgba(145,145,145,1);
+	-moz-box-shadow: 0px 0px 8px 0px rgba(145,145,145,1);
+	box-shadow: 0px 0px 8px 0px rgba(145,145,145,1);
+	input {
+		background-color: #F5F5F5;
+		border: 0;
+		padding: 20px 24px;
+		width: 100%;
+		color: #4C4C4C;
+		font-weight: 600;
+		outline: 0;
+		box-shadow: none;
+		border-radius: 5px;
+		height: auto;
+		&:focus-visible {
+			background-color: #F5F5F5;
+			border: 0;
+			padding: 20px 24px;
+			width: 100%;
+			color: #4C4C4C;
+			font-weight: 600;
+			outline: 0;
+			box-shadow: none;
+		}
+		&:focus {
+			background-color: #F5F5F5;
+			border: 0;
+			padding: 20px 24px;
+			width: 100%;
+			color: #4C4C4C;
+			font-weight: 600;
+			outline: 0;
+			box-shadow: none;
+		}
+	}
+	select {
+		background-color: #F5F5F5;
+		border: 0;
+		padding: 20px 24px;
+		width: 100%;
+		color: #4C4C4C;
+		font-weight: 600;
+		outline: 0;
+		box-shadow: none;
+		&:focus-visible {
+			background-color: #F5F5F5;
+			border: 0;
+			padding: 20px 24px;
+			width: 100%;
+			color: #4C4C4C;
+			font-weight: 600;
+			outline: 0;
+			box-shadow: none;
+		}
+		&:focus {
+			background-color: #F5F5F5;
+			border: 0;
+			padding: 20px 24px;
+			width: 100%;
+			color: #4C4C4C;
+			font-weight: 600;
+			outline: 0;
+			box-shadow: none;
+		}
+	}
+	button {
+		padding: 18px 24px;
+	}
+	button.search {
+		border-radius: 5px;
+		height: auto;
+	}
+	.right-column {
+		width: 20%;
+		padding-left: 30px;
+	}
+	.left-column {
+		width: 80%;
+	}
+	.row-1 {
+		display: inline-flex;
+		align-items: baseline;
+		width: 100%;
+	}
+}
+.about-content-wrapper {
+	background-color: #fff;
+	border-radius: 30px;
+	padding: 30px;
+	margin-top: -60px;
+	-webkit-box-shadow: 0px 0px 8px 0px rgba(145,145,145,1);
+	-moz-box-shadow: 0px 0px 8px 0px rgba(145,145,145,1);
+	box-shadow: 0px 0px 8px 0px rgba(145,145,145,1);
+}
+.or_block {
+	align-self: center;
+}
+.advanced_search {
+	color: #CB1818;
+}
+
+/* home - search ends */
+/* home - popular categories starts */
+.specific_part {
+	background-size: cover;
+	height: 250px;
+	border-radius: 30px;
+	position: relative;
+	background-image: url('../svg/professional-master-turning-the-nuts-with-spanner-2021-09-03-14-18-09-utc 1.svg');
+}
+.start_selling {
+	background-size: cover;
+	height: 250px;
+	border-radius: 30px;
+	position: relative;
+	background-image: url('../svg/a-white-leather-car-interior-inside-the-vintage-o-2022-12-13-03-20-34-utc 1.svg');
+}
+.bg-image-text {
+	font-size: 32px;
+}
+.selling-text {
+	position: absolute;
+	bottom: 35px;
+	left: 45px;
+}
+.popular_categories {
+	color: #181C19;
+	font-size: 20px;
+}
+.saleoffers {
+	color: #767971;
+	border: 0;
+	background-color: transparent;
+	margin: 0 20px;
+	&:last-child {
+		margin-right: 0;
+	}
+	&:first-child {
+		margin-left: 0;
+	}
+}
+.prod-cats {
+	background-color: #fff;
+	padding: 10px 10px 2px;
+	border-radius: 30px;
+	border: 0;
+	img {
+		padding: 15px;
+	}
+	a {
+		color: #262626;
+	}
+}
+.products-name {
+	color: #262626;
+}
+
+/* home - popular categories ends */
+/* home - latest categories starts */
+.saleoffers.active {
+	background-color: #287125;
+	color: #fff;
+	border-radius: 6px;
+	padding: 2px 18px;
+}
+.latest-prods {
+	border: 0;
+	background-color: transparent;
+	border-radius: 30px;
+	.card-body {
+		background-color: #fff;
+		border-bottom-left-radius: 30px;
+		border-bottom-right-radius: 30px;
+	}
+}
+.mini-text {
+	color: #999;
+}
+
+/* home - latest categories ends */
+/* home - brand section starts */
+.brands-section{
+    background-color: #fff;
+}
+/* home - brand section ends */
+/* shop page - starts */
 
 .filter-by-rating {
 	width: 215px;
