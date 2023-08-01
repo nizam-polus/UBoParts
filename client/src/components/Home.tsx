@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Modal } from 'reactstrap';
 import { IVehicle } from '~/interfaces/vehicle';
 import Image from 'next/image'
+import Link from 'next/link';
 import AppImage from './shared/AppImage';
 import axios from 'axios';
 import Forgotpass from './forgot/Forgotpass';
@@ -26,14 +27,16 @@ function Home() {
     const [toggleSearch, setToggleSearch] = useState(false);
     const [licenseplate, setLicenseplate] = useState('');
     const [searchedProducts, setSearchedProducts] = useState<any>([]);
-    const [vehiclePickerIsOpen, setVehiclePickerIsOpen] = useState(false);
     const [searched, setSearched] = useState(false);
-    const showVehiclePicker = () => {
-        setVehiclePickerIsOpen(true);
+
+    const [forgotPasswordPickerIsOpen, setforgotPasswordPickerIsOpen] = useState(false);
+   
+    const showForgotPassword = () => {
+        setforgotPasswordPickerIsOpen(true);
     };
 
-    const onVehiclePickerClose = () => {
-        setVehiclePickerIsOpen(false);
+    const onForgotPasswordClose = () => {
+        setforgotPasswordPickerIsOpen(false);
     };
     
     const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
@@ -41,7 +44,7 @@ function Home() {
         setLoginModalIsOpen(true);
     };
 
-    const onLoginModalClose = () => {
+   const onLoginModalClose = () => {
         setLoginModalIsOpen(false);
     };
     useEffect(() => {
@@ -128,10 +131,10 @@ function Home() {
 
     return (
         <>
-            <Forgotpass
+           <Forgotpass
 
-                isOpen={vehiclePickerIsOpen}
-                onClose={onVehiclePickerClose}
+                isOpen={forgotPasswordPickerIsOpen}
+                onClose={onForgotPasswordClose}
 
             />
             <Login
@@ -147,8 +150,8 @@ function Home() {
                         </div>
                         <div className="bar">
                             <ul>
-                                <li className="menu_font_size regularfont"><a href="">Home</a></li>
-                                <li className="menu_font_size regularfont"><a href="">Shop</a></li>
+                                <li className="menu_font_size regularfont"><a href="/homepage">Home</a></li>
+                                <li className="menu_font_size regularfont"><a href="/shop">Shop</a></li>
                                 <li className="menu_font_size regularfont"><a href="">About us</a></li>
                                 <li className="menu_font_size regularfont"><a href="">Request</a></li>
                                 <li className="menu_font_size regularfont"><a href="">Dismantle Car</a></li>
@@ -241,6 +244,7 @@ function Home() {
                             return (
                             <div className="col-6 col-md-3" key={index}>
                                 <div className="latest-prods card">
+                                    <Link href={`/products_/${product?.id}`}>
                                     <AppImage src={'http://192.168.1.31:1337'+ product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} className="card-img-top" />
                                     <div className="card-body">
                                         <div className="row g-1">
@@ -265,6 +269,7 @@ function Home() {
                                             </div>
                                         </div>
                                     </div>
+                                    </Link>
                                 </div>
                             </div>)})}
                         </div>

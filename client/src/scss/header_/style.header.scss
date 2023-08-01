@@ -1,0 +1,74 @@
+header {
+	background-color: #181C19;
+	padding: 25px 0;
+	.bar {
+		//width: 90%; 
+        padding-right: 20px;
+		text-align: right;
+		align-self: center;
+	}
+	.ub_mobile_header {
+		display: none;
+		display: block;
+	}
+	.ub_desktop_header {
+		display: none;
+	}
+}
+.container-wrapper {
+	display: flex;
+}
+.logo {
+	width: 20%;
+}
+.bar {
+	ul {
+		list-style: none;
+		display: inline-flex;
+		gap: 50px;
+		margin-bottom: 0;
+		li {
+			align-self: center;
+			position: relative;
+		}
+	}
+}
+.ub_login {
+	background-color: #fff;
+	border-radius: 20px;
+	color: #181C19;
+	border: 0;
+	padding: 6px 24px;
+}
+img {
+	&.my-account {
+		padding-left: 16px;
+	}
+}
+.fa {
+	&.fa-shopping-cart {
+		font-size: 32px;
+	}
+}
+span {
+	&.count {
+		background-color: #287125;
+		border-radius: 20px;
+		font-size: 10px;
+		padding: 3px 4px;
+		width: 20px;
+		height: 20px;
+		display: inline-block;
+		text-align: center;
+		position: absolute;
+		right: -10px;
+		bottom: -5px;
+	}
+}
+.home-header {
+	background-image: url('./../../images/young-man-mechanic-repairing-car-parts-on-worktabl-2023-05-12-20-24-56-utc 1.png');
+	background-size: cover;
+	height: 500px;
+	background-blend-mode: overlay;
+	background-color: #4c4c4c;
+}
