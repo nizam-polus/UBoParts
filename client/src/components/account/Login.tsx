@@ -45,7 +45,7 @@ function Login(props: Props) {
 
 
     return (
-        <Modal isOpen={isOpen} toggle={toggle} centered classNameName="vehicle-picker-modal">
+        <Modal isOpen={isOpen} toggle={toggle} centered className="ac-modal">
         <Forgotpass
         
         isOpen={forgotPasswordIsOpen}
@@ -63,13 +63,13 @@ function Login(props: Props) {
                                     <form action="/action_page.php">
                                         <div className="form-group marginb40">
                                             <label htmlFor="email" className="subtitles mediumfont">Email address</label>
-                                            <input type="email" className="form-control subtitles mediumfont" id="email" name="email" placeholder="Enter your email" />
+                                            <input type="email" className="form-control subtitles mediumfont inputformtxt" id="email" name="email" placeholder="Enter your email" />
                                         </div>
                                         <div className="form-group marginb40">
                                             <label htmlFor="password" className="subtitles mediumfont">Password</label>
-                                            <input type="password" className="form-control subtitles mediumfont" id="password" name="password" placeholder="Enter your password"/>                                            </div>
+                                            <input type="password" className="form-control subtitles mediumfont inputformtxt" id="password" name="password" placeholder="Enter your password" />                                            </div>
                                         <div className="form-group">
-                                            <input type="checkbox" name="remember_me "/><span className="remember_me sub-subtext lightfont">Remember me</span>
+                                            <input type="checkbox" name="remember_me "/><span className="remember_me sub-subtext lightfont inputformtxt">Remember me</span>
                                             <button type="button" id="forgot_password" className="sub-subtext mediumfont" onClick={showForgotPassword}>Forgot Password</button>
                                         </div>
                                         <button type="submit" className="btn btn-default subtitles mediumfont">Login</button>

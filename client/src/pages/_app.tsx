@@ -30,6 +30,7 @@ import '../scss/style.header-classic-variant-five.scss';
 import '../scss/style.mobile-header-variant-one.scss';
 import '../scss/style.mobile-header-variant-two.scss';
 import '../scss/style.all-account.scss';
+import '../scss/header_/style.header.scss';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 interface Props extends AppProps {
