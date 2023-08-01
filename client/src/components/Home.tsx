@@ -146,9 +146,9 @@ function Home() {
                 <div className="container">
                     <div className="container-wrapper">
                         <div className="logo">
-                            <AppImage src="/images/LOGO.svg" />
+                            <AppImage src="/images/svg/LOGO.svg" />
                         </div>
-                        <div className="bar">
+                        <div className="bar w-100">
                             <ul>
                                 <li className="menu_font_size regularfont"><a href="/homepage">Home</a></li>
                                 <li className="menu_font_size regularfont"><a href="/shop">Shop</a></li>
@@ -311,25 +311,25 @@ function Home() {
                         <div className="row mt-5 mt-lg-4 mt-xxl-5 g-4">
                             <div className="col-6 col-md-3">
                                 <div className="prod-cats card">
-                                    <AppImage src="/images/prod1.svg" className="card-img-top" />
+                                    <AppImage src="/images/svg/prod1.svg" className="card-img-top" />
                                     <div className="card-body"><a href="" className="boldfont body-sub-titles">Engine</a></div>
                                 </div>
                             </div>
                             <div className="col-6 col-md-3">
                                 <div className="prod-cats card">
-                                    <AppImage src="/images/prod2.svg" className="card-img-top" />
+                                    <AppImage src="/images/svg/prod2.svg" className="card-img-top" />
                                     <div className="card-body"><a href="" className="boldfont body-sub-titles">Engine</a></div>
                                 </div>
                             </div>
                             <div className="col-6 col-md-3">
                                 <div className="prod-cats card">
-                                    <AppImage src="/images/prod2.svg" className="card-img-top" />
+                                    <AppImage src="/images/svg/prod2.svg" className="card-img-top" />
                                     <div className="card-body"><a href="" className="boldfont body-sub-titles">Engine</a></div>
                                 </div>
                             </div>
                             <div className="col-6 col-md-3">
                                 <div className="prod-cats card">
-                                    <AppImage src="/images/prod3.svg" className="card-img-top" />
+                                    <AppImage src="/images/svg/prod3.svg" className="card-img-top" />
                                     <div className="card-body"><a href="" className="boldfont body-sub-titles">Engine</a></div>
                                 </div>
                             </div>
@@ -360,7 +360,7 @@ function Home() {
                         <div className="row mt-5 mt-lg-4 mt-xxl-5 g-4">
                             <div className="col-6 col-md-3">
                                 <div className="latest-prods card">
-                                    <AppImage src="/images/cat-prod-1.svg" className="card-img-top" />
+                                    <AppImage src="/images/svg/cat-prod-1.svg" className="card-img-top" />
                                     <div className="card-body">
                                         <div className="row g-1">
                                             <div className="col-12">
@@ -388,7 +388,7 @@ function Home() {
                             </div>
                             <div className="col-6 col-md-3">
                                 <div className="latest-prods card">
-                                    <AppImage src="/images/cat-prod-1.svg" className="card-img-top" />
+                                    <AppImage src="/images/svg/cat-prod-1.svg" className="card-img-top" />
                                     <div className="card-body">
                                         <div className="row g-1">
                                             <div className="col-12">
@@ -416,7 +416,7 @@ function Home() {
                             </div>
                             <div className="col-6 col-md-3">
                                 <div className="latest-prods card">
-                                    <AppImage src="/images/cat-prod-1.svg" className="card-img-top" />
+                                    <AppImage src="/images/svg/cat-prod-1.svg" className="card-img-top" />
                                     <div className="card-body">
                                         <div className="row g-1">
                                             <div className="col-12">
@@ -444,7 +444,7 @@ function Home() {
                             </div>
                             <div className="col-6 col-md-3">
                                 <div className="latest-prods card">
-                                    <AppImage src="/images/cat-prod-1.svg" className="card-img-top" />
+                                    <AppImage src="/images/svg/cat-prod-1.svg" className="card-img-top" />
                                     <div className="card-body">
                                         <div className="row g-1">
                                             <div className="col-12">
