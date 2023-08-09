@@ -1,4 +1,21 @@
 header {
+	//background-color: #181C19;
+	padding: 25px 0;
+	.bar {
+		//width: 90%; 
+        padding-right: 20px;
+		text-align: right;
+		align-self: center;
+	}
+	.ub_mobile_header {
+		display: none;
+		display: block;
+	}
+	.ub_desktop_header {
+		display: none;
+	}
+}
+.normal_head{
 	background-color: #181C19;
 	padding: 25px 0;
 	.bar {
@@ -19,7 +36,7 @@ header {
 	display: flex;
 }
 .logo {
-	width: 20%;
+	width: 16%;
 }
 .bar {
 	ul {

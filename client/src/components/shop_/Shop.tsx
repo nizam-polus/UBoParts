@@ -5,7 +5,7 @@ import { IVehicle } from '~/interfaces/vehicle';
 import Image from 'next/image'
 import AppImage from '../shared/AppImage';
 import axios from 'axios';
-import Header from '../header_/Header_af_log';
+import Header from '../header_/Header-logged-in';
 import Footer from '../footer_/Footer';
 
 function Shop() {
@@ -129,33 +129,33 @@ function Shop() {
                                     <div className="row g-4 flex-column flex-lg-row w-100 mx-auto">
                                         <div className="col">
                                             <div className="row g-4 flex-column flex-lg-row">
-                                                <div className="col">
+                                                <div className="col pb-3 pb-xl-0">
                                                     <div className="htmlForm-group">
-                                                        <select className="htmlForm-select semifont select-options semifont placeholderfontsize" name="make">
+                                                        <select className="htmlForm-select semifont semifont placeholderfontsize " name="make">
                                                             <option>Select Make</option>
                                                             <option value="1">Select Make</option>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div className="col">
+                                                <div className="col pb-3 pb-xl-0">
                                                     <div className="htmlForm-group">
-                                                        <select className="htmlForm-select semifont select-options semifont placeholderfontsize" name="model">
+                                                        <select className="htmlForm-select semifon semifont placeholderfontsize" name="model">
                                                             <option>Select Model</option>
                                                             <option value="1">Select Make</option>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div className="col">
+                                                <div className="col pb-3 pb-xl-0">
                                                     <div className="htmlForm-group">
-                                                        <select className="htmlForm-select semifont select-options semifont placeholderfontsize" name="year">
+                                                        <select className="htmlForm-select semifont semifont placeholderfontsize" name="year">
                                                             <option>Select Year</option>
                                                             <option value="1">Select Make</option>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div className="col">
+                                                <div className="col pb-3 pb-xl-0">
                                                     <div className="htmlForm-group">
-                                                        <select className="htmlForm-select semifont select-options semifont placeholderfontsize" name="category">
+                                                        <select className="htmlForm-select semifont semifont placeholderfontsize" name="category">
                                                             <option>Select Category</option>
                                                             <option value="1">Select Make</option>
                                                         </select>
@@ -164,7 +164,7 @@ function Shop() {
                                             </div>
                                         </div>
                                         <div className="col-12 col-lg-3 d-flex align-items-end">
-                                            <button type="submit" className="search boldfont mini-text-2">Search</button>
+                                            <button type="submit" className="pt-3 pb-3 search boldfont boldfontsize">Search</button>
                                         </div>
                                     </div>
                                 </form>
@@ -185,7 +185,7 @@ function Shop() {
                                 </div>
                                 <div className="col-12 mt-5">
                                     <div className="row g-5">
-                                        <div className="col-12 col-sm-3">
+                                        <div className="col-12 col-sm-3 pb-4 pb-xl-0">
                                             <div className="responsive-filter">
                                                 <button type="button" className="boldfont boldfontsize button-bg-color-1 border-0 text-white p-2 rounded" data-bs-toggle="modal" data-bs-target="#view-filters">View Filter</button>
                                             </div>
@@ -291,9 +291,9 @@ function Shop() {
                                         </div>
                                         <div className="col">
                                             <div className="row g-4">
-                                                <div className="col-12 col-sm-6 col-lg-4">
+                                                <div className="col-12 col-sm-6 col-lg-4  mb-4">
                                                     <div className="latest-prods card card-shadows">
-                                                       <AppImage src="images/cat-prod-1.svg" className="card-img-top"/>
+                                                       <AppImage src="images/svg/cat-prod-1.svg" className="card-img-top"/>
                                                         <div className="card-body">
                                                             <div className="row g-1">
                                                                 <div className="col-12">
@@ -315,11 +315,11 @@ function Shop() {
                                                                     <span className="product-price">€230</span>
                                                                     <div className="input-group quanitity-box">
                                                                         <span className="input-group-btn plus-icon semifont">
-                                                                            <i className="fa fa-plus mini-text-2" aria-hidden="true"></i>
+                                                                            <i className="fa fa-plus mini-text-0 mini-text-0-color" aria-hidden="true"></i>
                                                                         </span>
                                                                         <input type="text" name="quant[1]" className="htmlForm-control input-number text-center rounded-pill border-0 semifont p-1 mini-text-2 h-auto" value="1" min="1" max="10"/>
                                                                         <span className="input-group-btn minus-icon semifont">
-                                                                            <i className="fa fa-minus mini-text-2" aria-hidden="true"></i>
+                                                                            <i className="fa fa-minus mini-text-0 mini-text-0-color" aria-hidden="true"></i>
                                                                         </span>
                                                                     </div>
                                                                 </div>
@@ -327,9 +327,9 @@ function Shop() {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="col-12 col-sm-6 col-lg-4">
+                                                <div className="col-12 col-sm-6 col-lg-4 mb-4">
                                                     <div className="latest-prods card card-shadows">
-                                                       <AppImage src="images/cat-prod-1.svg" className="card-img-top"/>
+                                                       <AppImage src="images/svg/cat-prod-1.svg" className="card-img-top"/>
                                                         <div className="card-body">
                                                             <div className="row g-1">
                                                                 <div className="col-12">
@@ -349,15 +349,15 @@ function Shop() {
                                                                 </div>
                                                                 <div className="col-12 d-flex justify-content-between">
                                                                     <span className="product-price">€230</span>
-                                                                   <AppImage src="images/cart-svg.svg"/>
+                                                                   <AppImage src="images/svg/cart-svg.svg"/>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="col-12 col-sm-6 col-lg-4">
+                                                <div className="col-12 col-sm-6 col-lg-4 mb-4">
                                                     <div className="latest-prods card card-shadows">
-                                                       <AppImage src="images/cat-prod-1.svg" className="card-img-top"/>
+                                                       <AppImage src="images/svg/cat-prod-1.svg" className="card-img-top"/>
                                                         <div className="card-body">
                                                             <div className="row g-1">
                                                                 <div className="col-12">
@@ -377,15 +377,15 @@ function Shop() {
                                                                 </div>
                                                                 <div className="col-12 d-flex justify-content-between">
                                                                     <span className="product-price">€230</span>
-                                                                   <AppImage src="images/cart-svg.svg"/>
+                                                                   <AppImage src="images/svg/cart-svg.svg"/>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="col-12 col-sm-6 col-lg-4">
+                                                <div className="col-12 col-sm-6 col-lg-4 mb-4">
                                                     <div className="latest-prods card card-shadows">
-                                                       <AppImage src="images/cat-prod-1.svg" className="card-img-top"/>
+                                                       <AppImage src="images/svg/cat-prod-1.svg" className="card-img-top"/>
                                                         <div className="card-body">
                                                             <div className="row g-1">
                                                                 <div className="col-12">
@@ -405,15 +405,15 @@ function Shop() {
                                                                 </div>
                                                                 <div className="col-12 d-flex justify-content-between">
                                                                     <span className="product-price">€230</span>
-                                                                   <AppImage src="images/cart-svg.svg"/>
+                                                                   <AppImage src="images/svg/cart-svg.svg"/>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="col-12 col-sm-6 col-lg-4">
+                                                <div className="col-12 col-sm-6 col-lg-4 mb-4">
                                                     <div className="latest-prods card card-shadows">
-                                                       <AppImage src="images/cat-prod-1.svg" className="card-img-top"/>
+                                                       <AppImage src="images/svg/cat-prod-1.svg" className="card-img-top"/>
                                                         <div className="card-body">
                                                             <div className="row g-1">
                                                                 <div className="col-12">
@@ -433,15 +433,15 @@ function Shop() {
                                                                 </div>
                                                                 <div className="col-12 d-flex justify-content-between">
                                                                     <span className="product-price">€230</span>
-                                                                   <AppImage src="images/cart-svg.svg"/>
+                                                                   <AppImage src="images/svg/cart-svg.svg"/>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="col-12 col-sm-6 col-lg-4">
+                                                <div className="col-12 col-sm-6 col-lg-4 mb-4">
                                                     <div className="latest-prods card card-shadows">
-                                                       <AppImage src="images/cat-prod-1.svg" className="card-img-top"/>
+                                                       <AppImage src="images/svg/cat-prod-1.svg" className="card-img-top"/>
                                                         <div className="card-body">
                                                             <div className="row g-1">
                                                                 <div className="col-12">
@@ -461,7 +461,7 @@ function Shop() {
                                                                 </div>
                                                                 <div className="col-12 d-flex justify-content-between">
                                                                     <span className="product-price">€230</span>
-                                                                   <AppImage src="images/cart-svg.svg"/>
+                                                                   <AppImage src="images/svg/cart-svg.svg"/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -619,8 +619,6 @@ function Shop() {
                     </div>
                 </div>
             </div>
-
-            <Footer />
         </>
     );
 }
