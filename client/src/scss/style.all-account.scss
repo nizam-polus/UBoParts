@@ -87,6 +87,9 @@
 // 	font-style: normal;
 // 	font-display: swap;
 // }
+.lightfotweight{
+    font-weight: 500!important;
+}
 .mediumfont {
 	font-family: poppinsmedium;
 }
@@ -108,6 +111,9 @@
 .boldfontsize {
 	font-size: 18px;
 }
+.subtitles-1 {
+	font-size: 21px;
+}
 .subtitles {
 	font-size: 18px;
 }
@@ -120,6 +126,12 @@
 .mini-text{
     font-size: 11px;
 }
+.mini-text-0{
+    font-size: 8px;
+}
+.mini-text-0-color{
+    color: #999;
+    }
 .mini-text-1{
     font-size: 12px;
 }
@@ -140,6 +152,9 @@
 }
 .body-sub-titles{
     font-size: 18px;
+}
+.body-sub-titles-1{
+    font-size: 16px;
 }
 
 td {
@@ -186,7 +201,7 @@ input.input-bg-color-1 {
 		background-color: #4c4c4c;
 	}
 	&::placeholder {
-		color: #fff;
+		color: #fff!important;
 	}
 }
 input.input-bg-color-2 {
@@ -202,6 +217,9 @@ input.input-bg-color-2 {
 }
 .coulmn-bg-color-1{
     background-color: #fff;
+}
+.button-color{
+    color:#F1F3ED;
 }
 .inner-page-main-headings{
     font-size: 30px;
@@ -230,6 +248,9 @@ input.input-bg-color-2 {
 .custom-color-8{
     color: #000;
 }
+.sub-sub{
+    color: #6C757D;
+}
 .section-inner-padding{
     padding: 0 30px;
 }
@@ -238,8 +259,47 @@ input.input-bg-color-2 {
 		accent-color: #4c4c4c;
 	}
 }
+input.form-control {
+	&::placeholder {
+		font-weight: 400;
+	}
+}
+.rounded-1 {
+    border-radius: 1.25rem !important;
+}
+.rounded-side{
+    border-top-left-radius: 1.25rem !important;
+    border-top-right-radius: 1.25rem !important;
+}
 /*custom checkbox*/
 
+.choosefile{
+	height: 44px!important;
+}
+input {
+	&::file-selector-button {
+		background-color: #fff;
+		padding: 2px 13px;
+		font-size: 12px;
+		color: #4c4c4c;
+		border: 0px;
+		border-radius: 4px;
+		font-family: poppinsregular;
+	}
+}
+input {
+	&::placeholder {
+		font-size: 16px!important;
+	}
+}
+textarea {
+	padding: 25px!important;
+	&::placeholder {
+		font-size: 16px!important;
+		font-family: poppinsmedium!important;
+		color: #b3b3b3!important;
+	}
+}
 .form-check-input {
 	position: absolute; // take it out of document flow
 	opacity: 0; // hide it
@@ -349,6 +409,15 @@ ul.pagination li:hover a,ul.pagination li a{
     height: 3px;
     background-color: #ccc;
 }
+.title-border{
+    border-bottom: 1px solid #f5f5f5;
+}
+span.required{
+    color: #CB1818;
+}
+.border-bottom-row{
+    border-bottom: 1px solid #f5f5f5;
+}
 /* general styles ends */
 /* login, register, forgot starts */
 .modal{
@@ -373,7 +442,7 @@ ul.pagination li:hover a,ul.pagination li a{
 }
 input {
 	&::placeholder {
-		font-family: poppinsmedium;
+		font-family: poppinsmedium!important;
 	}
 }
 input[type="text"].inputformtxt ,input[type="email"].inputformtxt ,input[type="password"].inputformtxt  {
@@ -449,6 +518,9 @@ input[type="text"].inputformtxt ,input[type="email"].inputformtxt ,input[type="p
 }
 /* login, register, forgot ends */
 /* home - search starts */
+button.search {
+    padding: 12px 20px!important;
+}
 .search-wrapper {
 	background-color: #fff;
 	border-radius: 30px;
@@ -542,8 +614,8 @@ input[type="text"].inputformtxt ,input[type="email"].inputformtxt ,input[type="p
 .about-content-wrapper {
 	background-color: #fff;
 	border-radius: 30px;
-	padding: 30px;
-	margin-top: -60px;
+	padding: 30px 100px;
+	margin-top: -170px;
 	-webkit-box-shadow: 0px 0px 8px 0px rgba(145,145,145,1);
 	-moz-box-shadow: 0px 0px 8px 0px rgba(145,145,145,1);
 	box-shadow: 0px 0px 8px 0px rgba(145,145,145,1);
@@ -649,7 +721,7 @@ input[type="text"].inputformtxt ,input[type="email"].inputformtxt ,input[type="p
 }
 .plus-icon,.minus-icon{
     position: absolute;
-    top: 8px;
+    top: 3px;
     z-index: 9;
 }
 .plus-icon{
@@ -661,11 +733,19 @@ input[type="text"].inputformtxt ,input[type="email"].inputformtxt ,input[type="p
 .quanitity-box{
     width: 100px;
 }
-.quanitity-box input{
-    background-color: #F5F5F5;
+.quanitity-box {
+	input {
+		background-color: #28712536;
+        &:focus {
+			background-color: #f5f5f5;
+		}
+	}
 }
-.responsive-filter button{
-    width:100%;
+
+.responsive-filter {
+	button {
+		width: 100%;
+	}
 }
 .responsive-filter{
     display: none;
@@ -705,10 +785,10 @@ input[type="text"].inputformtxt ,input[type="email"].inputformtxt ,input[type="p
 }
 .quanitity-incrementor {
 	.plus-icon {
-		top: 12px;
+		top: 6px;
 	}
 	.minus-icon {
-		top: 12px;
+		top: 6px;
 	}
 }
 .nav-tabs {
@@ -718,10 +798,15 @@ input[type="text"].inputformtxt ,input[type="email"].inputformtxt ,input[type="p
 		padding-left: 0;
 	}
 	.nav-link {
+        margin-bottom: -1px;
+        background: 0 0;
+        border: 0px solid transparent;
+        border-top-left-radius: 0.25rem;
+        border-top-right-radius: 0.25rem;
 		&:hover {
 			border: 0;
 			border-bottom: 2px solid #587E50;
-			padding-left: 0;
+			//padding-left: 0;
 		}
 	}
 	.nav-item {
@@ -749,7 +834,7 @@ input[type="text"].inputformtxt ,input[type="email"].inputformtxt ,input[type="p
     margin-left: 10px;
 }
 .cart-table .quanitity-incrementor .plus-icon,.cart-table .quanitity-incrementor .minus-icon {
-    top: 8px;
+    top: 0px;
 }
 .cart-table tbody td{
     border: 0;
@@ -831,12 +916,81 @@ input[type="text"].inputformtxt ,input[type="email"].inputformtxt ,input[type="p
     top:-4px;
 }
 /* shopping checkout page ends */
+/* about us page starts */
+.about-header{
+    background-image: url('/images/img/about-us.png');
+    background-size: cover;
+    height: 80vh;
+    background-blend-mode: overlay;
+    background-color: #4c4c4c;
+}
+.contact-wrapper a:hover{
+    color: #fff;
+}
+/* about us page ends */
+/* request page starts */
+.request-header{
+    background-image: url('/images/img/request-quote-1.png');
+	background-size: cover;
+    height: 80vh;
+    background-blend-mode: overlay;
+    background-color: #4c4c4c;
+}
+.quote-table tbody tr.double td:first-child{
+    padding: 20px 15px 0px 0px;
+}
+.quote-table tbody tr.double td:last-child{
+    padding: 20px 0px 0px 15px;
+}
+.quote-table tbody tr.single td{
+    padding: 20px 0px 0px 0px;
+}
+.place-quote{
+    width: 200px;
+}
+#formFile{
+    width:350px;
+}
+.quote-table tbody tr td{
+    width: 50%;
+    border: 0;
+}
+.quote-table input:focus,.quote-table textarea:focus{
+    width: 100%;
+    box-shadow: none;
+    background-color: #ebebeb;
+}
+/* request page ends */
+@media screen and (max-width: 1024px){
+    .request-header,.about-header {
+        height: 44vh!important;
+    }
+    .about-content-wrapper {
+        padding: 20px 50px;
+    }
+    input::placeholder {
+        font-size: 12px!important;
+    }
+}
 @media screen and (max-width: 768px){
+    .request-header,.about-header {
+        height: 44vh!important;
+    }
+	.quote-table tbody tr.double td:first-child {
+		padding: 0px !important;
+		padding-top: 20px!important;
+	}
     .heading_text{
         font-size: 35px;  
     }
+    .header-middle-text{
+        min-height: 35vh;
+    }
     .subtitles{
         font-size: 16px;
+    }
+    .subtitles-1{
+        font-size: 14px;
     }
     .sub-subtext{
         font-size: 14px;
@@ -867,6 +1021,49 @@ input[type="text"].inputformtxt ,input[type="email"].inputformtxt ,input[type="p
         width: max-content;
         margin: 6px 0;
     }
+    .inner-page-main-headings-1{
+        font-size: 30px;
+    }
+    .text-size-1{
+        font-size: 17px;
+    }
+    .sub-text-1{
+        font-size: 14px;
+    }
+    .text-size-2{
+        font-size: 17px;
+    }
+    .text-size-3{
+        font-size: 18px;
+    }
+    .quote-table tbody tr td,.dismantle-header tbody td,.account-info-header tbody td{
+        width: 100%;
+    }
+    .checkout-table tbody td,
+    .profile-table-1 tbody td,
+    .quote-table tbody td,
+    .change-profile-table-1 tbody td{
+        display: inline-block;
+        //padding: 10px 30px!important;
+        width: 100%;
+    }
+    .quote-table tbody td,
+    .change-profile-table-1 tbody td{
+        padding-left: 0px!important;
+    }
+    .password-wrapper-field img{
+        top:16px;
+    }
+    .checkout-table tbody tr td{
+        padding: 8px 30px 8px 30px !important
+    }
+}
+@media screen and (max-width:640px) {
+    .main-body{
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+  
 }
 @media screen and (max-width: 480px){
     #forgot_password{
@@ -889,6 +1086,49 @@ input[type="text"].inputformtxt ,input[type="email"].inputformtxt ,input[type="p
     .heading_text{
         font-size: 28px;  
     }
+    .dismantle-header .heading_text,
+    .request-header .heading_text,
+    .account-info-header .heading_text{
+        line-height: 28px;
+    }
+    #formFile{
+        width: 100%;
+    }
+    .quote-table tbody td{
+        display: inline-block;
+        //padding: 10px 30px 10px 0px!important;
+        width: 100%;
+    }
+    .inner-page-main-headings-1{
+        font-size: 24px;
+    }
+    .text-size-1{
+        font-size: 14px;
+    }
+    .password-wrapper-field{
+         width: 100%;
+    }
+    .sub-text-1{
+        font-size: 12px;
+    }
+    .text-size-2{
+        font-size: 14px;
+    }
+    .text-size-3{
+        font-size: 16px;
+    }
+    .request-header,.dismantle-header,.account-info-header,.about-header{
+        height: 300px;
+    }
+    .about-content-wrapper {
+        padding: 20px 30px;
+    }
+    .body-sub-titles-1 {
+        font-size: 14px;
+    }
+    .sub-sub1{
+        font-size: 14px!important;
+    }
 }
 @media screen and (min-width : 1200px){
     #forgotmodal .modal-dialog,#loginmodal .modal-dialog,#registermodal .modal-dialog{
@@ -901,10 +1141,10 @@ input[type="text"].inputformtxt ,input[type="email"].inputformtxt ,input[type="p
         padding: 10px 30px 20px 30px;
     }
     .placeholderfontsize{
-        font-size: 14px;
+        font-size: 16px;
     }
     .search-wrapper input, .search-wrapper select{
-        padding: 15px 15px;
+        padding: 15px 20px;
     }
     .search-wrapper button {
         padding: 12px 20px;
@@ -912,19 +1152,59 @@ input[type="text"].inputformtxt ,input[type="email"].inputformtxt ,input[type="p
     .heading_text{
         font-size: 44px;  
     }
+    .dismantle-header .heading_text,
+    .request-header .heading_text,
+    .account-info-header .heading_text{
+        line-height: 44px;
+    }
     .subtitles{
-        font-size: 16px;
+        font-size: 20px;
+    }
+    .subtitles-1{
+        font-size: 18px;
     }
     .sub-subtext{
         font-size: 16px;
     }
+    .inner-page-main-headings-1{
+        font-size: 38px;
+    }
+    .text-size-1{
+        font-size: 17px;
+    }
+    .sub-text-1{
+        font-size: 18px;
+    }
+    .text-size-2{
+        font-size: 21px;
+    }
+    .text-size-3{
+        font-size: 21px;
+    }
+    .header-middle-text{
+        min-height: 65vh;
+    }
 }
 @media screen and (min-width : 1920px){
+    button[type=submit].search {
+        padding: 10px 20px!important;
+    }
     .heading_text{
         font-size: 74px;  
     }
+    .dismantle-header .heading_text,
+    .request-header .heading_text,
+    .account-info-header .heading_text{
+        line-height: 82px;
+    }
+    .sub-text-1{
+        font-size: 30px;
+    }
     .subtitles{
         font-size: 32px;
+    }
+    .subtitles-1{
+        font-size: 30px;
     }
     .sub-subtext{
         font-size: 26px;
@@ -938,14 +1218,37 @@ input[type="text"].inputformtxt ,input[type="email"].inputformtxt ,input[type="p
     .bg-image-text{
         font-size: 48px;
     }
-    .body-sub-titles{
-        font-size: 24px;
-    }
+    .body-sub-titles {
+		font-size: 24px;
+	}
+	.body-sub-titles-1{
+		font-size: 20px;
+	}
+	input.input-bg-color-2 {
+		&::placeholder {
+			font-size: 24px;
+		}
+	}
     .products-name{
         font-size: 18px;
     }
+    .popular_categories{
+        font-size: 24px;
+    }
     .inner-page-main-headings{
         font-size: 54px;
+    }
+    .inner-page-main-headings-1{
+        font-size: 64px;
+    }
+    .text-size-1{
+        font-size: 27px;
+    }
+    .text-size-2{
+        font-size: 36px;
+    }
+    .text-size-3{
+        font-size: 40px;
     }
     .mini-text-3{
         font-size: 14px;
@@ -956,9 +1259,12 @@ input[type="text"].inputformtxt ,input[type="email"].inputformtxt ,input[type="p
     #forgotmodal .modal-content,#loginmodal .modal-content,#registermodal .modal-content{
         padding:30px 60px;
     }
-    input[type="text"].inputformtxt ,input[type="email"].inputformtxt ,input[type="password"].inputformtxt ,button[type="submit"]{
+    input[type=text], input[type=email], input[type=password], button[type=submit] {
         height: 80px;
-        padding: 15px 30px;
+        padding: 5px 20px !important;
+    }
+    input.check-form {
+        padding: 10px 20px 14px 20px!important;
     }
     .card-sub-title{
         padding: 20px 0px 40px 0px;
@@ -984,5 +1290,8 @@ input[type="text"].inputformtxt ,input[type="email"].inputformtxt ,input[type="p
     }
     .specific_part,.start_selling{
         height: 400px;
+    }
+    .header-middle-text{
+        min-height: 65vh;
     } 
 }

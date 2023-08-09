@@ -8,6 +8,7 @@ import AppImage from './shared/AppImage';
 import axios from 'axios';
 import Forgotpass from './forgot/Forgotpass';
 import Login from './account/Login';
+import Header_home from './header_/Header_home'
 function Home() {
     const token = 'ae148a3a68f6a84f75c1e5aa247c5bdebc52f5d7783b208baccde7167ed24dc3e63c9d37bcf4d112c3c875a4afdc5643ab6f87622dcd7e6fcddcc66650cdc8e8aa33131f32691eb5c6fee2f1082ad33603a9c9cdf9ff14d321e85ceba547c31c0e56703958405f8137d6abf7b763119767bb208f72624181fb0c8be5378edccb'
     const headers = {
@@ -142,26 +143,11 @@ function Home() {
                 isOpen={loginModalIsOpen}
                 onClose={onLoginModalClose}
             />
-            <header className="home-header">
-                <div className="container">
-                    <div className="container-wrapper">
-                        <div className="logo">
-                            <AppImage src="/images/svg/LOGO.svg" />
-                        </div>
-                        <div className="bar w-100">
-                            <ul>
-                                <li className="menu_font_size regularfont"><a href="/homepage">Home</a></li>
-                                <li className="menu_font_size regularfont"><a href="/shop">Shop</a></li>
-                                <li className="menu_font_size regularfont"><a href="">About us</a></li>
-                                <li className="menu_font_size regularfont"><a href="">Request</a></li>
-                                <li className="menu_font_size regularfont"><a href="">Dismantle Car</a></li>
-                                <li className="menu_font_size regularfont"><button type="button" onClick={showLoginModal} className="ub_login">Login</button></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </header>
-            <div className="main-body">
+            
+            <div className="home-header">
+                <Header_home />
+            </div>   
+            <div className="main-body pb-5 mb-5">
                 <div className="container">
                     <section className="section-search-wrapper">
                         <form action="" className="search-wrapper">

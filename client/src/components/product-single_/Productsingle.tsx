@@ -2,14 +2,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Modal } from 'reactstrap';
 import AppImage from '../shared/AppImage';
-import Header from '../header_/Header_af_log';
+import Header_logged_in from '../header_/Header-logged-in';
 import Footer from '../footer_/Footer';
 
 function Productsingle() {
 
     return (
         <>
-            <Header />
+            <Header_logged_in />
             <div className="main-body pb-5 mb-5">
                 <div className="container">
                     <section className="products-description-wrapper mt-5 mb-5">
@@ -25,8 +25,8 @@ function Productsingle() {
                                     <div className="col-auto px-2"><img className="rounded" src="/images/svg/cat-prod-1.svg"/></div>
                                 </div>
                             </div>
-                            <div className="col-12 col-md-6 col-lg-5 p-lg-5 pb-lg-0 pt-lg-0 mt-5 mt-md-0 mt-lg-0">
-                                <p className="mediumfont subtitles custom-color-5">Mercedes sprinter achter as</p>
+                            <div className="col-12 col-md-6 col-lg-5 px-5 pb-lg-0 pt-lg-0 mt-5 mt-md-0 mt-lg-0">
+                                <p className="semifont inner-page-main-headings custom-color-5">Mercedes sprinter achter as</p>
                                 <p className="custom-color-3 regularfont placeholderfontsize mb-1">Visually, the Mercedes-Benz V-className has the typical Van-like appearance with boxy proportions. However, the MPV comes with a bunch of bold character lines along the bonnet, front bumper and profile of the vehicle</p>
                                 <p className="mb-1">
                                     <span className="ratings">
@@ -45,13 +45,14 @@ function Productsingle() {
                                     <li className="mb-1">Model: ACTROS</li>
                                     <li>Year: 2022</li>
                                 </ul>
+                                <hr/>
                                 <p className="custom-color-6 regularfont mini-text-2">See Full Specifications</p>
                             </div>
                             <div className="col-12 col-md-12 col-lg-3 mt-5 mt-lg-0">
                                 <div className="more-info p-3 rounded">
                                     <div className="row d-flex justify-content-between">
-                                        <div className="col-auto"><span className="product-price custom-color-3 regularfont subtitles">€230</span></div>
-                                        <div className="col-auto"><span className="in-stock custom-color-6 rounded-pill p-3 pb-1 pt-1 d-flex">In Stock</span></div>
+                                        <div className="col-auto"><span className="product-price custom-color-3 regularfont">€230</span></div>
+                                        <div className="col-auto"><span className="in-stock custom-color-6 rounded-pill px-3 pb-1 pt-1 d-flex mini-text-2 semifont">In Stock</span></div>
                                     </div>
                                     <div className="row mt-3">
                                         <div className="col-12">
@@ -77,14 +78,14 @@ function Productsingle() {
                                                         <span className="input-group-btn plus-icon semifont">
                                                             <i className="fa fa-plus mini-text-3" aria-hidden="true"></i>
                                                         </span>
-                                                        <input type="text" name="quant[1]" className="form-control input-number text-center rounded border-0 semifont p-4 pb-2 pt-2 mini-text-3 h-auto" value="1" min="1" max="10"/>
+                                                        <input type="text" name="quant[1]" className="form-control input-number text-center rounded border-0 semifont pb-2 pt-2 mini-text-3 h-auto" value="1" min="1" max="10"/>
                                                         <span className="input-group-btn minus-icon semifont">
                                                             <i className="fa fa-minus mini-text-3" aria-hidden="true"></i>
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div className="col-8 col-md-8 col-lg-12 col-xl-7">
-                                                    <a href="" className="add-to-cart-1 button-bg-color-1 custom-color-7 rounded p-3 pb-2 pt-2 mt-3 text-center mini-text-3 text-white">Add to Cart</a>
+                                                    <a href="" className="add-to-cart-1 button-bg-color-1 custom-color-7 rounded  pb-2 pt-2 mt-3 text-center mini-text-3 text-white">Add to Cart</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -257,7 +258,6 @@ function Productsingle() {
                     </section>
                 </div>
             </div>
-            <Footer />
         </>
     );
 }

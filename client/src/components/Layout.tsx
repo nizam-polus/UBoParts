@@ -4,7 +4,7 @@ import React, { PropsWithChildren } from 'react';
 import classNames from 'classnames';
 import { ToastContainer } from 'react-toastify';
 // application
-import Footer from '~/components/footer/Footer';
+import Footer from '~/components/footer_/Footer';
 import Header from '~/components/header/Header';
 import MobileHeader from '~/components/mobile/MobileHeader';
 import MobileMenu from '~/components/mobile/MobileMenu';
@@ -43,9 +43,9 @@ function Layout(props: Props) {
                     {children}
                 </div>
 
-                {/* <footer className="site__footer">
+                {<footer className="site__footer">
                     <Footer />
-                </footer> */}
+                </footer> }
             </div>
 
             <MobileMenu />
