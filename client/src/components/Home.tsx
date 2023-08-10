@@ -10,7 +10,7 @@ import Forgotpass from './forgot/Forgotpass';
 import Login from './account/Login';
 import Header_home from './header_/Header_home'
 function Home() {
-    const token = 'ae148a3a68f6a84f75c1e5aa247c5bdebc52f5d7783b208baccde7167ed24dc3e63c9d37bcf4d112c3c875a4afdc5643ab6f87622dcd7e6fcddcc66650cdc8e8aa33131f32691eb5c6fee2f1082ad33603a9c9cdf9ff14d321e85ceba547c31c0e56703958405f8137d6abf7b763119767bb208f72624181fb0c8be5378edccb'
+    const token = '8c8e5c1a7170f4c17b38cd6f13fac42026d6b359d341e39faf6356621134a52cc6ee233f4e151c7c888b95c13674fef01232525470e727c96d9bd0ce7bbf0793f97938a6a3329c1d73cda53b5b874f307e62c76eb8b26db4180b71ef66651511d92901f23d15759c4b0880c9640735e7f400bfe494a16c2294ec283b2a255d7c'
     const headers = {
         Authorization: `Bearer ${token}`,
     };
@@ -50,7 +50,7 @@ function Home() {
     };
     useEffect(() => {
         // Axios get method to fetch data
-        axios.get('http://192.168.1.31:1337/api/cardetails?populate=*&pagination[page]=1&pagination[pageSize]=1000&sort[0]=licenseplate:asc', { headers })
+        axios.get('http://10.199.100.156:1337/api/cardetails?populate=*&pagination[page]=1&pagination[pageSize]=1000&sort[0]=licenseplate:asc', { headers })
             .then((response: any) => {
                 setData(response.data.data);
                 setLoading(false);
@@ -60,7 +60,7 @@ function Home() {
                 setLoading(false);
             });
 
-        axios.get('http://192.168.1.31:1337/api/categories?populate=*&sort[0]=id:asc', { headers })
+        axios.get('http://10.199.100.156:1337/api/categories?populate=*&sort[0]=id:asc', { headers })
             .then((response: any) => {
                 setCategories(categoriesArray(response.data.data));
                 setLoading(false);
@@ -69,16 +69,26 @@ function Home() {
                 setError(error);
                 setLoading(false);
             });
+
+        axios.get('http://10.199.100.156:1337/api/cardetail-make', { headers })
+        .then((response: any) => {
+            setMakesArray(response.data.rows);
+            setLoading(false);
+        })
+        .catch((error) => {
+            setError(error);
+            setLoading(false);
+        });
     }, []);
 
     useEffect(() => {
-        setMakesArray(optionsArray('make'));
-        setModelArray(optionsArray('model'));
-        setYearArray(optionsArray('year'));
+        //setMakesArray(optionsArray('make'));
+        //setModelArray(optionsArray('model'));
+        //setYearArray(optionsArray('year'));
     }, [data]);
 
     const searchProducts = () => {
-        axios.get(`http://192.168.1.31:1337/api/products?populate=*&filters[$and][][cardetail][licenseplate][$contains]=${licenseplate}&filters[$and][][cardetail][make][$contains]=${selectedMake}&filters[$and][][cardetail][model][$contains]=${selectedModel}&filters[$and][][category][category_name][$contains]=${selectedCategory}`, { headers })
+        axios.get(`http://10.199.100.156:1337/api/products?populate=*&filters[$and][][cardetail][licenseplate][$contains]=${licenseplate}&filters[$and][][cardetail][make][$contains]=${selectedMake}&filters[$and][][cardetail][model][$contains]=${selectedModel}&filters[$and][][category][category_name][$contains]=${selectedCategory}`, { headers })
         .then((response: any) => {
             setSearchedProducts(response.data.data);
             setSearched(true);
@@ -87,6 +97,34 @@ function Home() {
                 setSelectedModel(response.data.data[0].attributes.cardetail.data.attributes.model);
                 setSelectedYear(response.data.data[0].attributes.cardetail.data.attributes.year);
             }
+        })
+        .catch((error) => {
+            setError(error);
+            setLoading(false);
+        });
+    }
+
+    const getModel = (make: string) => {
+        const setHeaders = {'param_make': make}
+        axios.post(`http://10.199.100.156:1337/api/cardetailmodel`, {...setHeaders}, { headers })
+        .then((response: any) => {
+            setModelArray(response.data.rows);
+            if (response.data.rows && response.data.rows.length) {
+                // setSelectedModel(response.data.rows[0].model);
+                // getYear(response.data.rows[0].model);
+            }
+        })
+        .catch((error) => {
+            setError(error);
+            setLoading(false);
+        });
+    }
+
+    const getYear = (model: string) => {
+        const setHeaders = {'param_make': selectedMake, 'param_model': model}
+        axios.post(`http://10.199.100.156:1337/api/cardetailyear`, {...setHeaders}, { headers })
+        .then((response: any) => {
+            setYearArray(response.data.rows);
         })
         .catch((error) => {
             setError(error);
@@ -105,6 +143,10 @@ function Home() {
     const handleMakeChange = (event: any) => {
         setSearched(false);
         setSelectedMake(event.target.value);
+        setSelectedModel('');
+        setSelectedYear('');
+        setSelectedCategory('');
+        getModel(event.target.value);
     };
 
     const handleLicenseplateChange = (event: any) => {
@@ -115,10 +157,14 @@ function Home() {
     const handleModelChange = (event: any) => {
         setSearched(false);
         setSelectedModel(event.target.value);
+        setSelectedYear('');
+        setSelectedCategory('');
+        getYear(event.target.value);
     };
 
     const handleYearChange = (event: any) => {
         setSelectedYear(event.target.value);
+        setSelectedCategory('');
     };
 
     const handleCategoryChange = (event: any) => {
@@ -173,36 +219,36 @@ function Home() {
                                                     value={selectedMake} onChange={handleMakeChange}>
                                                     <option value="" disabled={true}>Select Make</option>
                                                     {makesArray.map((make: any, index: any) => (
-                                                        <option key={index} value={make}>{make}</option>
+                                                        <option key={index} value={make.make}>{make.make}</option>
                                                     ))}
                                                 </select>
                                             </div>
                                         </div>
                                         <div className="col">
                                             <div className="form-group">
-                                                <select className="form-select semifont placeholderfontsize" name="model" id="modelOption"
+                                                <select disabled={!selectedMake} className="form-select semifont placeholderfontsize" name="model" id="modelOption"
                                                     value={selectedModel} onChange={handleModelChange}>
                                                     <option value="" disabled={true}>Select Model</option>
                                                     {modelArray.map((model: any, index: any) => (
-                                                        <option key={index} value={model}>{model}</option>
+                                                        <option key={index} value={model.model}>{model.model}</option>
                                                     ))}
                                                 </select>
                                             </div>
                                         </div>
                                         <div className="col">
                                             <div className="form-group">
-                                                <select className="form-select semifont placeholderfontsize" name="year" id="yearOption"
+                                                <select disabled={!selectedModel || (yearArray && yearArray.length && !yearArray[0].year)} className="form-select semifont placeholderfontsize" name="year" id="yearOption"
                                                     value={selectedYear} onChange={handleYearChange}>
                                                     <option value="" disabled={true}>Select Year</option>
                                                     {yearArray.map((year: any, index: any) => (
-                                                        <option key={index} value={year}>{year}</option>
+                                                        <option key={index} value={year.year}>{year.year}</option>
                                                     ))}
                                                 </select>
                                             </div>
                                         </div>
                                         <div className="col">
                                             <div className="form-group">
-                                                <select className="form-select semifont placeholderfontsize" name="category" id="categoryOption"
+                                                <select disabled={!selectedYear} className="form-select semifont placeholderfontsize" name="category" id="categoryOption"
                                                     value={selectedCategory} onChange={handleCategoryChange}>
                                                     <option value="" disabled={true}>Select Category</option>
                                                     {categories.map((category: any, index: any) => (
@@ -231,7 +277,7 @@ function Home() {
                             <div className="col-6 col-md-3" key={index}>
                                 <div className="latest-prods card">
                                     <Link href={`/products_/${product?.id}`}>
-                                    <AppImage src={'http://192.168.1.31:1337'+ product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} className="card-img-top" />
+                                    <AppImage src={'http://10.199.100.156:1337'+ product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} className="card-img-top" />
                                     <div className="card-body">
                                         <div className="row g-1">
                                             <div className="col-12">
