@@ -10,7 +10,7 @@ import Forgotpass from './forgot/Forgotpass';
 import Login from './account/Login';
 import Header_home from './header_/Header_home'
 function Home() {
-    const token = '8c8e5c1a7170f4c17b38cd6f13fac42026d6b359d341e39faf6356621134a52cc6ee233f4e151c7c888b95c13674fef01232525470e727c96d9bd0ce7bbf0793f97938a6a3329c1d73cda53b5b874f307e62c76eb8b26db4180b71ef66651511d92901f23d15759c4b0880c9640735e7f400bfe494a16c2294ec283b2a255d7c'
+    const token = 'd74cadbbd1e783d16cad26f5b3e0591c54075b3adf4655ad54de3d423bb8d95b5aacf257eba5d980b62dbc7b1c5c6d5dd69647d17c115327bf6d28b568b81423ce6b86908fa997a26be83e48cb53a7db17339345b7939228d18abf92d1dab1920f553233cde10ed0b5cbc21afedc603ab3aa99860cf35da892a06f98b81e1a9d'
     const headers = {
         Authorization: `Bearer ${token}`,
     };
@@ -29,9 +29,35 @@ function Home() {
     const [licenseplate, setLicenseplate] = useState('');
     const [searchedProducts, setSearchedProducts] = useState<any>([]);
     const [searched, setSearched] = useState(false);
+    const [showInvaidLicense, setShowInvaidLicense] = useState(false);
 
     const [forgotPasswordPickerIsOpen, setforgotPasswordPickerIsOpen] = useState(false);
-   
+
+    useEffect(() => {
+        if (licenseplate && licenseplate.length > 5) {
+            const getData = setTimeout(() => {
+                axios
+                    .get(`http://10.199.100.156:1337/api/cardetails?populate=*&filters[licenseplate][$contains]=${licenseplate}`, { headers })
+                    .then((response: any) => {
+                        console.log('response.data :>> ', response.data);
+                        if (response.data.data.length) {
+                            setSelectedMake(response.data.data[0].attributes.make);
+                            console.log('response.data.data[0].attributes.make :>> ', response.data.data[0].attributes.make);
+                            getModel(response.data.data[0].attributes.make);
+                            setSelectedModel(response.data.data[0].attributes.model);
+                            getYear(response.data.data[0].attributes.make, response.data.data[0].attributes.model);
+                            setSelectedYear(response.data.data[0].attributes.year);
+                            setToggleSearch(true);
+                            setShowInvaidLicense(false);
+                        } else {
+                            setShowInvaidLicense(true);
+                        }
+                    });
+            }, 1000);
+            return () => clearTimeout(getData);
+        }
+    }, [licenseplate]);
+
     const showForgotPassword = () => {
         setforgotPasswordPickerIsOpen(true);
     };
@@ -39,17 +65,16 @@ function Home() {
     const onForgotPasswordClose = () => {
         setforgotPasswordPickerIsOpen(false);
     };
-    
+
     const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
     const showLoginModal = () => {
         setLoginModalIsOpen(true);
     };
 
-   const onLoginModalClose = () => {
+    const onLoginModalClose = () => {
         setLoginModalIsOpen(false);
     };
     useEffect(() => {
-        // Axios get method to fetch data
         axios.get('http://10.199.100.156:1337/api/cardetails?populate=*&pagination[page]=1&pagination[pageSize]=1000&sort[0]=licenseplate:asc', { headers })
             .then((response: any) => {
                 setData(response.data.data);
@@ -71,65 +96,51 @@ function Home() {
             });
 
         axios.get('http://10.199.100.156:1337/api/cardetail-make', { headers })
-        .then((response: any) => {
-            setMakesArray(response.data.rows);
-            setLoading(false);
-        })
-        .catch((error) => {
-            setError(error);
-            setLoading(false);
-        });
+            .then((response: any) => {
+                setMakesArray(response.data.rows);
+                setLoading(false);
+            })
+            .catch((error) => {
+                setError(error);
+                setLoading(false);
+            });
     }, []);
 
-    useEffect(() => {
-        //setMakesArray(optionsArray('make'));
-        //setModelArray(optionsArray('model'));
-        //setYearArray(optionsArray('year'));
-    }, [data]);
-
     const searchProducts = () => {
-        axios.get(`http://10.199.100.156:1337/api/products?populate=*&filters[$and][][cardetail][licenseplate][$contains]=${licenseplate}&filters[$and][][cardetail][make][$contains]=${selectedMake}&filters[$and][][cardetail][model][$contains]=${selectedModel}&filters[$and][][category][category_name][$contains]=${selectedCategory}`, { headers })
-        .then((response: any) => {
-            setSearchedProducts(response.data.data);
-            setSearched(true);
-            if (licenseplate) {
-                setSelectedMake(response.data.data[0].attributes.cardetail.data.attributes.make);
-                setSelectedModel(response.data.data[0].attributes.cardetail.data.attributes.model);
-                setSelectedYear(response.data.data[0].attributes.cardetail.data.attributes.year);
-            }
-        })
-        .catch((error) => {
-            setError(error);
-            setLoading(false);
-        });
+        axios.get(`http://10.199.100.156:1337/api/products?populate=*&filters[$and][][cardetail][make][$contains]=${selectedMake}&filters[$and][][cardetail][model][$contains]=${selectedModel}&filters[$and][][cardetail][year][$eq]=${selectedYear}&filters[$and][][category][category_name][$contains]=${selectedCategory}`, { headers })
+            .then((response: any) => {
+                console.log('response :>> ', response.data.data);
+                setSearchedProducts(response.data.data);
+                setSearched(true);
+            })
+            .catch((error) => {
+                setError(error);
+                setLoading(false);
+            });
     }
 
     const getModel = (make: string) => {
-        const setHeaders = {'param_make': make}
-        axios.post(`http://10.199.100.156:1337/api/cardetailmodel`, {...setHeaders}, { headers })
-        .then((response: any) => {
-            setModelArray(response.data.rows);
-            if (response.data.rows && response.data.rows.length) {
-                // setSelectedModel(response.data.rows[0].model);
-                // getYear(response.data.rows[0].model);
-            }
-        })
-        .catch((error) => {
-            setError(error);
-            setLoading(false);
-        });
+        const setHeaders = { 'param_make': make }
+        axios.post(`http://10.199.100.156:1337/api/cardetailmodel`, { ...setHeaders }, { headers })
+            .then((response: any) => {
+                setModelArray(response.data.rows);
+            })
+            .catch((error) => {
+                setError(error);
+                setLoading(false);
+            });
     }
 
-    const getYear = (model: string) => {
-        const setHeaders = {'param_make': selectedMake, 'param_model': model}
-        axios.post(`http://10.199.100.156:1337/api/cardetailyear`, {...setHeaders}, { headers })
-        .then((response: any) => {
-            setYearArray(response.data.rows);
-        })
-        .catch((error) => {
-            setError(error);
-            setLoading(false);
-        });
+    const getYear = (make: string, model: string) => {
+        const setHeaders = { 'param_make': make, 'param_model': model }
+        axios.post(`http://10.199.100.156:1337/api/cardetailyear`, { ...setHeaders }, { headers })
+            .then((response: any) => {
+                setYearArray(response.data.rows);
+            })
+            .catch((error) => {
+                setError(error);
+                setLoading(false);
+            });
     }
 
     const categoriesArray = (resData: any) => {
@@ -141,12 +152,8 @@ function Home() {
     }
 
     const handleMakeChange = (event: any) => {
-        setSearched(false);
-        setSelectedMake(event.target.value);
-        setSelectedModel('');
-        setSelectedYear('');
-        setSelectedCategory('');
         getModel(event.target.value);
+        setSelectedMake(event.target.value);
     };
 
     const handleLicenseplateChange = (event: any) => {
@@ -159,7 +166,7 @@ function Home() {
         setSelectedModel(event.target.value);
         setSelectedYear('');
         setSelectedCategory('');
-        getYear(event.target.value);
+        getYear(selectedModel, event.target.value);
     };
 
     const handleYearChange = (event: any) => {
@@ -178,7 +185,7 @@ function Home() {
 
     return (
         <>
-           <Forgotpass
+            <Forgotpass
 
                 isOpen={forgotPasswordPickerIsOpen}
                 onClose={onForgotPasswordClose}
@@ -189,10 +196,10 @@ function Home() {
                 isOpen={loginModalIsOpen}
                 onClose={onLoginModalClose}
             />
-            
+
             <div className="home-header">
                 <Header_home />
-            </div>   
+            </div>
             <div className="main-body pb-5 mb-5">
                 <div className="container">
                     <section className="section-search-wrapper">
@@ -203,6 +210,11 @@ function Home() {
                                         <div className="col">
                                             <div className="form-group">
                                                 <input type="form-control" onChange={handleLicenseplateChange} name="plate_number" className="semifont placeholderfontsize" placeholder="Search with Car's Plate Number" />
+                                                {showInvaidLicense &&
+                                                    <div className="row mt-2" >
+                                                        <span className="advanced_search placeholderfontsize regularfont">No Record Found Against this Plate Number!</span>
+                                                    </div>
+                                                }
                                             </div>
                                         </div>
                                         <div className="col-auto or_block"><span className="or_label semifont placeholderfontsize field3">or</span></div>
@@ -212,7 +224,7 @@ function Home() {
                                             </div>
                                         </div>
                                     </div>
-                                    {toggleSearch &&<div className="row g-4 flex-column flex-lg-row mt-2">
+                                    {toggleSearch && <div className="row g-4 flex-column flex-lg-row mt-2">
                                         <div className="col">
                                             <div className="form-group">
                                                 <select className="form-select semifont placeholderfontsize" name="make" id="makeOption"
@@ -264,46 +276,47 @@ function Home() {
                                 </div>
                             </div>
                             <div className="row mt-2" >
-                                <span onClick={toggleAdvancedSearch} style={{cursor: 'pointer'}} className="advanced_search placeholderfontsize regularfont">{toggleSearch ? 'Show less' :'Advanced Search'}</span>
+                                <span onClick={toggleAdvancedSearch} style={{ cursor: 'pointer' }} className="advanced_search placeholderfontsize regularfont">{toggleSearch ? 'Show less' : 'Advanced Search'}</span>
                             </div>
                         </form>
                     </section>
                     <section className="latest-products-second-wrapper mt-5 mb-5">
-                    {searched && <span className="popular_categories body-sub-titles regularfont">
+                        {searched && <span className="popular_categories body-sub-titles regularfont">
                             All {selectedMake} Products</span>}
                         <div className="row mt-5 mt-lg-4 mt-xxl-5 g-4">
-                        {searchedProducts.map((product: any, index: any) => {
-                            return (
-                            <div className="col-6 col-md-3" key={index}>
-                                <div className="latest-prods card">
-                                    <Link href={`/products_/${product?.id}`}>
-                                    <AppImage src={'http://10.199.100.156:1337'+ product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} className="card-img-top" />
-                                    <div className="card-body">
-                                        <div className="row g-1">
-                                            <div className="col-12">
-                                                <span className="article-number regularfont mini-text">Article #{product?.attributes?.article_number}</span>
-                                            </div>
-                                            <div className="col-12">
-                                                <span className="product-name regularfont">{product?.attributes?.title}</span>
-                                            </div>
-                                            <div className="col-12">
-                                                <span className="ratings">
-                                                    <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                    <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                    <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                    <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
-                                                </span>
-                                                <span className="rating-count regularfont mini-text-1">675</span>
-                                            </div>
-                                            <div className="col-12 d-flex justify-content-between">
-                                                <span className="product-price">€{product?.attributes?.price}</span>
-                                                <i className="fa fa-shopping-cart body-sub-titles"></i>
-                                            </div>
+                            {searchedProducts.map((product: any, index: any) => {
+                                return (
+                                    <div className="col-6 col-md-3" key={index}>
+                                        <div className="latest-prods card">
+                                            {/* <Link href={`/products_/${product?.id}`}> */}
+                                                <AppImage src={'http://10.199.100.156:1337' + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} className="card-img-top" />
+                                                <div className="card-body">
+                                                    <div className="row g-1">
+                                                        <div className="col-12">
+                                                            <span className="article-number regularfont mini-text">Article #{product?.attributes?.article_number}</span>
+                                                        </div>
+                                                        <div className="col-12">
+                                                            <span className="product-name regularfont">{product?.attributes?.title}</span>
+                                                        </div>
+                                                        <div className="col-12">
+                                                            <span className="ratings">
+                                                                <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
+                                                                <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
+                                                                <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
+                                                                <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
+                                                            </span>
+                                                            <span className="rating-count regularfont mini-text-1">675</span>
+                                                        </div>
+                                                        <div className="col-12 d-flex justify-content-between">
+                                                            <span className="product-price">€{product?.attributes?.price}</span>
+                                                            <i className="fa fa-shopping-cart body-sub-titles"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {/* </Link> */}
                                         </div>
-                                    </div>
-                                    </Link>
-                                </div>
-                            </div>)})}
+                                    </div>)
+                            })}
                         </div>
                     </section>
                     <section className="cards-wrapper">

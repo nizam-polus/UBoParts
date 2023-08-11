@@ -120,7 +120,7 @@ function Shop() {
                         <section className="coulmn-bg-color-1 search-wrapper mt-5 mb-5">
                             <div className="row p-4 pt-2 text-center">
                                 <div className="col">
-                                    <p className="semifont inner-page-main-headings custom-color-1 mb-2">Find Parts htmlFor Your Vehicle</p>
+                                    <p className="semifont inner-page-main-headings custom-color-1 mb-2">Find Parts for Your Vehicle</p>
                                     <p className="semifont custom-color-1 boldfontsize">Over hundreds of brands and tens of hundreds of parts</p>
                                 </div>
                             </div>
@@ -130,32 +130,32 @@ function Shop() {
                                         <div className="col">
                                             <div className="row g-4 flex-column flex-lg-row">
                                                 <div className="col pb-3 pb-xl-0">
-                                                    <div className="htmlForm-group">
-                                                        <select className="htmlForm-select semifont semifont placeholderfontsize " name="make">
+                                                    <div className="form-group">
+                                                        <select className="form-select semifont semifont placeholderfontsize " name="make">
                                                             <option>Select Make</option>
                                                             <option value="1">Select Make</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div className="col pb-3 pb-xl-0">
-                                                    <div className="htmlForm-group">
-                                                        <select className="htmlForm-select semifon semifont placeholderfontsize" name="model">
+                                                    <div className="form-group">
+                                                        <select className="form-select semifon semifont placeholderfontsize" name="model">
                                                             <option>Select Model</option>
                                                             <option value="1">Select Make</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div className="col pb-3 pb-xl-0">
-                                                    <div className="htmlForm-group">
-                                                        <select className="htmlForm-select semifont semifont placeholderfontsize" name="year">
+                                                    <div className="form-group">
+                                                        <select className="form-select semifont semifont placeholderfontsize" name="year">
                                                             <option>Select Year</option>
                                                             <option value="1">Select Make</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div className="col pb-3 pb-xl-0">
-                                                    <div className="htmlForm-group">
-                                                        <select className="htmlForm-select semifont semifont placeholderfontsize" name="category">
+                                                    <div className="form-group">
+                                                        <select className="form-select semifont semifont placeholderfontsize" name="category">
                                                             <option>Select Category</option>
                                                             <option value="1">Select Make</option>
                                                         </select>
@@ -176,12 +176,12 @@ function Shop() {
                                 <div className="col-12 d-lg-flex justify-content-between">
                                     <div><span className="custom-color-2 mediumfont bg-image-text">Explore</span>
                                     </div>
-                                    <div className="mt-3 mt-lg-0">
+                                    {/* <div className="mt-3 mt-lg-0">
                                         <span className="label-color-1 mediumfont select-options m-0 m-lg-3">Sort By: </span>
                                         <select className="coulmn-bg-color-1 p-2 border-0 filter-by-rating rounded regularfont mini-text-2">
                                             <option>Top Rated</option>
                                         </select>
-                                    </div>
+                                    </div> */}
                                 </div>
                                 <div className="col-12 mt-5">
                                     <div className="row g-5">
@@ -221,7 +221,7 @@ function Shop() {
                                                       
                                                     </div>
                                                 </div>
-                                                <div className="row mb-2 flex-column">
+                                                {/* <div className="row mb-2 flex-column">
                                                     <button className="btn coulmn-bg-color-1 border-0 text-start justify-content-between d-flex align-items-center regularfont mini-text-2">
                                                         <span>Ratings</span><i className="fa fa-angle-up"></i>
                                                     </button>
@@ -263,7 +263,7 @@ function Shop() {
                                                             <span className="rating-count regularfont mini-text-1">& up</span>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> */}
                                                 <div className="row mb-2 flex-column">
                                                     <button className="btn coulmn-bg-color-1 border-0 text-start justify-content-between d-flex align-items-center regularfont mini-text-2">
                                                         <span>Brands</span><i className="fa fa-angle-up"></i>
@@ -293,7 +293,7 @@ function Shop() {
                                             <div className="row g-4">
                                                 <div className="col-12 col-sm-6 col-lg-4  mb-4">
                                                     <div className="latest-prods card card-shadows">
-                                                       <AppImage src="images/svg/cat-prod-1.svg" className="card-img-top"/>
+                                                       <AppImage src="images/cat-prod-1.svg" className="card-img-top"/>
                                                         <div className="card-body">
                                                             <div className="row g-1">
                                                                 <div className="col-12">
@@ -302,7 +302,7 @@ function Shop() {
                                                                 <div className="col-12">
                                                                     <span className="product-name regularfont">Mercedes sprinter achter as</span>
                                                                 </div>
-                                                                <div className="col-12">
+                                                                {/* <div className="col-12">
                                                                     <span className="ratings">
                                                                         <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
                                                                         <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
@@ -310,14 +310,14 @@ function Shop() {
                                                                         <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
                                                                     </span>
                                                                     <span className="rating-count regularfont mini-text-1">675</span>
-                                                                </div>
+                                                                </div> */}
                                                                 <div className="col-12 d-flex justify-content-between">
                                                                     <span className="product-price">€230</span>
                                                                     <div className="input-group quanitity-box">
                                                                         <span className="input-group-btn plus-icon semifont">
                                                                             <i className="fa fa-plus mini-text-0 mini-text-0-color" aria-hidden="true"></i>
                                                                         </span>
-                                                                        <input type="text" name="quant[1]" className="htmlForm-control input-number text-center rounded-pill border-0 semifont p-1 mini-text-2 h-auto" value="1" min="1" max="10"/>
+                                                                        <input type="text" name="quant[1]" className="form-control input-number text-center rounded-pill border-0 semifont p-1 mini-text-2 h-auto" value="1" min="1" max="10"/>
                                                                         <span className="input-group-btn minus-icon semifont">
                                                                             <i className="fa fa-minus mini-text-0 mini-text-0-color" aria-hidden="true"></i>
                                                                         </span>
@@ -329,7 +329,7 @@ function Shop() {
                                                 </div>
                                                 <div className="col-12 col-sm-6 col-lg-4 mb-4">
                                                     <div className="latest-prods card card-shadows">
-                                                       <AppImage src="images/svg/cat-prod-1.svg" className="card-img-top"/>
+                                                       <AppImage src="images/cat-prod-1.svg" className="card-img-top"/>
                                                         <div className="card-body">
                                                             <div className="row g-1">
                                                                 <div className="col-12">
@@ -338,7 +338,7 @@ function Shop() {
                                                                 <div className="col-12">
                                                                     <span className="product-name regularfont">Mercedes sprinter achter as</span>
                                                                 </div>
-                                                                <div className="col-12">
+                                                                {/* <div className="col-12">
                                                                     <span className="ratings">
                                                                         <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
                                                                         <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
@@ -346,10 +346,10 @@ function Shop() {
                                                                         <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
                                                                     </span>
                                                                     <span className="rating-count regularfont mini-text-1">675</span>
-                                                                </div>
+                                                                </div> */}
                                                                 <div className="col-12 d-flex justify-content-between">
                                                                     <span className="product-price">€230</span>
-                                                                   <AppImage src="images/svg/cart-svg.svg"/>
+                                                                   <AppImage src="images/cart-svg.svg"/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -357,7 +357,7 @@ function Shop() {
                                                 </div>
                                                 <div className="col-12 col-sm-6 col-lg-4 mb-4">
                                                     <div className="latest-prods card card-shadows">
-                                                       <AppImage src="images/svg/cat-prod-1.svg" className="card-img-top"/>
+                                                       <AppImage src="images/cat-prod-1.svg" className="card-img-top"/>
                                                         <div className="card-body">
                                                             <div className="row g-1">
                                                                 <div className="col-12">
@@ -366,7 +366,7 @@ function Shop() {
                                                                 <div className="col-12">
                                                                     <span className="product-name regularfont">Mercedes sprinter achter as</span>
                                                                 </div>
-                                                                <div className="col-12">
+                                                                {/* <div className="col-12">
                                                                     <span className="ratings">
                                                                         <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
                                                                         <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
@@ -374,10 +374,10 @@ function Shop() {
                                                                         <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
                                                                     </span>
                                                                     <span className="rating-count regularfont mini-text-1">675</span>
-                                                                </div>
+                                                                </div> */}
                                                                 <div className="col-12 d-flex justify-content-between">
                                                                     <span className="product-price">€230</span>
-                                                                   <AppImage src="images/svg/cart-svg.svg"/>
+                                                                   <AppImage src="images/cart-svg.svg"/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -385,7 +385,7 @@ function Shop() {
                                                 </div>
                                                 <div className="col-12 col-sm-6 col-lg-4 mb-4">
                                                     <div className="latest-prods card card-shadows">
-                                                       <AppImage src="images/svg/cat-prod-1.svg" className="card-img-top"/>
+                                                       <AppImage src="images/cat-prod-1.svg" className="card-img-top"/>
                                                         <div className="card-body">
                                                             <div className="row g-1">
                                                                 <div className="col-12">
@@ -394,7 +394,7 @@ function Shop() {
                                                                 <div className="col-12">
                                                                     <span className="product-name regularfont">Mercedes sprinter achter as</span>
                                                                 </div>
-                                                                <div className="col-12">
+                                                                {/* <div className="col-12">
                                                                     <span className="ratings">
                                                                         <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
                                                                         <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
@@ -402,10 +402,10 @@ function Shop() {
                                                                         <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
                                                                     </span>
                                                                     <span className="rating-count regularfont mini-text-1">675</span>
-                                                                </div>
+                                                                </div> */}
                                                                 <div className="col-12 d-flex justify-content-between">
                                                                     <span className="product-price">€230</span>
-                                                                   <AppImage src="images/svg/cart-svg.svg"/>
+                                                                   <AppImage src="images/cart-svg.svg"/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -413,7 +413,7 @@ function Shop() {
                                                 </div>
                                                 <div className="col-12 col-sm-6 col-lg-4 mb-4">
                                                     <div className="latest-prods card card-shadows">
-                                                       <AppImage src="images/svg/cat-prod-1.svg" className="card-img-top"/>
+                                                       <AppImage src="images/cat-prod-1.svg" className="card-img-top"/>
                                                         <div className="card-body">
                                                             <div className="row g-1">
                                                                 <div className="col-12">
@@ -422,7 +422,7 @@ function Shop() {
                                                                 <div className="col-12">
                                                                     <span className="product-name regularfont">Mercedes sprinter achter as</span>
                                                                 </div>
-                                                                <div className="col-12">
+                                                                {/* <div className="col-12">
                                                                     <span className="ratings">
                                                                         <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
                                                                         <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
@@ -430,10 +430,10 @@ function Shop() {
                                                                         <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
                                                                     </span>
                                                                     <span className="rating-count regularfont mini-text-1">675</span>
-                                                                </div>
+                                                                </div> */}
                                                                 <div className="col-12 d-flex justify-content-between">
                                                                     <span className="product-price">€230</span>
-                                                                   <AppImage src="images/svg/cart-svg.svg"/>
+                                                                   <AppImage src="images/cart-svg.svg"/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -441,7 +441,7 @@ function Shop() {
                                                 </div>
                                                 <div className="col-12 col-sm-6 col-lg-4 mb-4">
                                                     <div className="latest-prods card card-shadows">
-                                                       <AppImage src="images/svg/cat-prod-1.svg" className="card-img-top"/>
+                                                       <AppImage src="images/cat-prod-1.svg" className="card-img-top"/>
                                                         <div className="card-body">
                                                             <div className="row g-1">
                                                                 <div className="col-12">
@@ -450,7 +450,7 @@ function Shop() {
                                                                 <div className="col-12">
                                                                     <span className="product-name regularfont">Mercedes sprinter achter as</span>
                                                                 </div>
-                                                                <div className="col-12">
+                                                                {/* <div className="col-12">
                                                                     <span className="ratings">
                                                                         <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
                                                                         <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
@@ -458,10 +458,10 @@ function Shop() {
                                                                         <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
                                                                     </span>
                                                                     <span className="rating-count regularfont mini-text-1">675</span>
-                                                                </div>
+                                                                </div> */}
                                                                 <div className="col-12 d-flex justify-content-between">
                                                                     <span className="product-price">€230</span>
-                                                                   <AppImage src="images/svg/cart-svg.svg"/>
+                                                                   <AppImage src="images/cart-svg.svg"/>
                                                                 </div>
                                                             </div>
                                                         </div>
