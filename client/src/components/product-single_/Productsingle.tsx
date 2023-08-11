@@ -16,13 +16,13 @@ function Productsingle() {
                         <div className="row">
                             <div className="col-12 col-md-6 col-lg-4">
                                 <div className="row">
-                                <AppImage className="rounded w-100" src="/images/svg/cat-prod-1.svg"/>
+                                <AppImage className="rounded w-100" src="/images/cat-prod-1.svg"/>
                                 </div>
                                 <div className="row product-thumbnails g-3 mt-3 justify-content-center">
-                                    <div className="col-auto px-2"><img className="rounded" src="/images/svg/cat-prod-1.svg"/></div>
-                                    <div className="col-auto px-2"><img className="rounded" src="/images/svg/cat-prod-1.svg"/></div>
-                                    <div className="col-auto px-2"><img className="rounded" src="/images/svg/cat-prod-1.svg"/></div>
-                                    <div className="col-auto px-2"><img className="rounded" src="/images/svg/cat-prod-1.svg"/></div>
+                                    <div className="col-auto px-2"><img className="rounded" src="/images/cat-prod-1.svg"/></div>
+                                    <div className="col-auto px-2"><img className="rounded" src="/images/cat-prod-1.svg"/></div>
+                                    <div className="col-auto px-2"><img className="rounded" src="/images/cat-prod-1.svg"/></div>
+                                    <div className="col-auto px-2"><img className="rounded" src="/images/cat-prod-1.svg"/></div>
                                 </div>
                             </div>
                             <div className="col-12 col-md-6 col-lg-5 px-5 pb-lg-0 pt-lg-0 mt-5 mt-md-0 mt-lg-0">
@@ -144,7 +144,7 @@ function Productsingle() {
                         <div className="row mt-5 mt-lg-3 mt-xxl-5 g-4">
                             <div className="col-6 col-md-3">
                                 <div className="latest-prods card">
-                                <AppImage src="/images/svg/cat-prod-1.svg" className="card-img-top"/>
+                                <AppImage src="/images/cat-prod-1.svg" className="card-img-top"/>
                                     <div className="card-body">
                                         <div className="row g-1">
                                             <div className="col-12">
@@ -172,7 +172,7 @@ function Productsingle() {
                             </div>
                             <div className="col-6 col-md-3">
                                 <div className="latest-prods card">
-                                <AppImage src="/images/svg/cat-prod-1.svg" className="card-img-top"/>
+                                <AppImage src="/images/cat-prod-1.svg" className="card-img-top"/>
                                     <div className="card-body">
                                         <div className="row g-1">
                                             <div className="col-12">
@@ -200,7 +200,7 @@ function Productsingle() {
                             </div>
                             <div className="col-6 col-md-3">
                                 <div className="latest-prods card">
-                                     <AppImage src="/images/svg/cat-prod-1.svg" className="card-img-top"/>
+                                     <AppImage src="/images/cat-prod-1.svg" className="card-img-top"/>
                                     <div className="card-body">
                                         <div className="row g-1">
                                             <div className="col-12">
@@ -228,7 +228,7 @@ function Productsingle() {
                             </div>
                             <div className="col-6 col-md-3">
                                 <div className="latest-prods card">
-                                <AppImage src="/images/svg/cat-prod-1.svg" className="card-img-top"/>
+                                <AppImage src="/images/cat-prod-1.svg" className="card-img-top"/>
                                     <div className="card-body">
                                         <div className="row g-1">
                                             <div className="col-12">

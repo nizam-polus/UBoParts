@@ -58,7 +58,7 @@ function Footer() {
                                     <div className="row">
                                         <p className="regularfont short-labels-1 label-color-1 mb-2 w-100 px-3 ">Follow us on social networks</p>
                                         <div className="col">
-                                            <a href=""><AppImage src="images/svg/instagram.svg"/></a>
+                                            <a href=""><AppImage src="images/instagram.svg"/></a>
                                         </div>
                                     </div>
                                 </form>

@@ -9,7 +9,9 @@ import axios from 'axios';
 import Forgotpass from './forgot/Forgotpass';
 import Login from './account/Login';
 import Header_home from './header_/Header_home'
+import { useRouter } from 'next/router';
 function Home() {
+    const router = useRouter();
     const token = 'd74cadbbd1e783d16cad26f5b3e0591c54075b3adf4655ad54de3d423bb8d95b5aacf257eba5d980b62dbc7b1c5c6d5dd69647d17c115327bf6d28b568b81423ce6b86908fa997a26be83e48cb53a7db17339345b7939228d18abf92d1dab1920f553233cde10ed0b5cbc21afedc603ab3aa99860cf35da892a06f98b81e1a9d'
     const headers = {
         Authorization: `Bearer ${token}`,
@@ -107,16 +109,41 @@ function Home() {
     }, []);
 
     const searchProducts = () => {
-        axios.get(`http://10.199.100.156:1337/api/products?populate=*&filters[$and][][cardetail][make][$contains]=${selectedMake}&filters[$and][][cardetail][model][$contains]=${selectedModel}&filters[$and][][cardetail][year][$eq]=${selectedYear}&filters[$and][][category][category_name][$contains]=${selectedCategory}`, { headers })
-            .then((response: any) => {
-                console.log('response :>> ', response.data.data);
-                setSearchedProducts(response.data.data);
-                setSearched(true);
-            })
-            .catch((error) => {
-                setError(error);
-                setLoading(false);
-            });
+        // const filterSearch = 'filters[$and][][cardetail][make][$contains]=';
+        // const [selectedMake, selectedModel, ]
+        // let c = [selectedMake, selectedModel];
+        // let fil = '&filters[$and][][cardetail][make][$contains]=';
+        // const a = [
+        //     "&filters[$and][][cardetail][make][$contains]=MERCEDES-BENZ",
+        //     "&filters[$and][][cardetail][make][$contains]=B 180"
+        //   ];
+        // const modifiedArray = a.map(item => {
+        //     const withoutQuotes = item.replace(/"/g, '');
+        //     const withoutCommas = withoutQuotes.replace(/,/g, '');
+        //     const withoutBrackets = withoutCommas.replace(/\[|\]/g, '');
+        //     return withoutBrackets;
+        // });
+        //   const outputString = modifiedArray.join('');
+        //   console.log(outputString);
+        // c.forEach((item, key) => { 
+        //     c[key] = fil+item
+        // });
+        // console.log(JSON.stringify(c));
+        localStorage.setItem('make',selectedMake);
+        localStorage.setItem('model',selectedModel);
+        localStorage.setItem('year',selectedYear);
+        localStorage.setItem('category',selectedCategory);
+        // axios.get(`http://10.199.100.156:1337/api/products?populate=*&filters[$and][][cardetail][make][$contains]=${selectedMake}&filters[$and][][cardetail][model][$contains]=${selectedModel}&filters[$and][][cardetail][year][$eq]=${selectedYear}&filters[$and][][category][category_name][$contains]=${selectedCategory}`, { headers })
+        //     .then((response: any) => {
+        //         console.log('response :>> ', response.data.data);
+        //         setSearchedProducts(response.data.data);
+        //         setSearched(true);
+        //     })
+        //     .catch((error) => {
+        //         setError(error);
+        //         setLoading(false);
+        //     });
+            router.push('/shop')
     }
 
     const getModel = (make: string) => {
@@ -272,7 +299,9 @@ function Home() {
                                     </div>}
                                 </div>
                                 <div className="col-12 col-lg-3 d-flex align-items-end mb-3">
+                                {/* <Link href={`/shop`}> */}
                                     <button type="button" onClick={searchProducts} className="search boldfont boldfontsize">Search</button>
+                                {/* </Link> */}
                                 </div>
                             </div>
                             <div className="row mt-2" >
@@ -287,8 +316,8 @@ function Home() {
                             {searchedProducts.map((product: any, index: any) => {
                                 return (
                                     <div className="col-6 col-md-3" key={index}>
+                                            <Link href={`/products_/${product?.id}`}>
                                         <div className="latest-prods card">
-                                            {/* <Link href={`/products_/${product?.id}`}> */}
                                                 <AppImage src={'http://10.199.100.156:1337' + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} className="card-img-top" />
                                                 <div className="card-body">
                                                     <div className="row g-1">
@@ -313,8 +342,8 @@ function Home() {
                                                         </div>
                                                     </div>
                                                 </div>
-                                            {/* </Link> */}
                                         </div>
+                                            </Link>
                                     </div>)
                             })}
                         </div>
@@ -356,25 +385,25 @@ function Home() {
                         <div className="row mt-5 mt-lg-4 mt-xxl-5 g-4">
                             <div className="col-6 col-md-3">
                                 <div className="prod-cats card">
-                                    <AppImage src="/images/svg/prod1.svg" className="card-img-top" />
+                                    <AppImage src="/images/prod1.svg" className="card-img-top" />
                                     <div className="card-body"><a href="" className="boldfont body-sub-titles">Engine</a></div>
                                 </div>
                             </div>
                             <div className="col-6 col-md-3">
                                 <div className="prod-cats card">
-                                    <AppImage src="/images/svg/prod2.svg" className="card-img-top" />
+                                    <AppImage src="/images/prod2.svg" className="card-img-top" />
                                     <div className="card-body"><a href="" className="boldfont body-sub-titles">Engine</a></div>
                                 </div>
                             </div>
                             <div className="col-6 col-md-3">
                                 <div className="prod-cats card">
-                                    <AppImage src="/images/svg/prod2.svg" className="card-img-top" />
+                                    <AppImage src="/images/prod2.svg" className="card-img-top" />
                                     <div className="card-body"><a href="" className="boldfont body-sub-titles">Engine</a></div>
                                 </div>
                             </div>
                             <div className="col-6 col-md-3">
                                 <div className="prod-cats card">
-                                    <AppImage src="/images/svg/prod3.svg" className="card-img-top" />
+                                    <AppImage src="/images/prod3.svg" className="card-img-top" />
                                     <div className="card-body"><a href="" className="boldfont body-sub-titles">Engine</a></div>
                                 </div>
                             </div>
@@ -405,7 +434,7 @@ function Home() {
                         <div className="row mt-5 mt-lg-4 mt-xxl-5 g-4">
                             <div className="col-6 col-md-3">
                                 <div className="latest-prods card">
-                                    <AppImage src="/images/svg/cat-prod-1.svg" className="card-img-top" />
+                                    <AppImage src="/images/cat-prod-1.svg" className="card-img-top" />
                                     <div className="card-body">
                                         <div className="row g-1">
                                             <div className="col-12">
@@ -433,7 +462,7 @@ function Home() {
                             </div>
                             <div className="col-6 col-md-3">
                                 <div className="latest-prods card">
-                                    <AppImage src="/images/svg/cat-prod-1.svg" className="card-img-top" />
+                                    <AppImage src="/images/cat-prod-1.svg" className="card-img-top" />
                                     <div className="card-body">
                                         <div className="row g-1">
                                             <div className="col-12">
@@ -461,7 +490,7 @@ function Home() {
                             </div>
                             <div className="col-6 col-md-3">
                                 <div className="latest-prods card">
-                                    <AppImage src="/images/svg/cat-prod-1.svg" className="card-img-top" />
+                                    <AppImage src="/images/cat-prod-1.svg" className="card-img-top" />
                                     <div className="card-body">
                                         <div className="row g-1">
                                             <div className="col-12">
@@ -489,7 +518,7 @@ function Home() {
                             </div>
                             <div className="col-6 col-md-3">
                                 <div className="latest-prods card">
-                                    <AppImage src="/images/svg/cat-prod-1.svg" className="card-img-top" />
+                                    <AppImage src="/images/cat-prod-1.svg" className="card-img-top" />
                                     <div className="card-body">
                                         <div className="row g-1">
                                             <div className="col-12">

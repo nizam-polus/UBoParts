@@ -13,7 +13,7 @@ function Header_home_logged_in() {
                 <div className="container">
                     <div className="row">
                         <div className="col-12 col-lg-2">
-                            <div className="logo w-100"><AppImage src="/images/svg/LOGO.svg"/></div>
+                            <div className="logo w-100"><AppImage src="images/LOGO.svg"/></div>
                         </div>
                         <div className="col text-lg-end">
                             <div className="bar">
@@ -23,8 +23,8 @@ function Header_home_logged_in() {
                                     <li className="menu_font_size regularfont"><a href="/about_us_">About us</a></li>
                                     <li className="menu_font_size regularfont"><a href="/request">Request</a></li>
                                     <li className="menu_font_size regularfont"><a href="">Dismantle Car</a></li>
-                                    <li className="menu_font_size regularfont"><a href="">My Account <AppImage src="/images/svg/my-account.svg" className="my-account"/></a></li>
-                                    <li><AppImage src="/images/svg/cart-white.svg"/><span className="count">0</span></li>
+                                    <li className="menu_font_size regularfont"><a href="">My Account <AppImage src="images/my-account.svg" className="my-account"/></a></li>
+                                    <li><AppImage src="images/cart-white.svg"/><span className="count">0</span></li>
                                 </ul>
                             </div>
                         </div>

@@ -44,7 +44,7 @@ function Header() {
                 <div className="container">
                     <div className="row">
                         <div className="col-12 col-lg-auto">
-                            <div className="logo1"><AppImage src="images/svg/LOGO.svg"/></div>
+                            <div className="logo1"><AppImage src="images/LOGO.svg"/></div>
                         </div>
                         <div className="col p-0 text-lg-end">
                             <div className="bar text-lg-end">

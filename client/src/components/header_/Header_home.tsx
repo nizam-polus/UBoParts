@@ -44,7 +44,7 @@ function Header_home() {
                 <div className="container">
                     <div className="container-wrapper">
                         <div className="logo">
-                            <AppImage src="/images/svg/LOGO.svg" />
+                            <AppImage src="/images/LOGO.svg" />
                         </div>
                         <div className="bar w-100">
                             <ul>
