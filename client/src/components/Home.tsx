@@ -12,7 +12,7 @@ import Header_home from './header_/Header_home'
 import { useRouter } from 'next/router';
 function Home() {
     const router = useRouter();
-    const token = 'd74cadbbd1e783d16cad26f5b3e0591c54075b3adf4655ad54de3d423bb8d95b5aacf257eba5d980b62dbc7b1c5c6d5dd69647d17c115327bf6d28b568b81423ce6b86908fa997a26be83e48cb53a7db17339345b7939228d18abf92d1dab1920f553233cde10ed0b5cbc21afedc603ab3aa99860cf35da892a06f98b81e1a9d'
+    const token = '2c82df0e9f171ad5cea40c8451ce811b84d898b32e03b43ecec923457735b5ce6446ffcd68659ff11fd6bd1e1f4ba89498a58e30229a15fe683147d245498446d8ebb0c1e56437835fbd320246fd4519f7c23cf04c9eb29aff57c21052913af1b8f60432385cd21b6325ced78ecedd666a58bd0e80f44cf60d56e82d5cc022cb'
     const headers = {
         Authorization: `Bearer ${token}`,
     };
