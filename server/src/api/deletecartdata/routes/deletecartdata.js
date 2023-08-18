@@ -2,12 +2,12 @@ module.exports = {
   routes: [
      {
       method: 'POST',
-      path: '/cardetailmodel',
-      handler: 'cardetailmodel.findAll',
+      path: '/deletecartdata',
+      handler: 'deletecartdata.deleledata',
       config: {
         policies: [],
         middlewares: [],
       },
-     },
+   },
   ],
-}; 
+};
