@@ -4,10 +4,6 @@ import { Modal } from 'reactstrap';
 import AppImage from '../shared/AppImage';
 import Header_logged_in from '../header_/Header-logged-in';
 import Footer from '../footer_/Footer';
-import { useRouter } from 'next/router';
-import axios from 'axios';
-import Notification from '../notification/notification';
-import Link from 'next/dist/client/link';
 
 function Productsingle() {
 
@@ -71,36 +67,25 @@ function Productsingle() {
     return (
         <>
             <Header_logged_in />
-            {showMessage ? <Notification type={type} message={message} /> : undefined}
             <div className="main-body pb-5 mb-5">
                 <div className="container">
                     <section className="products-description-wrapper mt-5 mb-5">
                         <div className="row">
                             <div className="col-12 col-md-6 col-lg-4">
                                 <div className="row">
-                                <AppImage className="rounded w-100" src={"http://10.199.100.156:1337" + productImage}/>
+                                <AppImage className="rounded w-100" src="/images/cat-prod-1.svg"/>
                                 </div>
                                 <div className="row product-thumbnails g-3 mt-3 justify-content-center">
-                                    {productGallery.map((galleryImg: any) => {
-                                        return (
-                                            <div className="col-auto px-2" 
-                                                style={{"cursor": "pointer"}}
-                                                onClick={() => handleImageChange(galleryImg?.attributes?.url)}
-                                            >
-                                                <img className="rounded" src={"http://10.199.100.156:1337" + galleryImg?.attributes?.url}/>
-                                            </div>
-                                        )
-                                    })}
-                                    {/* <div className="col-auto px-2"><img className="rounded" src="/images/cat-prod-1.svg"/></div>
                                     <div className="col-auto px-2"><img className="rounded" src="/images/cat-prod-1.svg"/></div>
                                     <div className="col-auto px-2"><img className="rounded" src="/images/cat-prod-1.svg"/></div>
-                                    <div className="col-auto px-2"><img className="rounded" src="/images/cat-prod-1.svg"/></div> */}
+                                    <div className="col-auto px-2"><img className="rounded" src="/images/cat-prod-1.svg"/></div>
+                                    <div className="col-auto px-2"><img className="rounded" src="/images/cat-prod-1.svg"/></div>
                                 </div>
                             </div>
                             <div className="col-12 col-md-6 col-lg-5 px-5 pb-lg-0 pt-lg-0 mt-5 mt-md-0 mt-lg-0">
-                                <p className="semifont inner-page-main-headings custom-color-5">{productData?.attributes?.title}</p>
-                                <p className="custom-color-3 regularfont placeholderfontsize mb-1">{productData?.attributes?.description}</p>
-                                {/* <p className="mb-1">
+                                <p className="semifont inner-page-main-headings custom-color-5">Mercedes sprinter achter as</p>
+                                <p className="custom-color-3 regularfont placeholderfontsize mb-1">Visually, the Mercedes-Benz V-className has the typical Van-like appearance with boxy proportions. However, the MPV comes with a bunch of bold character lines along the bonnet, front bumper and profile of the vehicle</p>
+                                <p className="mb-1">
                                     <span className="ratings">
                                         <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
                                         <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
@@ -108,14 +93,14 @@ function Productsingle() {
                                         <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
                                     </span>
                                     <span className="rating-count regularfont mini-text-1">675</span>
-                                </p> */}
-                                <p><span className="product-price custom-color-3 regularfont boldfontsize">€{productData?.attributes?.price}</span></p>
+                                </p>
+                                <p><span className="product-price custom-color-3 regularfont boldfontsize">€230</span></p>
                                 <hr/>
                                 <p className="semifont placeholderfontsize custom-color-5 mb-1">Key Features:</p>
                                 <ul className="list-group custom-color-2 regularfont placeholderfontsize p-3 pt-0 pb-4">
-                                    <li className="mb-1">Make: {productData?.attributes?.cardetail?.data?.attributes?.make}</li>
-                                    <li className="mb-1">Model: {productData?.attributes?.cardetail?.data?.attributes?.model}</li>
-                                    <li>Year: {productData?.attributes?.cardetail?.data?.attributes?.year}</li>
+                                    <li className="mb-1">Make: MERCEDES-BENZ</li>
+                                    <li className="mb-1">Model: ACTROS</li>
+                                    <li>Year: 2022</li>
                                 </ul>
                                 <hr/>
                                 <p className="custom-color-6 regularfont mini-text-2">See Full Specifications</p>
@@ -123,57 +108,41 @@ function Productsingle() {
                             <div className="col-12 col-md-12 col-lg-3 mt-5 mt-lg-0">
                                 <div className="more-info p-3 rounded">
                                     <div className="row d-flex justify-content-between">
-                                        <div className="col-auto"><span className="product-price custom-color-3 regularfont">€{quantity * productData?.attributes?.price}</span></div>
+                                        <div className="col-auto"><span className="product-price custom-color-3 regularfont">€230</span></div>
                                         <div className="col-auto"><span className="in-stock custom-color-6 rounded-pill px-3 pb-1 pt-1 d-flex mini-text-2 semifont">In Stock</span></div>
                                     </div>
                                     <div className="row mt-3">
                                         <div className="col-12">
                                             <div className="row pt-1 pb-1 border-bottom-row">
-                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Seller:</span></div>
+                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Saller:</span></div>
                                                 <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">Kila International AUODEMONTAGEBED</span></div>
                                             </div>
                                             <div className="row pt-1 pb-1 border-bottom-row">
                                                 <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Category:</span></div>
-                                                <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">{productData?.attributes?.category?.data?.attributes?.category_name}</span></div>
+                                                <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">Bpdy Parts</span></div>
                                             </div>
                                             <div className="row pt-1 pb-1 border-bottom-row">
                                                 <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Article #</span></div>
-                                                <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">{productData?.attributes?.article_number}</span></div>
+                                                <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">22000045</span></div>
                                             </div>
                                             <div className="row pt-1 pb-1 border-bottom-row">
                                                 <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Country:</span></div>
-                                                <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">
-                                                    {productData?.attributes?.countries?.data.map((country: any, i: any) => 
-                                                        { return (
-                                                            <span>{country?.attributes.country}{productData?.attributes?.countries?.data.length !== i+1 ? ", " : ""}</span>
-                                                        )})
-                                                    }
-                                                </span></div>
+                                                <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">Netherland</span></div>
                                             </div>
                                             <div className="row pt-1 pb-1">
                                                 <div className="col-4 col-md-4 col-lg-12 col-xl-5">
                                                     <div className="input-group quanitity-box mt-3 quanitity-incrementor">
-                                                        <span className="input-group-btn plus-icon semifont" 
-                                                            onClick={() => quantity !== 1 && setQuantity(quantity - 1)}
-                                                        >
-                                                            <i className="fa fa-minus mini-text-3" aria-hidden="true"></i>
-                                                        </span>
-                                                        <input 
-                                                            type="text" name="quant[1]" 
-                                                            className="form-control input-number text-center rounded border-0 semifont pb-2 pt-2 mini-text-3 h-auto"
-                                                            value={quantity} min="1" max="10"/>
-                                                        <span className="input-group-btn minus-icon semifont" 
-                                                            onClick={() => setQuantity(quantity + 1)}
-                                                        >
+                                                        <span className="input-group-btn plus-icon semifont">
                                                             <i className="fa fa-plus mini-text-3" aria-hidden="true"></i>
+                                                        </span>
+                                                        <input type="text" name="quant[1]" className="form-control input-number text-center rounded border-0 semifont pb-2 pt-2 mini-text-3 h-auto" value="1" min="1" max="10"/>
+                                                        <span className="input-group-btn minus-icon semifont">
+                                                            <i className="fa fa-minus mini-text-3" aria-hidden="true"></i>
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div className="col-8 col-md-8 col-lg-12 col-xl-7">
-                                                    <a className="add-to-cart-1 button-bg-color-1 custom-color-7 rounded  pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
-                                                       style={{cursor: 'pointer'}}
-                                                       onClick={handleAddToCart}
-                                                    >Add to Cart</a>
+                                                    <a href="" className="add-to-cart-1 button-bg-color-1 custom-color-7 rounded  pb-2 pt-2 mt-3 text-center mini-text-3 text-white">Add to Cart</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -204,9 +173,7 @@ function Productsingle() {
                                         </li>
                                     </ul>
                                     <div className="tab-content mt-4" id="myTabContent">
-                                        <div className="tab-pane fade show active custom-color-3 regularfont select-options" id="description" role="tabpanel" aria-labelledby="description-tab">
-                                            {productData?.attributes?.description}
-                                        </div>
+                                        <div className="tab-pane fade show active custom-color-3 regularfont select-options" id="description" role="tabpanel" aria-labelledby="description-tab">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years</div>
                                         <div className="tab-pane fade custom-color-3 regularfont select-options" id="specifications" role="tabpanel" aria-labelledby="specifications-tab">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.</div>
                                         <div className="tab-pane fade custom-color-3 regularfont select-options" id="features" role="tabpanel" aria-labelledby="features-tab">It is a long established fact that a reader will be distracted by the readable content of a page when looking</div>
                                         <div className="tab-pane fade custom-color-3 regularfont select-options" id="faq" role="tabpanel" aria-labelledby="faq-tab">It is a long established fact that a reader will be distracted by the readable content of a page when looking</div>
