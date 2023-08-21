@@ -7,6 +7,63 @@ import Footer from '../footer_/Footer';
 
 function Productsingle() {
 
+    const token = '2c82df0e9f171ad5cea40c8451ce811b84d898b32e03b43ecec923457735b5ce6446ffcd68659ff11fd6bd1e1f4ba89498a58e30229a15fe683147d245498446d8ebb0c1e56437835fbd320246fd4519f7c23cf04c9eb29aff57c21052913af1b8f60432385cd21b6325ced78ecedd666a58bd0e80f44cf60d56e82d5cc022cb'
+    const headers = {
+        Authorization: `Bearer ${token}`,
+    };
+    const router = useRouter();
+    const id = router.query.id;
+    const [productData, setProductData]:any = useState()
+    const [productImage, setProductImage]: any = useState()
+    const [productGallery, setProductGallery] = useState([])
+    const [quantity, setQuantity] = useState(1)
+    const [showMessage, setShowMessage] = useState(false)
+    const [type, setType] = useState('success')
+    const [message, setMessage] = useState('')
+
+    useEffect(() => {
+        axios.get('http://10.199.100.156:1337/api/products/' + id + '?populate=*', {headers}).then(response => {
+            console.log(response);
+            let product = response.data.data;
+            let productGallery = response.data.data.attributes?.product_gallary_image?.data;
+            let productImage = response.data.data.attributes?.product_gallary_image?.data[0]?.attributes?.url;
+            setProductData(product);
+            setProductGallery(productGallery);
+            setProductImage(productImage);
+        }).catch(err => console.log(err))
+    }, []);
+
+    const handleImageChange = (url: string) => {
+        setProductImage(url);
+    }
+
+    const handleAddToCart = () => {
+        axios.post('http://10.199.100.156:1337/api/cartdata',
+            {
+                customerid: '2',
+                productid: productData?.id,
+                quantity: quantity,
+                productprice: productData?.attributes?.price
+            }, {headers},
+        ).then(response => {
+            console.log(response);
+            setShowMessage(true);
+            setType('success')
+            setMessage('Items successfully added to cart')
+            setTimeout(() => {
+                setShowMessage(false)
+            }, 4000)
+        }).catch(err => {
+            setShowMessage(true)
+            setType('danger')
+            setMessage('Something went wrong')
+            setTimeout(() => {
+                setShowMessage(false)
+            }, 4000)
+        })
+    }
+    
+
     return (
         <>
             <Header_logged_in />
