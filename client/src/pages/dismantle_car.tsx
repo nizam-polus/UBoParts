@@ -1,10 +1,10 @@
 // react
 import React from 'react';
 // application
-import About_us from '~/components/about_us_/About_us';
+import Dismantle_car from '~/components/Dismantle_Car_/Dismantle_car';
 function Page() {
     return (
-        <About_us/> 
+        <Dismantle_car/>
            
     );
 }

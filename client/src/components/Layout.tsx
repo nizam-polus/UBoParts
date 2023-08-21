@@ -11,7 +11,7 @@ import MobileMenu from '~/components/mobile/MobileMenu';
 import Quickview from '~/components/shared/Quickview';
 import { useOptions } from '~/store/options/optionsHooks';
 import Forgotpass from './forgot/Forgotpass';
-import Login from './account/Login';
+import Login from './account_/Login';
 interface Props extends PropsWithChildren<{}>{ }
 
 function Layout(props: Props) {

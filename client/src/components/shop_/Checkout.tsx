@@ -1,39 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import AppImage from '../shared/AppImage';
-import Header_logged_in from '../header_/Header-logged-in';
-import axios from 'axios';
-
+import Header_home from '../header_/Header_home';
 function Checkout() {
-
-    const token = '2c82df0e9f171ad5cea40c8451ce811b84d898b32e03b43ecec923457735b5ce6446ffcd68659ff11fd6bd1e1f4ba89498a58e30229a15fe683147d245498446d8ebb0c1e56437835fbd320246fd4519f7c23cf04c9eb29aff57c21052913af1b8f60432385cd21b6325ced78ecedd666a58bd0e80f44cf60d56e82d5cc022cb'
-    const headers = {
-        Authorization: `Bearer ${token}`,
-    };
-
-    const [checkoutProducts, setCheckoutProducts] = useState([])
-    const [total, setTotal] = useState(0)
-
-    useEffect(() => {
-        axios.post('http://10.199.100.156:1337/api/getcartdetails', {customerid: '2'}, {headers}).then(response => {
-            console.log(response);
-            let checkoutProducts = response.data.rows;
-            setCheckoutProducts(checkoutProducts);
-            if (response.data.rows.length) {
-                let total = 0;
-                for (const obj of response.data.rows) {
-                    total += obj.total_price;
-                }
-                console.log('total :>> ', total);
-                setTotal(total);
-            }
-        }).catch(err => {
-            console.log(err);
-        })
-    }, [])
-
     return (
         <>
-            <Header_logged_in />
+            <div className='page_header'>
+                <Header_home />
+            </div>
+            
             <div className="main-body pb-5 mb-5">
                 <div className="container">
                     <section className="checkout-card-wrapper">
@@ -167,27 +141,34 @@ function Checkout() {
                                                 <td className="pb-0 pt-0 pr-0 pl-3 semifont boldfontsize border-top-0"> <hr className="p-0 m-0 " /></td>
                                                 <td className="pb-0 pt-0 pl-0 pr-4 regularfont boldfontsize border-top-0"> <hr className="p-0 m-0"/></td>
                                             </tr>
-                                            {checkoutProducts.map(product => {
-                                                return (
-                                                    <tr>
-                                                        <td className="pb-0 pt-3 pl-3 lightfont mini-text-1 border-0">{product?.title}</td>
-                                                        <td className="pb-0 pt-3 pr-4 regularfont mini-text-1 border-0 text-right">{product?.price}</td>
-                                                        
-                                                    </tr>
-                                                )
-                                            })}
                                             <tr>
-                                                <td className="pb-0 pt-2 pr-0 pl-3 semifont boldfontsize border-top-0"> <hr className="p-0 m-0 " /></td>
-                                                <td className="pb-0 pt-2 pl-0 pr-4 regularfont boldfontsize border-top-0"> <hr className="p-0 m-0"/></td>
+                                                <td className="pb-0 pt-3 pl-3 lightfont mini-text-1 border-0"><span>Mercedes sprinter achter as</span></td>
+                                                <td className="pb-0 pt-3 pr-4 regularfont mini-text-1 border-0 text-right">€700</td>
                                             </tr>
                                             <tr>
-                                                <td className="pb-1 pt-2 px-3 semifont body-sub-titles-1 fw-bold border-0">Total</td>
-                                                <td className="pb-1 pt-2 pr-4 semifont body-sub-titles-1 fw-bold border-0 text-right">€{total}</td>
+                                                <td className="pb-3 pt-3 pl-3 lightfont mini-text-1 border-0">Mercedes sprinter achter as</td>
+                                                <td className="pb-3 pt-3 pr-4 regularfont mini-text-1 border-0 text-right">€700</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="pb-0 pt-0 pr-0 pl-3 semifont boldfontsize border-top-0"> <hr className="p-0 m-0 " /></td>
+                                                <td className="pb-0 pt-0 pl-0 pr-4 regularfont boldfontsize border-top-0"> <hr className="p-0 m-0"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td className="pb-1 pt-1 px-3 regularfont placeholderfontsize border-0 ">Subtotal</td>
+                                                <td className="pb-1 pt-1 pr-4 regularfont placeholderfontsize border-0 text-right">€1,500</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="pb-0 pt-0 pr-0 pl-3 semifont boldfontsize border-top-0"> <hr className="p-0 m-0 " /></td>
+                                                <td className="pb-0 pt-0 pl-0 pr-4 regularfont boldfontsize border-top-0"> <hr className="p-0 m-0"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td className="pb-4 pt-1 px-3 semifont body-sub-titles-1 fw-bold border-0">Total</td>
+                                                <td className="pb-4 pt-1 pr-4 semifont body-sub-titles-1 fw-bold border-0 text-right">€1,500</td>
                                             </tr>
                                             <tr  className="single">
                                                 
                                             </tr>
-                                            <tr><td colSpan={2} className="p-3"><button type="button" className="proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1">Proceed to payment</button></td></tr>
+                                            <tr><td colSpan={2} className="p-3"><button type="button" className="proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1">Proceed to checkout</button></td></tr>
                                         </tbody>
                                     </table>
                                 </div>
