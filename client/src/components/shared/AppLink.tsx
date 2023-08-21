@@ -81,7 +81,7 @@ function AppLink(props: Props) {
     }
 
     return (
-        <Link {...data} legacyBehavior>
+        <Link {...data} >
             <a {...anchorProps}>{children}</a>
         </Link>
     );

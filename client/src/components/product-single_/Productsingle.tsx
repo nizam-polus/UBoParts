@@ -17,8 +17,8 @@ function Productsingle() {
     };
     const router = useRouter();
     const id = router.query.id;
-    const [productData, setProductData] = useState({})
-    const [productImage, setProductImage] = useState({})
+    const [productData, setProductData]:any = useState()
+    const [productImage, setProductImage]: any = useState()
     const [productGallery, setProductGallery] = useState([])
     const [quantity, setQuantity] = useState(1)
     const [showMessage, setShowMessage] = useState(false)
