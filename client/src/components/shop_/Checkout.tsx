@@ -10,8 +10,8 @@ function Checkout() {
         Authorization: `Bearer ${token}`,
     };
 
-    const [checkoutProducts, setCheckoutProducts] = useState([])
-    const [total, setTotal] = useState(0)
+    const [checkoutProducts, setCheckoutProducts]: any = useState([])
+    const [total, setTotal]: any = useState(0)
 
     useEffect(() => {
         axios.post('http://10.199.100.156:1337/api/getcartdetails', {customerid: '2'}, {headers}).then(response => {
@@ -167,7 +167,7 @@ function Checkout() {
                                                 <td className="pb-0 pt-0 pr-0 pl-3 semifont boldfontsize border-top-0"> <hr className="p-0 m-0 " /></td>
                                                 <td className="pb-0 pt-0 pl-0 pr-4 regularfont boldfontsize border-top-0"> <hr className="p-0 m-0"/></td>
                                             </tr>
-                                            {checkoutProducts.map(product => {
+                                            {checkoutProducts.map((product: any) => {
                                                 return (
                                                     <tr>
                                                         <td className="pb-0 pt-3 pl-3 lightfont mini-text-1 border-0">{product?.title}</td>
