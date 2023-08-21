@@ -9,7 +9,7 @@ module.exports = {
      try {
       console.log(ctx.request.body);
       const entries = await strapi.db.connection.raw(
-        `SELECT DISTINCT model FROM public.cardetails WHERE make='${ctx.request.body.param}' AND model IS NOT NULL ORDER BY model DESC;`
+        `SELECT DISTINCT model FROM public.cardetails WHERE make='${ctx.request.body.param_make}' AND model IS NOT NULL ORDER BY model DESC;`
       );
       ctx.body = entries;
      } catch (err) {
@@ -17,4 +17,4 @@ module.exports = {
        ctx.body = err;
      }
    }
-};
+}; 

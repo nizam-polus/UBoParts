@@ -2,12 +2,12 @@ module.exports = {
   routes: [
      {
       method: 'POST',
-      path: '/cardetailmodel',
-      handler: 'cardetailmodel.findAll',
+      path: '/updatecartdata',
+      handler: 'updatecartdata.updatedata',
       config: {
         policies: [],
         middlewares: [],
       },
      },
   ],
-}; 
+};
