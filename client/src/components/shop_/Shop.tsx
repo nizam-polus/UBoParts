@@ -7,6 +7,8 @@ import AppImage from '../shared/AppImage';
 import axios from 'axios';
 import Header_home from '../header_/Header_home';
 import Footer from '../footer_/Footer';
+import { useRouter } from 'next/router';
+import Notification from '../notification/notification';
 
 function Shop() {
     const token = 'd74cadbbd1e783d16cad26f5b3e0591c54075b3adf4655ad54de3d423bb8d95b5aacf257eba5d980b62dbc7b1c5c6d5dd69647d17c115327bf6d28b568b81423ce6b86908fa997a26be83e48cb53a7db17339345b7939228d18abf92d1dab1920f553233cde10ed0b5cbc21afedc603ab3aa99860cf35da892a06f98b81e1a9d'
@@ -28,6 +30,10 @@ function Shop() {
     const [licenseplate, setLicenseplate] = useState('');
     const [searchedProducts, setSearchedProducts] = useState<any>([]);
     const [searched, setSearched] = useState(false);
+    const [showMessage, setShowMessage] = useState(false)
+    const [type, setType] = useState('success')
+    const [message, setMessage] = useState('')
+    const router = useRouter();
 
     const categoriesArray = (resData: any) => {
         return [...new Set(resData.map((item: any) => item.attributes.category_name))];
@@ -160,6 +166,37 @@ function Shop() {
 
     const toggleAdvancedSearch = () => {
         setToggleSearch(!toggleSearch);
+    }
+
+    const handleProductClick = (product: any) => {
+        console.log('product', product);
+        router.push('/products_/' + product.id);
+    }
+
+    const handleAddToCart = (productData: any) => {
+        axios.post('http://10.199.100.156:1337/api/cartdata',
+            {
+                customerid: '2',
+                productid: productData?.id,
+                quantity: productData?.quantity,
+                productprice: productData?.price
+            }, {headers},
+        ).then(response => {
+            console.log(response);
+            setShowMessage(true);
+            setType('success')
+            setMessage('Items successfully added to cart')
+            setTimeout(() => {
+                setShowMessage(false)
+            }, 4000)
+        }).catch(err => {
+            setShowMessage(true)
+            setType('danger')
+            setMessage('Something went wrong')
+            setTimeout(() => {
+                setShowMessage(false)
+            }, 4000)
+        })
     }
 
 
@@ -354,7 +391,12 @@ function Shop() {
                                                 return (
                                                     <div className="col-12 col-sm-6 col-lg-4  mb-4">
                                                         <div className="latest-prods card card-shadows">
-                                                            <AppImage src={'http://10.199.100.156:1337' + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} className="card-img-top img-prod-height" />
+                                                            <AppImage 
+                                                                src={'http://10.199.100.156:1337' + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
+                                                                className="card-img-top img-prod-height" 
+                                                                style={{"cursor": "pointer"}} 
+                                                                onClick={() => handleProductClick(product)}    
+                                                            />
                                                             <div className="card-body">
                                                                 <div className="row g-1">
                                                                     <div className="col-12">
@@ -374,7 +416,7 @@ function Shop() {
                                                                 </div> */}
                                                                     <div className="col-12 d-flex justify-content-between">
                                                                         <span className="product-price">€{product?.attributes?.price}</span>
-                                                                        <AppImage src="images/cart-svg.svg"/>
+                                                                        <AppImage src="images/cart-svg.svg" style={{cursor: 'pointer'}} onClick={() => handleAddToCart(product)}/>
                                                                         {/* <div className="input-group quanitity-box">
                                                                             <span className="input-group-btn plus-icon semifont">
                                                                                 <i className="fa fa-plus mini-text-0 mini-text-0-color" aria-hidden="true"></i>
