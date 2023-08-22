@@ -18,12 +18,22 @@ module.exports = {
       console.log(ctx.request.body);
       const data = JSON.stringify({
         "merchant_uid": "mer_e60f0100bd43",
-        "products": ctx.request.body.products,
+        "products": [
+        {
+            "name": "Gearbox",
+
+            "price": 400,
+
+            "quantity": 1
+        }
+
+        ],
         "return_url": "http://uboparts.polussoftware.com:3000/payment-result",
-        "notify_url": "http://52.6.187.235:3001/test_notify",// update transaction status api
-        "total_price": ctx.request.body.total_price,
+        "notify_url": "http://10.199.100.156:1337/api/payment-status-update",// update transaction status api
+        "total_price": 400,
         "checkout": false
       });
+      const url =  request.object_ul
       const response = await fetch('https://api-sandbox.onlinebetaalplatform.nl/v1/transactions', {
         method: "POST", headers: {
           'Content-Type': 'application/json',
@@ -33,16 +43,16 @@ module.exports = {
         body: data,
       });
       const result = await response.json();
-
-      // insert transaction status  query based on the result
+      
+      // insert transaction status details into table transaction query based on the result
 
       const entries = await strapi.db.connection.raw(
-        `UPDATE public.carts
-        SET quantity = ${ctx.request.body.quantity}
-        WHERE customer_id = ${ctx.request.body.customerid} AND id = ${ctx.request.body.id};`
+        `INSERT INTO public.transaction(
+          id, tid, sid, status, created_at, updated_at)
+          VALUES (DEFAULT, '${result.uid}', '${result.statuses[0].uid}', '${result.status}', DEFAULT, DEFAULT);`
        );
 
-      ctx.body = result;
+      ctx.body = entries;
 
     } catch (err) {
       ctx.body = err;
