@@ -11,7 +11,7 @@ import Link from 'next/dist/client/link';
 
 function Productsingle() {
 
-    const token = '2c82df0e9f171ad5cea40c8451ce811b84d898b32e03b43ecec923457735b5ce6446ffcd68659ff11fd6bd1e1f4ba89498a58e30229a15fe683147d245498446d8ebb0c1e56437835fbd320246fd4519f7c23cf04c9eb29aff57c21052913af1b8f60432385cd21b6325ced78ecedd666a58bd0e80f44cf60d56e82d5cc022cb'
+    const token = '06260c6d8d00a89764faeed708915d97ec4e9f184ad6ab627cca06ac48af38cb943fce62340d5a330a019077b4fa6462b6f6a84000b412cd4cb6022ad1c5725b03ba10849d61dc0862615204e05d01be610c0074dba6ab23f3ec2f9753587a4233e30546f13424d5eba13dea15e6e0f04595c2da1e6335bb947889472ebeb081'
     const headers = {
         Authorization: `Bearer ${token}`,
     };
@@ -26,7 +26,7 @@ function Productsingle() {
     const [message, setMessage] = useState('')
 
     useEffect(() => {
-        axios.get('http://10.199.100.156:1337/api/products/' + id + '?populate=*', {headers}).then(response => {
+        axios.get('http://52.6.187.235:1337/api/products/' + id + '?populate=*', {headers}).then(response => {
             console.log(response);
             let product = response.data.data;
             let productGallery = response.data.data.attributes?.product_gallary_image?.data;
@@ -42,7 +42,7 @@ function Productsingle() {
     }
 
     const handleAddToCart = () => {
-        axios.post('http://10.199.100.156:1337/api/cartdata',
+        axios.post('http://52.6.187.235:1337/api/cartdata',
             {
                 customerid: '2',
                 productid: productData?.id,
@@ -77,7 +77,7 @@ function Productsingle() {
                         <div className="row">
                             <div className="col-12 col-md-6 col-lg-4">
                                 <div className="row">
-                                <AppImage className="rounded w-100" src={"http://10.199.100.156:1337" + productImage}/>
+                                <AppImage className="rounded w-100" src={"http://52.6.187.235:1337" + productImage}/>
                                 </div>
                                 <div className="row product-thumbnails g-3 mt-3 justify-content-center">
                                 {productGallery.map((galleryImg: any) => {
@@ -86,7 +86,7 @@ function Productsingle() {
                                             style={{"cursor": "pointer"}}
                                             onClick={() => handleImageChange(galleryImg?.attributes?.url)}
                                         >
-                                            <img className="rounded" src={"http://10.199.100.156:1337" + galleryImg?.attributes?.url}/>
+                                            <img className="rounded" src={"http://52.6.187.235:1337" + galleryImg?.attributes?.url}/>
                                         </div>
                                     )
                                 })}
@@ -155,7 +155,7 @@ function Productsingle() {
                                                         <span className="input-group-btn plus-icon semifont"
                                                             onClick={() => quantity !== 1 && setQuantity(quantity - 1)}
                                                         >
-                                                            <i className="fa fa-plus mini-text-3" aria-hidden="true"></i>
+                                                            <i className="fa fa-minus mini-text-3" aria-hidden="true"></i>
                                                         </span>
                                                         <input 
                                                             type="text" name="quant[1]" 

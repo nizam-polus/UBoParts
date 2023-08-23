@@ -87,7 +87,7 @@ function Register(props: any) {
         try {
             if (Object.keys(hasError).length === 0 && isSubmitting === true) {
                 const userdata = { 'username': regformData.username, 'email': regformData.email, 'password': regformData.password }
-                await axios.post(`http://10.199.100.156:1337/api/auth/local/register`, { ...userdata })
+                await axios.post(`http://52.6.187.235:1337/api/auth/local/register`, { ...userdata })
                     .then((response: any) => {
                         localStorage.setItem('usertoken', JSON.stringify(response.data.jwt));
                         localStorage.setItem('userdetails', JSON.stringify(response.data.user));

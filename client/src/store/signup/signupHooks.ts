@@ -2,7 +2,7 @@
 //import { QUICKVIEW_NAMESPACE } from '~/store/quickview/quickviewReducer';
 //import { forgotOpen } from '~/store/signup/signupActions';
 import { useAppAction, useAppSelector } from '~/store/hooks';
-import { forgotOpen } from './signUpActions';
+import { forgotOpen } from './signupActions';
 
 //export const useQuickview = () => useAppSelector((state) => state[QUICKVIEW_NAMESPACE]);
 

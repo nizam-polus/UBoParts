@@ -38,7 +38,7 @@ function Login(props: any) {
         console.log('Form data submitted:', loginformData);
         try {
                 const userdata = { 'identifier': loginformData.username, 'password': loginformData.password }
-                await axios.post(`http://10.199.100.156:1337/api/auth/local`, { ...userdata })
+                await axios.post(`http://52.6.187.235:1337/api/auth/local`, { ...userdata })
                     .then((response: any) => {
                         localStorage.setItem('usertoken', JSON.stringify(response.data.jwt));
                         localStorage.setItem('userdetails', JSON.stringify(response.data.user));
