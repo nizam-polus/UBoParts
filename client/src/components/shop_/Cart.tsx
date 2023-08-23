@@ -3,13 +3,17 @@ import AppLink from '~/components/shared/AppLink';
 import AppImage from '../shared/AppImage';
 import Header_home from '../header_/Header_home';
 import axios from 'axios';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+
 function Cart() {
-    const token = 'd74cadbbd1e783d16cad26f5b3e0591c54075b3adf4655ad54de3d423bb8d95b5aacf257eba5d980b62dbc7b1c5c6d5dd69647d17c115327bf6d28b568b81423ce6b86908fa997a26be83e48cb53a7db17339345b7939228d18abf92d1dab1920f553233cde10ed0b5cbc21afedc603ab3aa99860cf35da892a06f98b81e1a9d'
+    const token = '2c82df0e9f171ad5cea40c8451ce811b84d898b32e03b43ecec923457735b5ce6446ffcd68659ff11fd6bd1e1f4ba89498a58e30229a15fe683147d245498446d8ebb0c1e56437835fbd320246fd4519f7c23cf04c9eb29aff57c21052913af1b8f60432385cd21b6325ced78ecedd666a58bd0e80f44cf60d56e82d5cc022cb'
     const headers = {
         Authorization: `Bearer ${token}`,
     };
     const [cartProducts, setCartProducts] = useState<any>([]);
     const [totalCartPrice, setTotal] = useState(0);
+    const router = useRouter();
 
     useEffect(() => {
         axios.post('http://10.199.100.156:1337/api/getcartdetails', { "customerid": "2" }, { headers },)
@@ -29,6 +33,63 @@ function Cart() {
                 // setError(error);
             });
     }, []);
+
+    const handleCartItemDelete = (product: any) => {
+        axios.post('http://10.199.100.156:1337/api/deletecartdata', {customerid: product.customer_id, id: product.id}, {headers})
+        .then(response => {
+            console.log(response);
+            axios.post('http://10.199.100.156:1337/api/getcartdetails', { "customerid": "2" }, { headers },)
+            .then((response: any) => {
+                console.log('response :>> ', response);
+                setCartProducts(response.data.rows);
+                if (response.data.rows.length) {
+                    let total = 0;
+                    for (const obj of response.data.rows) {
+                        total += obj.total_price;
+                    }
+                    console.log('total :>> ', total);
+                    setTotal(total);
+                }
+            })
+            .catch((error) => {
+                // setError(error);
+            });
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+
+    const handleQuantityChange = (product: any, valueChange: string, index: number) => { 
+        console.log(product)
+        let quantity = product.quantity;
+        if (valueChange === 'inc') {
+            quantity++;
+        }
+        if (valueChange === 'dec') {
+            quantity !== 1 && quantity--;
+        }
+        axios.post('http://10.199.100.156:1337/api/updatecartdata', {customerid: '2', id: product.id, quantity: quantity, productprice: product.price}, {headers}).then(response => {
+            console.log(response);
+            axios.post('http://10.199.100.156:1337/api/getcartdetails', { "customerid": "2" }, { headers },)
+            .then((response: any) => {
+                console.log('response :>> ', response);
+                setCartProducts(response.data.rows);
+                if (response.data.rows.length) {
+                    let total = 0;
+                    for (const obj of response.data.rows) {
+                        total += obj.total_price;
+                    }
+                    console.log('total :>> ', total);
+                    setTotal(total);
+                }
+            })
+            .catch((error) => {
+                // setError(error);
+            });
+        }).catch(err => {
+            console.log(err);
+        })
+    }
 
     return (
         <>
@@ -55,6 +116,7 @@ function Cart() {
                                                 <th className=" p-3 custom-color-3 regularfont boldfontsize text-center border-top-0 lightfotweight col-sm-2">PRICE</th>
                                                 <th className=" p-3 custom-color-3 regularfont boldfontsize text-center border-top-0 lightfotweight col-sm-1">QUANTITY</th>
                                                 <th className=" p-3 custom-color-3 regularfont boldfontsize text-center border-top-0 lightfotweight col-sm-2">TOTAL</th>
+                                                <th className=" pr-3 custom-color-3 regularfont boldfontsize text-center border-top-0 lightfotweight col-sm-2">DELETE</th>
                                             </tr>
                                             {cartProducts && cartProducts.map((product: any, index: any) => {
                                                 return (<tr>
@@ -62,7 +124,11 @@ function Cart() {
                                                         <AppImage src="images/cat-prod-1.svg" className="rounded" />
                                                     </td>
                                                     <td className="p-3 custom-color-3 regularfont mini-text-2">
-                                                        <div>{product.title}</div>
+                                                        <div>
+                                                            <Link href={'/products_/'+product.product_id}>
+                                                                <span style={{textDecoration: 'none', cursor: 'pointer'}}>{product.title}</span>
+                                                            </Link>
+                                                        </div>
                                                         {/* <div className="d-md-flex">
                                                             <span>Kila International</span>
                                                             <span className="in-stock custom-color-6 rounded-pill d-flex mini-text-4">Seller</span></div> */}
@@ -70,22 +136,32 @@ function Cart() {
                                                     <td className="p-3 custom-color-3 semifont mini-text-3 text-center ">€{product.price}</td>
                                                     <td className="p-3 custom-color-3 regularfont">
                                                         <div className="input-group quanitity-box quanitity-incrementor">
-                                                            <span className="input-group-btn plus-icon regularfont">
+                                                        <span className="input-group-btn plus-icon regularfont" onClick={() => handleQuantityChange(product, 'dec', index)}>
                                                                 <i className="fa fa-minus mini-text-0 mini-text-0-color " aria-hidden="true"></i>
                                                             </span>
-                                                            <input type="text" name="quant[1]" className="form-control input-number text-center rounded-pill border-0 regularfont px-2 pb-1 pt-1 mini-text-3 h-auto" value={product.quantity} min="1" max="10" />
-                                                            <span className="input-group-btn minus-icon regularfont">
+                                                            <input type="text" 
+                                                                name="quant[1]" 
+                                                                className="form-control input-number text-center rounded-pill border-0 regularfont px-2 pb-1 pt-1 mini-text-3 h-auto" 
+                                                                value={product.quantity} min="1" max="10"
+                                                                onChange={(e) => product.quantity = e.target.value}
+                                                            />
+                                                            <span className="input-group-btn minus-icon regularfont" onClick={() => handleQuantityChange(product, 'inc', index)}>
                                                                 <i className="fa fa-plus mini-text-0 mini-text-0-color " aria-hidden="true"></i>
                                                             </span>
                                                         </div>
                                                     </td>
                                                     <td className="p-3 custom-color-3 semifont mini-text-3 text-center">€{product.total_price}</td>
+                                                    <td className='pl-3'><i className='fa fa-trash' onClick={() => handleCartItemDelete(product)}></i></td>
                                                 </tr>)
                                             })}
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <td className="p-3" colSpan={2}><button type="button" className="add-more-rows custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1">Add more items</button></td>
+                                                <td className="p-3" colSpan={2}>
+                                                    <Link href={'/shop'}><button type="button" 
+                                                        className="add-more-rows custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"
+                                                    >Add more items</button></Link>
+                                                </td>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -111,7 +187,7 @@ function Cart() {
                                                 <td className="pb-4 pt-1 pr-0 pl-3 semifont boldfontsize border-top-0"> Total</td>
                                                 <td className="pb-4 pt-1 pl-0 semifont boldfontsize border-top-0 custom-color-3">€{totalCartPrice}</td>
                                             </tr>
-                                            <tr><td colSpan={2} className="p-3 pb-4 w-100"><button type="button" className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"><AppLink href="/checkoutpage" className="custom-color-7">Proceed to checkout</AppLink></button></td></tr>
+                                            <tr><td colSpan={2} className="p-3 pb-4 w-100"><button type="button" className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"><AppLink href="/checkoutpage" className="custom-color-7"><button type="button" className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1">Proceed to checkout</button></AppLink></button></td></tr>
                                         </tbody>
                                     </table>
                                 </div>
