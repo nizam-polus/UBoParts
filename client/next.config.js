@@ -8,4 +8,7 @@ module.exports = {
         locales: ['en', 'ru', 'ar'],
         defaultLocale: 'en',
     },
+    eslint: {
+        ignoreDuringBuilds: true
+    }
 };

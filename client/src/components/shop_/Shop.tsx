@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 import Notification from '../notification/notification';
 
 function Shop() {
-    const token = 'd74cadbbd1e783d16cad26f5b3e0591c54075b3adf4655ad54de3d423bb8d95b5aacf257eba5d980b62dbc7b1c5c6d5dd69647d17c115327bf6d28b568b81423ce6b86908fa997a26be83e48cb53a7db17339345b7939228d18abf92d1dab1920f553233cde10ed0b5cbc21afedc603ab3aa99860cf35da892a06f98b81e1a9d'
+    const token = '06260c6d8d00a89764faeed708915d97ec4e9f184ad6ab627cca06ac48af38cb943fce62340d5a330a019077b4fa6462b6f6a84000b412cd4cb6022ad1c5725b03ba10849d61dc0862615204e05d01be610c0074dba6ab23f3ec2f9753587a4233e30546f13424d5eba13dea15e6e0f04595c2da1e6335bb947889472ebeb081'
     const headers = {
         Authorization: `Bearer ${token}`,
     };
@@ -44,7 +44,7 @@ function Shop() {
         setSelectedModel(localStorage.getItem('model') || '');
         setSelectedYear(localStorage.getItem('year') || '');
         setSelectedCategory(localStorage.getItem('category') || '');
-        axios.get('http://10.199.100.156:1337/api/categories?populate=*&sort[0]=id:asc', { headers })
+        axios.get('http://52.6.187.235:1337/api/categories?populate=*&sort[0]=id:asc', { headers })
             .then((response: any) => {
                 setCategories(categoriesArray(response.data.data));
             })
@@ -52,7 +52,7 @@ function Shop() {
                 setError(error);
             });
 
-        axios.get('http://10.199.100.156:1337/api/cardetail-make', { headers })
+        axios.get('http://52.6.187.235:1337/api/cardetail-make', { headers })
             .then((response: any) => {
                 setMakesArray(response.data.rows);
             })
@@ -83,7 +83,7 @@ function Shop() {
 
     const getModel = (make: string) => {
         const setHeaders = { 'param_make': make }
-        axios.post(`http://10.199.100.156:1337/api/cardetailmodel`, { ...setHeaders }, { headers })
+        axios.post(`http://52.6.187.235:1337/api/cardetailmodel`, { ...setHeaders }, { headers })
             .then((response: any) => {
                 setModelArray(response.data.rows);
             })
@@ -95,7 +95,7 @@ function Shop() {
 
     const getYear = (make: string, model: string) => {
         const setHeaders = { 'param_make': make, 'param_model': model }
-        axios.post(`http://10.199.100.156:1337/api/cardetailyear`, { ...setHeaders }, { headers })
+        axios.post(`http://52.6.187.235:1337/api/cardetailyear`, { ...setHeaders }, { headers })
             .then((response: any) => {
                 setYearArray(response.data.rows);
             })
@@ -116,7 +116,7 @@ function Shop() {
     }, [data]);
 
     const searchProducts = () => {
-        axios.get(`http://10.199.100.156:1337/api/products?populate=*&filters[$and][][cardetail][make][$contains]=${selectedMake}&filters[$and][][cardetail][model][$contains]=${selectedModel}${selectedYear && '&filters[$and][][cardetail][year][$eq]='+selectedYear}&filters[$and][][category][category_name][$contains]=${selectedCategory}`, { headers })
+        axios.get(`http://52.6.187.235:1337/api/products?populate=*&filters[$and][][cardetail][make][$contains]=${selectedMake}&filters[$and][][cardetail][model][$contains]=${selectedModel}${selectedYear && '&filters[$and][][cardetail][year][$eq]='+selectedYear}&filters[$and][][category][category_name][$contains]=${selectedCategory}`, { headers })
         .then((response: any) => {
             console.log('response :>> ', response.data.data);
             setSearchedProducts(response.data.data);
@@ -174,7 +174,7 @@ function Shop() {
     }
 
     const handleAddToCart = (productData: any) => {
-        axios.post('http://10.199.100.156:1337/api/cartdata',
+        axios.post('http://52.6.187.235:1337/api/cartdata',
             {
                 customerid: '2',
                 productid: productData?.id,
@@ -392,7 +392,7 @@ function Shop() {
                                                     <div className="col-12 col-sm-6 col-lg-4  mb-4">
                                                         <div className="latest-prods card card-shadows">
                                                             <AppImage 
-                                                                src={'http://10.199.100.156:1337' + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
+                                                                src={'http://52.6.187.235:1337' + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
                                                                 className="card-img-top img-prod-height" 
                                                                 style={{"cursor": "pointer"}} 
                                                                 onClick={() => handleProductClick(product)}    
@@ -403,7 +403,10 @@ function Shop() {
                                                                         <span className="article-number regularfont mini-text">Article #{product?.attributes?.article_number}</span>
                                                                     </div>
                                                                     <div className="col-12">
-                                                                        <span className="product-name regularfont">{product?.attributes?.title}</span>
+                                                                        <span className="product-name regularfont"
+                                                                            style={{"cursor": "pointer"}} 
+                                                                            onClick={() => handleProductClick(product)}
+                                                                        >{product?.attributes?.title}</span>
                                                                     </div>
                                                                     {/* <div className="col-12">
                                                                     <span className="ratings">

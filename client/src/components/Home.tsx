@@ -13,7 +13,7 @@ import Header_home_logged_in from './header_/Header_home_logged_in';
 import { useRouter } from 'next/router';
 function Home() {
     const router = useRouter();
-    const token = 'd74cadbbd1e783d16cad26f5b3e0591c54075b3adf4655ad54de3d423bb8d95b5aacf257eba5d980b62dbc7b1c5c6d5dd69647d17c115327bf6d28b568b81423ce6b86908fa997a26be83e48cb53a7db17339345b7939228d18abf92d1dab1920f553233cde10ed0b5cbc21afedc603ab3aa99860cf35da892a06f98b81e1a9d'
+    const token = '06260c6d8d00a89764faeed708915d97ec4e9f184ad6ab627cca06ac48af38cb943fce62340d5a330a019077b4fa6462b6f6a84000b412cd4cb6022ad1c5725b03ba10849d61dc0862615204e05d01be610c0074dba6ab23f3ec2f9753587a4233e30546f13424d5eba13dea15e6e0f04595c2da1e6335bb947889472ebeb081'
     const headers = {
         Authorization: `Bearer ${token}`,
     };
@@ -46,7 +46,7 @@ function Home() {
         if (licenseplate && licenseplate.length > 5) {
             const getData = setTimeout(() => {
                 axios
-                    .get(`http://10.199.100.156:1337/api/cardetails?populate=*&filters[licenseplate][$contains]=${licenseplate}`, { headers })
+                    .get(`http://52.6.187.235:1337/api/cardetails?populate=*&filters[licenseplate][$contains]=${licenseplate}`, { headers })
                     .then((response: any) => {
                         console.log('response.data :>> ', response.data);
                         if (response.data.data.length) {
@@ -88,7 +88,7 @@ function Home() {
         setLoginModalIsOpen(false);
     };
     useEffect(() => {
-        axios.get('http://10.199.100.156:1337/api/cardetails?populate=*&pagination[page]=1&pagination[pageSize]=1000&sort[0]=licenseplate:asc', { headers })
+        axios.get('http://52.6.187.235:1337/api/cardetails?populate=*&pagination[page]=1&pagination[pageSize]=1000&sort[0]=licenseplate:asc', { headers })
             .then((response: any) => {
                 setData(response.data.data);
                 setLoading(false);
@@ -98,7 +98,7 @@ function Home() {
                 setLoading(false);
             });
 
-        axios.get('http://10.199.100.156:1337/api/categories?populate=*&sort[0]=id:asc', { headers })
+        axios.get('http://52.6.187.235:1337/api/categories?populate=*&sort[0]=id:asc', { headers })
             .then((response: any) => {
                 setCategories(categoriesArray(response.data.data));
                 setLoading(false);
@@ -108,7 +108,7 @@ function Home() {
                 setLoading(false);
             });
 
-        axios.get('http://10.199.100.156:1337/api/cardetail-make', { headers })
+        axios.get('http://52.6.187.235:1337/api/cardetail-make', { headers })
             .then((response: any) => {
                 setMakesArray(response.data.rows);
                 setLoading(false);
@@ -144,7 +144,7 @@ function Home() {
         localStorage.setItem('model',selectedModel);
         localStorage.setItem('year',selectedYear);
         localStorage.setItem('category',selectedCategory);
-        // axios.get(`http://10.199.100.156:1337/api/products?populate=*&filters[$and][][cardetail][make][$contains]=${selectedMake}&filters[$and][][cardetail][model][$contains]=${selectedModel}&filters[$and][][cardetail][year][$eq]=${selectedYear}&filters[$and][][category][category_name][$contains]=${selectedCategory}`, { headers })
+        // axios.get(`http://52.6.187.235:1337/api/products?populate=*&filters[$and][][cardetail][make][$contains]=${selectedMake}&filters[$and][][cardetail][model][$contains]=${selectedModel}&filters[$and][][cardetail][year][$eq]=${selectedYear}&filters[$and][][category][category_name][$contains]=${selectedCategory}`, { headers })
         //     .then((response: any) => {
         //         console.log('response :>> ', response.data.data);
         //         setSearchedProducts(response.data.data);
@@ -159,7 +159,7 @@ function Home() {
 
     const getModel = (make: string) => {
         const setHeaders = { 'param_make': make }
-        axios.post(`http://10.199.100.156:1337/api/cardetailmodel`, { ...setHeaders }, { headers })
+        axios.post(`http://52.6.187.235:1337/api/cardetailmodel`, { ...setHeaders }, { headers })
             .then((response: any) => {
                 setModelArray(response.data.rows);
             })
@@ -171,7 +171,7 @@ function Home() {
 
     const getYear = (make: string, model: string) => {
         const setHeaders = { 'param_make': make, 'param_model': model }
-        axios.post(`http://10.199.100.156:1337/api/cardetailyear`, { ...setHeaders }, { headers })
+        axios.post(`http://52.6.187.235:1337/api/cardetailyear`, { ...setHeaders }, { headers })
             .then((response: any) => {
                 setYearArray(response.data.rows);
             })
@@ -312,7 +312,7 @@ function Home() {
                                 </div>
                                 <div className="col-12 col-lg-3 d-flex align-items-end mb-3">
                                 {/* <Link href={`/shop`}> */}
-                                    <button type="button" onClick={searchProducts} className="search boldfont boldfontsize">Search</button>
+                                    <button type="button" onClick={searchProducts} className="search boldfont boldfontsize" disabled={showInvaidLicense}>Search</button>
                                 {/* </Link> */}
                                 </div>
                             </div>
@@ -330,7 +330,7 @@ function Home() {
                                     <div className="col-6 col-md-3" key={index}>
                                             <Link href={`/products_/${product?.id}`}>
                                         <div className="latest-prods card">
-                                                <AppImage src={'http://10.199.100.156:1337' + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} className="card-img-top" />
+                                                <AppImage src={'http://52.6.187.235:1337' + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} className="card-img-top" />
                                                 <div className="card-body">
                                                     <div className="row g-1">
                                                         <div className="col-12">
