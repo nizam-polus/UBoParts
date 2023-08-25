@@ -45,23 +45,37 @@ function Home() {
     useEffect(() => {
         if (licenseplate && licenseplate.length > 5) {
             const getData = setTimeout(() => {
-                axios
-                    .get(`http://52.6.187.235:1337/api/cardetails?populate=*&filters[licenseplate][$contains]=${licenseplate}`, { headers })
-                    .then((response: any) => {
-                        console.log('response.data :>> ', response.data);
-                        if (response.data.data.length) {
-                            setSelectedMake(response.data.data[0].attributes.make);
-                            console.log('response.data.data[0].attributes.make :>> ', response.data.data[0].attributes.make);
-                            getModel(response.data.data[0].attributes.make);
-                            setSelectedModel(response.data.data[0].attributes.model);
-                            getYear(response.data.data[0].attributes.make, response.data.data[0].attributes.model);
-                            setSelectedYear(response.data.data[0].attributes.year);
-                            setToggleSearch(true);
-                            setShowInvaidLicense(false);
-                        } else {
-                            setShowInvaidLicense(true);
-                        }
-                    });
+                axios.get(`http://52.6.187.235:1337/api/cardetails?populate=*&filters[licenseplate][$contains]=${licenseplate}`, { headers })
+                .then((response: any) => {
+                    if (response.data.data.length) {
+                        setSelectedMake(response.data.data[0].attributes.make);
+                        console.log('response.data.data[0].attributes.make :>> ', response.data.data[0].attributes.make);
+                        getModel(response.data.data[0].attributes.make);
+                        setSelectedModel(response.data.data[0].attributes.model);
+                        getYear(response.data.data[0].attributes.make, response.data.data[0].attributes.model);
+                        setSelectedYear(response.data.data[0].attributes.year);
+                        setToggleSearch(true);
+                        setShowInvaidLicense(false);
+                    } else {
+                        axios.get('https://opendata.rdw.nl/resource/m9d7-ebf2.json?kenteken=' + licenseplate).then((data: any) => {
+                            let openAPIResponse = data.data;
+                            let year = '';
+                            if (openAPIResponse.length) {
+                                setToggleSearch(true);
+                                setShowInvaidLicense(false);
+                                year = openAPIResponse[0].datum_eerste_toelating_dt.substring(0, 4)
+                                setSelectedMake(openAPIResponse[0].merk);
+                                getModel(openAPIResponse[0].merk);
+                                setSelectedModel(openAPIResponse[0].handelsbenaming);
+                                getYear(openAPIResponse[0].merk, openAPIResponse[0].handelsbenaming);
+                                setSelectedYear(year);
+                                console.log(selectedMake, selectedModel, selectedYear);
+                            } else {
+                                setShowInvaidLicense(true);
+                            }
+                        })
+                    }
+                });
             }, 1000);
             return () => clearTimeout(getData);
         }
@@ -225,17 +239,13 @@ function Home() {
     return (
         <>
             <Forgotpass
-
                 isOpen={forgotPasswordPickerIsOpen}
                 onClose={onForgotPasswordClose}
-
             />
             <Login
-
                 isOpen={loginModalIsOpen}
                 onClose={onLoginModalClose}
             />
-
             <div className="home-header">
                 <Header_home  userToken={userToken} geUserDetails={geUserDetails}/>
             </div>
