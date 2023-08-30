@@ -2,22 +2,18 @@ import React, { useCallback, useEffect, useState } from 'react';
 import AppLink from '~/components/shared/AppLink';
 import AppImage from '../shared/AppImage';
 import Header_home from '../header_/Header_home';
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import APIs from '~/services/apiService';
 
 function Cart() {
-    const token = '1038115969def4915ab7b14c9d5583d38a3305f256de2f5512ae6ee9551201716f465b5e6e1e61fc28ac0f78a2831731b4ba1549a0099f4efda222b572e4e47f8108f0569538ee578dc1abb0a8e1e2f10d410b08a73ae37b28a0feebc37f137ae82d2efb688fe7d6175c6b36573a831bb52e15914e20cb462874a817440853a0'
-    const headers = {
-        Authorization: `Bearer ${token}`,
-    };
+    
     const [cartProducts, setCartProducts] = useState<any>([]);
     const [totalCartPrice, setTotal] = useState(0);
     const router = useRouter();
 
     useEffect(() => {
-        axios.post('http://52.6.187.235:1337/api/getcartdetails', { "customerid": "2" }, { headers },)
-            .then((response: any) => {
+        APIs.getCartData({ "customerid": "2" }).then((response: any) => {
                 console.log('response :>> ', response);
                 setCartProducts(response.data.rows);
                 if (response.data.rows.length) {
@@ -35,19 +31,14 @@ function Cart() {
     }, []);
 
     const handleCartItemDelete = (product: any) => {
-        axios.post('http://52.6.187.235:1337/api/deletecartdata', {customerid: product.customer_id, id: product.id}, {headers})
-        .then(response => {
-            console.log(response);
-            axios.post('http://52.6.187.235:1337/api/getcartdetails', { "customerid": "2" }, { headers },)
-            .then((response: any) => {
-                console.log('response :>> ', response);
+        APIs.deleteCartData({customerid: product.customer_id, id: product.id}).then(response => {
+            APIs.getCartData({ "customerid": "2" }).then((response: any) => {
                 setCartProducts(response.data.rows);
                 if (response.data.rows.length) {
                     let total = 0;
                     for (const obj of response.data.rows) {
                         total += obj.total_price;
                     }
-                    console.log('total :>> ', total);
                     setTotal(total);
                 }
             })
@@ -59,8 +50,7 @@ function Cart() {
         })
     }
 
-    const handleQuantityChange = (product: any, valueChange: string, index: number) => { 
-        console.log(product)
+    const handleQuantityChange = (product: any, valueChange: string, index: number) => {
         let quantity = product.quantity;
         if (valueChange === 'inc') {
             quantity++;
@@ -68,10 +58,8 @@ function Cart() {
         if (valueChange === 'dec') {
             quantity !== 1 && quantity--;
         }
-        axios.post('http://52.6.187.235:1337/api/updatecartdata', {customerid: '2', id: product.id, quantity: quantity, productprice: product.price}, {headers}).then(response => {
-            console.log(response);
-            axios.post('http://52.6.187.235:1337/api/getcartdetails', { "customerid": "2" }, { headers },)
-            .then((response: any) => {
+        APIs.updateCartData({customerid: '2', id: product.id, quantity: quantity, productprice: product.price}).then(response => {
+            APIs.getCartData({ "customerid": "2" }).then((response: any) => {
                 console.log('response :>> ', response);
                 setCartProducts(response.data.rows);
                 if (response.data.rows.length) {
@@ -136,7 +124,7 @@ function Cart() {
                                                     <td className="p-3 custom-color-3 semifont mini-text-3 text-center ">€{product.price}</td>
                                                     <td className="p-3 custom-color-3 regularfont">
                                                         <div className="input-group quanitity-box quanitity-incrementor">
-                                                        <span className="input-group-btn plus-icon regularfont" onClick={() => handleQuantityChange(product, 'dec', index)}>
+                                                        <span className="input-group-btn plus-icon regularfont pointer" onClick={() => handleQuantityChange(product, 'dec', index)}>
                                                                 <i className="fa fa-minus mini-text-0 mini-text-0-color " aria-hidden="true"></i>
                                                             </span>
                                                             <input type="text" 
@@ -145,13 +133,13 @@ function Cart() {
                                                                 value={product.quantity} min="1" max="10"
                                                                 onChange={(e) => product.quantity = e.target.value}
                                                             />
-                                                            <span className="input-group-btn minus-icon regularfont" onClick={() => handleQuantityChange(product, 'inc', index)}>
+                                                            <span className="input-group-btn minus-icon regularfont pointer" onClick={() => handleQuantityChange(product, 'inc', index)}>
                                                                 <i className="fa fa-plus mini-text-0 mini-text-0-color " aria-hidden="true"></i>
                                                             </span>
                                                         </div>
                                                     </td>
                                                     <td className="p-3 custom-color-3 semifont mini-text-3 text-center">€{product.total_price}</td>
-                                                    <td className='pl-3'><i className='fa fa-trash' onClick={() => handleCartItemDelete(product)}></i></td>
+                                                    <td className='pl-3'><i className='fa fa-trash pointer' onClick={() => handleCartItemDelete(product)}></i></td>
                                                 </tr>)
                                             })}
                                         </tbody>
