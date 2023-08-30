@@ -4,17 +4,13 @@ import { Modal } from 'reactstrap';
 import { IVehicle } from '~/interfaces/vehicle';
 import Image from 'next/image'
 import AppImage from '../shared/AppImage';
-import axios from 'axios';
 import Header_home from '../header_/Header_home';
 import Footer from '../footer_/Footer';
 import { useRouter } from 'next/router';
-import Notification from '../notification/notification';
+import APIs from '~/services/apiService';
 
 function Shop() {
-    const token = '1038115969def4915ab7b14c9d5583d38a3305f256de2f5512ae6ee9551201716f465b5e6e1e61fc28ac0f78a2831731b4ba1549a0099f4efda222b572e4e47f8108f0569538ee578dc1abb0a8e1e2f10d410b08a73ae37b28a0feebc37f137ae82d2efb688fe7d6175c6b36573a831bb52e15914e20cb462874a817440853a0'
-    const headers = {
-        Authorization: `Bearer ${token}`,
-    };
+    
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -44,16 +40,14 @@ function Shop() {
         setSelectedModel(localStorage.getItem('model') || '');
         setSelectedYear(localStorage.getItem('year') || '');
         setSelectedCategory(localStorage.getItem('category') || '');
-        axios.get('http://52.6.187.235:1337/api/categories?populate=*&sort[0]=id:asc', { headers })
-            .then((response: any) => {
+        APIs.getCategories().then((response: any) => {
                 setCategories(categoriesArray(response.data.data));
             })
             .catch((error) => {
                 setError(error);
             });
 
-        axios.get('http://52.6.187.235:1337/api/cardetail-make', { headers })
-            .then((response: any) => {
+        APIs.getCarMake().then((response: any) => {
                 setMakesArray(response.data.rows);
             })
             .catch((error) => {
@@ -82,9 +76,8 @@ function Shop() {
 
 
     const getModel = (make: string) => {
-        const setHeaders = { 'param_make': make }
-        axios.post(`http://52.6.187.235:1337/api/cardetailmodel`, { ...setHeaders }, { headers })
-            .then((response: any) => {
+        const setData = { 'param_make': make }
+        APIs.getCarModel(setData).then((response: any) => {
                 setModelArray(response.data.rows);
             })
             .catch((error) => {
@@ -94,9 +87,8 @@ function Shop() {
     }
 
     const getYear = (make: string, model: string) => {
-        const setHeaders = { 'param_make': make, 'param_model': model }
-        axios.post(`http://52.6.187.235:1337/api/cardetailyear`, { ...setHeaders }, { headers })
-            .then((response: any) => {
+        const setData = { 'param_make': make, 'param_model': model }
+        APIs.getCarYear(setData).then((response: any) => {
                 setYearArray(response.data.rows);
             })
             .catch((error) => {
@@ -116,8 +108,7 @@ function Shop() {
     }, [data]);
 
     const searchProducts = () => {
-        axios.get(`http://52.6.187.235:1337/api/products?populate=*&filters[$and][][cardetail][make][$contains]=${selectedMake}&filters[$and][][cardetail][model][$contains]=${selectedModel}${selectedYear && '&filters[$and][][cardetail][year][$eq]='+selectedYear}&filters[$and][][category][category_name][$contains]=${selectedCategory}`, { headers })
-        .then((response: any) => {
+        APIs.searchProducts(selectedMake, selectedModel, selectedYear, selectedCategory).then((response: any) => {
             console.log('response :>> ', response.data.data);
             setSearchedProducts(response.data.data);
             setSearched(true);
@@ -174,14 +165,13 @@ function Shop() {
     }
 
     const handleAddToCart = (productData: any) => {
-        axios.post('http://52.6.187.235:1337/api/cartdata',
-            {
-                customerid: '2',
-                productid: productData?.id,
-                quantity: productData?.quantity,
-                productprice: productData?.price
-            }, {headers},
-        ).then(response => {
+        let cartData = {
+            customerid: '2',
+            productid: productData?.id,
+            quantity: '1',
+            productprice: productData?.attributes?.price
+        }
+        APIs.addToCart(cartData).then(response => {
             console.log(response);
             setShowMessage(true);
             setType('success')

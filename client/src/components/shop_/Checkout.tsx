@@ -1,20 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import AppImage from '../shared/AppImage';
 import Header_home from '../header_/Header_home';
-import axios from 'axios';
+import APIs from '~/services/apiService';
 
 function Checkout() {
-
-    const token = '1038115969def4915ab7b14c9d5583d38a3305f256de2f5512ae6ee9551201716f465b5e6e1e61fc28ac0f78a2831731b4ba1549a0099f4efda222b572e4e47f8108f0569538ee578dc1abb0a8e1e2f10d410b08a73ae37b28a0feebc37f137ae82d2efb688fe7d6175c6b36573a831bb52e15914e20cb462874a817440853a0'
-    const headers = {
-        Authorization: `Bearer ${token}`,
-    };
 
     const [checkoutProducts, setCheckoutProducts]: any = useState([])
     const [total, setTotal]: any = useState(0)
 
     useEffect(() => {
-        axios.post('http://52.6.187.235:1337/api/getcartdetails', {customerid: '2'}, {headers}).then(response => {
+        APIs.getCartData({customerid: '2'}).then(response => {
             console.log(response);
             let checkoutProducts = response.data.rows;
             setCheckoutProducts(checkoutProducts);
@@ -45,7 +40,7 @@ function Checkout() {
             cartData.push(product);
         });
         let totalPrice = typeof (total) == 'string' ? Number(total) * 100 : total * 100
-        axios.post('http://52.6.187.235:1337/api/Payment-opp', {products: cartData, total_price: totalPrice}, {headers}).then(response => {
+        APIs.cartPayment({products: cartData, total_price: totalPrice}).then(response => {
             console.log(response);
             let redirectUrl = response.data.redirect_url
             window.location.assign(redirectUrl);
