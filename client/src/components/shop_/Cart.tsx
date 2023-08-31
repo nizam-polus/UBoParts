@@ -34,13 +34,13 @@ function Cart() {
         APIs.deleteCartData({customerid: product.customer_id, id: product.id}).then(response => {
             APIs.getCartData({ "customerid": "2" }).then((response: any) => {
                 setCartProducts(response.data.rows);
+                let total = 0;
                 if (response.data.rows.length) {
-                    let total = 0;
                     for (const obj of response.data.rows) {
                         total += obj.total_price;
                     }
-                    setTotal(total);
                 }
+                setTotal(total);
             })
             .catch((error) => {
                 // setError(error);

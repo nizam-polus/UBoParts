@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Modal } from 'reactstrap';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import APIs from '~/services/apiService';
 // interface Props {  
 //     isOpen?: boolean;
 //     onClose?: () => void;
@@ -87,15 +88,14 @@ function Register(props: any) {
         try {
             if (Object.keys(hasError).length === 0 && isSubmitting === true) {
                 const userdata = { 'username': regformData.username, 'email': regformData.email, 'password': regformData.password }
-                await axios.post(`http://52.6.187.235:1337/api/auth/local/register`, { ...userdata })
-                    .then((response: any) => {
-                        localStorage.setItem('usertoken', JSON.stringify(response.data.jwt));
-                        localStorage.setItem('userdetails', JSON.stringify(response.data.user));
-                        // props.geUserDetails(response.data.jwt);
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                APIs.register(userdata).then((response: any) => {
+                    localStorage.setItem('usertoken', JSON.stringify(response.data.jwt));
+                    localStorage.setItem('userdetails', JSON.stringify(response.data.user));
+                    // props.geUserDetails(response.data.jwt);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
                 const isEmpty = { username: "", email: "", password: "", confirmpassword: "" };
                 setRegFormData(isEmpty);
                 isSubmitting = false;

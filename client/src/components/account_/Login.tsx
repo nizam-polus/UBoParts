@@ -5,6 +5,7 @@ import Forgotpass from '../forgot/Forgotpass';
 import Register from './Register'
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import APIs from '~/services/apiService';
 // interface Props {
 //     isOpen?: boolean;
 //     onClose?: () => void;
@@ -38,15 +39,14 @@ function Login(props: any) {
         console.log('Form data submitted:', loginformData);
         try {
                 const userdata = { 'identifier': loginformData.username, 'password': loginformData.password }
-                await axios.post(`http://52.6.187.235:1337/api/auth/local`, { ...userdata })
-                    .then((response: any) => {
-                        localStorage.setItem('usertoken', JSON.stringify(response.data.jwt));
-                        localStorage.setItem('userdetails', JSON.stringify(response.data.user));
-                        // props.geUserDetails(response.data.jwt);
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                APIs.auth(userdata).then((response: any) => {
+                    localStorage.setItem('usertoken', JSON.stringify(response.data.jwt));
+                    localStorage.setItem('userdetails', JSON.stringify(response.data.user));
+                    // props.geUserDetails(response.data.jwt);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
                 const isEmpty = { username: "", password: ""};
                 setLoginFormData(isEmpty);
                 
