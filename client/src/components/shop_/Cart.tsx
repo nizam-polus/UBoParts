@@ -172,10 +172,20 @@ function Cart() {
                                                 <td className="pb-0 pt-0 pl-0 pr-4 regularfont boldfontsize border-top-0"> <hr className="p-0 m-0" /></td>
                                             </tr>
                                             <tr>
-                                                <td className="pb-4 pt-1 pr-0 pl-3 semifont boldfontsize border-top-0"> Total</td>
-                                                <td className="pb-4 pt-1 pl-0 semifont boldfontsize border-top-0 custom-color-3">€{totalCartPrice}</td>
+                                                <td className="pb-2 pt-1 pr-0 pl-3 semifont boldfontsize border-top-0"> Total</td>
+                                                <td className="pb-2 pt-1 pl-0 semifont boldfontsize border-top-0 custom-color-3">€{totalCartPrice}</td>
                                             </tr>
-                                            <tr><td colSpan={2} className="p-3 pb-4 w-100"><button type="button" className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"><AppLink href="/checkoutpage" className="custom-color-7"><button type="button" className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1">Proceed to checkout</button></AppLink></button></td></tr>
+                                            <tr><td colSpan={2} className="px-3 pt-3 pb-2 w-100">
+                                                <button type="button" className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1">
+                                                    <AppLink href="/checkoutpage" className="custom-color-7">
+                                                        <button type="button" className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"
+                                                        >Proceed to checkout</button>
+                                                    </AppLink>
+                                                </button>
+                                            </td></tr>
+                                            <tr>
+                                                <td className="advanced_search pb-2 pt-0 pr-0 pl-4 semifont mini-text-1 border-top-0">* Shipping cost will be added</td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
