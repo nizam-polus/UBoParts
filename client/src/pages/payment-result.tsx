@@ -1,7 +1,7 @@
-function PaymentSuccess() {
+function PaymentResult() {
     return (
-        <h2>Payment processing ...</h2>
+        <h2 className="">We are processing your payment ...</h2>
     )
 }
 
-export default PaymentSuccess;
+export default PaymentResult;

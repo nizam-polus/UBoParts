@@ -57,24 +57,12 @@ function Home() {
                         setShowInvaidLicense(false);
                     } 
                     else {
-                    //     axios.get('https://opendata.rdw.nl/resource/m9d7-ebf2.json?kenteken=' + licenseplate).then((data: any) => {
-                    //         let openAPIResponse = data.data;
-                    //         let year = '';
-                    //         if (openAPIResponse.length) {
-                    //             setToggleSearch(true);
-                    //             setShowInvaidLicense(false);
-                    //             year = openAPIResponse[0].datum_eerste_toelating_dt.substring(0, 4)
-                    //             setSelectedMake(openAPIResponse[0].merk);
-                    //             getModel(openAPIResponse[0].merk);
-                    //             setSelectedModel(openAPIResponse[0].handelsbenaming);
-                    //             getYear(openAPIResponse[0].merk, openAPIResponse[0].handelsbenaming);
-                    //             setSelectedYear(year);
-                    //             console.log(selectedMake, selectedModel, selectedYear);
-                    //         } else {
-                                setShowInvaidLicense(true);
-                            }
-                    //     })
-                    // }
+                        setShowInvaidLicense(true);
+                        setSelectedMake('');
+                        setSelectedModel('');
+                        setSelectedYear('');
+                        setSelectedCategory('')
+                    }
                 });
             }, 1000);
             return () => clearTimeout(getData);
@@ -255,7 +243,7 @@ function Home() {
                                             <div className="form-group">
                                                 <input type="form-control" onChange={handleLicenseplateChange} name="plate_number" className="semifont placeholderfontsize" placeholder="Search with Car's Plate Number" />
                                                 {showInvaidLicense &&
-                                                    <div className="row mt-2" >
+                                                    <div className="row mt-2 ml-2" >
                                                         <span className="advanced_search placeholderfontsize regularfont">No Record Found Against this Plate Number!</span>
                                                     </div>
                                                 }
@@ -321,7 +309,7 @@ function Home() {
                                 {/* </Link> */}
                                 </div>
                             </div>
-                            <div className="row mt-2" >
+                            <div className="row mt-2 ml-2" >
                                 <span onClick={toggleAdvancedSearch} style={{ cursor: 'pointer' }} className="advanced_search placeholderfontsize regularfont">{toggleSearch ? 'Show less' : 'Advanced Search'}</span>
                             </div>
                         </form>

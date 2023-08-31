@@ -32,6 +32,8 @@ function Shop() {
     const [searchedProducts, setSearchedProducts] = useState<any>([]);
     const [searched, setSearched] = useState(false);
     const [pagination, setPagination] = useState<any>({});
+    const [pageRange, setPageRange] = useState<number[]>([]);
+
     //dummy value for triggering cart count in header
     const [dummy, setDummy] = useState<any>('');
 
@@ -114,13 +116,21 @@ function Shop() {
     }, [data]);
 
     const searchProducts = () => {
+        const pageRange = (pageCount: number): number[] => {
+            let start = 0, range = []
+            while (start !== pageCount) {
+                range.push(start+1)
+                start++
+            }
+            return range;
+        }
         APIs.searchProducts(selectedMake, selectedModel, selectedYear, selectedCategory).then((response: any) => {
-            console.log('response :>> ', response.data.data);
             setSearchedProducts(response.data.data);
-            setPagination(response.data.meta.pagination);
+            let pagination = response.data.meta.pagination
+            setPagination(pagination);
             setSearched(true);
-        })
-        .catch((error) => {
+            setPageRange(pageRange(pagination.pageCount));
+        }).catch((error) => {
             setError(error);
             setLoading(false);
         });
@@ -380,7 +390,7 @@ function Shop() {
                                         <div className="row g-4">
                                             {searchedProducts.map((product: any, index: any) => {
                                                 return (
-                                                    <div className="col-12 col-sm-6 col-lg-4  mb-4">
+                                                    <div className="col-12 col-sm-6 col-lg-4  mb-4" key={index}>
                                                         <div className="latest-prods card card-shadows">
                                                             <AppImage 
                                                                 src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
@@ -434,12 +444,21 @@ function Shop() {
                                         <div className="row mt-5">
                                             <div className="col text-center">
                                                 <ul className="pagination d-inline-flex">
-                                                    <li className="page-item"><a className="page-link border-0 regularfont mini-text-1 custom-color-4" href="#"><i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> Previous</a></li>
-                                                    {}
-                                                    <li className="page-item active"><a className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">1</a></li>
-                                                    {/* <li className="page-item"><a className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">2</a></li>
-                                                    <li className="page-item"><a className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">3</a></li> */}
-                                                    <li className="page-item"><a className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">Next <i className="fa fa-angle-right custom-color-3 mini-text-1 m-1"></i></a></li>
+                                                    <li className="page-item">
+                                                        <a className="page-link border-0 regularfont mini-text-1 custom-color-4" href="#">
+                                                    <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> Previous</a></li>
+                                                    {pageRange.map((page: number, idx: number) => {
+                                                        return (
+                                                            <li className={`page-item ${page === pagination.page ? 'active': ''}`}>
+                                                                <a className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">{page}</a>
+                                                            </li>
+                                                        )
+                                                    })}
+                                                    <li className="page-item">
+                                                        <a className="page-link border-0 custom-color-3 regularfont mini-text-1"
+                                                            href="#"
+                                                        >Next <i className="fa fa-angle-right custom-color-3 mini-text-1 m-1"></i></a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
