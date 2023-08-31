@@ -12,6 +12,7 @@ import Header_home from './header_/Header_home'
 import Header_home_logged_in from './header_/Header_home_logged_in';
 import { useRouter } from 'next/router';
 import APIs from '../services/apiService';
+import { BASE_URL } from 'configuration';
 
 function Home() {
     const router = useRouter();
@@ -54,25 +55,26 @@ function Home() {
                         setSelectedYear(response.data.data[0].attributes.year);
                         setToggleSearch(true);
                         setShowInvaidLicense(false);
-                    } else {
-                        axios.get('https://opendata.rdw.nl/resource/m9d7-ebf2.json?kenteken=' + licenseplate).then((data: any) => {
-                            let openAPIResponse = data.data;
-                            let year = '';
-                            if (openAPIResponse.length) {
-                                setToggleSearch(true);
-                                setShowInvaidLicense(false);
-                                year = openAPIResponse[0].datum_eerste_toelating_dt.substring(0, 4)
-                                setSelectedMake(openAPIResponse[0].merk);
-                                getModel(openAPIResponse[0].merk);
-                                setSelectedModel(openAPIResponse[0].handelsbenaming);
-                                getYear(openAPIResponse[0].merk, openAPIResponse[0].handelsbenaming);
-                                setSelectedYear(year);
-                                console.log(selectedMake, selectedModel, selectedYear);
-                            } else {
+                    } 
+                    else {
+                    //     axios.get('https://opendata.rdw.nl/resource/m9d7-ebf2.json?kenteken=' + licenseplate).then((data: any) => {
+                    //         let openAPIResponse = data.data;
+                    //         let year = '';
+                    //         if (openAPIResponse.length) {
+                    //             setToggleSearch(true);
+                    //             setShowInvaidLicense(false);
+                    //             year = openAPIResponse[0].datum_eerste_toelating_dt.substring(0, 4)
+                    //             setSelectedMake(openAPIResponse[0].merk);
+                    //             getModel(openAPIResponse[0].merk);
+                    //             setSelectedModel(openAPIResponse[0].handelsbenaming);
+                    //             getYear(openAPIResponse[0].merk, openAPIResponse[0].handelsbenaming);
+                    //             setSelectedYear(year);
+                    //             console.log(selectedMake, selectedModel, selectedYear);
+                    //         } else {
                                 setShowInvaidLicense(true);
                             }
-                        })
-                    }
+                    //     })
+                    // }
                 });
             }, 1000);
             return () => clearTimeout(getData);
@@ -333,7 +335,7 @@ function Home() {
                                     <div className="col-6 col-md-3" key={index}>
                                             <Link href={`/products_/${product?.id}`}>
                                         <div className="latest-prods card">
-                                                <AppImage src={'http://52.6.187.235:1337' + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} className="card-img-top" />
+                                                <AppImage src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} className="card-img-top" />
                                                 <div className="card-body">
                                                     <div className="row g-1">
                                                         <div className="col-12">

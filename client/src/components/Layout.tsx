@@ -28,7 +28,11 @@ function Layout(props: Props) {
 
     return (
         <div className={classes}>
-            <ToastContainer autoClose={5000} hideProgressBar />
+            <ToastContainer 
+                autoClose={5000} 
+                hideProgressBar
+                closeOnClick 
+            />
 
             <div className="site__container">
                 {/* <header className="site__mobile-header">

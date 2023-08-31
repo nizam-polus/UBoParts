@@ -1371,4 +1371,13 @@ button.search {
     .pointer{
         cursor: pointer;
     }
+    .add_to_cart{
+        transition: 0.1s;
+    }
+    .add_to_cart:hover {
+        background-color: #96ad8f;
+        padding: 0.4rem;
+        transition: 0.1s;
+        border-radius: 15%;
+    }
 }

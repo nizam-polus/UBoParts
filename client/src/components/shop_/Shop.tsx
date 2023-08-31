@@ -7,7 +7,12 @@ import AppImage from '../shared/AppImage';
 import Header_home from '../header_/Header_home';
 import Footer from '../footer_/Footer';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import APIs from '~/services/apiService';
+import { BASE_URL } from 'configuration';
+import Link from 'next/dist/client/link';
 
 function Shop() {
     
@@ -26,9 +31,10 @@ function Shop() {
     const [licenseplate, setLicenseplate] = useState('');
     const [searchedProducts, setSearchedProducts] = useState<any>([]);
     const [searched, setSearched] = useState(false);
-    const [showMessage, setShowMessage] = useState(false)
-    const [type, setType] = useState('success')
-    const [message, setMessage] = useState('')
+    const [pagination, setPagination] = useState<any>({});
+    //dummy value for triggering cart count in header
+    const [dummy, setDummy] = useState<any>('');
+
     const router = useRouter();
 
     const categoriesArray = (resData: any) => {
@@ -111,6 +117,7 @@ function Shop() {
         APIs.searchProducts(selectedMake, selectedModel, selectedYear, selectedCategory).then((response: any) => {
             console.log('response :>> ', response.data.data);
             setSearchedProducts(response.data.data);
+            setPagination(response.data.meta.pagination);
             setSearched(true);
         })
         .catch((error) => {
@@ -172,20 +179,14 @@ function Shop() {
             productprice: productData?.attributes?.price
         }
         APIs.addToCart(cartData).then(response => {
-            console.log(response);
-            setShowMessage(true);
-            setType('success')
-            setMessage('Items successfully added to cart')
-            setTimeout(() => {
-                setShowMessage(false)
-            }, 4000)
+            setDummy('dummy');
+            toast.success(() => (
+                <>
+                    Item successfully added to <Link href={"/cartpage"}>cart</Link>
+                </>
+            ))
         }).catch(err => {
-            setShowMessage(true)
-            setType('danger')
-            setMessage('Something went wrong')
-            setTimeout(() => {
-                setShowMessage(false)
-            }, 4000)
+            toast.error('Something went wrong!')
         })
     }
 
@@ -382,9 +383,9 @@ function Shop() {
                                                     <div className="col-12 col-sm-6 col-lg-4  mb-4">
                                                         <div className="latest-prods card card-shadows">
                                                             <AppImage 
-                                                                src={'http://52.6.187.235:1337' + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
-                                                                className="card-img-top img-prod-height" 
-                                                                style={{"cursor": "pointer"}} 
+                                                                src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
+                                                                className="card-img-top img-prod-height pointer" 
+                                                                style={{height: '20rem'}} 
                                                                 onClick={() => handleProductClick(product)}    
                                                             />
                                                             <div className="card-body">
@@ -409,7 +410,10 @@ function Shop() {
                                                                 </div> */}
                                                                     <div className="col-12 d-flex justify-content-between">
                                                                         <span className="product-price">€{product?.attributes?.price}</span>
-                                                                        <AppImage src="images/cart-svg.svg" style={{cursor: 'pointer'}} onClick={() => handleAddToCart(product)}/>
+                                                                        <AppImage src="images/cart-svg.svg" 
+                                                                            className='pointer add_to_cart'
+                                                                            onClick={() => handleAddToCart(product)}
+                                                                        />
                                                                         {/* <div className="input-group quanitity-box">
                                                                             <span className="input-group-btn plus-icon semifont">
                                                                                 <i className="fa fa-plus mini-text-0 mini-text-0-color" aria-hidden="true"></i>
@@ -431,9 +435,10 @@ function Shop() {
                                             <div className="col text-center">
                                                 <ul className="pagination d-inline-flex">
                                                     <li className="page-item"><a className="page-link border-0 regularfont mini-text-1 custom-color-4" href="#"><i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> Previous</a></li>
-                                                    <li className="page-item"><a className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">1</a></li>
-                                                    <li className="page-item active"><a className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">2</a></li>
-                                                    <li className="page-item"><a className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">3</a></li>
+                                                    {}
+                                                    <li className="page-item active"><a className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">1</a></li>
+                                                    {/* <li className="page-item"><a className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">2</a></li>
+                                                    <li className="page-item"><a className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">3</a></li> */}
                                                     <li className="page-item"><a className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">Next <i className="fa fa-angle-right custom-color-3 mini-text-1 m-1"></i></a></li>
                                                 </ul>
                                             </div>

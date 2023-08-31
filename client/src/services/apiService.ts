@@ -1,8 +1,13 @@
 import { DataService as ds } from "./dataService";
+import { BASE_URL } from "configuration";
 
-const BACKEND_URL = 'http://52.6.187.235:1337/api/'
+const BACKEND_URL = BASE_URL + '/api/'
 
 const APIs = {
+
+    auth: (userdata: {}) => ds.post(BACKEND_URL + 'auth/local', userdata),
+
+    register: (userdata: {}) => ds.post(BACKEND_URL + 'auth/local/register', userdata),
 
     getCarDetailsUsingLicence: (licenseplate: string) => ds.get(BACKEND_URL + `cardetails?populate=*&filters[licenseplate][$contains]=${licenseplate}`),
 

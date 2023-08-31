@@ -6,7 +6,11 @@ import Header_logged_in from '../header_/Header-logged-in';
 import Footer from '../footer_/Footer';
 import { useRouter } from 'next/router';
 import Link from 'next/dist/client/link';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import APIs from '~/services/apiService';
+import { BASE_URL } from 'configuration';
 
 function Productsingle() {
 
@@ -16,9 +20,8 @@ function Productsingle() {
     const [productImage, setProductImage] = useState<any>({})
     const [productGallery, setProductGallery] = useState([])
     const [quantity, setQuantity] = useState(1)
-    const [showMessage, setShowMessage] = useState(false)
-    const [type, setType] = useState('success')
-    const [message, setMessage] = useState('')
+    //dummy value for triggering cart count in header
+    const [dummy, setDummy] = useState<any>('')
 
     useEffect(() => {
         APIs.getProduct(id).then(response => {
@@ -44,20 +47,14 @@ function Productsingle() {
             productprice: productData?.attributes?.price
         }
         APIs.addToCart(cartData).then(response => {
-            console.log(response);
-            setShowMessage(true);
-            setType('success')
-            setMessage('Items successfully added to cart')
-            setTimeout(() => {
-                setShowMessage(false)
-            }, 4000)
+            setDummy('dummy');
+            toast.success(() => (
+                <>
+                    Item successfully added to <Link href={"/cartpage"}>cart</Link>
+                </>
+            ))
         }).catch(err => {
-            setShowMessage(true)
-            setType('danger')
-            setMessage('Something went wrong')
-            setTimeout(() => {
-                setShowMessage(false)
-            }, 4000)
+            toast.error('Something went wrong!')
         })
     }
     
@@ -71,7 +68,7 @@ function Productsingle() {
                         <div className="row">
                             <div className="col-12 col-md-6 col-lg-4">
                                 <div className="row">
-                                <AppImage className="rounded w-100" src={"http://52.6.187.235:1337" + productImage}/>
+                                <AppImage className="rounded w-100" src={BASE_URL + productImage}/>
                                 </div>
                                 <div className="row product-thumbnails g-3 mt-3 justify-content-center">
                                 {productGallery.map((galleryImg: any) => {
@@ -80,7 +77,7 @@ function Productsingle() {
                                             style={{"cursor": "pointer"}}
                                             onClick={() => handleImageChange(galleryImg?.attributes?.url)}
                                         >
-                                            <img className="rounded" src={"http://52.6.187.235:1337" + galleryImg?.attributes?.url}/>
+                                            <img className="rounded" src={BASE_URL + galleryImg?.attributes?.url}/>
                                         </div>
                                     )
                                 })}
