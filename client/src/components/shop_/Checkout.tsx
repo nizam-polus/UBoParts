@@ -7,6 +7,7 @@ function Checkout() {
 
     const [checkoutProducts, setCheckoutProducts]: any = useState([])
     const [total, setTotal]: any = useState(0)
+    const [shippingCost, setShippingCost] = useState<number>(12)
 
     useEffect(() => {
         APIs.getCartData({customerid: '2'}).then(response => {
@@ -18,6 +19,7 @@ function Checkout() {
                 for (const obj of response.data.rows) {
                     total += obj.total_price;
                 }
+                total = total ? total += shippingCost : total;
                 console.log('total :>> ', total);
                 setTotal(total);
             }
@@ -201,7 +203,7 @@ function Checkout() {
                                             </tr>
                                             <tr>
                                                 <td className="pb-1 pt-0 pl-3 regularfont mini-text-2 border-0"><span>Shipping Cost</span></td>
-                                                <td className="pb-1 pt-0 pr-4 regularfont mini-text-2 border-0 text-right"><span>€{12}</span></td>
+                                                <td className="pb-1 pt-0 pr-4 regularfont mini-text-2 border-0 text-right"><span>€{shippingCost}</span></td>
                                             </tr>
                                             <tr>
                                                 <td className="pb-1 pt-2 pr-0 pl-3 semifont boldfontsize border-top-0"> <hr className="p-0 m-0 " /></td>
@@ -209,7 +211,7 @@ function Checkout() {
                                             </tr>
                                             <tr>
                                                 <td className="pb-2 pt-1 px-3 semifont body-sub-titles-1 fw-bold border-0">Total</td>
-                                                <td className="pb-2 pt-1 pr-4 semifont body-sub-titles-1 fw-bold border-0 text-right">€{total + 12}</td>
+                                                <td className="pb-2 pt-1 pr-4 semifont body-sub-titles-1 fw-bold border-0 text-right">€{total}</td>
                                             </tr>
                                             <tr  className="single">
                                                 

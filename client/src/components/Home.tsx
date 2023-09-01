@@ -46,13 +46,13 @@ function Home() {
         if (licenseplate && licenseplate.length > 5) {
             const getData = setTimeout(() => {
                 APIs.getCarDetailsUsingLicence(licenseplate).then((response: any) => {
-                    if (response.data.data.length) {
-                        setSelectedMake(response.data.data[0].attributes.make);
-                        console.log('response.data.data[0].attributes.make :>> ', response.data.data[0].attributes.make);
-                        getModel(response.data.data[0].attributes.make);
-                        setSelectedModel(response.data.data[0].attributes.model);
-                        getYear(response.data.data[0].attributes.make, response.data.data[0].attributes.model);
-                        setSelectedYear(response.data.data[0].attributes.year);
+                    if (response.data.licenseplate) {
+                        setSelectedMake(response.data.make);
+                        console.log('response.data.data[0].attributes.make :>> ', response.data.make);
+                        getModel(response.data.make);
+                        setSelectedModel(response.data.model);
+                        getYear(response.data.make, response.data.model);
+                        setSelectedYear(response.data.year);
                         setToggleSearch(true);
                         setShowInvaidLicense(false);
                     } 

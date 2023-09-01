@@ -9,7 +9,7 @@ const APIs = {
 
     register: (userdata: {}) => ds.post(BACKEND_URL + 'auth/local/register', userdata),
 
-    getCarDetailsUsingLicence: (licenseplate: string) => ds.get(BACKEND_URL + `cardetails?populate=*&filters[licenseplate][$contains]=${licenseplate}`),
+    getCarDetailsUsingLicence: (licenseplate: string) => ds.post(BACKEND_URL + `cardetail-external-internal`, {licenseplate: licenseplate}),
 
     getCarDetails: () => ds.get(BACKEND_URL + 'cardetails?populate=*&pagination[page]=1&pagination[pageSize]=1000&sort[0]=licenseplate:asc'),
 
