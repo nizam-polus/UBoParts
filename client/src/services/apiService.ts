@@ -1,3 +1,4 @@
+import axios from "axios";
 import { DataService as ds } from "./dataService";
 import { BASE_URL } from "configuration";
 
@@ -5,7 +6,7 @@ const BACKEND_URL = BASE_URL + '/api/'
 
 const APIs = {
 
-    auth: (userdata: {}) => ds.post(BACKEND_URL + 'auth/local', userdata),
+    auth: (userdata: {}) => axios.post(BACKEND_URL + 'auth/local', userdata),
 
     register: (userdata: {}) => ds.post(BACKEND_URL + 'auth/local/register', userdata),
 
@@ -28,6 +29,8 @@ const APIs = {
         )
     },
 
+    getAllProducts: () => ds.get(BACKEND_URL + 'products?populate=*'),
+
     addToCart: (cartData: {}) => ds.post(BACKEND_URL + 'cartdata', cartData),
 
     getProduct: (id: any) => ds.get(BACKEND_URL + 'products/' + id + '?populate=*'),
@@ -39,6 +42,10 @@ const APIs = {
     deleteCartData: (deleteItem: {}) => ds.post(BACKEND_URL + 'deletecartdata', deleteItem),
 
     cartPayment: (productsData: {}) => ds.post(BACKEND_URL + 'Payment-opp', productsData),
+
+    paymentStatus: (transactionId: string) => ds.post(BACKEND_URL + 'payment-status-get', {transactionid: transactionId}),
+
+    paymentUpdate: () => ds.post(BACKEND_URL + 'payment-status-update', )
 
 }
 

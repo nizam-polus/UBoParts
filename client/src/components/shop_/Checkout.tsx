@@ -7,7 +7,7 @@ function Checkout() {
 
     const [checkoutProducts, setCheckoutProducts]: any = useState([])
     const [total, setTotal]: any = useState(0)
-    const [shippingCost, setShippingCost] = useState<number>(12)
+    const [shippingCost, setShippingCost] = useState<number>(0)
 
     useEffect(() => {
         APIs.getCartData({customerid: '2'}).then(response => {
@@ -43,8 +43,10 @@ function Checkout() {
         });
         let totalPrice = typeof (total) == 'string' ? Number(total) * 100 : total * 100
         APIs.cartPayment({products: cartData, total_price: totalPrice}).then(response => {
-            console.log(response);
+            console.log('payment response: >> ', response);
             let redirectUrl = response.data.redirect_url
+            let transactionId = response.data.uid
+            localStorage.setItem('uid', transactionId);
             window.location.assign(redirectUrl);
         }).catch(err => console.log(err));
     }

@@ -79,6 +79,13 @@ function Shop() {
             setTimeout(() => {
                 searchProducts();
             }, 2000);
+        } else {
+            APIs.getAllProducts().then(response => {
+                let pagination = response.data.meta.pagination;
+                setPageRange(pageRangeFinder(pagination.pageCount));
+                setPagination(pagination);
+                setSearchedProducts(response.data.data);
+            })
         }
     }, [selectedMake, selectedModel, selectedYear, selectedCategory]);
 
@@ -115,21 +122,22 @@ function Shop() {
         setYearArray(optionsArray('year'));
     }, [data]);
 
-    const searchProducts = () => {
-        const pageRange = (pageCount: number): number[] => {
-            let start = 0, range = []
-            while (start !== pageCount) {
-                range.push(start+1)
-                start++
-            }
-            return range;
+    const pageRangeFinder = (pageCount: number) => {
+        let start = 0, range = []
+        while (start !== pageCount) {
+            range.push(start+1)
+            start++
         }
+        return range;
+    }
+
+    const searchProducts = () => {
         APIs.searchProducts(selectedMake, selectedModel, selectedYear, selectedCategory).then((response: any) => {
             setSearchedProducts(response.data.data);
             let pagination = response.data.meta.pagination
             setPagination(pagination);
             setSearched(true);
-            setPageRange(pageRange(pagination.pageCount));
+            setPageRange(pageRangeFinder(pagination.pageCount));
         }).catch((error) => {
             setError(error);
             setLoading(false);
