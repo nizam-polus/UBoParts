@@ -8,7 +8,7 @@ function Profile() {
     return (
     
         <> 
-            <div className="page_header">
+            <div className="page_header"> 
                 <Header_home />
             </div>
             <div className="main-body pb-2 mb-5">
