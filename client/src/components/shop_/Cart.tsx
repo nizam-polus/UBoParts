@@ -5,6 +5,7 @@ import Header_home from '../header_/Header_home';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import APIs from '~/services/apiService';
+import { BASE_URL } from 'configuration';
 
 function Cart() {
     
@@ -109,7 +110,7 @@ function Cart() {
                                             {cartProducts && cartProducts.map((product: any, index: any) => {
                                                 return (<tr>
                                                     <td className="p-3 text-center">
-                                                        <AppImage src="images/cat-prod-1.svg" className="rounded" />
+                                                        <AppImage src={BASE_URL + product.url} className="rounded" />
                                                     </td>
                                                     <td className="p-3 custom-color-3 regularfont mini-text-2">
                                                         <div>
@@ -184,7 +185,7 @@ function Cart() {
                                                 </button>
                                             </td></tr>
                                             <tr>
-                                                <td className="advanced_search pb-2 pt-0 pr-0 pl-4 semifont mini-text-1 border-top-0">* Shipping cost will be added</td>
+                                                <td className="advanced_search pb-2 pt-0 pr-0 pl-4 semifont mini-text-1 border-top-0">* Shipping cost will be extra</td>
                                             </tr>
                                         </tbody>
                                     </table>

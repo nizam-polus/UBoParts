@@ -69,8 +69,8 @@ function Home() {
         }
     }, [licenseplate]);
 
-    const geUserDetails = (userdetails: any) => {
-        console.log("userdetails", userdetails)
+    const geUserDetails = () => {
+        return localStorage.getItem('useruserdetails')
     }
 
     const showForgotPassword = () => {
