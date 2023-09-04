@@ -22,7 +22,7 @@
       "type": "string"
     },
     "year": {
-      "type": "biginteger"
+      "type": "integer"
     },
     "products": {
       "type": "relation",
