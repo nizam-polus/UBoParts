@@ -20,53 +20,59 @@ function Login(props: any) {
         username: '',
         password: ''
     });
+    const [loginmodal, setLoginModal] = useState<boolean>(true);
+    const [forgotPasswordIsOpen, setForgotPasswordIsOpen] = useState<boolean>(false);
+    const [registerIsOpen, setRegisterIsOpen] = useState<boolean>(false);
+    const [invalidinput, setInvalidInput] = useState<boolean>(false);
+    const [invalidCred, setInvalidCred] = useState<boolean>(false);
 
     const onLoginFormDataChange = (event: any) => {
         event.preventDefault();
-
         setLoginFormData({
             ...loginformData,
-            [event.target.name]: event.target.value
-            
+            [event.target.name]: event.target.value 
         });
-        
     }
 
-       
     const onFormSubmit = async (event: any) => {
         event.preventDefault();
-
-        console.log('Form data submitted:', loginformData);
         try {
-                const userdata = { 'identifier': loginformData.username, 'password': loginformData.password }
+            if (loginformData.username && loginformData.password) {
+                setInvalidCred(false);
+                setInvalidInput(false);
+                const userdata = {...{ identifier: loginformData.username, password: loginformData.password }}
                 APIs.auth(userdata).then((response: any) => {
-                    localStorage.setItem('usertoken', JSON.stringify(response.data.jwt));
-                    localStorage.setItem('userdetails', JSON.stringify(response.data.user));
+                    if (response.data.error && response.data.error.status >= 400 && response.data.error.status <= 403) {
+                        setInvalidCred(true);
+                    } else {
+                        localStorage.setItem('usertoken', JSON.stringify(response.data.jwt));
+                        localStorage.setItem('userdetails', JSON.stringify(response.data.user));
+                        const currentPagePath = router.pathname;
+                        const targetPath = '/homepage';
+                        if (currentPagePath === targetPath) {
+                            // Refresh the page
+                            window.location.reload();
+                        } else {
+                            // Redirect to the target path
+                            router.push(targetPath);
+                        }
+                        router.push(targetPath);
+                        const isEmpty = { username: "", password: ""};
+                        setLoginFormData(isEmpty);
+                    }
                     // props.geUserDetails(response.data.jwt);
                 })
                 .catch((error) => {
-                    console.log(error);
+                    setInvalidCred(true)
+                    console.log('error ', error);
                 });
-                const isEmpty = { username: "", password: ""};
-                setLoginFormData(isEmpty);
-                
-                const currentPagePath = router.pathname;
-                const targetPath = '/homepage';
-                if (currentPagePath === targetPath) {
-                    // Refresh the page
-                    window.location.reload();
-                } else {
-                    // Redirect to the target path
-                    router.push(targetPath);
-                }
-                // router.push(targetPath);
-          
+            } else {
+                setInvalidInput(true)
+            }
         } catch (error) {
             console.error('Login failed:', error);
         }
     };
-
-    const [loginmodal, setLoginModal] = useState(true);
 
     const {
         isOpen = false,
@@ -76,7 +82,8 @@ function Login(props: any) {
     const toggle = useCallback(() => {
         if (isOpen && onClose) {
             onClose();
-            
+            setInvalidCred(false);
+            setInvalidInput(false);
         }
     }, [isOpen, onClose]);
 
@@ -86,8 +93,6 @@ function Login(props: any) {
         }
     }, [isOpen]);
 
-
-    const [forgotPasswordIsOpen, setForgotPasswordIsOpen] = useState(false);
     const showForgotPassword = () => {
         setForgotPasswordIsOpen(true);
 
@@ -98,8 +103,6 @@ function Login(props: any) {
         
     };
 
-
-    const [registerIsOpen, setRegisterIsOpen] = useState(false);
     const showRegister = () => {
         setRegisterIsOpen(true);
         setLoginModal(false);
@@ -110,23 +113,17 @@ function Login(props: any) {
         setLoginModal(true); 
     };
 
-
     return (
         <>  
             <Forgotpass
-
                 isOpen={forgotPasswordIsOpen}
                 onClose={onForgotPasswordClose}
-
             />
-    
             <Register
-
                 isOpen={registerIsOpen}
                 onClose={onRegisterClose}
                 geUserDetails={props.geUserDetails}
             />
-            
             {loginmodal &&
                 <Modal isOpen={isOpen} toggle={toggle} centered className="ac-modal">
                     <div id="loginmodal">
@@ -140,20 +137,47 @@ function Login(props: any) {
                                             <form action="/action_page.php">
                                                 <div className="form-group marginb40">
                                                     <label htmlFor="email" className="body-sub-titles-1 mediumfont">Email address</label>
-                                                    <input type="email" className="form-control body-sub-titles-1 mediumfont inputformtxt" id="email" name="username" placeholder="Enter your email" value={loginformData.username} onChange={onLoginFormDataChange}/>
+                                                    <input type="email" 
+                                                        className="form-control body-sub-titles-1 mediumfont inputformtxt" 
+                                                        id="email" name="username" 
+                                                        placeholder="Enter your email" 
+                                                        value={loginformData.username} 
+                                                        onChange={onLoginFormDataChange}
+                                                    />
                                                 </div>
                                                 <div className="form-group marginb40">
                                                     <label htmlFor="password" className="body-sub-titles-1 mediumfont">Password</label>
-                                                    <input type="password" className="form-control body-sub-titles-1 mediumfont inputformtxt" id="password" name="password" placeholder="Enter your password" value={loginformData.password} onChange={onLoginFormDataChange}/>                                            </div>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="remember_me" className='rounded' /><span className="remember_me body-sub-titles-1 lightfont inputformtxt">Remember me</span>
-                                                    <button type="button" id="forgot_password" className="body-sub-titles-1 mediumfont" onClick={showForgotPassword}>Forgot Password</button>
+                                                    <input type="password" 
+                                                        className="form-control body-sub-titles-1 mediumfont inputformtxt" 
+                                                        id="password" name="password" 
+                                                        placeholder="Enter your password" 
+                                                        value={loginformData.password} 
+                                                        onChange={onLoginFormDataChange}
+                                                    />
                                                 </div>
-                                                <button type="submit" className="btn btn-default body-sub-titles-1 mediumfont" onClick={onFormSubmit}>Login</button>
+                                                <div className="form-group">
+                                                    <input type="checkbox" name="remember_me" 
+                                                        className='rounded' 
+                                                    />
+                                                    <span className="remember_me body-sub-titles-1 lightfont inputformtxt">Remember me</span>
+                                                    <button type="button" id="forgot_password" 
+                                                        className="body-sub-titles-1 mediumfont" 
+                                                        onClick={showForgotPassword}
+                                                    >Forgot Password?</button>
+                                                </div>
+                                                <button type="submit" className="btn btn-default body-sub-titles-1 mediumfont" onClick={(e) => onFormSubmit(e)}>Login</button>
                                             </form>
                                         </div>
-                                        <div className="ac-card-footer text-center">
-                                            <p className="body-sub-titles-1 mediumfont"><span className="lightfont">Don't have an account? </span><button type="button" id="forgot_password" className="body-sub-titles-1 mediumfont" onClick={showRegister}>Register</button></p>
+                                        {invalidinput ? <p className='mini-text-2 mt-1' style={{color: 'rgb(255 102 102)'}}>Please enter your email & password</p> : invalidCred ? 
+                                            <p className='mini-text-2 mt-1' style={{color: 'rgb(255 102 102)'}}>Invalid credentials</p> : undefined}
+                                        <div className="ac-card-footer mt-2">
+                                            <p className="body-sub-titles-1 mediumfont">
+                                                <span className="lightfont">Don't have an account? </span>
+                                                <button type="button" id="forgot_password" 
+                                                    className="body-sub-titles-1 mediumfont" 
+                                                    onClick={showRegister}
+                                                >Register</button>
+                                            </p>
                                         </div>
                                     </div>
                                 </div>

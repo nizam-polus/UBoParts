@@ -5,6 +5,8 @@ import AppImage from '../shared/AppImage';
 import Forgotpass from '../forgot/Forgotpass';
 import Login from '../account_/Login';
 import { useRouter } from 'next/router';
+import Link from 'next/dist/client/link';
+import APIs from '~/services/apiService';
 
 
 
@@ -29,12 +31,21 @@ function Header_home(props: any) {
 
     const [isOpen, setIsOpen] = useState(false);
     const [isLoggedin, setIsLoggedin] = useState(true);
+    const [cartCount, setCartCount] = useState(0)
+
+    useEffect(() => {
+        APIs.getCartData({customerid: '2'}).then(response => {
+            if (!response.data.error) {
+                let totalCartItem = response.data.rows.length;
+                setCartCount(totalCartItem)
+            }
+        }).catch((error) => console.log(error));
+    })
 
     const logout = () => {
         localStorage.removeItem('usertoken');
         localStorage.removeItem('userdetails');
         setUserToken('');
-       
         setIsLoggedin(false);
         router.push('/homepage');
     };
@@ -49,29 +60,40 @@ function Header_home(props: any) {
                         </div>
                         <div className="bar w-100">
                             <ul>
-                                <li className="menu_font_size regularfont"><a href="/homepage">Home</a></li>
-                                <li className="menu_font_size regularfont"><a href="/shop">Shop</a></li>
-                                <li className="menu_font_size regularfont"><a href="/about_us_">About us</a></li>
-                                <li className="menu_font_size regularfont"><a href="/request">Request</a></li>
-                                <li className="menu_font_size regularfont"><a href="/dismantle_car">Dismantle Car</a></li>
+                                <li className="menu_font_size regularfont"><Link href="/homepage">Home</Link></li>
+                                <li className="menu_font_size regularfont"><Link href="/shop">Shop</Link></li>
+                                <li className="menu_font_size regularfont"><Link href="/about_us_">About us</Link></li>
+                                <li className="menu_font_size regularfont"><Link href="/request">Request</Link></li>
+                                <li className="menu_font_size regularfont"><Link href="/dismantle_car">Dismantle Car</Link></li>
                                 {!userToken && <li className="menu_font_size regularfont"><button type="button" onClick={showLoginModal} className="ub_login">Login</button></li>}
                                 {/*props.userToken && <li className="menu_font_size regularfont"> 
                                 <a href=""><AppImage src="/images/svg/my-account.svg" className="my-account"/></a></li>*/}
                             </ul>
                         </div>
-                        {userToken && <div className="bar w-27 d-flex flex-row">
-                            <div>
-                                <button className="btn border-0 menu_font_size regularfont menu-color" onClick={() => setIsOpen(!isOpen)}>My Account</button>
-                                {isOpen && (
-                                    <div className='position-absolute menu-dropdown'>
-                                        <div className='dropdownitem'><a className='menu_font_size regularfont'>Profile</a></div>
-                                        <div className='dropdownitem'><a className='menu_font_size regularfont' onClick={logout}>Logout</a></div>
-                                    </div>
-                                )}
-                            </div>
-                            <a href=""><AppImage src="/images/svg/my-account.svg" className="my-account"/></a>
-                            <li><AppImage src="/images/svg/cart-white.svg"/><span className="count">0</span></li>
-                        </div>   }  
+                        {userToken && 
+                            <div className="bar w-27 d-flex flex-row">
+                                <div>
+                                    <button className="btn border-0 menu_font_size regularfont menu-color" onClick={() => setIsOpen(!isOpen)}>My Account</button>
+                                    {isOpen && (
+                                        <div className='position-absolute menu-dropdown'>
+                                            <div className='dropdownitem'>
+                                                <span className='menu_font_size regularfont pointer' 
+                                                    onClick={() => router.push('/profile_')}
+                                                >Profile</span>
+                                            </div>
+                                            <div className='dropdownitem'>
+                                                <span className='menu_font_size regularfont pointer' 
+                                                    style={{zIndex: 2, position: 'relative'}} 
+                                                    onClick={logout}
+                                                >Logout</span>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                                <span className=''><AppImage src="/images/svg/my-account.svg" className="my-account"/></span>
+                                <li className='mt-1'><a href="/cartpage"><AppImage src="/images/cart-white.svg"/><span className="home_count">{cartCount}</span></a></li>
+                            </div>   
+                        }  
                     </div>
                 </div>
             </header>
