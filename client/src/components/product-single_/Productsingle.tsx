@@ -234,7 +234,7 @@ function Productsingle() {
                                             <div className="col-12">
                                                 <span className="product-name regularfont">Mercedes sprinter achter as</span>
                                             </div>
-                                            <div className="col-12">
+                                            {/* <div className="col-12">
                                                 <span className="ratings">
                                                     <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
                                                     <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
@@ -242,7 +242,7 @@ function Productsingle() {
                                                     <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
                                                 </span>
                                                 <span className="rating-count regularfont mini-text-1">675</span>
-                                            </div>
+                                            </div> */}
                                             <div className="col-12 d-flex justify-content-between">
                                                 <span className="product-price">€230</span>
                                                  <AppImage src="/images/cart-svg.svg"/>
@@ -262,7 +262,7 @@ function Productsingle() {
                                             <div className="col-12">
                                                 <span className="product-name regularfont">Mercedes sprinter achter as</span>
                                             </div>
-                                            <div className="col-12">
+                                            {/* <div className="col-12">
                                                 <span className="ratings">
                                                     <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
                                                     <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
@@ -270,7 +270,7 @@ function Productsingle() {
                                                     <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
                                                 </span>
                                                 <span className="rating-count regularfont mini-text-1">675</span>
-                                            </div>
+                                            </div> */}
                                             <div className="col-12 d-flex justify-content-between">
                                                 <span className="product-price">€230</span>
                                                  <AppImage src="/images/cart-svg.svg"/>
@@ -290,7 +290,7 @@ function Productsingle() {
                                             <div className="col-12">
                                                 <span className="product-name regularfont">Mercedes sprinter achter as</span>
                                             </div>
-                                            <div className="col-12">
+                                            {/* <div className="col-12">
                                                 <span className="ratings">
                                                     <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
                                                     <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
@@ -298,7 +298,7 @@ function Productsingle() {
                                                     <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
                                                 </span>
                                                 <span className="rating-count regularfont mini-text-1">675</span>
-                                            </div>
+                                            </div> */}
                                             <div className="col-12 d-flex justify-content-between">
                                                 <span className="product-price">€230</span>
                                                  <AppImage src="/images/cart-svg.svg"/>
@@ -318,7 +318,7 @@ function Productsingle() {
                                             <div className="col-12">
                                                 <span className="product-name regularfont">Mercedes sprinter achter as</span>
                                             </div>
-                                            <div className="col-12">
+                                            {/* <div className="col-12">
                                                 <span className="ratings">
                                                     <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
                                                     <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
@@ -326,7 +326,7 @@ function Productsingle() {
                                                     <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
                                                 </span>
                                                 <span className="rating-count regularfont mini-text-1">675</span>
-                                            </div>
+                                            </div> */}
                                             <div className="col-12 d-flex justify-content-between">
                                                 <span className="product-price">€230</span>
                                                  <AppImage src="/images/cart-svg.svg"/>

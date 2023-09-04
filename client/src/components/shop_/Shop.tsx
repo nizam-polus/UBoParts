@@ -530,7 +530,7 @@ function Shop() {
 
                                             </div>
                                         </div>
-                                        <div className="row mb-2">
+                                        {/* <div className="row mb-2">
                                             <button className="btn coulmn-bg-color-1 border-0 text-start justify-content-between d-flex align-items-center">
                                                 <span>Ratings</span><i className="fa fa-angle-up"></i>
                                             </button>
@@ -572,7 +572,7 @@ function Shop() {
                                                     <span className="rating-count regularfont mini-text-1">& up</span>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> */}
                                         <div className="row mb-2">
                                             <button className="btn coulmn-bg-color-1 border-0 text-start justify-content-between d-flex align-items-center">
                                                 <span>Brands</span><i className="fa fa-angle-up"></i>
