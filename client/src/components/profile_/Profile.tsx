@@ -65,7 +65,7 @@ function Profile() {
                                                 <tr className="double">
                                                     <td className='pl-5 pr-xl-3 pr-md-3 pr-5 pt-3 pb-2'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">First Name</label>
-                                                        <input type="text" 
+                                                        <input type="text" value={firstname}
                                                             className={`form-control input-bg-color-2 products-name ${incomplete && !firstname ? 'required-field' : 'border-0' }`}
                                                             name="first-name" placeholder="First Name"
                                                             onChange={(e) => setFirstname(e.target.value)}
@@ -73,7 +73,7 @@ function Profile() {
                                                     </td>
                                                     <td className='pr-5 pl-xl-3 pl-md-3 pl-5 pt-3 pb-2'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Last Name</label>
-                                                        <input type="text" 
+                                                        <input type="text" value={lastname}
                                                             className={`form-control input-bg-color-2 products-name ${incomplete && !lastname ? 'required-field' : 'border-0' }`}
                                                             name="last-name" placeholder="Last Name"
                                                             onChange={(e) => setLastname(e.target.value)}
@@ -83,7 +83,7 @@ function Profile() {
                                                 <tr className="double">
                                                     <td className="pl-5 pr-xl-3 pr-md-3 pr-5 pb-0 pb-xl-5 pb-md-5 border-0">
                                                         <label className="custom-color-2 regularfont products-name pb-2">Email Address</label>
-                                                        <input type="text" 
+                                                        <input type="text" value={email}
                                                             className={`form-control input-bg-color-2 products-name ${incomplete && !email ? ' required-field' : 'border-0' }`} 
                                                             name="email-address" placeholder="Email Address"
                                                             onChange={(e) => setEmail(e.target.value)}
@@ -91,7 +91,7 @@ function Profile() {
                                                     </td>
                                                     <td className="pr-5 pl-xl-3 pl-md-3 pl-5 pb-5 pb-xl-5 pb-md-5 border-0">
                                                         <label className="custom-color-2 regularfont products-name pb-2">Phone</label>
-                                                        <input type="text" 
+                                                        <input type="text" value={phone}
                                                             className={`form-control input-bg-color-2 products-name ${incomplete && !phone ? ' required-field' : 'border-0' }`} 
                                                             name="phone" placeholder="(XXX) XXX-XXXX"
                                                             onChange={(e) => setPhone(e.target.value)}
@@ -119,14 +119,14 @@ function Profile() {
                                                     <td colSpan={2}>
                                                         <div className="mb-3 px-3 pt-2">
                                                             <label className="custom-color-2 regularfont products-name pb-2">Street Address</label>
-                                                            <input type="text" 
+                                                            <input type="text" value={address_1}
                                                                 className={`form-control input-bg-color-2 products-name ${incomplete && !address_1 ? ' required-field' : 'border-0' }`} 
                                                                 name="street-name" placeholder="House number and street name"
                                                                 onChange={(e) => setAddress_1(e.target.value)}
                                                             />
                                                         </div>
                                                         <div className='px-3'>
-                                                            <input type="text" 
+                                                            <input type="text" value={address_2}
                                                                 className="form-control input-bg-color-2 border-0 products-name" 
                                                                 name="apertment" placeholder="Apartment, suite, unit etc..."
                                                                 onChange={(e) => setAddress_2(e.target.value)}
@@ -137,7 +137,7 @@ function Profile() {
                                                 <tr className="double">
                                                     <td className='pl-5 pr-xl-3 pr-md-3 pr-5'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">City</label>
-                                                        <input type="text" 
+                                                        <input type="text" value={city}
                                                             className={`form-control input-bg-color-2 products-name ${incomplete && !city ? ' required-field' : 'border-0' }`}
                                                             name="city" placeholder="City"
                                                             onChange={(e) => setCity(e.target.value)}
@@ -145,7 +145,7 @@ function Profile() {
                                                     </td>
                                                     <td className='pr-5 pl-xl-3 pl-md-3 pl-5'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">State</label>
-                                                        <input type="text" 
+                                                        <input type="text" value={state}
                                                             className={`form-control input-bg-color-2 products-name ${incomplete && !state ? ' required-field' : 'border-0' }`} 
                                                             name="state" placeholder="State"
                                                             onChange={(e) => setState(e.target.value)}
@@ -155,7 +155,7 @@ function Profile() {
                                                 <tr className="double">
                                                     <td className="pb-0 pb-xl-5 pb-md-5 pl-5 pr-xl-3 pr-md-3 pr-5">
                                                         <label className="custom-color-2 regularfont products-name pb-2">Country</label>
-                                                        <input type="text" 
+                                                        <input type="text" value={country}
                                                             className={`form-control input-bg-color-2 products-name ${incomplete && !country ? ' required-field' : 'border-0' }`} 
                                                             name="country" placeholder="Country"
                                                             onChange={(e) => setCountry(e.target.value)}
@@ -163,7 +163,7 @@ function Profile() {
                                                     </td>
                                                     <td className="pb-5 pr-5 pl-xl-3 pl-md-3 pl-5">
                                                         <label className="custom-color-2 regularfont products-name pb-2">Postcode</label>
-                                                        <input type="text" 
+                                                        <input type="text" value={postcode}
                                                             className={`form-control input-bg-color-2 products-name ${incomplete && !postcode ? ' required-field' : 'border-0' }`}
                                                             name="postcode" placeholder="Postcode"
                                                             onChange={(e) => setPostcode(e.target.value)}
