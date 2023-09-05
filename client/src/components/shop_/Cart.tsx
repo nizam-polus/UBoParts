@@ -178,7 +178,7 @@ function Cart() {
                                             </tr>
                                             <tr><td colSpan={2} className="px-3 pt-3 pb-2 w-100">
                                                 <button type="button" className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1">
-                                                    <AppLink href="/checkoutpage" className="custom-color-7">
+                                                    <AppLink href={`${cartProducts.length ? '/checkoutpage' : '/cartpage'}`} className="custom-color-7">
                                                         <button type="button" className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"
                                                         >Proceed to checkout</button>
                                                     </AppLink>
