@@ -95,7 +95,7 @@ function Checkout() {
                                                 <tr className="double">
                                                     <td>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">First Name</label>
-                                                        <input type="text" 
+                                                        <input type="text" value={firstname}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !firstname ? 'required-field' : 'border-0' }`} 
                                                             name="first-name" placeholder="Mark"
                                                             onChange={(e) => setFirstname(e.target.value)}
@@ -103,7 +103,7 @@ function Checkout() {
                                                     </td>
                                                     <td>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Last Name</label>
-                                                        <input type="text" 
+                                                        <input type="text" value={lastname}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !lastname ? 'required-field' : 'border-0' }`} 
                                                             name="last-name" placeholder="Twain"
                                                             onChange={(e) => setLastname(e.target.value)}
@@ -113,7 +113,7 @@ function Checkout() {
                                                 <tr className="single">
                                                     <td colSpan={2}>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Company Name (Optional)</label>
-                                                        <input type="text" 
+                                                        <input type="text" value={company}
                                                             className="check-form form-control input-bg-color-2 border-0 body-sub-titles" 
                                                             name="company-name" placeholder="Company Name"
                                                             onChange={(e) => setCompany(e.target.value)}
@@ -123,7 +123,7 @@ function Checkout() {
                                                 <tr className="single">
                                                     <td colSpan={2}>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Country</label>
-                                                        <input type="text" 
+                                                        <input type="text" value={country}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !country ? 'required-field' : 'border-0' }`} 
                                                             name="country" placeholder="Select Country..."
                                                             onChange={(e) => setCountry(e.target.value)}
@@ -134,14 +134,14 @@ function Checkout() {
                                                     <td colSpan={2}>
                                                         <div className="mb-3">
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Street Address</label>
-                                                            <input type="text" 
+                                                            <input type="text" value={address_1}
                                                                 className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !address_1 ? 'required-field' : 'border-0' }`}  
                                                                 name="street-name" placeholder="House number and street name"
                                                                 onChange={(e) => setAddress_1(e.target.value)}
                                                             />
                                                         </div>
                                                         <div>
-                                                            <input type="text" 
+                                                            <input type="text" value={address_2}
                                                                 className="check-form form-control input-bg-color-2 border-0 body-sub-titles" 
                                                                 name="apertment" placeholder="Apartment, suite, unit etc..."
                                                                 onChange={(e) => setAddress_2(e.target.value)}
@@ -152,7 +152,7 @@ function Checkout() {
                                                 <tr className="single">
                                                     <td colSpan={2}>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">City</label>
-                                                        <input type="text" 
+                                                        <input type="text" value={city}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !city ? 'required-field' : 'border-0' }`} 
                                                             name="city" placeholder="City"
                                                             onChange={(e) => setCity(e.target.value)}
@@ -162,7 +162,7 @@ function Checkout() {
                                                 <tr className="single">
                                                     <td colSpan={2}>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">State</label>
-                                                        <input type="text" 
+                                                        <input type="text" value={state}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !state ? 'required-field' : 'border-0' }`} 
                                                             name="state" placeholder="State"
                                                             onChange={(e) => setState(e.target.value)}
@@ -172,7 +172,7 @@ function Checkout() {
                                                 <tr className="single">
                                                     <td colSpan={2}>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Postcode</label>
-                                                        <input type="text" 
+                                                        <input type="text" value={postcode}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !postcode ? 'required-field' : 'border-0' }`} 
                                                             name="postcode" placeholder="Postcode"
                                                             onChange={(e) => setPostcode(e.target.value)}
@@ -182,7 +182,7 @@ function Checkout() {
                                                 <tr className="double">
                                                     <td>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Email Address</label>
-                                                        <input type="text" 
+                                                        <input type="text" value={email}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !email ? 'required-field' : 'border-0' }`} 
                                                             name="email-address" placeholder="Email Address"
                                                             onChange={(e) => setEmail(e.target.value)}    
@@ -190,7 +190,7 @@ function Checkout() {
                                                     </td>
                                                     <td>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Phone Number</label>
-                                                        <input type="text" 
+                                                        <input type="text" value={phone}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !phone ? 'required-field' : 'border-0' }`} 
                                                             name="phone" placeholder="(XXX) XXX-XXXX"
                                                             onChange={(e) => setPhone(e.target.value)}

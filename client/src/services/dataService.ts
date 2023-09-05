@@ -12,7 +12,7 @@ const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT;
 // })
 // .catch((err: any) => console.log(err))
 
-const token = 'c1a67f132c0096d1c361d9f741c0671857ddb6d921b5bf2b84c8b743eca02ed0ea616d2ef3b81cd96eb2c4901b70d3a8449f797336931aadeff00b59c76202ba23cedcfa9456db2bd27ac43a4f3f106987541bb9dc7fb5633fac08f4a988478e3cdd87b1acc073bd818d10bdc00a6f7474245cc4a981cf931f0b86268e6a3dbd';
+const token = '121badc10d51ed2ad9924f34b4fb86ef447b4b1a0d4f4fc5fe540e8d4aae1bcc03933213732df2aaf55a90ec2cbcbb1fe43d1f7302ee6250f85e74b90c6c65559fd89b0b5006b5f36d29b074c2bfe4d9d58ab8f53a00568c46e01326da506aa956a05481bda9dff7a747c445ee059eab29f4913ea38dc72521c4f0be736c2098';
 
 
 if (typeof window !== 'undefined') {
