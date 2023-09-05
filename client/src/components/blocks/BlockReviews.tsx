@@ -33,7 +33,7 @@ function BlockReviews() {
                                 <div className="block-reviews__item-avatar">
                                     <AppImage src={testimonial.avatar} />
                                 </div>
-                                <div className="block-reviews__item-content">
+                                {/* <div className="block-reviews__item-content">
                                     <div className="block-reviews__item-text">{testimonial.review}</div>
                                     <div className="block-reviews__item-meta">
                                         <div className="block-reviews__item-rating">
@@ -43,7 +43,7 @@ function BlockReviews() {
                                             {`${testimonial.name}, ${testimonial.position}`}
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         ))}
                     </AppSlick>

@@ -5,13 +5,24 @@ import APIs from '~/services/apiService';
 
 function Checkout() {
 
-    const [checkoutProducts, setCheckoutProducts]: any = useState([])
-    const [total, setTotal]: any = useState(0)
-    const [shippingCost, setShippingCost] = useState<number>(0)
+    const [checkoutProducts, setCheckoutProducts]: any = useState([]);
+    const [total, setTotal]: any = useState(0);
+    const [shippingCost, setShippingCost] = useState<number>(0);
+    const [firstname, setFirstname] = useState<string>('');
+    const [lastname, setLastname] = useState<string>('');
+    const [company, setCompany] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [phone, setPhone] = useState<string>('');
+    const [address_1, setAddress_1] = useState<string>('');
+    const [address_2, setAddress_2] = useState<string>('');
+    const [city, setCity] = useState<string>('');
+    const [state, setState] = useState<string>('');
+    const [country, setCountry] = useState<string>('');
+    const [postcode, setPostcode] = useState<string>('');
+    const [incomplete, setIncomplete] = useState<any>(false);
 
     useEffect(() => {
         APIs.getCartData({customerid: '2'}).then(response => {
-            console.log(response);
             let checkoutProducts = response.data.rows;
             setCheckoutProducts(checkoutProducts);
             if (response.data.rows.length) {
@@ -20,7 +31,6 @@ function Checkout() {
                     total += obj.total_price;
                 }
                 total = total ? total += shippingCost : total;
-                console.log('total :>> ', total);
                 setTotal(total);
             }
         }).catch(err => {
@@ -29,26 +39,33 @@ function Checkout() {
     }, []);
 
     const handlepayment = () => {
-        let cartData: any = [];
-        checkoutProducts.forEach((element: any) => {
-            let product = {
-                name: '',
-                price: 0,
-                quantity: ''
-            };
-            product.name = element.title;
-            product.price = typeof (element.price) == 'string' ? Number(element.price) * 100 : element.price * 100;
-            product.quantity = element.quantity;
-            cartData.push(product);
-        });
-        let totalPrice = typeof (total) == 'string' ? Number(total) * 100 : total * 100
-        APIs.cartPayment({products: cartData, total_price: totalPrice}).then(response => {
-            console.log('payment response: >> ', response);
-            let redirectUrl = response.data.redirect_url
-            let transactionId = response.data.uid
-            localStorage.setItem('uid', transactionId);
-            window.location.assign(redirectUrl);
-        }).catch(err => console.log(err));
+        let incomplete = true;
+        incomplete = !(!!firstname && !!lastname && !!email && !!phone && !!address_1 && !!city && !!state && !!country && !!postcode);
+        setIncomplete(incomplete);
+        let reqElement = document.getElementById('required');
+        if (reqElement) reqElement.scrollIntoView({behavior: 'smooth'})
+        if (!incomplete) {
+            let cartData: any = [];
+            checkoutProducts.forEach((element: any) => {
+                let product = {
+                    name: '',
+                    price: 0,
+                    quantity: ''
+                };
+                product.name = element.title;
+                product.price = typeof (element.price) == 'string' ? Number(element.price) * 100 : element.price * 100;
+                product.quantity = element.quantity;
+                cartData.push(product);
+            });
+            let totalPrice = typeof (total) == 'string' ? Number(total) * 100 : total * 100
+            APIs.cartPayment({products: cartData, total_price: totalPrice}).then(response => {
+                console.log('payment response: >> ', response);
+                let redirectUrl = response.data.redirect_url
+                let transactionId = response.data.uid
+                localStorage.setItem('uid', transactionId);
+                window.location.assign(redirectUrl);
+            }).catch(err => console.log(err));
+        }
     }
 
     return (
@@ -78,65 +95,109 @@ function Checkout() {
                                                 <tr className="double">
                                                     <td>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">First Name</label>
-                                                        <input type="text" className="check-form form-control input-bg-color-2 border-0 body-sub-titles" name="first-name" placeholder="Mark"/>
+                                                        <input type="text" 
+                                                            className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !firstname ? 'required-field' : 'border-0' }`} 
+                                                            name="first-name" placeholder="Mark"
+                                                            onChange={(e) => setFirstname(e.target.value)}
+                                                        />
                                                     </td>
                                                     <td>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Last Name</label>
-                                                        <input type="text" className="check-form form-control input-bg-color-2 border-0 body-sub-titles" name="last-name" placeholder="Twain"/>
+                                                        <input type="text" 
+                                                            className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !lastname ? 'required-field' : 'border-0' }`} 
+                                                            name="last-name" placeholder="Twain"
+                                                            onChange={(e) => setLastname(e.target.value)}
+                                                        />
                                                     </td>
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2}>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Company Name (Optional)</label>
-                                                        <input type="text" className="check-form form-control input-bg-color-2 border-0 body-sub-titles" name="company-name" placeholder="Company Name"/>
+                                                        <input type="text" 
+                                                            className="check-form form-control input-bg-color-2 border-0 body-sub-titles" 
+                                                            name="company-name" placeholder="Company Name"
+                                                            onChange={(e) => setCompany(e.target.value)}
+                                                        />
                                                     </td>
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2}>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Country</label>
-                                                        <input type="text" className=" check-form form-control input-bg-color-2 border-0 body-sub-titles" name="country" placeholder="Select Country..."/>
+                                                        <input type="text" 
+                                                            className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !country ? 'required-field' : 'border-0' }`} 
+                                                            name="country" placeholder="Select Country..."
+                                                            onChange={(e) => setCountry(e.target.value)}
+                                                        />
                                                     </td>
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2}>
                                                         <div className="mb-3">
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Street Address</label>
-                                                            <input type="text" className=" check-form form-control input-bg-color-2 border-0 body-sub-titles" name="street-name" placeholder="House number and street name"/>
+                                                            <input type="text" 
+                                                                className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !address_1 ? 'required-field' : 'border-0' }`}  
+                                                                name="street-name" placeholder="House number and street name"
+                                                                onChange={(e) => setAddress_1(e.target.value)}
+                                                            />
                                                         </div>
                                                         <div>
-                                                            <input type="text" className="check-form form-control input-bg-color-2 border-0 body-sub-titles" name="apertment" placeholder="Apartment, suite, unit etc..."/>
+                                                            <input type="text" 
+                                                                className="check-form form-control input-bg-color-2 border-0 body-sub-titles" 
+                                                                name="apertment" placeholder="Apartment, suite, unit etc..."
+                                                                onChange={(e) => setAddress_2(e.target.value)}
+                                                            />
                                                         </div>
                                                     </td>
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2}>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">City</label>
-                                                        <input type="text" className=" check-form form-control input-bg-color-2 border-0 body-sub-titles" name="city" placeholder="City"/>
+                                                        <input type="text" 
+                                                            className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !city ? 'required-field' : 'border-0' }`} 
+                                                            name="city" placeholder="City"
+                                                            onChange={(e) => setCity(e.target.value)}
+                                                        />
                                                     </td>
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2}>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">State</label>
-                                                        <input type="text" className="check-form form-control input-bg-color-2 border-0 body-sub-titles" name="state" placeholder="State"/>
+                                                        <input type="text" 
+                                                            className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !state ? 'required-field' : 'border-0' }`} 
+                                                            name="state" placeholder="State"
+                                                            onChange={(e) => setState(e.target.value)}
+                                                        />
                                                     </td>
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2}>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Postcode</label>
-                                                        <input type="text" className=" check-form form-control input-bg-color-2 border-0 body-sub-titles" name="postcode" placeholder="Postcode"/>
+                                                        <input type="text" 
+                                                            className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !postcode ? 'required-field' : 'border-0' }`} 
+                                                            name="postcode" placeholder="Postcode"
+                                                            onChange={(e) => setPostcode(e.target.value)}
+                                                        />
                                                     </td>
                                                 </tr>
                                                 <tr className="double">
                                                     <td>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Email Address</label>
-                                                        <input type="text" className="check-form form-control input-bg-color-2 border-0 body-sub-titles" name="email-address" placeholder="Email Address"/>
+                                                        <input type="text" 
+                                                            className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !email ? 'required-field' : 'border-0' }`} 
+                                                            name="email-address" placeholder="Email Address"
+                                                            onChange={(e) => setEmail(e.target.value)}    
+                                                        />
                                                     </td>
                                                     <td>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Phone Number</label>
-                                                        <input type="text" className="check-form form-control input-bg-color-2 border-0 body-sub-titles" name="phone" placeholder="(XXX) XXX-XXXX"/>
+                                                        <input type="text" 
+                                                            className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !phone ? 'required-field' : 'border-0' }`} 
+                                                            name="phone" placeholder="(XXX) XXX-XXXX"
+                                                            onChange={(e) => setPhone(e.target.value)}
+                                                        />
                                                     </td>
                                                 </tr>
-                                                <tr className="single">
+                                                {/* <tr className="single">
                                                     <td colSpan={2}>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Password</label>
                                                         <input type="text" className="check-form form-control input-bg-color-2 border-0 body-sub-titles" name="password" placeholder="Password"/>
@@ -150,7 +211,7 @@ function Checkout() {
                                                         </span>
                                                         <span className="ms-3 create-label create-label">Create an account?</span>
                                                     </td>
-                                                </tr>
+                                                </tr> */}
                                             </tbody>
                                         </table>
                                     </div>

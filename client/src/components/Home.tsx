@@ -193,7 +193,7 @@ function Home() {
 
     const handleLicenseplateChange = (event: any) => {
         setSearched(false);
-        setLicenseplate(event.target.value);
+        setLicenseplate(event.target.value.toUpperCase());
     };
 
     const handleModelChange = (event: any) => {
@@ -332,7 +332,7 @@ function Home() {
                                                         <div className="col-12">
                                                             <span className="product-name regularfont">{product?.attributes?.title}</span>
                                                         </div>
-                                                        <div className="col-12">
+                                                        {/* <div className="col-12">
                                                             <span className="ratings">
                                                                 <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
                                                                 <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
@@ -340,7 +340,7 @@ function Home() {
                                                                 <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
                                                             </span>
                                                             <span className="rating-count regularfont mini-text-1">675</span>
-                                                        </div>
+                                                        </div> */}
                                                         <div className="col-12 d-flex justify-content-between">
                                                             <span className="product-price">€{product?.attributes?.price}</span>
                                                             <i className="fa fa-shopping-cart body-sub-titles"></i>
@@ -448,7 +448,7 @@ function Home() {
                                             <div className="col-12">
                                                 <span className="product-name regularfont">Mercedes sprinter achter as</span>
                                             </div>
-                                            <div className="col-12">
+                                            {/* <div className="col-12">
                                                 <span className="ratings">
                                                     <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
                                                     <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
@@ -456,7 +456,7 @@ function Home() {
                                                     <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
                                                 </span>
                                                 <span className="rating-count regularfont mini-text-1">675</span>
-                                            </div>
+                                            </div> */}
                                             <div className="col-12 d-flex justify-content-between">
                                                 <span className="product-price">€230</span>
                                                 <i className="fa fa-shopping-cart body-sub-titles"></i>
@@ -476,7 +476,7 @@ function Home() {
                                             <div className="col-12">
                                                 <span className="product-name regularfont">Mercedes sprinter achter as</span>
                                             </div>
-                                            <div className="col-12">
+                                            {/* <div className="col-12">
                                                 <span className="ratings">
                                                     <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
                                                     <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
@@ -484,7 +484,7 @@ function Home() {
                                                     <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
                                                 </span>
                                                 <span className="rating-count regularfont mini-text-1">675</span>
-                                            </div>
+                                            </div> */}
                                             <div className="col-12 d-flex justify-content-between">
                                                 <span className="product-price">€230</span>
                                                 <i className="fa fa-shopping-cart body-sub-titles"></i>
@@ -504,7 +504,7 @@ function Home() {
                                             <div className="col-12">
                                                 <span className="product-name regularfont">Mercedes sprinter achter as</span>
                                             </div>
-                                            <div className="col-12">
+                                            {/* <div className="col-12">
                                                 <span className="ratings">
                                                     <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
                                                     <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
@@ -512,7 +512,7 @@ function Home() {
                                                     <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
                                                 </span>
                                                 <span className="rating-count regularfont mini-text-1">675</span>
-                                            </div>
+                                            </div> */}
                                             <div className="col-12 d-flex justify-content-between">
                                                 <span className="product-price">€230</span>
                                                 <i className="fa fa-shopping-cart body-sub-titles"></i>
@@ -532,7 +532,7 @@ function Home() {
                                             <div className="col-12">
                                                 <span className="product-name regularfont">Mercedes sprinter achter as</span>
                                             </div>
-                                            <div className="col-12">
+                                            {/* <div className="col-12">
                                                 <span className="ratings">
                                                     <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
                                                     <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
@@ -540,7 +540,7 @@ function Home() {
                                                     <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
                                                 </span>
                                                 <span className="rating-count regularfont mini-text-1">675</span>
-                                            </div>
+                                            </div> */}
                                             <div className="col-12 d-flex justify-content-between">
                                                 <span className="product-price">€230</span>
                                                 <i className="fa fa-shopping-cart body-sub-titles"></i>

@@ -133,6 +133,8 @@ function Login(props: any) {
                                     <div className="ac-card-body">
                                         <h3 className="ac-card-title text-center bg-image-text semifont">Login</h3>
                                         <p className="ac-card-sub-title text-center body-sub-titles-1 lightfont">Welcome back! Please enter your details</p>
+                                        {invalidinput ? <p className='text-center' style={{color: 'rgb(255 102 102)'}}>Please enter your email & password</p> : invalidCred ? 
+                                            <p className='text-center' style={{color: 'rgb(255 102 102)'}}>Invalid credentials</p> : undefined}
                                         <div className="ac-card-text">
                                             <form action="/action_page.php">
                                                 <div className="form-group marginb40">
@@ -168,8 +170,6 @@ function Login(props: any) {
                                                 <button type="submit" className="btn btn-default body-sub-titles-1 mediumfont" onClick={(e) => onFormSubmit(e)}>Login</button>
                                             </form>
                                         </div>
-                                        {invalidinput ? <p className='mini-text-2 mt-1' style={{color: 'rgb(255 102 102)'}}>Please enter your email & password</p> : invalidCred ? 
-                                            <p className='mini-text-2 mt-1' style={{color: 'rgb(255 102 102)'}}>Invalid credentials</p> : undefined}
                                         <div className="ac-card-footer mt-2">
                                             <p className="body-sub-titles-1 mediumfont">
                                                 <span className="lightfont">Don't have an account? </span>

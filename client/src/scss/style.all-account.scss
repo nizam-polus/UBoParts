@@ -1469,4 +1469,11 @@ button.search {
     .quanitity-box input {
         padding: 7px 20px!important;
     }
+    .required-field {
+        border: solid 1px red;
+    }
+    .required-text {
+        color: rgb(255 102 102);
+        text-align: 'left';
+    }
 }
