@@ -13,7 +13,7 @@ module.exports = {
        
        const selectentries = await strapi.db.connection.raw(
         `SELECT quantity FROM public.carts
-        WHERE customer_id='${ctx.request.body.customerid}' AND product_id ='${ctx.request.body.productid}';`
+        WHERE customer_id=${ctx.request.body.customerid} AND product_id =${ctx.request.body.productid};`
        );
        console.log('hii',ctx.request.body.quantity);
        if(selectentries.rows.length && selectentries.rows[0].quantity){
@@ -25,12 +25,12 @@ module.exports = {
         entries = await strapi.db.connection.raw(
           `UPDATE public.carts
           SET quantity ='${update_quantity}', total_price= ${update_total_price}
-          WHERE customer_id='${ctx.request.body.customerid}' AND product_id = '${ctx.request.body.productid}';`
+          WHERE customer_id=${ctx.request.body.customerid} AND product_id = ${ctx.request.body.productid};`
          );
        }else{
 	//console.log('else part');
         entries = await strapi.db.connection.raw(
-        `INSERT INTO public.carts(id, customer_id, product_id, quantity, created_at, updated_at, total_price) VALUES (DEFAULT, '${ctx.request.body.customerid}', '${ctx.request.body.productid}', '${ctx.request.body.quantity}', DEFAULT, DEFAULT, ${totalprice});`
+        `INSERT INTO public.carts(id, customer_id, product_id, quantity, created_at, updated_at, total_price) VALUES (DEFAULT, ${ctx.request.body.customerid}, ${ctx.request.body.productid}, '${ctx.request.body.quantity}', DEFAULT, DEFAULT, ${totalprice});`
        );}
       ctx.body = entries;
     } catch (err) {
