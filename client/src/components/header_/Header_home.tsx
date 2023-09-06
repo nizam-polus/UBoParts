@@ -96,6 +96,22 @@ function Header_home(props: any) {
                         }  
                     </div>
                 </div>
+                {router.pathname == '/request' && <div className="container">
+                    <div className="row d-flex align-items-center header-middle-text pl-5">
+                        <div className="col box w-100">
+                            <p className="semifont heading_text text-white">Request Parts<br /> With Us</p>
+                            <p className="lightfont sub-text-1 text-white">Browse our expansive selection<br /> featuring hundreds of brands and<br /> tens of thousands of quality parts.</p>
+                        </div>
+                    </div>
+                </div>}
+                {router.pathname == '/dismantle_car' && <div className="container">
+                    <div className="row d-flex align-items-center header-middle-text pl-5 ml-5">
+                        <div className="col box w-100">
+                            <p className="semifont heading_text text-white">Dismantle your<br /> car with us</p>
+                            <p className="lightfont sub-text-1 text-white">Browse our expansive selection<br /> featuring hundreds of brands and<br /> tens of thousands of quality parts.</p>
+                        </div>
+                    </div>
+                </div>}
             </header>
             {(!userToken || userToken == '') &&
             <Login

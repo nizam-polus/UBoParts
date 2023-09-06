@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import AppLink from '~/components/shared/AppLink';
 import AppImage from '../shared/AppImage';
-import Header_home from '../header_/Header_home';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import APIs from '~/services/apiService';
@@ -82,10 +81,6 @@ function Cart() {
 
     return (
         <>
-            <div className='page_header'>
-                <Header_home />
-            </div>
-            
             <div className="main-body pb-4 pt-4">
                 <div className="container pb-4">
                     <section className="card-wrapper">

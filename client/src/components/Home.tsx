@@ -8,8 +8,6 @@ import AppImage from './shared/AppImage';
 import axios from 'axios';
 import Forgotpass from './forgot/Forgotpass';
 import Login from './account_/Login';
-import Header_home from './header_/Header_home'
-import Header_home_logged_in from './header_/Header_home_logged_in';
 import { useRouter } from 'next/router';
 import APIs from '../services/apiService';
 import { BASE_URL } from 'configuration';
@@ -35,12 +33,6 @@ function Home() {
     const [showInvaidLicense, setShowInvaidLicense] = useState(false);
 
     const [forgotPasswordPickerIsOpen, setforgotPasswordPickerIsOpen] = useState(false);
-    const [userToken, setUserToken] = useState<any>('');
-
-    useEffect(() => {
-        const userdetails = localStorage.getItem('usertoken');
-        setUserToken(userdetails);
-    },[])
 
     useEffect(() => {
         if (licenseplate && licenseplate.length > 5) {
@@ -68,10 +60,6 @@ function Home() {
             return () => clearTimeout(getData);
         }
     }, [licenseplate]);
-
-    const geUserDetails = () => {
-        return localStorage.getItem('useruserdetails')
-    }
 
     const showForgotPassword = () => {
         setforgotPasswordPickerIsOpen(true);
@@ -229,9 +217,6 @@ function Home() {
                 isOpen={loginModalIsOpen}
                 onClose={onLoginModalClose}
             />
-            <div className="home-header">
-                <Header_home  userToken={userToken} geUserDetails={geUserDetails}/>
-            </div>
             <div className="main-body pb-5 mb-5">
                 <div className="container">
                     <section className="section-search-wrapper">

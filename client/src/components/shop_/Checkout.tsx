@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import AppImage from '../shared/AppImage';
-import Header_home from '../header_/Header_home';
 import APIs from '~/services/apiService';
 
 function Checkout() {
@@ -70,10 +69,6 @@ function Checkout() {
 
     return (
         <>
-            <div className='page_header'>
-                <Header_home />
-            </div>
-            
             <div className="main-body pb-5 mb-5">
                 <div className="container">
                     <section className="checkout-card-wrapper">

@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Header_home from "~/components/header_/Header_home";
 import APIs from "~/services/apiService";
 
 function PaymentResult() {

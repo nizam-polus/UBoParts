@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import AppLink from '~/components/shared/AppLink';
 import AppImage from '~/components/shared/AppImage';
-import Header_home from '~/components/header_/Header_home';
 
 function Profile() {
     
@@ -28,9 +27,6 @@ function Profile() {
 
     return (
         <> 
-            <div className="page_header"> 
-                <Header_home />
-            </div>
             <div className="main-body pb-2 mb-5">
                 <div className="container">
                     <section className="profile-wrapper">

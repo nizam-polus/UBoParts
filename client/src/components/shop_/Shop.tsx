@@ -4,7 +4,6 @@ import { Modal } from 'reactstrap';
 import { IVehicle } from '~/interfaces/vehicle';
 import Image from 'next/image'
 import AppImage from '../shared/AppImage';
-import Header_home from '../header_/Header_home';
 import Footer from '../footer_/Footer';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
@@ -211,10 +210,6 @@ function Shop() {
 
     return (
         <>
-           <div className='page_header'>
-                <Header_home />
-            </div>
-
             <div className="main-body pb-5 mb-5">
                 <div className="container">
                     <section className="coulmn-bg-color-1 search-wrapper mt-5 mb-5">

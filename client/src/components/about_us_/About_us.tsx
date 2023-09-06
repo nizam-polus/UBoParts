@@ -1,13 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import AppLink from '~/components/shared/AppLink';
 import AppImage from '../shared/AppImage';
-import Header_home from '../header_/Header_home';
 function About_us() {
     return (
         <> 
-            <div className="about-header">
-                <Header_home />
-            </div>
             <div className="main-body pb-2 mb-5 px-0">
                 <div className="container px-4 px-xl-0">
                     <section className="about-content-wrapper">
