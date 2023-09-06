@@ -32,6 +32,7 @@ import '../scss/style.mobile-header-variant-two.scss';
 import '../scss/style.all-account.scss';
 import '../scss/header_/style.header.scss';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import { UserProvider } from '~/components/account_/UserContext';
 
 interface Props extends AppProps {
     languageInitialProps: ILanguageProviderProps;
@@ -93,17 +94,19 @@ function App(props: Props) {
 
     // noinspection HtmlRequiredTitleElement
     return (
-        <LanguageProvider {...languageInitialProps}>
-            <CurrentVehicleGarageProvider>
-                <PageTitle />
+        <UserProvider>
+            <LanguageProvider {...languageInitialProps}>
+                <CurrentVehicleGarageProvider>
+                    <PageTitle />
 
-                <Head>
-                    <meta name="viewport" content="width=device-width, initial-scale=1" />
-                </Head>
+                    <Head>
+                        <meta name="viewport" content="width=device-width, initial-scale=1" />
+                    </Head>
 
-                {page}
-            </CurrentVehicleGarageProvider>
-        </LanguageProvider>
+                    {page}
+                </CurrentVehicleGarageProvider>
+            </LanguageProvider>
+        </UserProvider>
     );
 }
 

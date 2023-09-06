@@ -1,9 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import AppLink from '~/components/shared/AppLink';
 import AppImage from '~/components/shared/AppImage';
+import { UserContext } from '../account_/UserContext';
+import APIs from '~/services/apiService';
+import { BASE_URL } from 'configuration';
 
 function Profile() {
-    
+
+    const {user, saveUser} = UserContext();
+
     const [firstname, setFirstname] = useState<string>('');
     const [lastname, setLastname] = useState<string>('');
     const [email, setEmail] = useState<string>('');
@@ -20,9 +25,49 @@ function Profile() {
     const [incomplete, setIncomplete] = useState<any>(false);
     const [profilePicPath, setProfilePicPath] = useState<string>('');
 
+    useEffect(() => {
+        console.log(user);
+        
+
+        APIs.getSpecificUser(user.id).then((response: any) => {
+            let user = response.data;
+            setFirstname(user.first_name);
+            setLastname(user.last_name);
+            setEmail(user.email);
+            setPhone(user.phone_number);
+            setAddress_1(user.streetaddress_housenumber);
+            setAddress_2(user.streetaddress_apartment);
+            setCity(user.city);
+            setState(user.state);
+            setCountry(user.country);
+            setPostcode(user.postcode);
+            setProfilePicPath(user?.profile_image?.url)
+        })
+    }, [])
+
     const handleProfileSubmit = (event: any) => {
         event.preventDefault();
-        setIncomplete(!(!!firstname && !!lastname && !!email && !!phone && !!address_1 && !!city && !!state && !!country && !!postcode));
+        let incomplete = !(!!firstname && !!lastname && !!email && !!phone && !!address_1 && !!city && !!state && !!country && !!postcode)
+        setIncomplete(incomplete);
+        if (!incomplete) {
+            let userData = {
+                first_name: firstname,
+                last_name: lastname,
+                email: email,
+                phone_number: phone,
+                streetaddress_housenumber: address_1,
+                streetaddress_apartment: address_2,
+                city: city,
+                state: state,
+                country: country,
+                postcode: postcode
+            }
+            APIs.updateSpecificUser(user.id, userData).then(response => {
+                console.log(response.data);
+                let user = response.data;
+                saveUser(user);
+            })
+        }
     } 
 
     return (
@@ -42,7 +87,7 @@ function Profile() {
                                     <div>
                                     <label  htmlFor="formId" className='position-relative position-overlap-edit-icon'>
                                         <input name="" type="file" id="formId" hidden onChange={(e) => console.log(e.target.value)}/>
-                                        <AppImage className="icon-size1" src="images/img/Vector.png"/>
+                                        <AppImage className="icon-size1" src={BASE_URL + profilePicPath}/>
                                     </label>
                                 </div>
                                     <p className="mt-0 mb-1 custom-color-1 boldfont products-name">Mark Twain</p>

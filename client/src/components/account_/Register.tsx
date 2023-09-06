@@ -4,6 +4,7 @@ import { Modal } from 'reactstrap';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import APIs from '~/services/apiService';
+import { UserContext } from './UserContext';
 // interface Props {  
 //     isOpen?: boolean;
 //     onClose?: () => void;
@@ -11,12 +12,21 @@ import APIs from '~/services/apiService';
 
 function Register(props: any) {
     const router = useRouter();
-
+    const {user, saveUser} = UserContext();
+    
     let isSubmitting = false;
     let hasError: any = {};
-
+    
     const [errors, setErrors] = useState<any>({ });
-  
+    const [forgotPasswordIsOpen, setForgotPasswordIsOpen] = useState(false);
+    const [registered, setRegistered] = useState(false);
+    const [regformData, setRegFormData] = useState({
+        username: '',
+        email: '',
+        password: '',
+        confirmpassword: ''
+    });
+    
     const validateValues = (inputValues: any) => {
         hasError = {};
         const regex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -29,7 +39,6 @@ function Register(props: any) {
 
         if (inputValues.username.length === 0) {
             hasError.username = "username required";
-            console.log(hasError.username);
         }
         if (inputValues.email.length === 0) {
             hasError.email = "Email is required!";
@@ -62,54 +71,40 @@ function Register(props: any) {
     
         setErrors(hasError);
     };
-    
-    const [regformData, setRegFormData] = useState({
-        username: '',
-        email: '',
-        password: '',
-        confirmpassword: ''
-    });
 
     const onRegFormDataChange = (event: any) => {
         event.preventDefault();
-
         setRegFormData({
             ...regformData,
             [event.target.name]: event.target.value
-            
         });
-        
     }
     
     const onFormSubmit = async (event: any) => {
         event.preventDefault();
         validateValues(regformData);
-        console.log('Form data submitted:', regformData);
         try {
             if (Object.keys(hasError).length === 0 && isSubmitting === true) {
                 const userdata = { 'username': regformData.username, 'email': regformData.email, 'password': regformData.password }
                 APIs.register(userdata).then((response: any) => {
+                    let userData = response.data.user;
+                    setRegistered(true);
                     localStorage.setItem('usertoken', JSON.stringify(response.data.jwt));
-                    localStorage.setItem('userdetails', JSON.stringify(response.data.user));
-                    // props.geUserDetails(response.data.jwt);
+                    localStorage.setItem('userdetails', JSON.stringify(userData));
+                    const isEmpty = { username: "", email: "", password: "", confirmpassword: "" };
+                    setRegFormData(isEmpty);
+                    setTimeout(() => {
+                        setRegistered(false);
+                        saveUser(userData);
+                        onClose();
+                    }, 2000)
+                    isSubmitting = false;
+                    router.push('/homepage');
                 })
                 .catch((error) => {
-                    console.log(error);
+                    setErrors(error?.response?.data?.error);
+                    console.log('error', error);
                 });
-                const isEmpty = { username: "", email: "", password: "", confirmpassword: "" };
-                setRegFormData(isEmpty);
-                isSubmitting = false;
-                console.log(errors);
-                const currentPagePath = router.pathname;
-                const targetPath = '/homepage';
-                if (currentPagePath === targetPath) {
-                    // Refresh the page
-                    window.location.reload();
-                } else {
-                    // Redirect to the target path
-                    router.push(targetPath);
-                }
-                // router.push(targetPath);
           }
         } catch (error) {
             console.error('Registration failed:', error);
@@ -134,10 +129,8 @@ function Register(props: any) {
         }
     }, [isOpen]);
 
-    const [forgotPasswordIsOpen, setForgotPasswordIsOpen] = useState(false);
     const showForgotPassword = () => {
         setForgotPasswordIsOpen(true);
-       
     };
 
     const onForgotPasswordClose = () => {
@@ -145,9 +138,7 @@ function Register(props: any) {
     };
 
     const showForgotAndCloseLogin = () => {
-        
-        setForgotPasswordIsOpen(true);
-        
+        setForgotPasswordIsOpen(true);  
     };
 
 
@@ -159,37 +150,60 @@ function Register(props: any) {
                         <div className="ac-card login-form">
                             <div className="card-body">
                                 <h3 className="ac-card-title text-center bg-image-text semifont">Register</h3>
-                                <p className="ac-card-sub-title text-center body-sub-titles-1 lightfont">Let’s get you all setup so you can verify your personal account and begin setting up your profile</p>
+                                <p className="ac-card-sub-title text-center body-sub-titles-1 lightfont"
+                                    >Let’s get you all setup so you can verify your personal account and begin setting up your profile</p>
                                 <div className="acard-text">
                                     <form action="/action_page.php">
                                         <div className="form-group marginb40">
                                             <label htmlFor="text" className="body-sub-titles-1 mediumfont">Username</label>
-                                            <input type="text" className="form-control body-sub-titles-1 mediumfont" id="name" name="username" placeholder="Enter your username" value={regformData.username} onChange={onRegFormDataChange}/>
-                                            <p className="form_validerrors">{errors.username}</p>
+                                            <input type="text" 
+                                                className="form-control body-sub-titles-1 mediumfont" 
+                                                id="name" name="username" placeholder="Enter your username" 
+                                                value={regformData.username} onChange={onRegFormDataChange}
+                                            />
+                                            <p className="form_validerrors">{errors?.username}</p>
                                         </div>
                                         <div className="form-group marginb40">
                                             <label htmlFor="email" className="body-sub-titles-1 mediumfont">Email address</label>
-                                            <input type="email" className="form-control body-sub-titles-1 mediumfont" id="email" name="email" placeholder="Enter your email" value={regformData.email} onChange={onRegFormDataChange}/>
-                                            <p className="form_validerrors">{errors.email}</p>
+                                            <input type="email" 
+                                                className="form-control body-sub-titles-1 mediumfont" 
+                                                id="email" name="email" placeholder="Enter your email" 
+                                                value={regformData.email} onChange={onRegFormDataChange}
+                                            />
+                                            <p className="form_validerrors">{errors?.email}</p>
                                         </div>
                                         <div className="form-group marginb40">
                                                         <label htmlFor="password" className="body-sub-titles-1 mediumfont">Password</label>
-                                                        <input type="password" className="form-control body-sub-titles-1 mediumfont" id="password" name="password" placeholder="Enter your password" value={regformData.password} onChange={onRegFormDataChange}/>
-                                                        <p className="form_validerrors">{errors.password}</p>
+                                                        <input type="password" 
+                                                            className="form-control body-sub-titles-1 mediumfont" 
+                                                            id="password" name="password" placeholder="Enter your password" 
+                                                            value={regformData.password} onChange={onRegFormDataChange}
+                                                        />
+                                                        <p className="form_validerrors">{errors?.password}</p>
                                                     </div>
                                         <div className="form-group marginb40">
                                                         <label htmlFor="password" className="body-sub-titles-1 mediumfont">Confirm password</label>
-                                                        <input type="password" className="form-control body-sub-titles-1 mediumfont" id="confirmpassword" name="confirmpassword" placeholder="Confirm password" value={regformData.confirmpassword} onChange={onRegFormDataChange}/>
-                                                        <p className="form_validerrors">{errors.confirmpassword}</p>
+                                                        <input type="password" 
+                                                            className="form-control body-sub-titles-1 mediumfont" 
+                                                            id="confirmpassword" name="confirmpassword" placeholder="Confirm password" 
+                                                            value={regformData.confirmpassword} onChange={onRegFormDataChange}
+                                                        />
+                                                        <p className="form_validerrors">{errors?.confirmpassword}</p>
                                                     </div>
                                         <div className="form-group">
-                                            <input type="checkbox" name="agree"/><span className="agree body-sub-titles-1 lightfont"><span>I agree to the </span><a href="" className="mediumfont">terms and conditions</a></span>
+                                            <input type="checkbox" name="agree"/>
+                                                <span className="agree body-sub-titles-1 lightfont">
+                                                    <span>I agree to the </span>
+                                                    <a href="" className="mediumfont">terms and conditions</a>
+                                                </span>
                                         </div>
+                                        {errors?.status === 400 && <p className='text-center' style={{color: 'rgb(255 102 102)'}}>{errors?.message}</p>}
+                                        {registered && <p className='text-center' style={{color: 'rgb(25, 135, 84)'}}>Registration Completed!</p>}
                                         <button type="submit" className="btn btn-default body-sub-titles-1 mediumfont" onClick={(e) => onFormSubmit(e)}>Register</button>
                                     </form>
                                 </div>
                                 <div className="card-footer text-center">
-                                    <p className="body-sub-titles-1 mediumfont"><span className="light">Already registered? </span><a href="">Login</a></p>
+                                    <p className="body-sub-titles-1 mediumfont"><span className="light">Already registered? </span><a className='pointer' onClick={() => onClose()}>Login</a></p>
                                 </div>
                             </div>
                         </div>

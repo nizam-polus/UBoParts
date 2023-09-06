@@ -4,11 +4,17 @@ import { BASE_URL } from "configuration";
 
 const BACKEND_URL = BASE_URL + '/api/'
 
+const getToken = () => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('usertoken')
+    }
+}
+
 const APIs = {
 
     auth: (userdata: {}) => axios.post(BACKEND_URL + 'auth/local', userdata),
 
-    register: (userdata: {}) => ds.post(BACKEND_URL + 'auth/local/register', userdata),
+    register: (userdata: {}) => axios.post(BACKEND_URL + 'auth/local/register', userdata),
 
     getCarDetailsUsingLicence: (licenseplate: string) => ds.post(BACKEND_URL + `cardetail-external-internal`, {licenseplate: licenseplate}),
 
@@ -45,7 +51,15 @@ const APIs = {
 
     paymentStatus: (transactionId: string) => ds.post(BACKEND_URL + 'payment-status-get', {transactionid: transactionId}),
 
-    paymentUpdate: () => ds.post(BACKEND_URL + 'payment-status-update', )
+    paymentUpdate: () => ds.post(BACKEND_URL + 'payment-status-update', ),
+
+    getSpecificUser: (id: number) => axios.get(BACKEND_URL + `users/${id}?populate=*`, {headers: {
+        Authorization: `Bearer ${getToken()?.replace(/"/g, '')}`
+    }}),
+
+    updateSpecificUser: (id: number, userData: any) => axios.put(BACKEND_URL + `users/${id}`, userData, {headers: {
+        Authorization: `Bearer ${getToken()?.replace(/"/g, '')}`
+    }})
 
 }
 

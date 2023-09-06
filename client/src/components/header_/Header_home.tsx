@@ -7,17 +7,25 @@ import Login from '../account_/Login';
 import { useRouter } from 'next/router';
 import Link from 'next/dist/client/link';
 import APIs from '~/services/apiService';
-
+import { UserContext } from '../account_/UserContext';
 
 
 function Header_home(props: any) {
   
     const router = useRouter();
+    const {user, saveUser} = UserContext();
     const [userToken, setUserToken] = useState<any>();
+
     useEffect(() => {
         const tokendata = localStorage.getItem('usertoken');
         setUserToken(tokendata);  
-    },[userToken])
+    },[userToken]);
+
+    useEffect(() => {
+        setLoginModalIsOpen(false);
+        const tokendata: any = localStorage.getItem('usertoken');
+        setUserToken(tokendata);
+    }, [user])
     
     const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
     const [profiledropdown, setProfiledropdown] = useState(false);
@@ -47,6 +55,7 @@ function Header_home(props: any) {
         localStorage.removeItem('userdetails');
         setUserToken('');
         setIsLoggedin(false);
+        setIsOpen(!isOpen)
         router.push('/homepage');
     };
   
@@ -60,11 +69,11 @@ function Header_home(props: any) {
                         </div>
                         <div className="bar w-100">
                             <ul>
-                                <li className="menu_font_size regularfont"><Link href="/homepage">Home</Link></li>
-                                <li className="menu_font_size regularfont"><Link href="/shop">Shop</Link></li>
-                                <li className="menu_font_size regularfont"><Link href="/about_us_">About us</Link></li>
-                                <li className="menu_font_size regularfont"><Link href="/request">Request</Link></li>
-                                <li className="menu_font_size regularfont"><Link href="/dismantle_car">Dismantle Car</Link></li>
+                                <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/homepage">Home</Link></li>
+                                <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/shop">Shop</Link></li>
+                                <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/about_us_">About us</Link></li>
+                                <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/request">Request</Link></li>
+                                <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/dismantle_car">Dismantle Car</Link></li>
                                 {!userToken && <li className="menu_font_size regularfont"><button type="button" onClick={showLoginModal} className="ub_login">Login</button></li>}
                                 {/*props.userToken && <li className="menu_font_size regularfont"> 
                                 <a href=""><AppImage src="/images/svg/my-account.svg" className="my-account"/></a></li>*/}
@@ -78,7 +87,10 @@ function Header_home(props: any) {
                                         <div className='position-absolute menu-dropdown'>
                                             <div className='dropdownitem'>
                                                 <span className='menu_font_size regularfont pointer' 
-                                                    onClick={() => router.push('/profile_')}
+                                                    onClick={() => {
+                                                        router.push('/profile_');
+                                                        setIsOpen(!isOpen);
+                                                    }}
                                                 >Profile</span>
                                             </div>
                                             <div className='dropdownitem'>
@@ -90,8 +102,8 @@ function Header_home(props: any) {
                                         </div>
                                     )}
                                 </div>
-                                <span className=''><AppImage src="/images/svg/my-account.svg" className="my-account"/></span>
-                                <li className='mt-1'><a href="/cartpage"><AppImage src="/images/cart-white.svg"/><span className="home_count">{cartCount}</span></a></li>
+                                <span className='' onClick={() =>setIsOpen(false)}><AppImage src="/images/svg/my-account.svg" className="my-account"/></span>
+                                <li className='mt-1' onClick={() =>setIsOpen(false)}><a href="/cartpage"><AppImage src="/images/cart-white.svg"/><span className="home_count">{cartCount}</span></a></li>
                             </div>   
                         }  
                     </div>
