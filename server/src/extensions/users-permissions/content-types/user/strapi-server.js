@@ -10,6 +10,15 @@ module.exports = (plugin) => {
             ctx.response.status = 200; 
         })
     }
+
+    plugin.controllers.user.find = async (ctx) => {
+        const users = await strapi.entityService.findMany(
+          'plugin::users-permissions.user',
+          { ...ctx.params, populate: ['role', 'avatar'] }
+        );
+    
+        ctx.body = users.map(user => sanitizeOutput(user));
+      };
     
     plugin.routes['content-api'].routes.push(
         {
