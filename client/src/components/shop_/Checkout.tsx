@@ -37,10 +37,15 @@ function Checkout() {
         })
     }, []);
 
-    const handlepayment = () => {
+    const checkFormStatus = () => {
         let incomplete = true;
         incomplete = !(!!firstname && !!lastname && !!email && !!phone && !!address_1 && !!city && !!state && !!country && !!postcode);
         setIncomplete(incomplete);
+        return incomplete;
+    }
+
+    const handlepayment = () => {     
+        let incomplete = checkFormStatus();
         let reqElement = document.getElementById('required');
         if (reqElement) reqElement.scrollIntoView({behavior: 'smooth'})
         if (!incomplete) {
@@ -77,6 +82,9 @@ function Checkout() {
                                 <p className="boldfont bg-image-text custom-color-8 text-center ">Checkout</p>
                             </div>
                         </div>
+                        <div>
+                            {incomplete && <p className='required-text' id='required'>* Please fill the required fields</p>}
+                        </div>
                         <div className="row mt-3">
                             <div className="col-12 col-md-9">
                                 <form action="">
@@ -93,7 +101,10 @@ function Checkout() {
                                                         <input type="text" value={firstname}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !firstname ? 'required-field' : 'border-0' }`} 
                                                             name="first-name" placeholder="Mark"
-                                                            onChange={(e) => setFirstname(e.target.value)}
+                                                            onChange={(e) => {
+                                                                setFirstname(e.target.value);
+                                                                checkFormStatus();
+                                                            }}
                                                         />
                                                     </td>
                                                     <td>
@@ -101,7 +112,10 @@ function Checkout() {
                                                         <input type="text" value={lastname}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !lastname ? 'required-field' : 'border-0' }`} 
                                                             name="last-name" placeholder="Twain"
-                                                            onChange={(e) => setLastname(e.target.value)}
+                                                            onChange={(e) => {
+                                                                setLastname(e.target.value);
+                                                                checkFormStatus();
+                                                            }}
                                                         />
                                                     </td>
                                                 </tr>
@@ -121,7 +135,10 @@ function Checkout() {
                                                         <input type="text" value={country}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !country ? 'required-field' : 'border-0' }`} 
                                                             name="country" placeholder="Select Country..."
-                                                            onChange={(e) => setCountry(e.target.value)}
+                                                            onChange={(e) => {
+                                                                setCountry(e.target.value)
+                                                                checkFormStatus();
+                                                            }}
                                                         />
                                                     </td>
                                                 </tr>
@@ -132,7 +149,10 @@ function Checkout() {
                                                             <input type="text" value={address_1}
                                                                 className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !address_1 ? 'required-field' : 'border-0' }`}  
                                                                 name="street-name" placeholder="House number and street name"
-                                                                onChange={(e) => setAddress_1(e.target.value)}
+                                                                onChange={(e) => {
+                                                                    setAddress_1(e.target.value)
+                                                                    checkFormStatus();
+                                                                }}
                                                             />
                                                         </div>
                                                         <div>
@@ -150,7 +170,10 @@ function Checkout() {
                                                         <input type="text" value={city}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !city ? 'required-field' : 'border-0' }`} 
                                                             name="city" placeholder="City"
-                                                            onChange={(e) => setCity(e.target.value)}
+                                                            onChange={(e) => {
+                                                                setCity(e.target.value)
+                                                                checkFormStatus();
+                                                            }}
                                                         />
                                                     </td>
                                                 </tr>
@@ -160,7 +183,10 @@ function Checkout() {
                                                         <input type="text" value={state}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !state ? 'required-field' : 'border-0' }`} 
                                                             name="state" placeholder="State"
-                                                            onChange={(e) => setState(e.target.value)}
+                                                            onChange={(e) => {
+                                                                setState(e.target.value)
+                                                                checkFormStatus();
+                                                            }}
                                                         />
                                                     </td>
                                                 </tr>
@@ -170,7 +196,10 @@ function Checkout() {
                                                         <input type="text" value={postcode}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !postcode ? 'required-field' : 'border-0' }`} 
                                                             name="postcode" placeholder="Postcode"
-                                                            onChange={(e) => setPostcode(e.target.value)}
+                                                            onChange={(e) => {
+                                                                setPostcode(e.target.value)
+                                                                checkFormStatus();
+                                                            }}
                                                         />
                                                     </td>
                                                 </tr>
@@ -180,7 +209,10 @@ function Checkout() {
                                                         <input type="text" value={email}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !email ? 'required-field' : 'border-0' }`} 
                                                             name="email-address" placeholder="Email Address"
-                                                            onChange={(e) => setEmail(e.target.value)}    
+                                                            onChange={(e) => {
+                                                                setEmail(e.target.value)
+                                                                checkFormStatus();
+                                                            }}    
                                                         />
                                                     </td>
                                                     <td>
@@ -188,7 +220,10 @@ function Checkout() {
                                                         <input type="text" value={phone}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !phone ? 'required-field' : 'border-0' }`} 
                                                             name="phone" placeholder="(XXX) XXX-XXXX"
-                                                            onChange={(e) => setPhone(e.target.value)}
+                                                            onChange={(e) => {
+                                                                setPhone(e.target.value)
+                                                                checkFormStatus();
+                                                            }}
                                                         />
                                                     </td>
                                                 </tr>

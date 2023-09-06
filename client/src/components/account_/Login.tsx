@@ -6,6 +6,7 @@ import Register from './Register'
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import APIs from '~/services/apiService';
+import { UserContext } from './UserContext';
 // interface Props {
 //     isOpen?: boolean;
 //     onClose?: () => void;
@@ -15,6 +16,7 @@ import APIs from '~/services/apiService';
 function Login(props: any) {
 
     const router = useRouter();
+    const {user, saveUser} = UserContext();
     
     const [loginformData, setLoginFormData] = useState({
         username: '',
@@ -45,22 +47,14 @@ function Login(props: any) {
                     if (response.data.error && response.data.error.status >= 400 && response.data.error.status <= 403) {
                         setInvalidCred(true);
                     } else {
+                        let userdetails = response.data.user
                         localStorage.setItem('usertoken', JSON.stringify(response.data.jwt));
-                        localStorage.setItem('userdetails', JSON.stringify(response.data.user));
-                        const currentPagePath = router.pathname;
-                        const targetPath = '/homepage';
-                        if (currentPagePath === targetPath) {
-                            // Refresh the page
-                            window.location.reload();
-                        } else {
-                            // Redirect to the target path
-                            router.push(targetPath);
-                        }
-                        router.push(targetPath);
+                        localStorage.setItem('userdetails', JSON.stringify(userdetails));
+                        saveUser(userdetails);
+                        router.push('/homepage');
                         const isEmpty = { username: "", password: ""};
                         setLoginFormData(isEmpty);
                     }
-                    // props.geUserDetails(response.data.jwt);
                 })
                 .catch((error) => {
                     setInvalidCred(true)
