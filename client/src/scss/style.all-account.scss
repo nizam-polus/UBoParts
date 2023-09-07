@@ -1476,4 +1476,10 @@ button.search {
         color: rgb(255 102 102);
         text-align: 'left';
     }
+    .profile-pic {
+        width: 12rem;
+        height: 12rem;
+        object-fit: cover;
+        border-radius: 50%;
+    }
 }

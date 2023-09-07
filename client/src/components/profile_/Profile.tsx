@@ -7,6 +7,12 @@ import { BASE_URL } from 'configuration';
 
 function Profile() {
 
+    let userdetails: any;
+    if (typeof window !== 'undefined') {
+        userdetails = localStorage.getItem('userdetails');
+        userdetails = JSON.parse(userdetails);
+    }
+
     const {user, saveUser} = UserContext();
 
     const [firstname, setFirstname] = useState<string>('');
@@ -26,10 +32,8 @@ function Profile() {
     const [profilePicPath, setProfilePicPath] = useState<string>('');
 
     useEffect(() => {
-        console.log(user);
-        
-
-        APIs.getSpecificUser(user.id).then((response: any) => {
+        let userId = !user.id ? userdetails.id : user.id;
+        APIs.getSpecificUser(userId).then((response: any) => {
             let user = response.data;
             setFirstname(user.first_name);
             setLastname(user.last_name);
@@ -83,15 +87,15 @@ function Profile() {
                         <div className="row mt-3 ">
                             <div className="col-12 col-md-12 col-xl-3">
                                 <div className="profile-image-wrapper coulmn-bg-color-1 rounded-2 p-5 pb-2 text-center">
-                                    <AppImage src={"images/img/profile-img.png"} className="img-fluid"/>
+                                    <AppImage src={BASE_URL + profilePicPath || 'images/img/dummy-profile.png'} className="profile-pic"/>
                                     <div>
                                     <label  htmlFor="formId" className='position-relative position-overlap-edit-icon'>
-                                        <input name="" type="file" id="formId" hidden onChange={(e) => console.log(e.target.value)}/>
-                                        <AppImage className="icon-size1" src={BASE_URL + profilePicPath}/>
+                                        <input name="" type="file" id="formId" hidden onChange={(e) => console.log(e.target.files)}/>
+                                        <AppImage className="icon-size1" src={'images/img/Vector.png'}/>
                                     </label>
                                 </div>
-                                    <p className="mt-0 mb-1 custom-color-1 boldfont products-name">Mark Twain</p>
-                                    <p className="mt-1 mb-2 custom-color-1 regularfont products-name">user@example.com</p>
+                                    <p className="mt-0 mb-1 custom-color-1 boldfont products-name">{user.first_name + ' ' + user.last_name}</p>
+                                    <p className="mt-1 mb-2 custom-color-1 regularfont products-name">{user.username}</p>
                                 </div>
                             </div>
                             <div className="col-12 col-md-12 col-xl-9 mt-4 mt-xl-0 mt-md-4">
@@ -124,10 +128,9 @@ function Profile() {
                                                 <tr className="double">
                                                     <td className="pl-5 pr-xl-3 pr-md-3 pr-5 pb-0 pb-xl-5 pb-md-5 border-0">
                                                         <label className="custom-color-2 regularfont products-name pb-2">Email Address</label>
-                                                        <input type="text" value={email}
+                                                        <input type="text" value={email} disabled
                                                             className={`form-control input-bg-color-2 products-name ${incomplete && !email ? ' required-field' : 'border-0' }`} 
                                                             name="email-address" placeholder="Email Address"
-                                                            onChange={(e) => setEmail(e.target.value)}
                                                         />
                                                     </td>
                                                     <td className="pr-5 pl-xl-3 pl-md-3 pl-5 pb-5 pb-xl-5 pb-md-5 border-0">
