@@ -17,6 +17,14 @@ function Header_home(props: any) {
     const [userToken, setUserToken] = useState<any>();
 
     useEffect(() => {
+        if (typeof window !== 'undefined') {
+            let userdetails: any = localStorage.getItem('userdetails');
+            userdetails = JSON.parse(userdetails)
+            saveUser(userdetails);
+        }
+    }, []);
+
+    useEffect(() => {
         const tokendata = localStorage.getItem('usertoken');
         setUserToken(tokendata);  
     },[userToken]);
@@ -25,7 +33,7 @@ function Header_home(props: any) {
         setLoginModalIsOpen(false);
         const tokendata: any = localStorage.getItem('usertoken');
         setUserToken(tokendata);
-    }, [user])
+    }, [user]);
     
     const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
     const [profiledropdown, setProfiledropdown] = useState(false);
