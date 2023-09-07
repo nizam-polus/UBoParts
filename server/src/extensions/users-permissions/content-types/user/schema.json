@@ -96,14 +96,15 @@
       "type": "string"
     },
     "profile_image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     },
     "shippingaddress_company": {
       "type": "string"
@@ -128,6 +129,30 @@
     },
     "shippingaddress_phonenumber": {
       "type": "string"
+    },
+    "isApproved": {
+      "type": "enumeration",
+      "enum": [
+        "Active",
+        "Inactive",
+        "Pending"
+      ],
+      "default": "Active"
+    },
+    "Account_type": {
+      "type": "enumeration",
+      "enum": [
+        "Individual",
+        "Multiple"
+      ]
+    },
+    "user_type": {
+      "type": "enumeration",
+      "enum": [
+        "normal",
+        "seller"
+      ],
+      "default": "normal"
     }
   }
 }
