@@ -3,7 +3,10 @@ import AppLink from '~/components/shared/AppLink';
 import AppImage from '~/components/shared/AppImage';
 import { BASE_URL } from 'configuration';
 import SellerSideBar from './SellerSideBar';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 function SellerListings() {
+    const router = useRouter();
     return (
 
         <>
@@ -11,57 +14,7 @@ function SellerListings() {
             <div className="container">
                 <section className="quote-wrapper mt-5">
                     <div className="row mt-3 g-4">
-                        <div className="col-12 col-md-3">
-                            <div className="quote-inner-wrapper coulmn-bg-color-1 rounded p-3 ps-4 pe-4">
-                                <div className="table-responsive">
-                                    <table className="table quote-table seller-table">
-                                        <thead>
-                                            <th className="p-2 pb-3 ps-0 custom-color-2 mediumfont subtitles">Shop Manager</th>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td className="active">
-                                                    <div>
-                                                        <a href="" className="custom-color-2 regularfont body-sub-titles">Dashboard</a>
-                                                        <span className="arrow-right"></span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="" className="custom-color-2 regularfont body-sub-titles">Listings</a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="" className="custom-color-2 regularfont body-sub-titles">Messages</a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="" className="custom-color-2 regularfont body-sub-titles">Orders</a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="" className="custom-color-2 regularfont body-sub-titles">Edit shop</a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="" className="custom-color-2 regularfont body-sub-titles">Password</a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="" className="custom-color-2 regularfont body-sub-titles">Logout</a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                        <SellerSideBar />
                         <div className="col-12 col-md-9">
                             <div className="coulmn-bg-color-1 rounded">
                                 <div className="table-responsive">
@@ -70,14 +23,15 @@ function SellerListings() {
                                             <th className="p-2 pb-3 ps-4 pt-4 custom-color-2 mediumfont subtitles">
                                                 <span>Listings</span>
                                                 <span className="lightfont body-sub-titles">(154)</span>
-                                                <button type="button" className="minor-button custom-color-7 boldfont mini-text-3 rounded border-0 button-bg-color-1">Create New Listing</button>
+                                                <button type="button" className="minor-button custom-color-7 boldfont mini-text-3 rounded border-0 button-bg-color-1" onClick={() => router.push('/seller/create_new_listing')}>
+                                                    Create New Listing</button>
                                             </th>
                                         </thead>
                                     </table>
                                 </div>
                                 <div className="row g-4 p-4 pb-4 pt-2">
                                     <div className="col-12 col-sm-6 col-lg-4">
-                                        <div className="latest-prods card card-shadows seller-listing-products">
+                                        <div className="latest-prods mb-5 card card-shadows seller-listing-products">
                                             <div className="position-relative">
                                                 <AppImage src="/images/cat-prod-1.svg" className="card-img-top"/>
                                                 <span className="product-price button-bg-color-1 text-white regularfont boldfontsize">€230</span>
@@ -99,7 +53,7 @@ function SellerListings() {
                                         </div>
                                     </div>
                                     <div className="col-12 col-sm-6 col-lg-4">
-                                        <div className="latest-prods card card-shadows seller-listing-products">
+                                        <div className="latest-prods mb-5 card card-shadows seller-listing-products">
                                             <div className="position-relative">
                                                 <AppImage src="/images/cat-prod-1.svg" className="card-img-top"/>
                                                 <span className="product-price button-bg-color-1 text-white regularfont boldfontsize">€230</span>
@@ -121,7 +75,7 @@ function SellerListings() {
                                         </div>
                                     </div>
                                     <div className="col-12 col-sm-6 col-lg-4">
-                                        <div className="latest-prods card card-shadows seller-listing-products">
+                                        <div className="latest-prods mb-5 card card-shadows seller-listing-products">
                                             <div className="position-relative">
                                                 <AppImage src="/images/cat-prod-1.svg" className="card-img-top"/>
                                                 <span className="product-price button-bg-color-1 text-white regularfont boldfontsize">€230</span>
@@ -143,7 +97,7 @@ function SellerListings() {
                                         </div>
                                     </div>
                                     <div className="col-12 col-sm-6 col-lg-4">
-                                        <div className="latest-prods card card-shadows seller-listing-products">
+                                        <div className="latest-prods mb-5 card card-shadows seller-listing-products">
                                             <div className="position-relative">
                                                 <AppImage src="/images/cat-prod-1.svg" className="card-img-top"/>
                                                 <span className="product-price button-bg-color-1 text-white regularfont boldfontsize">€230</span>
@@ -165,7 +119,7 @@ function SellerListings() {
                                         </div>
                                     </div>
                                     <div className="col-12 col-sm-6 col-lg-4">
-                                        <div className="latest-prods card card-shadows seller-listing-products">
+                                        <div className="latest-prods mb-5 card card-shadows seller-listing-products">
                                             <div className="position-relative">
                                                 <AppImage src="/images/cat-prod-1.svg" className="card-img-top"/>
                                                 <span className="product-price button-bg-color-1 text-white regularfont boldfontsize">€230</span>
@@ -187,7 +141,7 @@ function SellerListings() {
                                         </div>
                                     </div>
                                     <div className="col-12 col-sm-6 col-lg-4">
-                                        <div className="latest-prods card card-shadows seller-listing-products">
+                                        <div className="latest-prods mb-5 card card-shadows seller-listing-products">
                                             <div className="position-relative">
                                                 <AppImage src="/images/cat-prod-1.svg" className="card-img-top"/>
                                                 <span className="product-price button-bg-color-1 text-white regularfont boldfontsize">€230</span>

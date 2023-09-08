@@ -1572,5 +1572,88 @@ button.search {
 		right: -20px;
 	}
 }
+.seller-listing-products .product-price{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 5px 10px;
+    border-top-left-radius: 10px;
+}
+.seller-listing-products button{
+    padding: 4px 26px;
+}
+/* seller listing page ends */
+
+@media screen and (max-width: 768px){
+    .heading_text{
+        font-size: 35px;  
+    }
+    .header-middle-text{
+        min-height: 35vh;
+    }
+    .subtitles{
+        font-size: 16px;
+    }
+    .sub-subtext{
+        font-size: 14px;
+    }
+    #forgotmodal .modal-dialog,#loginmodal .modal-dialog,#registermodal .modal-dialog{
+        margin: 60px 20px;
+    }
+    header.ub_desktop_header{
+        display: none;
+    }
+    header.ub_mobile_header{
+        display: block;
+    }
+    .bg-image-text{
+        font-size: 24px;
+    }
+    .selling-text{
+        left:35px;
+    }
+    header .bar,
+    .desktop-filter{
+        display: none;
+    }
+    .responsive-filter{
+        display: block;
+    }
+    .cart-table .in-stock{
+        width: max-content;
+        margin: 6px 0;
+    }
+    .inner-page-main-headings-1{
+        font-size: 30px;
+    }
+    .text-size-1{
+        font-size: 17px;
+    }
+    .sub-text-1{
+        font-size: 14px;
+    }
+    .text-size-2{
+        font-size: 17px;
+    }
+    .quote-table tbody tr td,.dismantle-header tbody td,.account-info-header tbody td{
+        width: 100%;
+    }
+    .checkout-table tbody td,
+    .profile-table-1 tbody td,
+    .quote-table tbody td,
+    .change-profile-table-1 tbody td{
+        display: inline-block;
+        padding: 10px 30px!important;
+        width: 100%;
+    }
+    .quote-table tbody td,
+    .change-profile-table-1 tbody td{
+        padding-left: 0px!important;
+    }
+    .password-wrapper-field img{
+        top:16px;
+    }
+}
+
 
 

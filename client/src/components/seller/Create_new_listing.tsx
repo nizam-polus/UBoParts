@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import AppLink from '~/components/shared/AppLink';
 import AppImage from '~/components/shared/AppImage';
+import Link from 'next/link';
+import SellerSideBar from './SellerSideBar';
 function Create_new_listing() {
     return (
     
@@ -9,65 +11,14 @@ function Create_new_listing() {
                 <div className="container">
                     <section className="quote-wrapper mt-5">
                         <div className="row mt-3 g-4">
-                            <div className="col-12 col-md-3">
-                                <div className="quote-inner-wrapper coulmn-bg-color-1 rounded  md-5 pb-5 pt-0 px-3 ps-4 pe-4">
-                                    <div className="table-responsive">
-                                        <table className="table quote-table seller-table">
-                                            <tbody>
-                                                <tr>
-                                                    <th className=" pt-0 p-2 pb-1 ps-0 custom-color-2 regularfont body-sub-titles border-bottom border-top-0 ">Shop Manager</th>
-                                                </tr>
-                                            
-                                                <tr>
-                                                    <td className='pb-2 pt-4'>
-                                                        <a href="" className=" custom-color-2 regularfont products-name">Dashboard</a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="active pb-2 pt-2">
-                                                        <div>
-                                                            <a href="" className="custom-color-2 regularfont products-name">Listings</a>
-                                                            <span className="arrow-right"></span>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className='pb-2 pt-2'> 
-                                                        <a href="" className="custom-color-2 regularfont products-name">Messages</a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className='pb-2 pt-2'>
-                                                        <a href="" className="custom-color-2 regularfont products-name">Orders</a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className='pb-2 pt-2'>
-                                                        <a href="" className="custom-color-2 regularfont products-name">Edit shop</a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className='pb-2 pt-2'>
-                                                        <a href="" className="custom-color-2 regularfont products-name">Password</a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className='pb-1 pt-2'>
-                                                        <a href="" className="custom-color-2 regularfont products-name">Logout</a>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
+                           <SellerSideBar />
                             <div className="col-12 col-md-9">
                                 <div className="coulmn-bg-color-1 rounded">
                                     <div className="table-responsive pt-3 pb-3 overflow-hidden">
                                         <table className="table profile-table-1 coulmn-bg-color-1 rounded">
                                             <tbody className="double">
                                                 <tr>
-                                                    <th colSpan={2} className="px-5 pb-1 ps-0 custom-color-3  regularfont body-sub-titles border-bottom border-top-0">Create New Listing</th>
+                                                    <th colSpan={2} className="px-5 pb-1 ps-0 custom-color-3  regularfont body-sub-titles border-bottom border-top-0"><Link href={`/create_new_listing`}>Create New Listing</Link></th>
                                                 </tr>
                                             
                                                 <tr className="double">
