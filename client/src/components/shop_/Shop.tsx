@@ -12,9 +12,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import APIs from '~/services/apiService';
 import { BASE_URL } from 'configuration';
 import Link from 'next/dist/client/link';
+import { UserContext } from '../account_/UserContext';
 
 function Shop() {
     
+    const {user, saveUser} = UserContext()
+
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -184,13 +187,12 @@ function Shop() {
     }
 
     const handleProductClick = (product: any) => {
-        console.log('product', product);
         router.push('/products_/' + product.id);
     }
 
     const handleAddToCart = (productData: any) => {
         let cartData = {
-            customerid: '2',
+            customerid: user.id,
             productid: productData?.id,
             quantity: '1',
             productprice: productData?.attributes?.price

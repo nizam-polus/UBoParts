@@ -5,13 +5,15 @@ import AppImage from '../shared/AppImage';
 import Forgotpass from '../forgot/Forgotpass';
 import Login from '../account_/Login';
 import APIs from '~/services/apiService';
+import { UserContext } from '../account_/UserContext';
 
 function Header_logged_in() {
 
+    const { user, saveUser } = UserContext();
     const [cartCount, setCartCount] = useState(0)
 
     useEffect(() => {
-        APIs.getCartData({customerid: '2'}).then(response => {
+        APIs.getCartData({customerid: user.id}).then(response => {
             let totalCartItem = response.data.rows.length;
             setCartCount(totalCartItem)
         })

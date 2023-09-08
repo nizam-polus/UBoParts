@@ -8,11 +8,13 @@ function PaymentResult() {
     const [timer, setTimer] = useState(5);
     const router = useRouter();
 
+    let interavls: any = [];
+
     useEffect(() => {
         let transactionId: string = localStorage.getItem('uid') || '';
         let checkPaymentStatus = setInterval(() => {
+            interavls.push(checkPaymentStatus)
             APIs.paymentStatus(transactionId).then((response: any) => {
-                console.log(response);
                 let status = response.data.rows[0].status;
                 setStatus(status);
                 if (status !== 'created') {
@@ -20,15 +22,12 @@ function PaymentResult() {
                     switch(status) {
                         case 'completed':
                             setStatus('completed');
-                            console.log('completed');
                             break;
                         case 'failed':
                             setStatus('failed');
-                            console.log('failed');
                             break;
                         case 'expired' :
                             setStatus('expired');
-                            console.log('expired');
                             break;
                         default:
                             setStatus(status)
@@ -41,14 +40,19 @@ function PaymentResult() {
     }, [])
 
     useEffect(() => {
-        setTimeout(() => router.push('/homepage'), 10000)
+        setTimeout(() => {
+            router.push('/homepage');
+        }, 10000);
+        setTimeout(() => {
+            interavls.forEach((interval: any) => clearInterval(interval))
+        }, 30000);
     }, [status])
 
     return (
         <>
             {(!status || status === 'created') ? <h2 className="" style={{textAlign: 'center', position: 'relative', marginTop: '10%'}}>We are processing your payment ...</h2> : 
                 <div style={{textAlign: 'center', position: 'relative', marginTop: '10%'}}>
-                    <h2 className="" >Payment {status}</h2>
+                    <h2 className="" >Order placed successfully</h2>
                     <p>You will be redirected to homepage.</p>
                 </div>
             }

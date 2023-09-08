@@ -5,23 +5,23 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import APIs from '~/services/apiService';
 import { BASE_URL } from 'configuration';
+import { UserContext } from '../account_/UserContext';
 
 function Cart() {
     
+    const {user, saveUser} = UserContext();
     const [cartProducts, setCartProducts] = useState<any>([]);
     const [totalCartPrice, setTotal] = useState(0);
     const router = useRouter();
 
     useEffect(() => {
-        APIs.getCartData({ "customerid": "2" }).then((response: any) => {
-                console.log('response :>> ', response);
+        APIs.getCartData({ "customerid": user.id }).then((response: any) => {
                 setCartProducts(response.data.rows);
                 if (response.data.rows.length) {
                     let total = 0;
                     for (const obj of response.data.rows) {
                         total += obj.total_price;
                     }
-                    console.log('total :>> ', total);
                     setTotal(total);
                 }
             })
@@ -32,7 +32,7 @@ function Cart() {
 
     const handleCartItemDelete = (product: any) => {
         APIs.deleteCartData({customerid: product.customer_id, id: product.id}).then(response => {
-            APIs.getCartData({ "customerid": "2" }).then((response: any) => {
+            APIs.getCartData({ "customerid": user.id }).then((response: any) => {
                 setCartProducts(response.data.rows);
                 let total = 0;
                 if (response.data.rows.length) {
@@ -58,16 +58,14 @@ function Cart() {
         if (valueChange === 'dec') {
             quantity !== 1 && quantity--;
         }
-        APIs.updateCartData({customerid: '2', id: product.id, quantity: quantity, productprice: product.price}).then(response => {
-            APIs.getCartData({ "customerid": "2" }).then((response: any) => {
-                console.log('response :>> ', response);
+        APIs.updateCartData({customerid: user.id, id: product.id, quantity: quantity, productprice: product.price}).then(response => {
+            APIs.getCartData({ "customerid": user.id }).then((response: any) => {
                 setCartProducts(response.data.rows);
                 if (response.data.rows.length) {
                     let total = 0;
                     for (const obj of response.data.rows) {
                         total += obj.total_price;
                     }
-                    console.log('total :>> ', total);
                     setTotal(total);
                 }
             })
@@ -173,7 +171,7 @@ function Cart() {
                                             </tr>
                                             <tr><td colSpan={2} className="px-3 pt-3 pb-2 w-100">
                                                 <button type="button" className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1">
-                                                    <AppLink href={`${cartProducts.length ? '/checkoutpage' : '/cartpage'}`} className="custom-color-7">
+                                                    <AppLink href={`${cartProducts?.length ? '/checkoutpage' : '/cartpage'}`} className="custom-color-7">
                                                         <button type="button" className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"
                                                         >Proceed to checkout</button>
                                                     </AppLink>

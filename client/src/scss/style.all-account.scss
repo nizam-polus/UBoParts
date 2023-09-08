@@ -995,7 +995,16 @@ button.search {
     background-blend-mode: overlay;	
     background-color: #4c4c4c;	
 }	
-/*dismantlepage ends*/	
+/*dismantlepage ends*/
+/*seller reg page starts*/	
+.seller-reg-header{	
+	background-image: url('/images/img/dismantle-img.png');	
+	background-size: cover;	
+    height: 80vh;	
+    background-blend-mode: overlay;	
+    background-color: #4c4c4c;	
+}	
+/*seller reg page ends*/	
 /* request page starts */	
 .request-header{	
     background-image: url('/images/img/request-quote-1.png');	
@@ -1108,7 +1117,7 @@ button.search {
 }	
 /*seller end here*/	
 @media screen and (max-width: 1024px){	
-    .request-header,.about-header,.dismantle-header,.dismantle-header {	
+    .request-header,.about-header,.dismantle-header,.seller-reg-header {	
         height: 44vh!important;	
     }	
     .about-content-wrapper {	
@@ -1127,7 +1136,7 @@ button.search {
         height: 60px;	
         padding: 15px 20px !important;	
     }	
-    .request-header,.about-header,.dismantle-header {	
+    .request-header,.about-header,.dismantle-header,.seller-reg-header {	
         height: 44vh!important;	
     }	
 	.quote-table tbody tr.double td:first-child {	
@@ -1190,7 +1199,7 @@ button.search {
     .text-size-3{	
         font-size: 18px;	
     }	
-    .quote-table tbody tr td,.dismantle-header tbody td,.account-info-header tbody td{	
+    .quote-table tbody tr td,.dismantle-header tbody td,.account-info-header tbody td,.seller-reg-header tbody td{	
         width: 100%;	
     }	
     .checkout-table tbody td,	
@@ -1242,7 +1251,8 @@ button.search {
     }	
     .dismantle-header .heading_text,	
     .request-header .heading_text,	
-    .account-info-header .heading_text{	
+    .account-info-header .heading_text,
+    .seller-reg-header .heading_text{	
         line-height: 28px;	
     }	
     #formFile{	
@@ -1271,7 +1281,7 @@ button.search {
     .text-size-3{	
         font-size: 16px;	
     }	
-    .request-header,.dismantle-header,.account-info-header,.about-header{	
+    .request-header,.dismantle-header,.account-info-header,.about-header, .seller-reg-header{	
         height: 300px;	
     }	
     .about-content-wrapper {	
@@ -1312,7 +1322,8 @@ button.search {
     }	
     .dismantle-header .heading_text,	
     .request-header .heading_text,	
-    .account-info-header .heading_text{	
+    .account-info-header .heading_text,
+    .seller-reg-header .heading_text{	
         line-height: 44px;	
     }	
     .subtitles{	
@@ -1352,7 +1363,8 @@ button.search {
     }	
     .dismantle-header .heading_text,	
     .request-header .heading_text,	
-    .account-info-header .heading_text{	
+    .account-info-header .heading_text,
+    .seller-reg-header .heading_text{	
         line-height: 82px;	
     }	
     .sub-text-1{	

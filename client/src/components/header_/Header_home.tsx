@@ -17,14 +17,6 @@ function Header_home(props: any) {
     const [userToken, setUserToken] = useState<any>();
 
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            let userdetails: any = localStorage.getItem('userdetails');
-            userdetails = JSON.parse(userdetails)
-            saveUser(userdetails);
-        }
-    }, []);
-
-    useEffect(() => {
         const tokendata = localStorage.getItem('usertoken');
         setUserToken(tokendata);  
     },[userToken]);
@@ -50,7 +42,7 @@ function Header_home(props: any) {
     const [cartCount, setCartCount] = useState(0)
 
     useEffect(() => {
-        APIs.getCartData({customerid: '2'}).then(response => {
+        APIs.getCartData({customerid: user.id}).then(response => {
             if (!response.data.error) {
                 let totalCartItem = response.data.rows.length;
                 setCartCount(totalCartItem)
@@ -82,6 +74,7 @@ function Header_home(props: any) {
                                 <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/about_us_">About us</Link></li>
                                 <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/request">Request</Link></li>
                                 <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/dismantle_car">Dismantle Car</Link></li>
+                                {!userToken && <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/seller-registration">Start Selling</Link></li>}
                                 {!userToken && <li className="menu_font_size regularfont"><button type="button" onClick={showLoginModal} className="ub_login">Login</button></li>}
                                 {/*props.userToken && <li className="menu_font_size regularfont"> 
                                 <a href=""><AppImage src="/images/svg/my-account.svg" className="my-account"/></a></li>*/}
@@ -92,7 +85,15 @@ function Header_home(props: any) {
                                 <div>
                                     <button className="btn border-0 menu_font_size regularfont menu-color" onClick={() => setIsOpen(!isOpen)}>My Account</button>
                                     {isOpen && (
-                                        <div className='position-absolute menu-dropdown'>
+                                        <div className='position-absolute menu-dropdown account-dropdown'>
+                                            {user.user_type === 'seller' && <div className='dropdownitem'>
+                                                <span className='menu_font_size regularfont pointer' 
+                                                    onClick={() => {
+                                                        router.push('/seller/dashboard');
+                                                        setIsOpen(!isOpen);
+                                                    }}
+                                                >Dashboard</span>
+                                            </div>}
                                             <div className='dropdownitem'>
                                                 <span className='menu_font_size regularfont pointer' 
                                                     onClick={() => {
@@ -107,11 +108,26 @@ function Header_home(props: any) {
                                                     onClick={logout}
                                                 >Logout</span>
                                             </div>
+                                            {user.user_type !== 'seller' && <div className='dropdownitem'>
+                                                <span className='menu_font_size regularfont pointer required-text' 
+                                                    style={{zIndex: 2, position: 'relative'}} 
+                                                    onClick={() => console.log('become a seller')}
+                                                >Start Selling</span>
+                                            </div>}
                                         </div>
                                     )}
                                 </div>
                                 <span className='' onClick={() =>setIsOpen(false)}><AppImage src="/images/svg/my-account.svg" className="my-account"/></span>
-                                <li className='mt-1' onClick={() =>setIsOpen(false)}><a href="/cartpage"><AppImage src="/images/cart-white.svg"/><span className="home_count">{cartCount}</span></a></li>
+                                <li className='mt-1 pointer' 
+                                    onClick={() =>setIsOpen(false)}
+                                >
+                                    <Link href="/cartpage">
+                                        <span>
+                                            <AppImage src="/images/cart-white.svg"/>
+                                            <span className="home_count">{cartCount}</span>
+                                        </span>
+                                    </Link>
+                                </li>
                             </div>   
                         }  
                     </div>
@@ -125,6 +141,14 @@ function Header_home(props: any) {
                     </div>
                 </div>}
                 {router.pathname == '/dismantle_car' && <div className="container">
+                    <div className="row d-flex align-items-center header-middle-text pl-5 ml-5">
+                        <div className="col box w-100">
+                            <p className="semifont heading_text text-white">Dismantle your<br /> car with us</p>
+                            <p className="lightfont sub-text-1 text-white">Browse our expansive selection<br /> featuring hundreds of brands and<br /> tens of thousands of quality parts.</p>
+                        </div>
+                    </div>
+                </div>}
+                {router.pathname == '/seller-registration' && <div className="container">
                     <div className="row d-flex align-items-center header-middle-text pl-5 ml-5">
                         <div className="col box w-100">
                             <p className="semifont heading_text text-white">Dismantle your<br /> car with us</p>
