@@ -1,11 +1,12 @@
-import { ReactNode, createContext, useContext, useState } from "react";
+import { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import APIs from "~/services/apiService";
 
 interface User {
     user: any;
     saveUser: React.Dispatch<React.SetStateAction<{}>>;
 }
 
-const user_Context = createContext<User | undefined>(undefined)
+const userContext = createContext<User | undefined>(undefined)
 
 interface providerProps {
     children: ReactNode;
@@ -13,17 +14,35 @@ interface providerProps {
 
 export function UserProvider(props: providerProps) {
 
-    const [user, setUser] = useState<{}>({})
-
-    const saveUser = (user: any) => {
-        setUser(user) 
+    let userdetails: any = {}
+    if (typeof window !== 'undefined') {
+        userdetails = localStorage.getItem('userdetails');
+        userdetails = JSON.parse(userdetails);
     }
 
-    return <user_Context.Provider value={{user, saveUser}}>{props.children}</user_Context.Provider>
+    const [user, setUser] = useState<{}>(userdetails)
+
+    useEffect(() => {
+        let userdata: any = localStorage.getItem('userdetails');
+        userdata = JSON.parse(userdata);
+        if (userdata && userdata.id) {
+            APIs.getSpecificUser(userdata.id).then(response => {
+                let user = response.data;
+                saveUser(user);
+                localStorage.setItem('userdetails', JSON.stringify(user));
+            })
+        }
+    }, [])
+
+    const saveUser = (user: any) => {
+        setUser(user);
+    }
+
+    return <userContext.Provider value={{user, saveUser}}>{props.children}</userContext.Provider>
 }
 
 export const UserContext = (): User => {
-    const context = useContext(user_Context)
+    const context = useContext(userContext)
     if (context === undefined) {
         throw new Error('UserContext must be used within UserProvider')
     }

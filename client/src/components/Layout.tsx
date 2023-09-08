@@ -58,7 +58,8 @@ function Layout(props: Props) {
                     <Header />
                 </header> */}
                 <div className={router.pathname == '/homepage' ? 'home-header' : router.pathname == '/request' ? 'request-header' : 
-                router.pathname == '/dismantle_car' ? 'dismantle-header' : router.pathname == '/about_us_' ? 'about-header' : 'page_header'}>
+                router.pathname == '/dismantle_car' ? 'dismantle-header' : router.pathname == '/about_us_' ? 'about-header' : 
+                router.pathname == '/seller-registration' ? 'seller-reg-header' : 'page_header'}>
                     <Header_home userToken={userToken} geUserDetails={geUserDetails} />
                 </div>
 

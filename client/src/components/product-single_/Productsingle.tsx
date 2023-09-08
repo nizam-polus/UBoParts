@@ -11,11 +11,14 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import APIs from '~/services/apiService';
 import { BASE_URL } from 'configuration';
+import { UserContext } from '../account_/UserContext';
 
 function Productsingle() {
 
+    const {user, saveUser} = UserContext();
     const router = useRouter();
     const id = router.query.id;
+
     const [productData, setProductData] = useState<any>({})
     const [productImage, setProductImage] = useState<any>({})
     const [productGallery, setProductGallery] = useState([])
@@ -25,7 +28,6 @@ function Productsingle() {
 
     useEffect(() => {
         APIs.getProduct(id).then(response => {
-            console.log(response);
             let product = response.data.data;
             let productGallery = response.data.data.attributes?.product_gallary_image?.data;
             let productImage = response.data.data.attributes?.product_gallary_image?.data[0]?.attributes?.url;
@@ -41,7 +43,7 @@ function Productsingle() {
 
     const handleAddToCart = () => {
         let cartData = {
-            customerid: '2',
+            customerid: user.id,
             productid: productData?.id,
             quantity: quantity,
             productprice: productData?.attributes?.price
@@ -61,7 +63,6 @@ function Productsingle() {
 
     return (
         <>
-            <Header_logged_in />
             <div className="main-body pb-5 mb-5">
                 <div className="container">
                     <section className="products-description-wrapper mt-5 mb-5">

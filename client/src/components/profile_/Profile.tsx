@@ -35,17 +35,17 @@ function Profile() {
         let userId = !user.id ? userdetails.id : user.id;
         APIs.getSpecificUser(userId).then((response: any) => {
             let user = response.data;
-            setFirstname(user.first_name);
-            setLastname(user.last_name);
-            setEmail(user.email);
-            setPhone(user.phone_number);
-            setAddress_1(user.streetaddress_housenumber);
-            setAddress_2(user.streetaddress_apartment);
-            setCity(user.city);
-            setState(user.state);
-            setCountry(user.country);
-            setPostcode(user.postcode);
-            setProfilePicPath(user?.profile_image?.url)
+            setFirstname(user.first_name || '');
+            setLastname(user.last_name || '');
+            setEmail(user.email || '');
+            setPhone(user.phone_number || '');
+            setAddress_1(user.streetaddress_housenumber || '');
+            setAddress_2(user.streetaddress_apartment || '');
+            setCity(user.city || '');
+            setState(user.state || '');
+            setCountry(user.country || '');
+            setPostcode(user.postcode || '');
+            setProfilePicPath(user?.profile_image?.url || '')
         })
     }, [])
 
@@ -69,6 +69,7 @@ function Profile() {
             APIs.updateSpecificUser(user.id, userData).then(response => {
                 console.log(response.data);
                 let user = response.data;
+                localStorage.setItem('userdetails', JSON.stringify(user));
                 saveUser(user);
             })
         }
