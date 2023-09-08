@@ -13,10 +13,12 @@ function Header_logged_in() {
     const [cartCount, setCartCount] = useState(0)
 
     useEffect(() => {
-        APIs.getCartData({customerid: user.id}).then(response => {
-            let totalCartItem = response.data.rows.length;
-            setCartCount(totalCartItem)
-        })
+        if (user.id) {
+            APIs.getCartData({customerid: user.id}).then(response => {
+                let totalCartItem = response.data.rows.length;
+                setCartCount(totalCartItem)
+            })
+        }
     })
 
     return (
