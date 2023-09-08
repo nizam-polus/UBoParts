@@ -14,7 +14,8 @@ const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT;
 
 const getToken = () => {
   if (typeof window !== 'undefined') {
-    return localStorage.getItem('usertoken')
+    let userdetails: any = localStorage.getItem('usertoken')
+    return userdetails?.replace(/"/g, '');
   }
 }
 

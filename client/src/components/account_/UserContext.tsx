@@ -20,7 +20,7 @@ export function UserProvider(props: providerProps) {
         userdetails = JSON.parse(userdetails);
     }
 
-    const [user, setUser] = useState<{}>(userdetails)
+    const [user, setUser] = useState<{}>(userdetails || {})
 
     useEffect(() => {
         let userdata: any = localStorage.getItem('userdetails');
