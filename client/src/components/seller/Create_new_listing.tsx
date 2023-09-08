@@ -18,7 +18,7 @@ function Create_new_listing() {
                                         <table className="table profile-table-1 coulmn-bg-color-1 rounded">
                                             <tbody className="double">
                                                 <tr>
-                                                    <th colSpan={2} className="px-5 pb-1 ps-0 custom-color-3  regularfont body-sub-titles border-bottom border-top-0"><Link href={`/create_new_listing`}>Create New Listing</Link></th>
+                                                    <th colSpan={2} className="px-5 pb-1 ps-0 custom-color-3  regularfont body-sub-titles border-bottom border-top-0">Create New Listing</th>
                                                 </tr>
                                             
                                                 <tr className="double">
