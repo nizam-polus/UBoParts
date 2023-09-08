@@ -153,6 +153,12 @@
         "seller"
       ],
       "default": "normal"
+    },
+    "products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product",
+      "mappedBy": "seller"
     }
   }
 }
