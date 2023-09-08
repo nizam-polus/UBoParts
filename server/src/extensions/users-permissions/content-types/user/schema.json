@@ -143,7 +143,7 @@
       "type": "enumeration",
       "enum": [
         "Individual",
-        "Multiple"
+        "Business"
       ]
     },
     "user_type": {
@@ -154,11 +154,11 @@
       ],
       "default": "normal"
     },
-    "products": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::product.product",
-      "mappedBy": "seller"
+    "company_btw": {
+      "type": "string"
+    },
+    "kvk_number": {
+      "type": "string"
     }
   }
 }
