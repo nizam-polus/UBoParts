@@ -42,12 +42,14 @@ function Header_home(props: any) {
     const [cartCount, setCartCount] = useState(0)
 
     useEffect(() => {
-        APIs.getCartData({customerid: user.id}).then(response => {
-            if (!response.data.error) {
-                let totalCartItem = response.data.rows.length;
-                setCartCount(totalCartItem)
-            }
-        }).catch((error) => console.log(error));
+        if (user.id) {
+            APIs.getCartData({customerid: user.id}).then(response => {
+                if (!response.data.error) {
+                    let totalCartItem = response.data.rows.length;
+                    setCartCount(totalCartItem)
+                }
+            }).catch((error) => console.log(error));
+        }
     })
 
     const logout = () => {
@@ -55,7 +57,8 @@ function Header_home(props: any) {
         localStorage.removeItem('userdetails');
         setUserToken('');
         setIsLoggedin(false);
-        setIsOpen(!isOpen)
+        setIsOpen(!isOpen);
+        saveUser({});
         router.push('/homepage');
     };
   
