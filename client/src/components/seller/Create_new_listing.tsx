@@ -69,6 +69,12 @@ function Create_new_listing() {
 
     const handleLicenseplateChange = (event: any) => {
         setLicenseplate(event.target.value.toUpperCase());
+        APIs.getLicenseplate(event.target.value).then((response: any) => {
+            // setModelArray(response.data.rows);
+        })
+            .catch((error) => {
+                setError(error);
+            });
     };
 
     const handleMakeChange = (event: any) => {

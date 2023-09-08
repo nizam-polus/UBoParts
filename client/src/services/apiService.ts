@@ -65,7 +65,10 @@ const APIs = {
 
     updateSpecificUser: (id: number, userData: any) => ds.put(BACKEND_URL + `users/${id}`, userData),
     
-    createNewList: (data: any) => ds.post(BACKEND_URL + 'products', {...data})
+    createNewList: (data: any) => ds.post(BACKEND_URL + 'products', {...data}),
+
+    getLicenseplate: (data: any) => axios.get(BACKEND_URL + `cardetails?populate=*&filters[licenseplate][$contains]=${data}`, {headers})
+
 
 }
 
