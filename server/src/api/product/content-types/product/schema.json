@@ -180,6 +180,20 @@
       "relation": "manyToOne",
       "target": "api::cardetail.cardetail",
       "inversedBy": "products"
+    },
+    "part_no_barcode_no": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
+    },
+    "seller": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "products"
     }
   }
 }
