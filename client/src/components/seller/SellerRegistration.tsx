@@ -288,7 +288,7 @@ function SellerRegistration() {
                                                     <tr>
                                                         <td>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 ">
-                                                                <input type="checkbox" name="agreement" 
+                                                                <input type="checkbox" name="agreement" className="width-checkout"
                                                                     onChange={() => setAgreement(!agreement)}
                                                                 /> 
                                                                 Accept terms & conditons
