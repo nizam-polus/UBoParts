@@ -63,7 +63,9 @@ const APIs = {
 
     getSpecificUser: (id: number) => ds.get(BACKEND_URL + `users/${id}?populate=*`),
 
-    updateSpecificUser: (id: number, userData: any) => ds.put(BACKEND_URL + `users/${id}`, userData)
+    updateSpecificUser: (id: number, userData: any) => ds.put(BACKEND_URL + `users/${id}`, userData),
+    
+    createNewList: (data: any) => ds.post(BACKEND_URL + 'products', {...data})
 
 }
 
