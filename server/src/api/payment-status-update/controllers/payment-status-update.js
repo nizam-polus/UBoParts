@@ -39,9 +39,18 @@ module.exports = {
       );
       ctx.body = response.data;
 
+      /*const orderupdate = await strapi.db.connection.raw(
+        `UPDATE public.transaction
+            SET status='${response.data.status}'
+            WHERE tid ='${response.data.uid}';`
+      );
+      ctx.body = response.data;*/
+
       const cleardata = await strapi.db.connection.raw(
         `DELETE FROM public.carts
-        WHERE customer_id='2';`
+        USING public.transaction
+        WHERE public.carts.customer_id = public.transaction.customer_id 
+        AND public.transaction.tid='${response.data.uid}';`
       );
       // .then(async ({data}) => {
       //   console.log(data);
