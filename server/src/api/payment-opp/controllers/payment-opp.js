@@ -80,8 +80,8 @@ module.exports = {
       console.log(response.data);
       const entries = await strapi.db.connection.raw(
         `INSERT INTO public.transaction(
-            id, tid, sid, status, created_at, updated_at)
-            VALUES (DEFAULT, '${response.data.uid}', '${response.data.statuses[0].uid}', '${response.data.status}', DEFAULT, DEFAULT);`
+            id, tid, sid, status, created_at, updated_at, customer_id)
+            VALUES (DEFAULT, '${response.data.uid}', '${response.data.statuses[0].uid}', '${response.data.status}', DEFAULT, DEFAULT, ${ctx.request.body.customerid});`
       );
       ctx.body = response.data;
 
@@ -91,7 +91,7 @@ module.exports = {
 
       //  console.log(result);
     } catch (err) {
-      console.log(err.response.data);
+      //console.log(err.response.data);
       ctx.body = err.response.data;
     }
   },
