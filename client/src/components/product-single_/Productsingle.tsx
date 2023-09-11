@@ -15,16 +15,14 @@ import { UserContext } from '../account_/UserContext';
 
 function Productsingle() {
 
-    const {user, saveUser} = UserContext();
+    const {user, saveUser, cartCount, setCartCount} = UserContext();
     const router = useRouter();
     const id = router.query.id;
 
     const [productData, setProductData] = useState<any>({})
     const [productImage, setProductImage] = useState<any>({})
     const [productGallery, setProductGallery] = useState([])
-    const [quantity, setQuantity] = useState(1)
-    //dummy value for triggering cart count in header
-    const [dummy, setDummy] = useState<any>('')
+    const [quantity, setQuantity] = useState(1);
 
     useEffect(() => {
         APIs.getProduct(id).then(response => {
@@ -49,12 +47,14 @@ function Productsingle() {
             productprice: productData?.attributes?.price
         }
         APIs.addToCart(cartData).then(response => {
-            setDummy('dummy');
             toast.success(() => (
                 <>
                     Item successfully added to <Link href={"/cartpage"}>cart</Link>
                 </>
-            ))
+            ));
+            APIs.getCartData({customerid: user.id}).then(response => {
+                setCartCount(response.data.rows.length);
+            });
         }).catch(err => {
             toast.error('Something went wrong!')
         })

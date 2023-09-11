@@ -4,6 +4,8 @@ import APIs from "~/services/apiService";
 interface User {
     user: any;
     saveUser: React.Dispatch<React.SetStateAction<{}>>;
+    cartCount: number,
+    setCartCount: React.Dispatch<React.SetStateAction<number>>
 }
 
 const userContext = createContext<User | undefined>(undefined)
@@ -20,7 +22,8 @@ export function UserProvider(props: providerProps) {
         userdetails = JSON.parse(userdetails);
     }
 
-    const [user, setUser] = useState<{}>(userdetails || {})
+    const [user, setUser] = useState<{}>(userdetails || {});
+    const [cartCount, setCartCount] = useState<number>(0);
 
     useEffect(() => {
         let userdata: any = localStorage.getItem('userdetails');
@@ -30,7 +33,13 @@ export function UserProvider(props: providerProps) {
                 let user = response.data;
                 saveUser(user);
                 localStorage.setItem('userdetails', JSON.stringify(user));
-            })
+            });
+            APIs.getCartData({customerid: userdata.id}).then(response => {
+                if (!response.data.error) {
+                    let totalCartItem = response.data.rows.length;
+                    setCartCount(totalCartItem);
+                }
+            }).catch((error) => console.log(error));
         }
     }, [])
 
@@ -38,7 +47,7 @@ export function UserProvider(props: providerProps) {
         setUser(user);
     }
 
-    return <userContext.Provider value={{user, saveUser}}>{props.children}</userContext.Provider>
+    return <userContext.Provider value={{user, saveUser, cartCount, setCartCount}}>{props.children}</userContext.Provider>
 }
 
 export const UserContext = (): User => {

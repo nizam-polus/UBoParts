@@ -9,17 +9,7 @@ import { UserContext } from '../account_/UserContext';
 
 function Header_logged_in() {
 
-    const { user, saveUser } = UserContext();
-    const [cartCount, setCartCount] = useState(0)
-
-    useEffect(() => {
-        if (user.id) {
-            APIs.getCartData({customerid: user.id}).then(response => {
-                let totalCartItem = response.data.rows.length;
-                setCartCount(totalCartItem)
-            })
-        }
-    })
+    const { cartCount } = UserContext();  
 
     return (
         <>

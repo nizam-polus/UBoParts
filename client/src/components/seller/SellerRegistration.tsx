@@ -1,6 +1,6 @@
-import { useState } from "react";
-import APIs from "~/services/apiService";
+import React, { useState } from "react";
 import { UserContext } from "../account_/UserContext";
+import APIs from '../../services/apiService';
 import { useRouter } from "next/router";
 
 
@@ -41,9 +41,6 @@ function SellerRegistration() {
             !!formData.email && !!formData.company_name && 
             !!formData.phone_number && !!formData.streetaddress_housenumber && 
             !!formData.city && !!formData.country && !!formData.state && !!formData.postcode && agreement);
-            console.log(incomplete);
-            
-        setIncomplete(incomplete);
         return incomplete;
     }
 
@@ -57,7 +54,7 @@ function SellerRegistration() {
     }
 
     const handleFormChange = (event: any) => {
-        checkFormStatus();
+        // checkFormStatus();
         const { name, value } = event.target;
         setFormData((prevFormData => ({...prevFormData, [name]: value})));
     }
@@ -65,6 +62,7 @@ function SellerRegistration() {
     const handleSubmit = (event: any) => {
         event.preventDefault();
         let incomplete = checkFormStatus();
+        setIncomplete(incomplete);
         let reqElement = document.getElementById('required');
         if (reqElement) reqElement.scrollIntoView({behavior: 'smooth'})
         let sellerData = {...formData, password: cnfrmPassword};
@@ -155,7 +153,7 @@ function SellerRegistration() {
                                                                     e.target.value.length < 6 ? setIncomplete(true) : setIncomplete(false);
                                                                 }}
                                                             />
-                                                            {(password.length < 6) && <span className="required-text">Password must be at least 6 characters </span>}
+                                                            {(password.length < 6 && incomplete) && <span className="required-text">Password must be at least 6 characters </span>}
                                                         </td>
                                                         <td>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Confirm Password</label>

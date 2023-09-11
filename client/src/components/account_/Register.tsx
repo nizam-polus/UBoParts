@@ -85,7 +85,13 @@ function Register(props: any) {
         validateValues(regformData);
         try {
             if (Object.keys(hasError).length === 0 && isSubmitting === true) {
-                const userdata = { 'username': regformData.username, 'email': regformData.email, 'password': regformData.password }
+                const userdata = { 
+                    username: regformData.username, 
+                    email: regformData.email, 
+                    password: regformData.password, 
+                    user_type : 'Normal', 
+                    isApproved : 'Active' 
+                }
                 APIs.register(userdata).then((response: any) => {
                     let userData = response.data.user;
                     setRegistered(true);
