@@ -7,6 +7,7 @@ import AppImage from '../shared/AppImage';
 import Footer from '../footer_/Footer';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
+import ReactSlider from 'react-slider';
 import 'react-toastify/dist/ReactToastify.css';
 
 import APIs from '~/services/apiService';
@@ -16,7 +17,7 @@ import { UserContext } from '../account_/UserContext';
 
 function Shop() {
     
-    const {user, saveUser} = UserContext()
+    const {user, saveUser, setCartCount} = UserContext();
 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -35,14 +36,25 @@ function Shop() {
     const [searched, setSearched] = useState(false);
     const [pagination, setPagination] = useState<any>({});
     const [pageRange, setPageRange] = useState<number[]>([]);
-
-    //dummy value for triggering cart count in header
-    const [dummy, setDummy] = useState<any>('');
+    const [filterToggle, setFiltertoggle] = useState({
+        categories: true,
+        price: false
+    })
+    const [filterCategory, setFilterCategory] = useState<any>([]);
+    const [filterSubcategory, setFilterSubcategory] = useState<any>([]);
 
     const router = useRouter();
 
     const categoriesArray = (resData: any) => {
-        return [...new Set(resData.map((item: any) => item.attributes.category_name))];
+        return [...new Set(resData.map((item: any) => ({
+                id: item.id,
+                category_name: item.attributes.category_name,
+                subcategories: item.attributes.sub_categories.data.map((subItem: any) => ({
+                    id: subItem.id,
+                    name: subItem.attributes.name.replace(/\"/g, '')
+                }))
+            })
+        ))];
     }
 
     useEffect(() => {
@@ -186,8 +198,64 @@ function Shop() {
         setToggleSearch(!toggleSearch);
     }
 
+    const clearSearch = (event: any) => {
+        event.preventDefault();
+        setSelectedMake('');
+        setSelectedModel('');
+        setSelectedYear('');
+    }
+
     const handleProductClick = (product: any) => {
         router.push('/products_/' + product.id);
+    }
+
+    const handleCategoryFilter = (event: any) => {
+        let tempCategories = categories;
+        let tempFilteredSubcategories = filterSubcategory;
+        let filteredCategories: any = filterCategory;
+        let category = event.target.value;
+        if (event.target.checked) {
+            setFiltertoggle((prevValue: any) => ({...prevValue}));
+            filteredCategories.push(category)
+        } else {
+            setFiltertoggle((prevValue: any) => ({...prevValue}));
+            filteredCategories = filteredCategories.filter((item: any) => item !== category);
+            // remove subcategories that are related to parent category
+            [tempCategories] = tempCategories.filter((item: any) => (item.category_name === category));
+            filterSubcategory.forEach((filteredSubItem: any) => {
+                tempCategories.subcategories.forEach((tempSubCat: any) => {
+                    if (tempSubCat.name === filteredSubItem) {
+                        tempFilteredSubcategories = tempFilteredSubcategories.filter((subItem: any) => filteredSubItem !== subItem);
+                    }
+                })
+            });
+            setFilterSubcategory(tempFilteredSubcategories);
+        }
+        setFilterCategory(filteredCategories);
+    }
+
+    const handleSubcategoryFilter = (event: any) => {
+        let filteredSubcategories: any = filterSubcategory;
+        let subcategory = event.target.value;
+        if (event.target.checked) {
+            filteredSubcategories.push(subcategory)
+        } else {
+            filteredSubcategories = filteredSubcategories.filter((item: any) => item !== subcategory);
+        }
+        setFilterSubcategory(filteredSubcategories);
+    }
+
+    const handlePriceChange = (value: any) => {
+        console.log(value[0], value[1]);
+    }
+
+    const handleApplyFilter = (event: any) => {
+        event.preventDefault();
+        console.log(filterCategory);
+        console.log(filterSubcategory);
+        APIs.searchFilter(selectedMake, selectedModel, selectedYear, filterCategory, filterSubcategory, '').then(response => {
+            setSearchedProducts(response.data.data)
+        }).catch(err => console.log)
     }
 
     const handleAddToCart = (productData: any) => {
@@ -198,12 +266,14 @@ function Shop() {
             productprice: productData?.attributes?.price
         }
         APIs.addToCart(cartData).then(response => {
-            setDummy('dummy');
             toast.success(() => (
                 <>
                     Item successfully added to <Link href={"/cartpage"}>cart</Link>
                 </>
-            ))
+            ));
+            APIs.getCartData({customerid: user.id}).then(response => {
+                setCartCount(response.data.rows.length);
+            });
         }).catch(err => {
             toast.error('Something went wrong!')
         })
@@ -263,9 +333,17 @@ function Shop() {
                                                 value={selectedCategory} onChange={handleCategoryChange}>
                                                 <option value="" disabled={true}>Select Category</option>
                                                 {categories.map((category: any, index: any) => (
-                                                    <option key={index} value={category}>{category}</option>
+                                                    <option key={index} value={category.category_name}>{category.category_name}</option>
                                                 ))}
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div className="col-1">
+                                        <div className="form-group">
+                                            <button className='regularfont' 
+                                                style={{background: '#587E50', padding: '0.2rem 1.1rem', color: 'white', border: 'none', borderRadius: '5px'}}
+                                                onClick={(e) => clearSearch(e)}
+                                            >Clear</button>
                                         </div>
                                     </div>
                                 </div>
@@ -289,40 +367,60 @@ function Shop() {
                                 <div className="row g-5">
                                     <div className="col-12 col-sm-3 pb-4 pb-xl-0">
                                         <div className="responsive-filter">
-                                            <button type="button" className="boldfont boldfontsize button-bg-color-1 border-0 text-white p-2 rounded" data-bs-toggle="modal" data-bs-target="#view-filters">View Filter</button>
+                                            <button type="button" 
+                                                className="boldfont boldfontsize button-bg-color-1 border-0 text-white p-2 rounded" 
+                                                data-bs-toggle="modal" data-bs-target="#view-filters"
+                                            >View Filter</button>
                                         </div>
                                         <div className="desktop-filter">
                                             <div className="row mb-2 flex-column">
-                                                <button className="btn coulmn-bg-color-1 border-0 text-start justify-content-between d-flex align-items-center regularfont mini-text-2">
-                                                    <span>Categories</span><i className="fa fa-angle-up"></i>
+                                                <button 
+                                                    className="btn coulmn-bg-color-1 border-0 text-start justify-content-between 
+                                                                d-flex align-items-center regularfont mini-text-2"
+                                                    onClick={() => {setFiltertoggle((prevValue: any) => ({...prevValue, categories: !filterToggle.categories}))}}
+                                                >
+                                                    <span>Categories</span><i className={`${filterToggle.categories ? 'fa fa-angle-up' : 'fa fa-angle-down'}`}></i>
                                                 </button>
-                                                <div className="group-check p-3">
-                                                    <div className="form-check mb-2">
-                                                        <input type="checkbox" className="form-check-input border-0" id="check1" name="option1" value="something" checked />
-                                                        <label className="form-check-label" htmlFor="check1">All</label>
-                                                    </div>
-                                                    <div className="form-check mb-2">
-                                                        <input type="checkbox" className="form-check-input border-0 " id="check2" name="option1" value="something" />
-                                                        <label className="form-check-label" htmlFor="check2">Audio</label>
-                                                    </div>
-                                                    <div className="form-check mb-2">
-                                                        <input type="checkbox" className="form-check-input border-0" id="check3" name="option1" value="something" />
-                                                        <label className="form-check-label" htmlFor="check3">Lights</label>
-                                                    </div>
-                                                    <div className="form-check">
-                                                        <input type="checkbox" className="form-check-input border-0" id="check4" name="option1" value="something" />
-                                                        <label className="form-check-label" htmlFor="check4">Body Parts</label>
-                                                    </div>
-                                                </div>
+                                                {filterToggle.categories && <div className=" p-3">
+                                                    {categories.map((category: any, idx: any) => 
+                                                        <div>
+                                                            <div className="form-check mb-2" key={idx}>
+                                                                <input type="checkbox" 
+                                                                    className="form-check-input border-0" 
+                                                                    id={idx} name={category.category_name} value={category.category_name} 
+                                                                    onChange={(e) => handleCategoryFilter(e)}
+                                                                />
+                                                                <label className="form-check-label" htmlFor={idx}>{category.category_name}</label>
+                                                                {filterCategory.map((item: any) => item === category.category_name && category.subcategories.map((subcategory: any) => (
+                                                                    <div>
+                                                                        <div className="form-check mb-2" key={idx}>
+                                                                            <input type="checkbox" 
+                                                                                className="form-check-input border-0" 
+                                                                                id={subcategory.name} name={subcategory.name} value={subcategory.name} 
+                                                                                onChange={(e) => handleSubcategoryFilter(e)}
+                                                                                />
+                                                                            <label className="form-check-label" htmlFor={subcategory.name}>{subcategory.name}</label>
+                                                                        </div>
+                                                                    </div>
+                                                                )))}
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>}
                                             </div>
                                             <div className="row mb-2 flex-column">
-                                                <button className="btn coulmn-bg-color-1 border-0 text-start justify-content-between d-flex align-items-center regularfont mini-text-2">
-                                                    <span>Price</span><i className="fa fa-angle-up"></i>
+                                                <button 
+                                                    className="btn coulmn-bg-color-1 border-0 text-start justify-content-between 
+                                                                d-flex align-items-center regularfont mini-text-2"
+                                                    onClick={() => {setFiltertoggle((prevValue: any) => ({...prevValue, price: !filterToggle.price}))}}  
+                                                >
+                                                    <span>Price</span><i className={`${filterToggle.price ? 'fa fa-angle-up' : 'fa fa-angle-down'}`}></i>
                                                 </button>
-                                                <div className="group-check p-3">
-
-                                                </div>
+                                                {filterToggle.price && <div className="group-check p-3">
+                                                    {/* <ReactSlider min={0} max={1000} minDistance={100} /> */}
+                                                </div>}
                                             </div>
+                                            {/* Filter based on rating - currently not used */}
                                             {/* <div className="row mb-2 flex-column">
                                                     <button className="btn coulmn-bg-color-1 border-0 text-start justify-content-between d-flex align-items-center regularfont mini-text-2">
                                                         <span>Ratings</span><i className="fa fa-angle-up"></i>
@@ -366,28 +464,10 @@ function Shop() {
                                                         </div>
                                                     </div>
                                                 </div> */}
-                                            <div className="row mb-2 flex-column">
-                                                <button className="btn coulmn-bg-color-1 border-0 text-start justify-content-between d-flex align-items-center regularfont mini-text-2">
-                                                    <span>Brands</span><i className="fa fa-angle-up"></i>
-                                                </button>
-                                                <div className="group-check p-3">
-                                                    <div className="form-check mb-2">
-                                                        <input type="checkbox" className="form-check-input border-0" id="check1" name="option1" value="something" checked />
-                                                        <label className="form-check-label" htmlFor="check1">All</label>
-                                                    </div>
-                                                    <div className="form-check mb-2">
-                                                        <input type="checkbox" className="form-check-input border-0" id="check2" name="option1" value="something" />
-                                                        <label className="form-check-label" htmlFor="check2">Audio</label>
-                                                    </div>
-                                                    <div className="form-check mb-2">
-                                                        <input type="checkbox" className="form-check-input border-0" id="check3" name="option1" value="something" />
-                                                        <label className="form-check-label" htmlFor="check3">Lights</label>
-                                                    </div>
-                                                    <div className="form-check">
-                                                        <input type="checkbox" className="form-check-input border-0" id="check4" name="option1" value="something" />
-                                                        <label className="form-check-label" htmlFor="check4">Body Parts</label>
-                                                    </div>
-                                                </div>
+                                            <div className='text-center mt-4 mini-text-2'>
+                                                <button style={{background: '#2a2a2a', color:'white', border: 'none', padding: '0.4rem 1.5rem'}}
+                                                    onClick={(e) => handleApplyFilter(e)}
+                                                >Apply Filter</button>
                                             </div>
                                         </div>
                                     </div>
