@@ -109,6 +109,7 @@ function SellerRegistration() {
                     router.push('/homepage');
                 }).catch(err => console.log(err))
             } else {
+                delete sellerData.password;
                 APIs.updateSpecificUser(user.id, sellerData).then(response => {
                     console.log(response);
                     userdetails = response.data.data;
