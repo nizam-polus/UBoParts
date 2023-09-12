@@ -24,7 +24,7 @@ function SellerRegistration() {
         country: '',
         postcode: '',
         company_name: '',
-        Account_type: '',
+        Account_type: 'Individual',
         password: '',
         kvk_number: '',
         company_btw: '',
@@ -98,8 +98,8 @@ function SellerRegistration() {
             shippingaddress_postcode: formData.postcode,
             shippingaddress_phonenumber: formData.phone_number
         };
-    if (!incomplete) {
-        let userdetails: any = {};
+        if (!incomplete) {
+            let userdetails: any = {};
             if (!user || (user && !user.id)) {
                 APIs.register(sellerData).then(response => {
                     userdetails = response.data.user;
@@ -111,8 +111,7 @@ function SellerRegistration() {
             } else {
                 delete sellerData.password;
                 APIs.updateSpecificUser(user.id, sellerData).then(response => {
-                    console.log(response);
-                    userdetails = response.data.data;
+                    userdetails = response.data;
                     localStorage.setItem('userdetails', JSON.stringify(userdetails));
                     saveUser(userdetails);
                     router.push('/homepage');
@@ -225,7 +224,7 @@ function SellerRegistration() {
                                                                 style={{height: '3.5rem'}} name="Account_type" value={formData.Account_type}
                                                                 onChange={(e) => handleFormChange(e)}
                                                             >
-                                                                <option value={''} disabled>Select an account type</option>
+                                                                <option disabled>Select an account type</option>
                                                                 <option value="Individual">Individual</option>
                                                                 <option value="Business">Business/Company</option>
                                                             </select>
