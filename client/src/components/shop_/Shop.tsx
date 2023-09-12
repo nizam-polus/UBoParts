@@ -7,7 +7,6 @@ import AppImage from '../shared/AppImage';
 import Footer from '../footer_/Footer';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
-import ReactSlider from 'react-slider';
 import 'react-toastify/dist/ReactToastify.css';
 
 import APIs from '~/services/apiService';
@@ -417,7 +416,7 @@ function Shop() {
                                                     <span>Price</span><i className={`${filterToggle.price ? 'fa fa-angle-up' : 'fa fa-angle-down'}`}></i>
                                                 </button>
                                                 {filterToggle.price && <div className="group-check p-3">
-                                                    {/* <ReactSlider min={0} max={1000} minDistance={100} /> */}
+                                                    
                                                 </div>}
                                             </div>
                                             {/* Filter based on rating - currently not used */}
