@@ -36,7 +36,7 @@ function Shop() {
     const [pagination, setPagination] = useState<any>({});
     const [pageRange, setPageRange] = useState<number[]>([]);
     const [filterToggle, setFiltertoggle] = useState({
-        categories: true,
+        categories: false,
         price: false
     })
     const [filterCategory, setFilterCategory] = useState<any>([]);
@@ -63,6 +63,8 @@ function Shop() {
         setSelectedCategory(localStorage.getItem('category') || '');
         APIs.getCategories().then((response: any) => {
                 setCategories(categoriesArray(response.data.data));
+                filterToggle.categories = true;
+                setFiltertoggle({...filterToggle});
             })
             .catch((error) => {
                 setError(error);
