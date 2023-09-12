@@ -7,7 +7,6 @@ import AppImage from '../shared/AppImage';
 import Footer from '../footer_/Footer';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
-import ReactSlider from 'react-slider';
 import 'react-toastify/dist/ReactToastify.css';
 
 import APIs from '~/services/apiService';
@@ -37,7 +36,7 @@ function Shop() {
     const [pagination, setPagination] = useState<any>({});
     const [pageRange, setPageRange] = useState<number[]>([]);
     const [filterToggle, setFiltertoggle] = useState({
-        categories: true,
+        categories: false,
         price: false
     })
     const [filterCategory, setFilterCategory] = useState<any>([]);
@@ -64,6 +63,8 @@ function Shop() {
         setSelectedCategory(localStorage.getItem('category') || '');
         APIs.getCategories().then((response: any) => {
                 setCategories(categoriesArray(response.data.data));
+                filterToggle.categories = true;
+                setFiltertoggle({...filterToggle});
             })
             .catch((error) => {
                 setError(error);
@@ -417,7 +418,7 @@ function Shop() {
                                                     <span>Price</span><i className={`${filterToggle.price ? 'fa fa-angle-up' : 'fa fa-angle-down'}`}></i>
                                                 </button>
                                                 {filterToggle.price && <div className="group-check p-3">
-                                                    {/* <ReactSlider min={0} max={1000} minDistance={100} /> */}
+                                                    
                                                 </div>}
                                             </div>
                                             {/* Filter based on rating - currently not used */}

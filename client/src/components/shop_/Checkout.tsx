@@ -21,8 +21,19 @@ function Checkout() {
         state: '',
         country: '',
         postcode: ''
-    })
+    });
+    const [differentAdd, setDifferentAdd] = useState(false);
+    const [shippingData, setShippingData] = useState({
+        shippingaddress_country: formData.country,
+        shippingaddress_streataddress_housenumber: formData.address_1,
+        shippingaddress_streataddress_apartment: formData.address_2,
+        shippingaddress_city: formData.city,
+        shippingaddress_state: formData.state,
+        shippingaddress_postcode: formData.postcode,
+        shippingaddress_phonenumber: formData.phone
+    });
     const [incomplete, setIncomplete] = useState<any>(false);
+    const [shippingIncomplete, setShippingIncomplete] = useState(false);
 
     useEffect(() => {
         setFormData((prevFormData) => ({...prevFormData, 
@@ -38,6 +49,15 @@ function Checkout() {
             country: user.country,
             postcode: user.postcode
         }))
+
+        shippingData.shippingaddress_city = user.shippingaddress_city || user.city;
+        shippingData.shippingaddress_country = user.shippingaddress_country || user.country;
+        shippingData.shippingaddress_phonenumber = user.shippingaddress_phonenumber || user.phone_number;
+        shippingData.shippingaddress_postcode = user.shippingaddress_postcode || user.postcode;
+        shippingData.shippingaddress_state = user.shippingaddress_state || user.state;
+        shippingData.shippingaddress_streataddress_apartment = user.shippingaddress_streataddress_apartment || user.streetaddress_apartment;
+        shippingData.shippingaddress_streataddress_housenumber = user.shippingaddress_streataddress_housenumber || user.streetaddress_housenumber;
+        setShippingData({...shippingData});
 
         // get cart data
         APIs.getCartData({customerid: user.id}).then(response => {
@@ -66,18 +86,36 @@ function Checkout() {
         return incomplete;
     }
 
+    const checkShippingDataStatus = () => {
+        let shippingincomplete = true;
+        shippingincomplete = differentAdd && !(!!shippingData.shippingaddress_city && 
+            !!shippingData.shippingaddress_country && !!shippingData.shippingaddress_phonenumber &&
+            !!shippingData.shippingaddress_postcode && !!shippingData.shippingaddress_state && 
+            !!shippingData.shippingaddress_streataddress_housenumber);
+        setShippingIncomplete(shippingincomplete);
+        return shippingincomplete;
+    }
+
     const handleFormChange = (event: any) => {
         const { name, value } = event.target;
         setFormData((prevFormData => ({...prevFormData, [name]: value})));
         checkFormStatus();
     }
 
+    const handleShippingAddChange = (event: any) => {
+        const { name, value } = event.target;
+        setShippingData((prevData) => ({...prevData, [name]: value}));
+        checkShippingDataStatus();
+    }
+
     const handlepayment = () => {     
         let incomplete = checkFormStatus();
+        let shippingincomplete = checkShippingDataStatus();
         let reqElement = document.getElementById('required');
-        if (reqElement) reqElement.scrollIntoView({behavior: 'smooth'})
-        if (!incomplete) {
-            let formdata: any = {...formData, streetaddress_housenumber: formData.address_1, streetaddress_apartment: formData.address_2};
+        if (reqElement) reqElement.scrollIntoView({behavior: 'smooth'});
+        console.log(shippingincomplete)
+        if (!incomplete && !shippingincomplete) {
+            let formdata: any = {...formData, streetaddress_housenumber: formData.address_1, streetaddress_apartment: formData.address_2, ...shippingData};
             APIs.updateSpecificUser(user.id, formdata).then(response => {
                 saveUser(response.data);
                 localStorage.setItem('userdetails', JSON.stringify(response.data))
@@ -115,7 +153,7 @@ function Checkout() {
                             </div>
                         </div>
                         <div>
-                            {incomplete && <p className='required-text' id='required'>* Please fill the required fields</p>}
+                            {(incomplete || shippingIncomplete) && <p className='required-text' id='required'>* Please fill the required fields</p>}
                         </div>
                         <div className="row mt-3">
                             <div className="col-12 col-md-9">
@@ -231,21 +269,6 @@ function Checkout() {
                                                         />
                                                     </td>
                                                 </tr>
-                                                {/* <tr className="single">
-                                                    <td colSpan={2}>
-                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Password</label>
-                                                        <input type="text" className="check-form form-control input-bg-color-2 border-0 body-sub-titles" name="password" placeholder="Password"/>
-                                                    </td>
-                                                </tr>
-                                                <tr className="single">
-                                                    <td colSpan={2} className="d-flex">
-                                                        <span className="custom-checkbox pl-3">
-                                                            <input type="checkbox" className="form-check input-bg-color-2 border-0 body-sub-titles" name="create" id="create"/>
-                                                            <label htmlFor="create" className="rounded"></label>
-                                                        </span>
-                                                        <span className="ms-3 create-label create-label">Create an account?</span>
-                                                    </td>
-                                                </tr> */}
                                             </tbody>
                                         </table>
                                     </div>
@@ -257,14 +280,93 @@ function Checkout() {
                                                 </tr>
                                            
                                                 <tr className="single">
-                                                    <td colSpan={2} className="d-flex">
+                                                    <td colSpan={2} className="d-flex"
+                                                        onClick={(e: any) => {
+                                                            setDifferentAdd(!differentAdd);
+                                                            setShippingIncomplete(!differentAdd)
+                                                        }}
+                                                    >
                                                         <span className="custom-checkbox pl-3">
-                                                            <input type="checkbox" className="form-check input-bg-color-2 border-0 body-sub-titles" name="ship-to" id="ship-to"/>
+                                                            <input type="checkbox" 
+                                                                className="form-check input-bg-color-2 border-0 body-sub-titles" 
+                                                                name="ship-to" id="ship-to"
+                                                            />
                                                             <label htmlFor="ship-to " className="rounded"></label>
                                                         </span>
                                                         <span className="ms-3 create-label">Ship to a different address?</span>
                                                     </td>
                                                 </tr>
+                                                {differentAdd && <>
+                                                    <tr className="single">
+                                                        <td colSpan={2}>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Country</label>
+                                                            <input type="text" value={shippingData.shippingaddress_country}
+                                                                className={`check-form form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_country ? 'required-field' : 'border-0' }`} 
+                                                                name="shippingaddress_country" placeholder="Select Country..."
+                                                                onChange={(e) => handleShippingAddChange(e)}
+                                                            />
+                                                        </td>
+                                                    </tr>
+                                                    <tr className="single">
+                                                        <td colSpan={2}>
+                                                            <div className="mb-3">
+                                                                <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Street Address</label>
+                                                                <input type="text" value={shippingData.shippingaddress_streataddress_housenumber}
+                                                                    className={`check-form form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_streataddress_housenumber ? 'required-field' : 'border-0' }`}  
+                                                                    name="shippingaddress_streataddress_housenumber" placeholder="House number and street name"
+                                                                    onChange={(e) => handleShippingAddChange(e)}
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <input type="text" value={shippingData.shippingaddress_streataddress_apartment}
+                                                                    className="check-form form-control input-bg-color-2 border-0 body-sub-titles" 
+                                                                    name="shippingaddress_streataddress_apartment" placeholder="Apartment, suite, unit etc..."
+                                                                    onChange={(e) => handleShippingAddChange(e)}
+                                                                />
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr className="single">
+                                                        <td colSpan={2}>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">City</label>
+                                                            <input type="text" value={shippingData.shippingaddress_city}
+                                                                className={`check-form form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_city ? 'required-field' : 'border-0' }`} 
+                                                                name="shippingaddress_city" placeholder="City"
+                                                                onChange={(e) => handleShippingAddChange(e)}
+                                                            />
+                                                        </td>
+                                                    </tr>
+                                                    <tr className="single">
+                                                        <td colSpan={2}>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">State</label>
+                                                            <input type="text" value={shippingData.shippingaddress_state}
+                                                                className={`check-form form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_state ? 'required-field' : 'border-0' }`} 
+                                                                name="shippingaddress_state" placeholder="State"
+                                                                onChange={(e) => handleShippingAddChange(e)}
+                                                            />
+                                                        </td>
+                                                    </tr>
+                                                    <tr className="single">
+                                                        <td colSpan={2}>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Postcode</label>
+                                                            <input type="text" value={shippingData.shippingaddress_postcode}
+                                                                className={`check-form form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_postcode ? 'required-field' : 'border-0' }`} 
+                                                                name="shippingaddress_postcode" placeholder="Postcode"
+                                                                onChange={(e) => handleShippingAddChange(e)}
+                                                            />
+                                                        </td>
+                                                    </tr> 
+                                                    <tr className="single">
+                                                        <td colSpan={2}>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Phone Number</label>
+                                                            <input type="text" value={shippingData.shippingaddress_phonenumber}
+                                                                className={`check-form form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_phonenumber ? 'required-field' : 'border-0' }`} 
+                                                                name="shippingaddress_phonenumber" placeholder="(XXX) XXX-XXXX"
+                                                                onChange={(e) => handleShippingAddChange(e)}
+                                                            />
+                                                        </td>
+                                                    </tr>    
+                                                </>}
                                             </tbody>
                                         </table>
                                     </div>
@@ -314,7 +416,7 @@ function Checkout() {
                                                 
                                             </tr>
                                             <tr><td colSpan={2} className="p-3">
-                                                <button type="button" 
+                                                <button type="button" disabled={!checkoutProducts.length}
                                                     className="proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"
                                                     onClick={handlepayment}
                                                 >Proceed to payment</button>
