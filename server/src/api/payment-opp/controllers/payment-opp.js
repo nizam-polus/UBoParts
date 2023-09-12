@@ -6,14 +6,6 @@ const axios = require("axios");
  */
 
 module.exports = {
-  // exampleAction: async (ctx, next) => {
-  //   try {
-  //     ctx.body = 'ok';
-  //   } catch (err) {
-  //     ctx.body = err;
-  //   }
-  // }
-
   proceedPay: async (ctx, next) => {
     console.log("proceedPay");
     try {
@@ -26,15 +18,6 @@ module.exports = {
         total_price: ctx.request.body.total_price,
         checkout: false,
       });
-      // const url =  request.object_ul
-      // const response = await fetch('https://api-sandbox.onlinebetaalplatform.nl/v1/transactions', {
-      //   method: "POST", headers: {
-      //     'Content-Type': 'application/json',
-      //     "Content-Length": data.length.toString(),
-      //     "Authorization": "Bearer 1eb53db743cfa43b902e4b8d83bc6c55"
-      //   },
-      //   body: data,
-      // });
 
       const response = await axios({
         method: "post",
@@ -47,35 +30,7 @@ module.exports = {
         },
       });
 
-      // const headers = {
-      //   "Content-Type": "application/json",
-      //   "Content-Length": data.length.toString(),
-      //   Authorization: "Bearer 1eb53db743cfa43b902e4b8d83bc6c55",
-      // };
-
-      // const response = await axios.post(
-      //   "https://api-sandbox.onlinebetaalplatform.nl/v1/transactions",
-      //   data,
-      //   {
-      //     headers: headers,
-      //   }
-      // );
-
-      // .then(async ({data}) => {
-      //   console.log('data--------');
-      //   console.log(data);
-      // const entries = await strapi.db.connection.raw(
-      //   `INSERT INTO public.transaction(
-      //     id, tid, sid, status, created_at, updated_at)
-      //     VALUES (DEFAULT, '${data.uid}', '${data.statuses[0].uid}', '${data.status}', DEFAULT, DEFAULT);`
-      //  );
-      //  console.log(entries);
-      //  ctx.body = data;
-      //  return data;
-      // }).catch ((err) => {
-      //   console.log(err);
-      //   ctx.body = err;
-      // })
+      //insert status into transaction table based on the responce
 
       console.log(response.data);
       const entries = await strapi.db.connection.raw(
@@ -85,14 +40,8 @@ module.exports = {
       );
       ctx.body = response.data;
 
-      // const result = await response.json();
-
-      // // insert transaction status details into table transaction query based on the result
-
-      //  console.log(result);
     } catch (err) {
-      //console.log(err.response.data);
-      ctx.body = err.response.data;
+      ctx.body = err;
     }
   },
 };

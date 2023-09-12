@@ -4,44 +4,73 @@
   "info": {
     "singularName": "order",
     "pluralName": "orders",
-    "displayName": "Order"
+    "displayName": "Order",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "email": {
-      "type": "email",
-      "required": true
-    },
     "orderid": {
-      "type": "uid",
-      "required": true
+      "type": "uid"
     },
-    "paymentinfo": {
-      "type": "json"
-    },
-    "products": {
-      "type": "json",
-      "required": true
-    },
-    "address": {
-      "type": "text"
+    "customer_id": {
+      "type": "integer"
     },
     "name": {
       "type": "string"
     },
-    "transactionid": {
+    "email": {
+      "type": "email"
+    },
+    "address_housenumber": {
+      "type": "text"
+    },
+    "address_apartment": {
+      "type": "text"
+    },
+    "city": {
       "type": "string"
     },
-    "amount": {
-      "type": "decimal",
-      "required": true
+    "state": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string"
+    },
+    "postcode": {
+      "type": "string"
+    },
+    "company_name": {
+      "type": "string"
+    },
+    "phone_number": {
+      "type": "string"
+    },
+    "product_name": {
+      "type": "string"
+    },
+    "product_image": {
+      "type": "string"
+    },
+    "product_price": {
+      "type": "integer"
+    },
+    "quantity": {
+      "type": "integer"
+    },
+    "shipping_cost": {
+      "type": "integer"
+    },
+    "total_price": {
+      "type": "integer"
+    },
+    "transaction_id": {
+      "type": "string"
     },
     "status": {
-      "type": "string",
-      "required": true
+      "type": "string"
     }
   }
 }
