@@ -49,11 +49,14 @@ function Login(props: any) {
                     } else {
                         let userdetails = response.data.user
                         localStorage.setItem('usertoken', JSON.stringify(response.data.jwt));
-                        localStorage.setItem('userdetails', JSON.stringify(userdetails));
-                        saveUser(userdetails);
-                        router.push('/homepage');
-                        const isEmpty = { username: "", password: ""};
-                        setLoginFormData(isEmpty);
+                        APIs.getSpecificUser(userdetails.id).then((response: any) => {
+                            userdetails = response.data
+                            localStorage.setItem('userdetails', JSON.stringify(userdetails));
+                            saveUser(userdetails);
+                            router.push('/homepage');
+                            const isEmpty = { username: "", password: ""};
+                            setLoginFormData(isEmpty);
+                        })
                     }
                 })
                 .catch((error) => {

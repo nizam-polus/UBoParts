@@ -106,9 +106,9 @@ function Profile() {
                                     <p className="mt-0 mb-1 custom-color-1 boldfont products-name">{(user.first_name || '') + ' ' + (user.last_name || '')}</p>
                                     <p className="mt-1 mb-2 custom-color-1 regularfont products-name">{user.username}</p>
                                 </div>
-                                <div className='text-center mt-3'>
+                                {user.isApproved === 'Active' && user.user_type !== 'seller' && <div className='text-center mt-3'>
                                     <Link href={'/seller-registration'}><a style={{textDecoration: 'underline', color: 'red'}}>Want to become a Seller?</a></Link>
-                                </div>
+                                </div>}
                             </div>
                             <div className="col-12 col-md-12 col-xl-9 mt-4 mt-xl-0 mt-md-4">
                                 <form action="">
