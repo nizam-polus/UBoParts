@@ -151,6 +151,7 @@ function Productsingle() {
                                                         </span>
                                                         <input 
                                                             type="text" name="quant[1]" 
+                                                            style={{ maxHeight: '25px' }}
                                                             className="form-control input-number text-center rounded border-0 semifont pb-2 pt-2 mini-text-3 h-auto"
                                                             value={quantity} min="1" max="10"/>
                                                         <span className="input-group-btn minus-icon semifont" 

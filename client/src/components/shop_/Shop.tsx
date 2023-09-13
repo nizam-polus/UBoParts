@@ -104,7 +104,6 @@ function Shop() {
         }
     }, [selectedMake, selectedModel, selectedYear, selectedCategory]);
 
-
     const getModel = (make: string) => {
         const setData = { 'param_make': make }
         APIs.getCarModel(setData).then((response: any) => {
@@ -260,24 +259,52 @@ function Shop() {
     }
 
     const handleAddToCart = (productData: any) => {
+        let productQuantityInCart = 0;
         let cartData = {
             customerid: user.id,
             productid: productData?.id,
             quantity: '1',
             productprice: productData?.attributes?.price
         }
-        APIs.addToCart(cartData).then(response => {
-            toast.success(() => (
-                <>
-                    Item successfully added to <Link href={"/cartpage"}>cart</Link>
-                </>
-            ));
-            APIs.getCartData({customerid: user.id}).then(response => {
-                setCartCount(response.data.rows.length);
-            });
-        }).catch(err => {
-            toast.error('Something went wrong!')
+        
+        APIs.getCartData({ customerid: user.id }).then(response => {
+            let productCartItems = response.data.rows;
+            // Find the quantity of the product with the given product ID
+            for (const cartItem of productCartItems) {
+                if (cartItem.product_id === productData?.id) {
+                    productQuantityInCart = cartItem.quantity;
+                    break; 
+                }
+            }
         })
+
+        // Fetch the product stock count
+        APIs.getProduct(cartData.productid).then(response => {
+            let productStock = response.data.data.attributes.stock_count;
+            console.log(productStock)
+
+            // Check if the quantity exceeds the stock count
+            if (productQuantityInCart <= productStock) {
+                // Quantity is within stock limit, add to cart
+                APIs.addToCart(cartData).then(response => {
+                    toast.success(() => (
+                        <>
+                            Item successfully added to <Link href={"/cartpage"}>cart</Link>
+                        </>
+                    ));
+                    APIs.getCartData({ customerid: user.id }).then(response => {
+                        setCartCount(response.data.rows.length);
+                    });
+                }).catch(err => {
+                    toast.error('Something went wrong while adding to cart!');
+                });
+            } else {
+                // Quantity exceeds stock limit, display a toast message
+                toast.error('Stock exceeded. Cannot add this item to the cart.');
+            }
+        }).catch(err => {
+            toast.error('Something went wrong while fetching product information.');
+        });
     }
 
 
@@ -418,7 +445,7 @@ function Shop() {
                                                     <span>Price</span><i className={`${filterToggle.price ? 'fa fa-angle-up' : 'fa fa-angle-down'}`}></i>
                                                 </button>
                                                 {filterToggle.price && <div className="group-check p-3">
-                                                    
+                                                    {/* <ReactSlider min={0} max={1000} minDistance={100} /> */}
                                                 </div>}
                                             </div>
                                             {/* Filter based on rating - currently not used */}
