@@ -8,30 +8,32 @@ import { BASE_URL } from 'configuration';
 import { UserContext } from '../account_/UserContext';
 
 function Cart() {
-    
-    const {user, saveUser} = UserContext();
+
+    const { user, saveUser } = UserContext();
     const [cartProducts, setCartProducts] = useState<any>([]);
     const [totalCartPrice, setTotal] = useState(0);
+    
+
     const router = useRouter();
 
     useEffect(() => {
         APIs.getCartData({ "customerid": user.id }).then((response: any) => {
-                setCartProducts(response.data.rows);
-                if (response.data.rows.length) {
-                    let total = 0;
-                    for (const obj of response.data.rows) {
-                        total += obj.total_price;
-                    }
-                    setTotal(total);
+            setCartProducts(response.data.rows);
+            if (response.data.rows.length) {
+                let total = 0;
+                for (const obj of response.data.rows) {
+                    total += obj.total_price;
                 }
-            })
+                setTotal(total);
+            }
+        })
             .catch((error) => {
                 // setError(error);
             });
     }, []);
 
     const handleCartItemDelete = (product: any) => {
-        APIs.deleteCartData({customerid: product.customer_id, id: product.id}).then(response => {
+        APIs.deleteCartData({ customerid: product.customer_id, id: product.id }).then(response => {
             APIs.getCartData({ "customerid": user.id }).then((response: any) => {
                 setCartProducts(response.data.rows);
                 let total = 0;
@@ -42,9 +44,9 @@ function Cart() {
                 }
                 setTotal(total);
             })
-            .catch((error) => {
-                // setError(error);
-            });
+                .catch((error) => {
+                    // setError(error);
+                });
         }).catch(err => {
             console.log(err);
         })
@@ -58,7 +60,7 @@ function Cart() {
         if (valueChange === 'dec') {
             quantity !== 1 && quantity--;
         }
-        APIs.updateCartData({customerid: user.id, id: product.id, quantity: quantity, productprice: product.price}).then(response => {
+        APIs.updateCartData({ customerid: user.id, id: product.id, quantity: quantity, productprice: product.price }).then(response => {
             APIs.getCartData({ "customerid": user.id }).then((response: any) => {
                 setCartProducts(response.data.rows);
                 if (response.data.rows.length) {
@@ -69,13 +71,17 @@ function Cart() {
                     setTotal(total);
                 }
             })
-            .catch((error) => {
-                // setError(error);
-            });
+                .catch((error) => {
+                    // setError(error);
+                });
         }).catch(err => {
             console.log(err);
         })
     }
+
+    
+
+   
 
     return (
         <>
@@ -107,8 +113,8 @@ function Cart() {
                                                     </td>
                                                     <td className="p-3 custom-color-3 regularfont mini-text-2">
                                                         <div>
-                                                            <Link href={'/products_/'+product.product_id}>
-                                                                <span style={{textDecoration: 'none', cursor: 'pointer'}}>{product.title}</span>
+                                                            <Link href={'/products_/' + product.product_id}>
+                                                                <span style={{ textDecoration: 'none', cursor: 'pointer' }}>{product.title}</span>
                                                             </Link>
                                                         </div>
                                                         {/* <div className="d-md-flex">
@@ -118,15 +124,57 @@ function Cart() {
                                                     <td className="p-3 custom-color-3 semifont mini-text-3 text-center ">€{product.price}</td>
                                                     <td className="p-3 custom-color-3 regularfont">
                                                         <div className="input-group quanitity-box quanitity-incrementor">
-                                                        <span className="input-group-btn plus-icon regularfont pointer" onClick={() => handleQuantityChange(product, 'dec', index)}>
+                                                            <span className="input-group-btn plus-icon regularfont pointer" onClick={() => handleQuantityChange(product, 'dec', index)}>
                                                                 <i className="fa fa-minus mini-text-0 mini-text-0-color " aria-hidden="true"></i>
                                                             </span>
-                                                            <input type="text" 
+                                                            {/* <input type="text" 
                                                                 name="quant[1]" 
+                                                                style={{ maxHeight: '20px' }}
                                                                 className="form-control input-number text-center rounded-pill border-0 regularfont px-2 pb-1 pt-1 mini-text-3 h-auto" 
                                                                 value={product.quantity} min="1" max="10"
                                                                 onChange={(e) => product.quantity = e.target.value}
+                                                            /> */}
+
+                                                            <input type="text"
+                                                                name="quant[1]"
+                                                                style={{ maxHeight: '25px' }}
+                                                                className="form-control input-number text-center rounded-pill border-0 regularfont px-2 pb-1 pt-1 mini-text-3 h-auto"
+                                                                value={product.quantity} 
+                                                                min="1" max="10"
+                                                                onChange={(e) => {
+                                                                    const newQuantity = e.target.value;
+                                                                    
+                                                                    // Update the local product quantity immediately
+                                                                    product.quantity = newQuantity;
+                                                            
+                                                                    // Make the API call to update the cart data
+                                                                    APIs.updateCartData({
+                                                                        customerid: user.id,
+                                                                        id: product.id,
+                                                                        quantity: newQuantity,
+                                                                        productprice: product.price
+                                                                    }).then(response => {
+                                                                        // After updating the cart data, fetch the updated cart data
+                                                                        APIs.getCartData({ customerid: user.id }).then((response) => {
+                                                                            setCartProducts(response.data.rows);
+                                                                            if (response.data.rows.length) {
+                                                                                let total = 0;
+                                                                                for (const obj of response.data.rows) {
+                                                                                    total += obj.total_price;
+                                                                                }
+                                                                                setTotal(total);
+                                                                            }
+                                                                        }).catch((error) => {
+                                                                            // Handle any errors that occur during fetching
+                                                                            console.error(error);
+                                                                        });
+                                                                    }).catch(err => {
+                                                                        // Handle any errors that occur during the updateCartData API call
+                                                                        console.error(err);
+                                                                    });
+                                                                }}
                                                             />
+
                                                             <span className="input-group-btn minus-icon regularfont pointer" onClick={() => handleQuantityChange(product, 'inc', index)}>
                                                                 <i className="fa fa-plus mini-text-0 mini-text-0-color " aria-hidden="true"></i>
                                                             </span>
@@ -140,7 +188,7 @@ function Cart() {
                                         <tfoot>
                                             <tr>
                                                 <td className="p-3" colSpan={2}>
-                                                    <Link href={'/shop'}><button type="button" 
+                                                    <Link href={'/shop'}><button type="button"
                                                         className="add-more-rows custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"
                                                     >Add more items</button></Link>
                                                 </td>
