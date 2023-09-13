@@ -24,7 +24,7 @@ function SellerRegistration() {
         country: '',
         postcode: '',
         company_name: '',
-        Account_type: 'Individual',
+        Account_type: '',
         password: '',
         kvk_number: '',
         company_btw: '',
@@ -56,12 +56,12 @@ function SellerRegistration() {
     }, [])
 
     const checkFormStatus = () => {
-        console.log(formData)
         let incomplete = true;
         incomplete = !(!!formData.first_name && !!formData.last_name && 
             !!formData.email && !!formData.company_name && 
             !!formData.phone_number && !!formData.streetaddress_housenumber && 
-            !!formData.city && !!formData.country && !!formData.state && !!formData.postcode && agreement);
+            !!formData.city && !!formData.country && !!formData.state && 
+            !!formData.postcode && !!formData.Account_type && agreement);
         return incomplete;
     }
 
@@ -86,9 +86,22 @@ function SellerRegistration() {
         setIncomplete(incomplete);
         let reqElement = document.getElementById('required');
         if (reqElement) reqElement.scrollIntoView({behavior: 'smooth'})
-        let sellerData = {
-            ...formData, 
-            password: cnfrmPassword,
+        let sellerData: any = {
+            first_name: formData.first_name,
+            last_name: formData.last_name,
+            username: formData.username,
+            email: formData.email,
+            phone_number: formData.phone_number,
+            streetaddress_housenumber: formData.streetaddress_housenumber,
+            streetaddress_apartment: formData.streetaddress_apartment,
+            city: formData.city,
+            state: formData.state,
+            country: formData.country,
+            postcode: formData.postcode,
+            company_name: formData.company_name,
+            Account_type: formData.Account_type,
+            user_type: "seller",
+            isApproved: "Pending",
             shippingaddress_company: formData.company_name,
             shippingaddress_country: formData.country,
             shippingaddress_streataddress_housenumber: formData.streetaddress_housenumber,
@@ -101,6 +114,7 @@ function SellerRegistration() {
         if (!incomplete) {
             let userdetails: any = {};
             if (!user || (user && !user.id)) {
+                sellerData.password = cnfrmPassword;
                 APIs.register(sellerData).then(response => {
                     userdetails = response.data.user;
                     localStorage.setItem('usertoken', response.data.jwt);
@@ -109,7 +123,6 @@ function SellerRegistration() {
                     router.push('/homepage');
                 }).catch(err => console.log(err))
             } else {
-                delete sellerData.password;
                 APIs.updateSpecificUser(user.id, sellerData).then(response => {
                     userdetails = response.data;
                     localStorage.setItem('userdetails', JSON.stringify(userdetails));
@@ -224,7 +237,7 @@ function SellerRegistration() {
                                                                 style={{height: '3.5rem'}} name="Account_type" value={formData.Account_type}
                                                                 onChange={(e) => handleFormChange(e)}
                                                             >
-                                                                <option disabled>Select an account type</option>
+                                                                <option value='' disabled>Select an account type</option>
                                                                 <option value="Individual">Individual</option>
                                                                 <option value="Business">Business/Company</option>
                                                             </select>
@@ -272,7 +285,7 @@ function SellerRegistration() {
                                                                 onChange={(e) => handleFormChange(e)} disabled={user.country}
                                                             >
                                                                 <option className="mini-text-2" value="" selected disabled>Select Country</option>
-                                                                <option value="business">Netherlands</option>
+                                                                <option value="Netherlands">Netherlands</option>
                                                             </select>
                                                         </td>
                                                     </tr>

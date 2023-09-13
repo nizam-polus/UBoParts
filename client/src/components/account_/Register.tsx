@@ -26,6 +26,7 @@ function Register(props: any) {
         password: '',
         confirmpassword: ''
     });
+    const [agreed, setAgreed] = useState(false);
     
     const validateValues = (inputValues: any) => {
         hasError = {};
@@ -67,6 +68,9 @@ function Register(props: any) {
         if (inputValues.password !== inputValues.confirmpassword) {
             hasError.confirmpassword = "Passwords do not match";
         }
+        if (!agreed) {
+            hasError.agreement = "Agree to the terms and conditions";
+        }
         isSubmitting = true;
     
         setErrors(hasError);
@@ -78,19 +82,20 @@ function Register(props: any) {
             ...regformData,
             [event.target.name]: event.target.value
         });
-    }
+    };
     
     const onFormSubmit = async (event: any) => {
         event.preventDefault();
         validateValues(regformData);
         try {
-            if (Object.keys(hasError).length === 0 && isSubmitting === true) {
+            if (Object.keys(hasError).length === 0 && isSubmitting && agreed) {
                 const userdata = { 
                     username: regformData.username, 
                     email: regformData.email, 
                     password: regformData.password, 
-                    user_type : 'Normal', 
-                    isApproved : 'Active' 
+                    user_type : 'normal', 
+                    isApproved : 'Active',
+                    agreed: agreed
                 }
                 APIs.register(userdata).then((response: any) => {
                     let userData = response.data.user;
@@ -197,12 +202,15 @@ function Register(props: any) {
                                                         <p className="form_validerrors">{errors?.confirmpassword}</p>
                                                     </div>
                                         <div className="form-group">
-                                            <input type="checkbox" name="agree"/>
+                                            <input type="checkbox" name="agree" 
+                                                onClick={(e: any) => setAgreed(e.target.checked)}
+                                            />
                                                 <span className="agree body-sub-titles-1 lightfont">
                                                     <span>I agree to the </span>
                                                     <a href="" className="mediumfont">terms and conditions</a>
                                                 </span>
                                         </div>
+                                        {!agreed && <span className="form_validerrors">{errors?.agreement}</span>}
                                         {errors?.status === 400 && <p className='text-center' style={{color: 'rgb(255 102 102)'}}>{errors?.message}</p>}
                                         {registered && <p className='text-center' style={{color: 'rgb(25, 135, 84)'}}>Registration Completed!</p>}
                                         <button type="submit" className="btn btn-default body-sub-titles-1 mediumfont" onClick={(e) => onFormSubmit(e)}>Register</button>

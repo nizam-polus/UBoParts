@@ -57,8 +57,8 @@ function Header_home(props: any) {
         setUserToken('');
         setIsLoggedin(false);
         setIsOpen(!isOpen);
-        saveUser({});
         router.push('/homepage');
+        saveUser({});
     };
   
     return (

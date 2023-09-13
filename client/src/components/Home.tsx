@@ -38,28 +38,31 @@ function Home() {
         if (licenseplate && licenseplate.length > 5) {
             const getData = setTimeout(() => {
                 APIs.getCarDetailsUsingLicence(licenseplate).then((response: any) => {
-
                     if (response.data.licenseplate) {
-                        let makesarrary = makesArray;
-                        let modelsarray;
-                        let yearsarray;
-                        !makesArray.includes(response.data.make) && makesarrary.push(response.data.make)
-                        setMakesArray(makesarrary);
+                        // get make
+                        let makesobjarray = makesArray;
+                        let makesarray = makesobjarray.map((item: any) => item.make) 
+                        !makesarray.includes(response.data.make) && makesobjarray.push({make: response.data.make})
+                        setMakesArray(makesobjarray);
                         setSelectedMake(response.data.make);
+                        // get model
                         getModel(response.data.make);
-                        modelsarray = modelArray;
-                        !modelArray.includes(response.data.model) && modelsarray.push(response.data.model);
-                        setModelArray(modelsarray)
+                        let modelsobjarray = modelArray;
+                        let modelsarray = modelsobjarray.map((item: any) => item.model);
+                        !modelsarray.includes(response.data.model) && modelsobjarray.push({model: response.data.model});
+                        setModelArray(modelsobjarray)
                         setSelectedModel(response.data.model);
+                        //get year
                         getYear(response.data.make, response.data.model);
-                        yearsarray = yearArray;
-                        !yearArray.includes(response.data.year) && yearsarray.push(response.data.year);
-                        setYearArray(yearsarray);
+                        let yearsobjarray = yearArray;
+                        let yearsarray = yearsobjarray.map((item: any) => item.year);
+                        !yearsarray.includes(response.data.year) && yearsobjarray.push({year: response.data.year});
+                        setYearArray(yearsobjarray);
                         setSelectedYear(response.data.year);
+
                         setToggleSearch(true);
                         setShowInvaidLicense(false);
-                    } 
-                    else {
+                    } else {
                         setShowInvaidLicense(true);
                         setSelectedMake('');
                         setSelectedModel('');

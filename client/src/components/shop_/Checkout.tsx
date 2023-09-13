@@ -132,7 +132,7 @@ function Checkout() {
                     cartData.push(product);
                 });
                 let totalPrice = typeof (total) == 'string' ? Number(total) * 100 : total * 100;
-                APIs.cartPayment({products: cartData, total_price: totalPrice, customerid: user.id}).then(response => {
+                APIs.cartPayment({products: cartData, total_price: totalPrice, customerid: user.id, shipping_cost: shippingCost}).then(response => {
                     let redirectUrl = response.data.redirect_url
                     let transactionId = response.data.uid
                     localStorage.setItem('uid', transactionId);
