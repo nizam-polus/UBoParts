@@ -7,6 +7,7 @@ import AppImage from '../shared/AppImage';
 import Footer from '../footer_/Footer';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
+import ReactSlider from 'react-slider';
 import 'react-toastify/dist/ReactToastify.css';
 
 import APIs from '~/services/apiService';
@@ -15,8 +16,8 @@ import Link from 'next/dist/client/link';
 import { UserContext } from '../account_/UserContext';
 
 function Shop() {
-
-    const { user, saveUser, setCartCount } = UserContext();
+    
+    const {user, saveUser, setCartCount} = UserContext();
 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -36,7 +37,7 @@ function Shop() {
     const [pagination, setPagination] = useState<any>({});
     const [pageRange, setPageRange] = useState<number[]>([]);
     const [filterToggle, setFiltertoggle] = useState({
-        categories: false,
+        categories: true,
         price: false
     })
     const [filterCategory, setFilterCategory] = useState<any>([]);
@@ -46,13 +47,13 @@ function Shop() {
 
     const categoriesArray = (resData: any) => {
         return [...new Set(resData.map((item: any) => ({
-            id: item.id,
-            category_name: item.attributes.category_name,
-            subcategories: item.attributes.sub_categories.data.map((subItem: any) => ({
-                id: subItem.id,
-                name: subItem.attributes.name.replace(/\"/g, '')
-            }))
-        })
+                id: item.id,
+                category_name: item.attributes.category_name,
+                subcategories: item.attributes.sub_categories.data.map((subItem: any) => ({
+                    id: subItem.id,
+                    name: subItem.attributes.name.replace(/\"/g, '')
+                }))
+            })
         ))];
     }
 
@@ -63,16 +64,14 @@ function Shop() {
         setSelectedCategory(localStorage.getItem('category') || '');
         APIs.getCategories().then((response: any) => {
                 setCategories(categoriesArray(response.data.data));
-                filterToggle.categories = true;
-                setFiltertoggle({...filterToggle});
             })
             .catch((error) => {
                 setError(error);
             });
 
         APIs.getCarMake().then((response: any) => {
-            setMakesArray(response.data.rows);
-        })
+                setMakesArray(response.data.rows);
+            })
             .catch((error) => {
                 setError(error);
             });
@@ -104,14 +103,14 @@ function Shop() {
         }
     }, [selectedMake, selectedModel, selectedYear, selectedCategory]);
 
-
+   
 
 
     const getModel = (make: string) => {
         const setData = { 'param_make': make }
         APIs.getCarModel(setData).then((response: any) => {
-            setModelArray(response.data.rows);
-        })
+                setModelArray(response.data.rows);
+            })
             .catch((error) => {
                 setError(error);
                 setLoading(false);
@@ -121,8 +120,8 @@ function Shop() {
     const getYear = (make: string, model: string) => {
         const setData = { 'param_make': make, 'param_model': model }
         APIs.getCarYear(setData).then((response: any) => {
-            setYearArray(response.data.rows);
-        })
+                setYearArray(response.data.rows);
+            })
             .catch((error) => {
                 setError(error);
                 setLoading(false);
@@ -142,7 +141,7 @@ function Shop() {
     const pageRangeFinder = (pageCount: number) => {
         let start = 0, range = []
         while (start !== pageCount) {
-            range.push(start + 1)
+            range.push(start+1)
             start++
         }
         return range;
@@ -218,10 +217,10 @@ function Shop() {
         let filteredCategories: any = filterCategory;
         let category = event.target.value;
         if (event.target.checked) {
-            setFiltertoggle((prevValue: any) => ({ ...prevValue }));
+            setFiltertoggle((prevValue: any) => ({...prevValue}));
             filteredCategories.push(category)
         } else {
-            setFiltertoggle((prevValue: any) => ({ ...prevValue }));
+            setFiltertoggle((prevValue: any) => ({...prevValue}));
             filteredCategories = filteredCategories.filter((item: any) => item !== category);
             // remove subcategories that are related to parent category
             [tempCategories] = tempCategories.filter((item: any) => (item.category_name === category));
@@ -260,8 +259,6 @@ function Shop() {
             setSearchedProducts(response.data.data)
         }).catch(err => console.log)
     }
-
-
 
     const handleAddToCart = (productData: any) => {
 
@@ -321,7 +318,6 @@ function Shop() {
             toast.error('Something went wrong while fetching product information.');
         });
     }
-
 
 
     return (
@@ -384,8 +380,8 @@ function Shop() {
                                     </div>
                                     <div className="col-1">
                                         <div className="form-group">
-                                            <button className='regularfont'
-                                                style={{ background: '#587E50', padding: '0.2rem 1.1rem', color: 'white', border: 'none', borderRadius: '5px' }}
+                                            <button className='regularfont' 
+                                                style={{background: '#587E50', padding: '0.2rem 1.1rem', color: 'white', border: 'none', borderRadius: '5px'}}
                                                 onClick={(e) => clearSearch(e)}
                                             >Clear</button>
                                         </div>
@@ -411,38 +407,38 @@ function Shop() {
                                 <div className="row g-5">
                                     <div className="col-12 col-sm-3 pb-4 pb-xl-0">
                                         <div className="responsive-filter">
-                                            <button type="button"
-                                                className="boldfont boldfontsize button-bg-color-1 border-0 text-white p-2 rounded"
+                                            <button type="button" 
+                                                className="boldfont boldfontsize button-bg-color-1 border-0 text-white p-2 rounded" 
                                                 data-bs-toggle="modal" data-bs-target="#view-filters"
                                             >View Filter</button>
                                         </div>
                                         <div className="desktop-filter">
                                             <div className="row mb-2 flex-column">
-                                                <button
+                                                <button 
                                                     className="btn coulmn-bg-color-1 border-0 text-start justify-content-between 
                                                                 d-flex align-items-center regularfont mini-text-2"
-                                                    onClick={() => { setFiltertoggle((prevValue: any) => ({ ...prevValue, categories: !filterToggle.categories })) }}
+                                                    onClick={() => {setFiltertoggle((prevValue: any) => ({...prevValue, categories: !filterToggle.categories}))}}
                                                 >
                                                     <span>Categories</span><i className={`${filterToggle.categories ? 'fa fa-angle-up' : 'fa fa-angle-down'}`}></i>
                                                 </button>
                                                 {filterToggle.categories && <div className=" p-3">
-                                                    {categories.map((category: any, idx: any) =>
+                                                    {categories.map((category: any, idx: any) => 
                                                         <div>
                                                             <div className="form-check mb-2" key={idx}>
-                                                                <input type="checkbox"
-                                                                    className="form-check-input border-0"
-                                                                    id={idx} name={category.category_name} value={category.category_name}
+                                                                <input type="checkbox" 
+                                                                    className="form-check-input border-0" 
+                                                                    id={idx} name={category.category_name} value={category.category_name} 
                                                                     onChange={(e) => handleCategoryFilter(e)}
                                                                 />
                                                                 <label className="form-check-label" htmlFor={idx}>{category.category_name}</label>
                                                                 {filterCategory.map((item: any) => item === category.category_name && category.subcategories.map((subcategory: any) => (
                                                                     <div>
                                                                         <div className="form-check mb-2" key={idx}>
-                                                                            <input type="checkbox"
-                                                                                className="form-check-input border-0"
-                                                                                id={subcategory.name} name={subcategory.name} value={subcategory.name}
+                                                                            <input type="checkbox" 
+                                                                                className="form-check-input border-0" 
+                                                                                id={subcategory.name} name={subcategory.name} value={subcategory.name} 
                                                                                 onChange={(e) => handleSubcategoryFilter(e)}
-                                                                            />
+                                                                                />
                                                                             <label className="form-check-label" htmlFor={subcategory.name}>{subcategory.name}</label>
                                                                         </div>
                                                                     </div>
@@ -453,15 +449,15 @@ function Shop() {
                                                 </div>}
                                             </div>
                                             <div className="row mb-2 flex-column">
-                                                <button
+                                                <button 
                                                     className="btn coulmn-bg-color-1 border-0 text-start justify-content-between 
                                                                 d-flex align-items-center regularfont mini-text-2"
-                                                    onClick={() => { setFiltertoggle((prevValue: any) => ({ ...prevValue, price: !filterToggle.price })) }}
+                                                    onClick={() => {setFiltertoggle((prevValue: any) => ({...prevValue, price: !filterToggle.price}))}}  
                                                 >
                                                     <span>Price</span><i className={`${filterToggle.price ? 'fa fa-angle-up' : 'fa fa-angle-down'}`}></i>
                                                 </button>
                                                 {filterToggle.price && <div className="group-check p-3">
-                                                    
+                                                    {/* <ReactSlider min={0} max={1000} minDistance={100} /> */}
                                                 </div>}
                                             </div>
                                             {/* Filter based on rating - currently not used */}
@@ -509,7 +505,7 @@ function Shop() {
                                                     </div>
                                                 </div> */}
                                             <div className='text-center mt-4 mini-text-2'>
-                                                <button style={{ background: '#2a2a2a', color: 'white', border: 'none', padding: '0.4rem 1.5rem' }}
+                                                <button style={{background: '#2a2a2a', color:'white', border: 'none', padding: '0.4rem 1.5rem'}}
                                                     onClick={(e) => handleApplyFilter(e)}
                                                 >Apply Filter</button>
                                             </div>
@@ -521,11 +517,11 @@ function Shop() {
                                                 return (
                                                     <div className="col-12 col-sm-6 col-lg-4  mb-4" key={index}>
                                                         <div className="latest-prods card card-shadows">
-                                                            <AppImage
-                                                                src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url}
-                                                                className="card-img-top img-prod-height pointer"
-                                                                style={{ height: '20rem', objectFit: 'cover' }}
-                                                                onClick={() => handleProductClick(product)}
+                                                            <AppImage 
+                                                                src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
+                                                                className="card-img-top img-prod-height pointer" 
+                                                                style={{height: '20rem', objectFit: 'cover'}} 
+                                                                onClick={() => handleProductClick(product)}    
                                                             />
                                                             <div className="card-body">
                                                                 <div className="row g-1">
@@ -534,7 +530,7 @@ function Shop() {
                                                                     </div>
                                                                     <div className="col-12">
                                                                         <span className="product-name regularfont"
-                                                                            style={{ "cursor": "pointer" }}
+                                                                            style={{"cursor": "pointer"}} 
                                                                             onClick={() => handleProductClick(product)}
                                                                         >{product?.attributes?.title}</span>
                                                                     </div>
@@ -549,7 +545,7 @@ function Shop() {
                                                                 </div> */}
                                                                     <div className="col-12 d-flex justify-content-between">
                                                                         <span className="product-price">€{product?.attributes?.price}</span>
-                                                                        <AppImage src="images/cart-svg.svg"
+                                                                        <AppImage src="images/cart-svg.svg" 
                                                                             className='pointer add_to_cart'
                                                                             onClick={() => handleAddToCart(product)}
                                                                         />
@@ -575,10 +571,10 @@ function Shop() {
                                                 <ul className="pagination d-inline-flex">
                                                     <li className="page-item">
                                                         <a className="page-link border-0 regularfont mini-text-1 custom-color-4" href="#">
-                                                            <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> Previous</a></li>
+                                                    <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> Previous</a></li>
                                                     {pageRange.map((page: number, idx: number) => {
                                                         return (
-                                                            <li className={`page-item ${page === pagination.page ? 'active' : ''}`}>
+                                                            <li className={`page-item ${page === pagination.page ? 'active': ''}`}>
                                                                 <a className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">{page}</a>
                                                             </li>
                                                         )
