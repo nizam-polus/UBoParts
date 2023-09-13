@@ -12,6 +12,8 @@ function Cart() {
     const { user, saveUser } = UserContext();
     const [cartProducts, setCartProducts] = useState<any>([]);
     const [totalCartPrice, setTotal] = useState(0);
+    const [isError, setIsError] = useState({})
+    const [errorMessage, setErrorMessage] = useState<any>("");
     
 
     const router = useRouter();
@@ -52,32 +54,58 @@ function Cart() {
         })
     }
 
-    const handleQuantityChange = (product: any, valueChange: string, index: number) => {
-        let quantity = product.quantity;
-        if (valueChange === 'inc') {
-            quantity++;
-        }
-        if (valueChange === 'dec') {
-            quantity !== 1 && quantity--;
-        }
-        APIs.updateCartData({ customerid: user.id, id: product.id, quantity: quantity, productprice: product.price }).then(response => {
-            APIs.getCartData({ "customerid": user.id }).then((response: any) => {
-                setCartProducts(response.data.rows);
-                if (response.data.rows.length) {
-                    let total = 0;
-                    for (const obj of response.data.rows) {
-                        total += obj.total_price;
-                    }
-                    setTotal(total);
-                }
-            })
-                .catch((error) => {
-                    // setError(error);
-                });
-        }).catch(err => {
-            console.log(err);
-        })
+   const handleQuantityChange = (product: any, valueChange: string, index: number) => {
+    let newQuantity = product.quantity;
+
+    if (valueChange === 'inc') {
+        newQuantity++;
+    } else if (valueChange === 'dec' && newQuantity > 1) {
+        newQuantity--;
     }
+
+    // Update the local product quantity immediately
+    const updatedCartProducts = [...cartProducts]; // Make a copy of the cart products
+    updatedCartProducts[index].quantity = newQuantity; // Update the quantity in the local copy
+    setCartProducts(updatedCartProducts); // Update the state with the new quantity
+
+    // Make the API call to update the cart data
+    APIs.updateCartData({
+        customerid: user.id,
+        id: product.id,
+        quantity: newQuantity,
+        productprice: product.price
+    }).then(response => {
+        if (response.data.error) {
+            // Set the error state using the product's id as the key
+            setIsError(prevErrors => ({
+                ...prevErrors,
+                [product.id]: response.data.error.message
+            }));
+        } else {
+            // Clear the error state for this product if no error
+            setIsError(prevErrors => ({
+                ...prevErrors,
+                [product.id]: null
+            }));
+        }
+        // Update the cart data in case the backend response has any changes (although you've already updated the local state)
+        APIs.getCartData({ customerid: user.id }).then((response: any) => {
+            
+            setCartProducts(response.data.rows);
+            if (response.data.rows.length) {
+                let total = 0;
+                for (const obj of response.data.rows) {
+                    total += obj.total_price;
+                }
+                setTotal(total);
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
+    }).catch(err => {
+        console.error(err);
+    });
+}
 
     
 
@@ -107,6 +135,7 @@ function Cart() {
                                                 <th className=" pr-3 custom-color-3 regularfont boldfontsize text-center border-top-0 lightfotweight col-sm-2">DELETE</th>
                                             </tr>
                                             {cartProducts && cartProducts.map((product: any, index: any) => {
+                                                
                                                 return (<tr>
                                                     <td className="p-3 text-center">
                                                         <AppImage src={BASE_URL + product.url} className="rounded" />
@@ -146,6 +175,10 @@ function Cart() {
                                                                     
                                                                     // Update the local product quantity immediately
                                                                     product.quantity = newQuantity;
+
+                                                                    const updatedCartProducts = [...cartProducts]; // Make a copy of the cart products
+                                                                       updatedCartProducts[index].quantity = newQuantity; // Update the quantity in the local copy
+                                                                       setCartProducts(updatedCartProducts); // Update the state with the new quantity
                                                             
                                                                     // Make the API call to update the cart data
                                                                     APIs.updateCartData({
@@ -154,6 +187,19 @@ function Cart() {
                                                                         quantity: newQuantity,
                                                                         productprice: product.price
                                                                     }).then(response => {
+                                                                        if (response.data.error) {
+                                                                            // Set the error state using the product's id as the key
+                                                                            setIsError(prevErrors => ({
+                                                                                ...prevErrors,
+                                                                                [product.id]: response.data.error.message
+                                                                            }));
+                                                                        } else {
+                                                                            // Clear the error state for this product if no error
+                                                                            setIsError(prevErrors => ({
+                                                                                ...prevErrors,
+                                                                                [product.id]: null
+                                                                            }));
+                                                                        }
                                                                         // After updating the cart data, fetch the updated cart data
                                                                         APIs.getCartData({ customerid: user.id }).then((response) => {
                                                                             setCartProducts(response.data.rows);
@@ -178,6 +224,9 @@ function Cart() {
                                                             <span className="input-group-btn minus-icon regularfont pointer" onClick={() => handleQuantityChange(product, 'inc', index)}>
                                                                 <i className="fa fa-plus mini-text-0 mini-text-0-color " aria-hidden="true"></i>
                                                             </span>
+                                                            <span style={{color: "red", fontSize: "10px", textAlign: "center"}}>
+                    {isError[product.id] && isError[product.id]}
+                </span>
                                                         </div>
                                                     </td>
                                                     <td className="p-3 custom-color-3 semifont mini-text-3 text-center">€{product.total_price}</td>
