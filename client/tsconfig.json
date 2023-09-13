@@ -22,7 +22,8 @@
       "~/*": [
         "./src/*"
       ]
-    }
+    },
+    "strictNullChecks": false
   },
   "include": [
     "next-env.d.ts",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { UserContext } from "../account_/UserContext";
 import APIs from '../../services/apiService';
 import { useRouter } from "next/router";
@@ -24,7 +24,7 @@ function SellerRegistration() {
         country: '',
         postcode: '',
         company_name: '',
-        Account_type: '',
+        Account_type: 'Individual',
         password: '',
         kvk_number: '',
         company_btw: '',
@@ -35,7 +35,28 @@ function SellerRegistration() {
     const [cnfrmPassword, setCnfrmPassword] = useState('');
     const [pwdmatch, setPwdmatch] = useState(true);
 
+    useEffect(() => {
+        window.onbeforeunload = function() {
+            return "Changes may not be saved!";
+        }
+        if (user && user.id) {
+            formData.first_name = user.first_name;
+            formData.last_name = user.last_name;
+            formData.username = user.username;
+            formData.email = user.email;
+            formData.phone_number = user.phone_number;
+            formData.streetaddress_housenumber = user.streetaddress_housenumber;
+            formData.streetaddress_apartment = user.streetaddress_apartment;
+            formData.city = user.city;
+            formData.state = user.state;
+            formData.country = user.country;
+            formData.postcode = user.postcode;
+            setFormData({...formData});
+        }
+    }, [])
+
     const checkFormStatus = () => {
+        console.log(formData)
         let incomplete = true;
         incomplete = !(!!formData.first_name && !!formData.last_name && 
             !!formData.email && !!formData.company_name && 
@@ -65,16 +86,37 @@ function SellerRegistration() {
         setIncomplete(incomplete);
         let reqElement = document.getElementById('required');
         if (reqElement) reqElement.scrollIntoView({behavior: 'smooth'})
-        let sellerData = {...formData, password: cnfrmPassword};
-    if (!incomplete) {
-            console.log('test');
-            APIs.register(sellerData).then(response => {
-                let userdetails = response.data.user;
-                localStorage.setItem('usertoken', response.data.jwt);
-                localStorage.setItem('userdetails', JSON.stringify(userdetails));
-                saveUser(userdetails);
-                router.push('/homepage');
-            }).catch(err => console.log(err))
+        let sellerData = {
+            ...formData, 
+            password: cnfrmPassword,
+            shippingaddress_company: formData.company_name,
+            shippingaddress_country: formData.country,
+            shippingaddress_streataddress_housenumber: formData.streetaddress_housenumber,
+            shippingaddress_streataddress_apartment: formData.streetaddress_apartment,
+            shippingaddress_city: formData.city,
+            shippingaddress_state: formData.state,
+            shippingaddress_postcode: formData.postcode,
+            shippingaddress_phonenumber: formData.phone_number
+        };
+        if (!incomplete) {
+            let userdetails: any = {};
+            if (!user || (user && !user.id)) {
+                APIs.register(sellerData).then(response => {
+                    userdetails = response.data.user;
+                    localStorage.setItem('usertoken', response.data.jwt);
+                    localStorage.setItem('userdetails', JSON.stringify(userdetails));
+                    saveUser(userdetails);
+                    router.push('/homepage');
+                }).catch(err => console.log(err))
+            } else {
+                delete sellerData.password;
+                APIs.updateSpecificUser(user.id, sellerData).then(response => {
+                    userdetails = response.data;
+                    localStorage.setItem('userdetails', JSON.stringify(userdetails));
+                    saveUser(userdetails);
+                    router.push('/homepage');
+                }).catch((err) => console.log(err));
+            }
         }
     }
     
@@ -109,7 +151,7 @@ function SellerRegistration() {
                                                     <tr className="double">
                                                         <td>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">First Name</label>
-                                                            <input type="text" value={formData.first_name}
+                                                            <input type="text" value={formData.first_name} disabled={user.first_name}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.first_name ? 'required-field' : 'border-0'}`}
                                                                 name="first_name" placeholder="Mark"
                                                                 onChange={(e) => handleFormChange(e)}
@@ -117,7 +159,7 @@ function SellerRegistration() {
                                                         </td>
                                                         <td>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Last Name</label>
-                                                            <input type="text" value={formData.last_name}
+                                                            <input type="text" value={formData.last_name} disabled={user.last_name}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.last_name ? 'required-field' : 'border-0'}`}
                                                                 name="last_name" placeholder="Twain" 
                                                                 onChange={(e) => handleFormChange(e)}
@@ -127,15 +169,15 @@ function SellerRegistration() {
                                                     <tr className="double">
                                                         <td>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Email Address</label>
-                                                            <input type="text" value={formData.email}
+                                                            <input type="text" value={formData.email} disabled={user.email}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.email ? 'required-field' : 'border-0'}`}
-                                                                name="email" placeholder="user@example.com" required
+                                                                name="email" placeholder="user@example.com"
                                                                 onChange={(e) => handleFormChange(e)}
                                                             />
                                                         </td>
                                                         <td>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Username</label>
-                                                            <input type="text" value={formData.username}
+                                                            <input type="text" value={formData.username} disabled={user.username}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.username ? 'required-field' : 'border-0'}`}
                                                                 name="username" placeholder="username" 
                                                                 onChange={(e) => handleFormChange(e)}
@@ -145,30 +187,30 @@ function SellerRegistration() {
                                                     <tr className="double">
                                                         <td>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Create Password</label>
-                                                            <input type="password" value={password}
+                                                            <input type="password" value={password} disabled={user.id}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !password ? 'required-field' : 'border-0'}`}
                                                                 name="password" placeholder="Create Password" 
                                                                 onChange={(e) => {
                                                                     setPassword(e.target.value);
-                                                                    e.target.value.length < 6 ? setIncomplete(true) : setIncomplete(false);
+                                                                    e.target.value.length < 6 && !user.id ? setIncomplete(true) : setIncomplete(false);
                                                                 }}
                                                             />
-                                                            {(password.length < 6 && incomplete) && <span className="required-text">Password must be at least 6 characters </span>}
+                                                            {(password.length < 6 && incomplete && !user.id) && <span className="required-text">Password must be at least 6 characters </span>}
                                                         </td>
                                                         <td>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Confirm Password</label>
-                                                            <input type="password" value={cnfrmPassword}
+                                                            <input type="password" value={cnfrmPassword} disabled={user.id}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !cnfrmPassword ? 'required-field' : 'border-0'}`}
                                                                 name="c_password" placeholder="Confirm Password" 
                                                                 onChange={(e) => handlePwdChange(e)}
                                                             />
-                                                            {!pwdmatch && <span className="required-text">Password does not match</span>}
+                                                            {!pwdmatch && !user.id && <span className="required-text">Password does not match</span>}
                                                         </td>
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Phone Number</label>
-                                                            <input type="text" value={formData.phone_number}
+                                                            <input type="text" value={formData.phone_number} disabled={user.phone_number}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.phone_number ? 'required-field' : 'border-0'}`}
                                                                 name="phone_number" placeholder="(XXX) XXX-XXXX" 
                                                                 onChange={(e) => handleFormChange(e)}
@@ -182,7 +224,7 @@ function SellerRegistration() {
                                                                 style={{height: '3.5rem'}} name="Account_type" value={formData.Account_type}
                                                                 onChange={(e) => handleFormChange(e)}
                                                             >
-                                                                <option value={''} disabled>Select an account type</option>
+                                                                <option disabled>Select an account type</option>
                                                                 <option value="Individual">Individual</option>
                                                                 <option value="Business">Business/Company</option>
                                                             </select>
@@ -227,7 +269,7 @@ function SellerRegistration() {
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Country</label>
                                                             <select className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.country ? 'required-field' : 'border-0'}`}
                                                                 style={{height: '3.5rem'}} name="country" value={formData.country}
-                                                                onChange={(e) => handleFormChange(e)}
+                                                                onChange={(e) => handleFormChange(e)} disabled={user.country}
                                                             >
                                                                 <option className="mini-text-2" value="" selected disabled>Select Country</option>
                                                                 <option value="business">Netherlands</option>
@@ -238,14 +280,14 @@ function SellerRegistration() {
                                                         <td colSpan={2}>
                                                             <div className="mb-3">
                                                                 <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Street Address</label>
-                                                                <input type="text" value={formData.streetaddress_housenumber}
+                                                                <input type="text" value={formData.streetaddress_housenumber} disabled={user.streetaddress_housenumber}
                                                                     className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.streetaddress_housenumber ? 'required-field' : 'border-0'}`} 
                                                                     name="streetaddress_housenumber" placeholder="House number and street name" 
                                                                     onChange={(e) => handleFormChange(e)}
                                                                 />
                                                             </div>
                                                             <div>
-                                                                <input type="text" value={formData.streetaddress_apartment}
+                                                                <input type="text" value={formData.streetaddress_apartment} disabled={user.streetaddress_apartment}
                                                                     className="form-control input-bg-color-2 border-0 body-sub-titles" 
                                                                     name="streetaddress_apartment" placeholder="Apartment, suite, unit etc..." 
                                                                     onChange={(e) => handleFormChange(e)}
@@ -256,7 +298,7 @@ function SellerRegistration() {
                                                     <tr className="single">
                                                         <td colSpan={2}>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">City</label>
-                                                            <input type="text" value={formData.city}
+                                                            <input type="text" value={formData.city} disabled={user.city}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.city ? 'required-field' : 'border-0'}`}
                                                                 name="city" placeholder="City" 
                                                                 onChange={(e) => handleFormChange(e)}
@@ -266,7 +308,7 @@ function SellerRegistration() {
                                                     <tr className="single">
                                                         <td colSpan={2}>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">State</label>
-                                                            <input type="text" value={formData.state}
+                                                            <input type="text" value={formData.state} disabled={user.state}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.state ? 'required-field' : 'border-0'}`}
                                                                 name="state" placeholder="State" 
                                                                 onChange={(e) => handleFormChange(e)}
@@ -276,7 +318,7 @@ function SellerRegistration() {
                                                     <tr className="single">
                                                         <td colSpan={2}>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Postcode</label>
-                                                            <input type="text" value={formData.postcode}
+                                                            <input type="text" value={formData.postcode} disabled={user.postcode}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.postcode ? 'required-field' : 'border-0'}`}
                                                                 name="postcode" placeholder="Postcode" 
                                                                 onChange={(e) => handleFormChange(e)}
@@ -291,7 +333,7 @@ function SellerRegistration() {
                                                                 /> 
                                                                 Accept terms & conditons
                                                             </label>
-                                                            {(!agreement && incomplete) && <p className="required-text">Agree the terms</p>}
+                                                            {(!agreement && incomplete) && <p className="required-text">Agree to the terms</p>}
                                                         </td>
                                                     </tr>
                                                     <tr className="single">

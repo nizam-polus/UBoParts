@@ -88,14 +88,15 @@ function Header_home(props: any) {
                                     <button className="btn border-0 menu_font_size regularfont menu-color" onClick={() => setIsOpen(!isOpen)}>My Account</button>
                                     {isOpen && (
                                         <div className='position-absolute menu-dropdown account-dropdown'>
-                                            {user.user_type === 'seller' && <div className='dropdownitem'>
+                                            <div className='dropdownitem'>
                                                 <span className='menu_font_size regularfont pointer' 
                                                     onClick={() => {
-                                                        router.push('/seller/dashboard');
+                                                        let route = (user.isApproved === 'Active' && user.role.type === 'seller') ? '/seller/dashboard' : '/purchase-history';
+                                                        router.push(route);
                                                         setIsOpen(!isOpen);
                                                     }}
                                                 >Dashboard</span>
-                                            </div>}
+                                            </div>
                                             <div className='dropdownitem'>
                                                 <span className='menu_font_size regularfont pointer' 
                                                     onClick={() => {

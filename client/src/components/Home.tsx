@@ -38,12 +38,23 @@ function Home() {
         if (licenseplate && licenseplate.length > 5) {
             const getData = setTimeout(() => {
                 APIs.getCarDetailsUsingLicence(licenseplate).then((response: any) => {
+
                     if (response.data.licenseplate) {
+                        let makesarrary = makesArray;
+                        let modelsarray;
+                        let yearsarray;
+                        !makesArray.includes(response.data.make) && makesarrary.push(response.data.make)
+                        setMakesArray(makesarrary);
                         setSelectedMake(response.data.make);
-                        console.log('response.data.data[0].attributes.make :>> ', response.data.make);
                         getModel(response.data.make);
+                        modelsarray = modelArray;
+                        !modelArray.includes(response.data.model) && modelsarray.push(response.data.model);
+                        setModelArray(modelsarray)
                         setSelectedModel(response.data.model);
                         getYear(response.data.make, response.data.model);
+                        yearsarray = yearArray;
+                        !yearArray.includes(response.data.year) && yearsarray.push(response.data.year);
+                        setYearArray(yearsarray);
                         setSelectedYear(response.data.year);
                         setToggleSearch(true);
                         setShowInvaidLicense(false);

@@ -4,6 +4,7 @@ import AppImage from '~/components/shared/AppImage';
 import { UserContext } from '../account_/UserContext';
 import APIs from '~/services/apiService';
 import { BASE_URL } from 'configuration';
+import Link from 'next/dist/client/link';
 
 function Profile() {
 
@@ -64,7 +65,14 @@ function Profile() {
                 city: city,
                 state: state,
                 country: country,
-                postcode: postcode
+                postcode: postcode,
+                shippingaddress_country: country,
+                shippingaddress_streataddress_housenumber: address_1,
+                shippingaddress_streataddress_apartment: address_2,
+                shippingaddress_city: city,
+                shippingaddress_state: state,
+                shippingaddress_postcode: postcode,
+                shippingaddress_phonenumber: phone
             }
             APIs.updateSpecificUser(user.id, userData).then(response => {
                 console.log(response.data);
@@ -95,8 +103,11 @@ function Profile() {
                                         <AppImage className="icon-size1" src={'images/img/Vector.png'}/>
                                     </label>
                                 </div>
-                                    <p className="mt-0 mb-1 custom-color-1 boldfont products-name">{user.first_name + ' ' + user.last_name}</p>
+                                    <p className="mt-0 mb-1 custom-color-1 boldfont products-name">{(user.first_name || '') + ' ' + (user.last_name || '')}</p>
                                     <p className="mt-1 mb-2 custom-color-1 regularfont products-name">{user.username}</p>
+                                </div>
+                                <div className='text-center mt-3'>
+                                    <Link href={'/seller-registration'}><a style={{textDecoration: 'underline', color: 'red'}}>Want to become a Seller?</a></Link>
                                 </div>
                             </div>
                             <div className="col-12 col-md-12 col-xl-9 mt-4 mt-xl-0 mt-md-4">
