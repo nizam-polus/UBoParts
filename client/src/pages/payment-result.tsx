@@ -15,7 +15,7 @@ function PaymentResult() {
         let checkPaymentStatus = setInterval(() => {
             interavls.push(checkPaymentStatus)
             APIs.paymentStatus(transactionId).then((response: any) => {
-                let status = response.data.rows[0].status;
+                let status = response.data.rows.length ? response.data.rows[0].status : 'failed';
                 setStatus(status);
                 if (status !== 'created') {
                     clearInterval(checkPaymentStatus);
@@ -52,7 +52,7 @@ function PaymentResult() {
         <>
             {(!status || status === 'created') ? <h2 className="" style={{textAlign: 'center', position: 'relative', marginTop: '10%'}}>We are processing your payment ...</h2> : 
                 <div style={{textAlign: 'center', position: 'relative', marginTop: '10%'}}>
-                    <h2 className="" >Order placed successfully</h2>
+                    <h2 className="" >Order {status === 'completed' ? 'placed successfully' : status !== 'created' && status }</h2>
                     <p>You will be redirected to homepage.</p>
                 </div>
             }

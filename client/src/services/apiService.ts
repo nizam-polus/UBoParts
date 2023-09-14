@@ -53,17 +53,17 @@ const APIs = {
             return filterposition += 1;
         };
         let categoryQuery = categories.map((category: any) => (
-            `&filters[$or][${incrementFilterPosition() + ''}][category][category_name][$contains]=${category}`
+            `&filters[$or][${incrementFilterPosition() + ''}][category][category_name][$eq]=${category}`
         ));
         let subcategoryQuery = sub_category.map((subcat: any) => (
-            `&filters[$and][${incrementFilterPosition() + ''}][sub_category][name][$contains]=`
+            `&filters[$or][${incrementFilterPosition() + ''}][sub_category][name][$eq]=${subcat}`
         ));
 
         return axios.get(BACKEND_URL + `products?populate=*${make && `&filters[$or][0][$and][${incrementSearchPosition() + ''}][cardetail][make][$contains]=${make}`}`+
             `${model && `&filters[$or][0][$and][${incrementSearchPosition() + ''}][cardetail][model][$contains]=${model}`}`+
             `${year && `&filters[$or][0][$and][${incrementSearchPosition() + ''}][cardetail][year][$eq]=${year}`}`+
-            `${categoryQuery.length ? categoryQuery.join() : ''}`+
-            `${subcategoryQuery.length ? subcategoryQuery.join() : ''}` + '',
+            `${categoryQuery.length ? categoryQuery.join().replace(',', '') : ''}`+
+            `${subcategoryQuery.length ? subcategoryQuery.join().replace(',', '') : ''}` + '',
             // `${price ? `filters[$or][0][price][$between]=${'10'}&filters[$or][0][price][$between]=${'500'}` : `filters[$or][0][price][$between]=${'10'}&filters[$or][0][price][$between]=${'500'}`}`, 
             {headers}
         )
@@ -74,9 +74,12 @@ const APIs = {
     getProduct: (id: any) => axios.get(BACKEND_URL + 'products/' + id + '?populate=*', {headers}),
 
     paymentUpdate: () => axios.post(BACKEND_URL + 'payment-status-update', {headers}),
-    
 
-    // jwt token based apis
+    getLicenseplate: (data: any) => axios.get(BACKEND_URL + `cardetails?populate=*&filters[licenseplate][$contains]=${data}`, {headers}),    
+
+
+        /* ---------------- jwt token based apis ----------------- */
+
     addToCart: (cartData: {}) => ds.post(BACKEND_URL + 'cartdata', cartData),
     
     getCartData: (customerData: {}) => ds.post(BACKEND_URL + 'getcartdetails', customerData),
@@ -95,8 +98,7 @@ const APIs = {
     
     createNewList: (data: any) => ds.post(BACKEND_URL + 'products', {...data}),
 
-    getLicenseplate: (data: any) => axios.get(BACKEND_URL + `cardetails?populate=*&filters[licenseplate][$contains]=${data}`, {headers})
-
+    uploadProfilePic: (picData: {}) => ds.post(BACKEND_URL + 'upload', picData),
 
 }
 

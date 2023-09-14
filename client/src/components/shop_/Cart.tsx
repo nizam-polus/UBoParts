@@ -12,8 +12,7 @@ function Cart() {
     const { user, saveUser } = UserContext();
     const [cartProducts, setCartProducts] = useState<any>([]);
     const [totalCartPrice, setTotal] = useState(0);
-    const [isError, setIsError] = useState({})
-    const [errorMessage, setErrorMessage] = useState<any>("");
+    const [isError, setIsError] = useState<any>({});
     
 
     const router = useRouter();
@@ -54,60 +53,104 @@ function Cart() {
         })
     }
 
-   const handleQuantityChange = (product: any, valueChange: string, index: number) => {
-    let newQuantity = product.quantity;
-
-    if (valueChange === 'inc') {
-        newQuantity++;
-    } else if (valueChange === 'dec' && newQuantity > 1) {
-        newQuantity--;
+    const handleQuantityChange = (product: any, valueChange: string, index: number) => {
+        let newQuantity = product.quantity;
+        if (valueChange === 'inc') {
+            newQuantity++;
+        } else if (valueChange === 'dec' && newQuantity > 1) {
+            newQuantity--;
+        }
+    
+        // Update the local product quantity immediately
+        const updatedCartProducts = [...cartProducts]; // Make a copy of the cart products
+        updatedCartProducts[index].quantity = newQuantity; // Update the quantity in the local copy
+        setCartProducts(updatedCartProducts); // Update the state with the new quantity
+    
+        // Make the API call to update the cart data
+        APIs.updateCartData({
+            customerid: user.id,
+            id: product.id,
+            quantity: newQuantity,
+            productprice: product.price
+        }).then(response => {
+            if (response.data.error) {
+                // Set the error state using the product's id as the key
+                setIsError((prevErrors: any) => ({
+                    ...prevErrors,
+                    [product.id]: response.data.error.message
+                }));
+            } else {
+                // Clear the error state for this product if no error
+                setIsError((prevErrors: any) => ({
+                    ...prevErrors,
+                    [product.id]: null
+                }));
+            }
+            // Update the cart data in case the backend response has any changes (although you've already updated the local state)
+            APIs.getCartData({ customerid: user.id }).then((response: any) => {
+                setCartProducts(response.data.rows);
+                if (response.data.rows.length) {
+                    let total = 0;
+                    for (const obj of response.data.rows) {
+                        total += obj.total_price;
+                    }
+                    setTotal(total);
+                }
+            }).catch((error) => {
+                console.error(error);
+            });
+        }).catch(err => {
+            console.error(err);
+        });
     }
 
-    // Update the local product quantity immediately
-    const updatedCartProducts = [...cartProducts]; // Make a copy of the cart products
-    updatedCartProducts[index].quantity = newQuantity; // Update the quantity in the local copy
-    setCartProducts(updatedCartProducts); // Update the state with the new quantity
+    const quantityInputOnChange = (product: any, newQuantity: any, index: any) => {
+        // Update the local product quantity immediately
+        product.quantity = newQuantity;
+        const updatedCartProducts = [...cartProducts]; // Make a copy of the cart products
+        updatedCartProducts[index].quantity = newQuantity; // Update the quantity in the local copy
+        setCartProducts(updatedCartProducts); // Update the state with the new quantity
 
-    // Make the API call to update the cart data
-    APIs.updateCartData({
-        customerid: user.id,
-        id: product.id,
-        quantity: newQuantity,
-        productprice: product.price
-    }).then(response => {
-        if (response.data.error) {
-            // Set the error state using the product's id as the key
-            setIsError(prevErrors => ({
-                ...prevErrors,
-                [product.id]: response.data.error.message
-            }));
-        } else {
-            // Clear the error state for this product if no error
-            setIsError(prevErrors => ({
-                ...prevErrors,
-                [product.id]: null
-            }));
-        }
-        // Update the cart data in case the backend response has any changes (although you've already updated the local state)
-        APIs.getCartData({ customerid: user.id }).then((response: any) => {
-            
-            setCartProducts(response.data.rows);
-            if (response.data.rows.length) {
-                let total = 0;
-                for (const obj of response.data.rows) {
-                    total += obj.total_price;
-                }
-                setTotal(total);
+        // Make the API call to update the cart data
+        APIs.updateCartData({
+            customerid: user.id,
+            id: product.id,
+            quantity: newQuantity,
+            productprice: product.price
+        }).then(response => {
+            if (response.data.error) {
+                // Set the error state using the product's id as the key
+                setIsError((prevErrors: any) => ({
+                    ...prevErrors,
+                    [product.id]: response.data.error.message
+                }));
+            } else {
+                // Clear the error state for this product if no error
+                setIsError((prevErrors: any) => ({
+                    ...prevErrors,
+                    [product.id]: null
+                }));
             }
-        }).catch((error) => {
-            console.error(error);
-        });
-    }).catch(err => {
-        console.error(err);
-    });
-}
 
-    
+            // After updating the cart data, fetch the updated cart data
+            APIs.getCartData({ customerid: user.id }).then((response) => {
+                setCartProducts(response.data.rows);
+                if (response.data.rows.length) {
+                    let total = 0;
+                    for (const obj of response.data.rows) {
+                        total += obj.total_price;
+                    }
+                    setTotal(total);
+                }
+            }).catch((error) => {
+                // Handle any errors that occur during fetching
+                console.error(error);
+            });
+        }).catch(err => {
+            // Handle any errors that occur during the updateCartData API call
+            console.error(err);
+        });
+    }
 
    
 
@@ -156,13 +199,6 @@ function Cart() {
                                                             <span className="input-group-btn plus-icon regularfont pointer" onClick={() => handleQuantityChange(product, 'dec', index)}>
                                                                 <i className="fa fa-minus mini-text-0 mini-text-0-color " aria-hidden="true"></i>
                                                             </span>
-                                                            {/* <input type="text" 
-                                                                name="quant[1]" 
-                                                                style={{ maxHeight: '20px' }}
-                                                                className="form-control input-number text-center rounded-pill border-0 regularfont px-2 pb-1 pt-1 mini-text-3 h-auto" 
-                                                                value={product.quantity} min="1" max="10"
-                                                                onChange={(e) => product.quantity = e.target.value}
-                                                            /> */}
 
                                                             <input type="text"
                                                                 name="quant[1]"
@@ -171,61 +207,15 @@ function Cart() {
                                                                 value={product.quantity} 
                                                                 min="1" max="10"
                                                                 onChange={(e) => {
-                                                                    const newQuantity = e.target.value;
-                                                                    
-                                                                    // Update the local product quantity immediately
-                                                                    product.quantity = newQuantity;
-
-                                                                    const updatedCartProducts = [...cartProducts]; // Make a copy of the cart products
-                                                                       updatedCartProducts[index].quantity = newQuantity; // Update the quantity in the local copy
-                                                                       setCartProducts(updatedCartProducts); // Update the state with the new quantity
-                                                            
-                                                                    // Make the API call to update the cart data
-                                                                    APIs.updateCartData({
-                                                                        customerid: user.id,
-                                                                        id: product.id,
-                                                                        quantity: newQuantity,
-                                                                        productprice: product.price
-                                                                    }).then(response => {
-                                                                        if (response.data.error) {
-                                                                            // Set the error state using the product's id as the key
-                                                                            setIsError(prevErrors => ({
-                                                                                ...prevErrors,
-                                                                                [product.id]: response.data.error.message
-                                                                            }));
-                                                                        } else {
-                                                                            // Clear the error state for this product if no error
-                                                                            setIsError(prevErrors => ({
-                                                                                ...prevErrors,
-                                                                                [product.id]: null
-                                                                            }));
-                                                                        }
-                                                                        // After updating the cart data, fetch the updated cart data
-                                                                        APIs.getCartData({ customerid: user.id }).then((response) => {
-                                                                            setCartProducts(response.data.rows);
-                                                                            if (response.data.rows.length) {
-                                                                                let total = 0;
-                                                                                for (const obj of response.data.rows) {
-                                                                                    total += obj.total_price;
-                                                                                }
-                                                                                setTotal(total);
-                                                                            }
-                                                                        }).catch((error) => {
-                                                                            // Handle any errors that occur during fetching
-                                                                            console.error(error);
-                                                                        });
-                                                                    }).catch(err => {
-                                                                        // Handle any errors that occur during the updateCartData API call
-                                                                        console.error(err);
-                                                                    });
+                                                                    let newQuantity = e.target.value
+                                                                    quantityInputOnChange(product, newQuantity, index)
                                                                 }}
                                                             />
-
                                                             <span className="input-group-btn minus-icon regularfont pointer" onClick={() => handleQuantityChange(product, 'inc', index)}>
                                                                 <i className="fa fa-plus mini-text-0 mini-text-0-color " aria-hidden="true"></i>
                                                             </span>
-                                                            <span style={{color: "red", fontSize: "10px", textAlign: "center"}}>
-                                                                {isError[product.id] && isError[product.id]}
+                                                            <span className="text-center text-danger mini-text-0" >
+                                                                {isError[product.id]}
                                                             </span>
                                                         </div>
                                                     </td>

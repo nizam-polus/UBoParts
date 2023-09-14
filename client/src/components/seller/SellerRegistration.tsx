@@ -109,28 +109,32 @@ function SellerRegistration() {
             shippingaddress_city: formData.city,
             shippingaddress_state: formData.state,
             shippingaddress_postcode: formData.postcode,
-            shippingaddress_phonenumber: formData.phone_number
+            shippingaddress_phonenumber: formData.phone_number,
+            kvk_number: formData.kvk_number,
+            company_btw: formData.company_btw
         };
         if (!incomplete) {
-            let userdetails: any = {};
             if (!user || (user && !user.id)) {
                 sellerData.password = cnfrmPassword;
                 APIs.register(sellerData).then(response => {
-                    userdetails = response.data.user;
                     localStorage.setItem('usertoken', response.data.jwt);
-                    localStorage.setItem('userdetails', JSON.stringify(userdetails));
-                    saveUser(userdetails);
-                    router.push('/homepage');
+                    getAndSaveUser(response.data.user.id);
                 }).catch(err => console.log(err))
             } else {
                 APIs.updateSpecificUser(user.id, sellerData).then(response => {
-                    userdetails = response.data;
-                    localStorage.setItem('userdetails', JSON.stringify(userdetails));
-                    saveUser(userdetails);
-                    router.push('/homepage');
+                    getAndSaveUser(response.data.id);
                 }).catch((err) => console.log(err));
             }
         }
+    }
+
+    const getAndSaveUser = (id: number) => {
+        APIs.getSpecificUser(id).then(response => {
+            let userdetails = response.data;
+            localStorage.setItem('userdetails', JSON.stringify(userdetails));
+            saveUser(userdetails);
+            router.push('/homepage');
+        })
     }
     
 
@@ -253,7 +257,7 @@ function SellerRegistration() {
                                                             />
                                                         </td>
                                                     </tr>
-                                                    { formData.Account_type === 'business' && 
+                                                    { formData.Account_type === 'Business' && 
                                                         <>
                                                             <tr className="single">
                                                                 <td colSpan={2}>

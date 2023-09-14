@@ -1,9 +1,13 @@
 import React from 'react';
 import AppImage from '~/components/shared/AppImage';
 import SellerSideBar from './SellerSideBar';
+import { UserContext } from '../account_/UserContext';
+
 function SellerDashboard() {
+
+    const {user} = UserContext();
+
     return (
-    
         <> 
           <div className="main-body pb-2 mb-5">
             <div className="container">
@@ -18,11 +22,13 @@ function SellerDashboard() {
                                             <div className="table-responsive">
                                                 <table className="table seller-table1 m-0">
                                                     <thead>
-                                                        <th className="p-2 pb-3 ps-0 text-center"><AppImage src="/images/seller-prod-1.png"  /></th>
+                                                        <tr>
+                                                            <th className="p-2 pb-3 ps-0 text-center"><AppImage src="/images/seller-prod-1.png"  /></th>
+                                                        </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td className="border-0 text-center semifont pt-3 boldfontsize">Kila International AUTODEMONTAGEBED</td>
+                                                            <td className="border-0 text-center semifont pt-3 boldfontsize">{user?.company_name}</td>
                                                         </tr>
                                                         <tr>
                                                             <td className="border-0 text-center boldfontsize pt-1"><span className="me-2 regularfont mr-5">5 Open</span><span className="ms-2 mediumfont ">0 Completed</span></td>
@@ -47,8 +53,10 @@ function SellerDashboard() {
                                                 <div className="table-responsive">
                                                     <table className="table m-0 seller-table2">
                                                         <thead>
-                                                            <th className="p-3 ps-4 semifont placeholderfontsize custom-color-2">Month/Year</th>
-                                                            <th className="p-3 pe-4 semifont placeholderfontsize custom-color-2 text-end">Sale(€)</th>
+                                                            <tr>
+                                                                <th className="p-3 ps-4 semifont placeholderfontsize custom-color-2">Month/Year</th>
+                                                                <th className="p-3 pe-4 semifont placeholderfontsize custom-color-2 text-end">Sale(€)</th>
+                                                            </tr>
                                                         </thead>
                                                         <tbody>
                                                             <tr>
@@ -87,12 +95,14 @@ function SellerDashboard() {
                                     <div className="table-responsive">
                                         <table className="table m-0 seller-table3">
                                             <thead>
-                                                <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Orders</th>
-                                                <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Customer</th>
-                                                <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Date</th>
-                                                <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Status</th>
-                                                <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Total</th>
-                                                <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Action</th>
+                                                <tr>
+                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Orders</th>
+                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Customer</th>
+                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Date</th>
+                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Status</th>
+                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Total</th>
+                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Action</th>
+                                                </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
