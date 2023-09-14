@@ -282,7 +282,7 @@ function Shop() {
                 // Find the quantity of the product with the given product ID
                 for (const cartItem of productCartItems) {
                     if (cartItem.product_id === productData?.id) {
-                        productQuantityInCart = cartItem.quantity;
+                        productQuantityInCart = cartItem.quantity + 1;
                         break; 
                     }
                 }
