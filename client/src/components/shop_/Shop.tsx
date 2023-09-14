@@ -13,6 +13,7 @@ import APIs from '~/services/apiService';
 import { BASE_URL } from 'configuration';
 import Link from 'next/dist/client/link';
 import { UserContext } from '../account_/UserContext';
+import Login from '../account_/Login';
 
 function Shop() {
     
@@ -41,6 +42,7 @@ function Shop() {
     })
     const [filterCategory, setFilterCategory] = useState<any>([]);
     const [filterSubcategory, setFilterSubcategory] = useState<any>([]);
+    const [openLogin, setOpenLogin] = useState(false);
 
     const router = useRouter();
 
@@ -203,6 +205,10 @@ function Shop() {
         setSelectedMake('');
         setSelectedModel('');
         setSelectedYear('');
+        localStorage.removeItem('make');
+        localStorage.removeItem('model');
+        localStorage.removeItem('year');
+        localStorage.removeItem('category');
     }
 
     const handleProductClick = (product: any) => {
@@ -259,57 +265,66 @@ function Shop() {
     }
 
     const handleAddToCart = (productData: any) => {
-        let productQuantityInCart = 0;
-        let cartData = {
-            customerid: user.id,
-            productid: productData?.id,
-            quantity: '1',
-            productprice: productData?.attributes?.price
-        }
-        
-        APIs.getCartData({ customerid: user.id }).then(response => {
-            let productCartItems = response.data.rows;
-            // Find the quantity of the product with the given product ID
-            for (const cartItem of productCartItems) {
-                if (cartItem.product_id === productData?.id) {
-                    productQuantityInCart = cartItem.quantity;
-                    break; 
+        if (!user || user && !user.id) {
+            setOpenLogin(true);
+        } else {
+            setOpenLogin(false);
+            let productQuantityInCart = 0;
+            let cartData = {
+                customerid: user.id,
+                productid: productData?.id,
+                quantity: '1',
+                productprice: productData?.attributes?.price
+            }
+            
+            APIs.getCartData({ customerid: user.id }).then(response => {
+                let productCartItems = response.data.rows;
+                // Find the quantity of the product with the given product ID
+                for (const cartItem of productCartItems) {
+                    if (cartItem.product_id === productData?.id) {
+                        productQuantityInCart = cartItem.quantity + 1;
+                        break; 
+                    }
                 }
-            }
-        })
-
-        // Fetch the product stock count
-        APIs.getProduct(cartData.productid).then(response => {
-            let productStock = response.data.data.attributes.stock_count;
-            console.log(productStock)
-
-            // Check if the quantity exceeds the stock count
-            if (productQuantityInCart <= productStock) {
-                // Quantity is within stock limit, add to cart
-                APIs.addToCart(cartData).then(response => {
-                    toast.success(() => (
-                        <>
-                            Item successfully added to <Link href={"/cartpage"}>cart</Link>
-                        </>
-                    ));
-                    APIs.getCartData({ customerid: user.id }).then(response => {
-                        setCartCount(response.data.rows.length);
-                    });
+                // Fetch the product stock count
+                APIs.getProduct(cartData.productid).then(response => {
+                    let productStock = response.data.data.attributes.stock_count;
+                    console.log(productStock)
+        
+                    // Check if the quantity exceeds the stock count
+                    if (productQuantityInCart <= productStock) {
+                        // Quantity is within stock limit, add to cart
+                        APIs.addToCart(cartData).then(response => {
+                            toast.success(() => (
+                                <>
+                                    Item successfully added to <Link href={"/cartpage"}>cart</Link>
+                                </>
+                            ));
+                            APIs.getCartData({ customerid: user.id }).then(response => {
+                                setCartCount(response.data.rows.length);
+                            });
+                        }).catch(err => {
+                            toast.error('Something went wrong while adding to cart!');
+                        });
+                    } else {
+                        // Quantity exceeds stock limit, display a toast message
+                        toast.error('Stock exceeded. Cannot add this item to the cart.');
+                    }
                 }).catch(err => {
-                    toast.error('Something went wrong while adding to cart!');
+                    toast.error('Something went wrong while fetching product information.');
                 });
-            } else {
-                // Quantity exceeds stock limit, display a toast message
-                toast.error('Stock exceeded. Cannot add this item to the cart.');
-            }
-        }).catch(err => {
-            toast.error('Something went wrong while fetching product information.');
-        });
+            })
+    
+        }
     }
 
+    const loginModalClose = () => {
+        setOpenLogin(false);
+    };
 
     return (
         <>
+            <Login isOpen={openLogin} onClose={loginModalClose} />
             <div className="main-body pb-5 mb-5">
                 <div className="container">
                     <section className="coulmn-bg-color-1 search-wrapper mt-5 mb-5">

@@ -13,11 +13,13 @@ function SellerSideBar() {
             <div className="table-responsive">
                 <table className="table quote-table seller-table">
                     <thead>
-                        <th className="pt-0 p-2 pb-1 ps-0 custom-color-2 regularfont body-sub-titles border-bottom border-top-0">
-                            {user.isApproved === 'Active' && user.role.type === 'seller' ? 'Shop Manager' : 'Buyer Dashboard'}</th>
+                        <tr>
+                            <th className="pt-0 p-2 pb-1 ps-0 custom-color-2 regularfont body-sub-titles border-bottom border-top-0">
+                                {user?.isApproved === 'Active' && (user?.role && user?.role?.type === 'seller') ? 'Shop Manager' : 'Buyer Dashboard'}</th>
+                        </tr>
                     </thead>
                     <tbody>
-                        {user.role.type === 'authenticated' && <>
+                        {user?.role && user?.role?.type === 'authenticated' && <>
                             <tr>
                                 <td className={"pointer " + (router.pathname.includes('/dashboard') ? "active" : "")}>
                                     <div>
@@ -27,7 +29,7 @@ function SellerSideBar() {
                                 </td>
                             </tr>
                         </>}
-                        {user.isApproved === 'Active' && user.role.type === 'seller' && <>
+                        {user?.isApproved === 'Active' && (user?.role && user?.role?.type === 'seller') && <>
                             <tr>
                                 <td className={"pointer " + (router.pathname.includes('/dashboard') ? "active" : "")}>
                                     <div>

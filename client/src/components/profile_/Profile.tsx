@@ -30,7 +30,7 @@ function Profile() {
     const [newpwd, setNewpwd] = useState<string>('');
     const [confrmpwd, setConfrmpwd] = useState('');
     const [incomplete, setIncomplete] = useState<any>(false);
-    const [profilePicPath, setProfilePicPath] = useState<string>('');
+    const [profilePic, setProfilePic] = useState<any>(null);
 
     useEffect(() => {
         let userId = !user.id ? userdetails.id : user.id;
@@ -46,7 +46,6 @@ function Profile() {
             setState(user.state || '');
             setCountry(user.country || '');
             setPostcode(user.postcode || '');
-            setProfilePicPath(user?.profile_image?.url || '')
         })
     }, [])
 
@@ -81,7 +80,23 @@ function Profile() {
                 saveUser(user);
             })
         }
-    } 
+    };
+
+    const handlePicUpload = (event: any) => {
+        console.log(event.target.files[0]);
+        setProfilePic(event.target.files[0]);
+        const formData = new FormData();
+        formData.append('files', profilePic, profilePic?.name)
+        console.log(formData, profilePic)
+        let picData = {
+            ref: 'plugin::users-permissions.user',
+            refId: user.id,
+            files: formData
+        }
+        APIs.uploadProfilePic(picData).then(response => {
+            console.log(response)
+        })
+    }
 
     return (
         <> 
@@ -96,19 +111,19 @@ function Profile() {
                         <div className="row mt-3 ">
                             <div className="col-12 col-md-12 col-xl-3">
                                 <div className="profile-image-wrapper coulmn-bg-color-1 rounded-2 p-5 pb-2 text-center">
-                                    <AppImage src={BASE_URL + profilePicPath || 'images/img/dummy-profile.png'} className="profile-pic"/>
+                                    <AppImage src={BASE_URL + '' || 'images/img/dummy-profile.png'} className="profile-pic"/>
                                     <div>
                                     <label  htmlFor="formId" className='position-relative position-overlap-edit-icon'>
-                                        <input name="" type="file" id="formId" hidden onChange={(e) => console.log(e.target.files)}/>
+                                        <input name="" type="file" id="formId" hidden onChange={(e) => handlePicUpload(e)}/>
                                         <AppImage className="icon-size1" src={'images/img/Vector.png'}/>
                                     </label>
                                 </div>
                                     <p className="mt-0 mb-1 custom-color-1 boldfont products-name">{(user.first_name || '') + ' ' + (user.last_name || '')}</p>
                                     <p className="mt-1 mb-2 custom-color-1 regularfont products-name">{user.username}</p>
                                 </div>
-                                <div className='text-center mt-3'>
+                                {user.isApproved === 'Active' && user.user_type !== 'seller' && <div className='text-center mt-3'>
                                     <Link href={'/seller-registration'}><a style={{textDecoration: 'underline', color: 'red'}}>Want to become a Seller?</a></Link>
-                                </div>
+                                </div>}
                             </div>
                             <div className="col-12 col-md-12 col-xl-9 mt-4 mt-xl-0 mt-md-4">
                                 <form action="">

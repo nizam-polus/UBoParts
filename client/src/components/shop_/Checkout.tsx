@@ -132,7 +132,7 @@ function Checkout() {
                     cartData.push(product);
                 });
                 let totalPrice = typeof (total) == 'string' ? Number(total) * 100 : total * 100;
-                APIs.cartPayment({products: cartData, total_price: totalPrice, customerid: user.id}).then(response => {
+                APIs.cartPayment({products: cartData, total_price: totalPrice, customerid: user.id, shipping_cost: shippingCost}).then(response => {
                     let redirectUrl = response.data.redirect_url
                     let transactionId = response.data.uid
                     localStorage.setItem('uid', transactionId);
@@ -280,20 +280,16 @@ function Checkout() {
                                                 </tr>
                                            
                                                 <tr className="single">
-                                                    <td colSpan={2} className="d-flex"
-                                                        onClick={(e: any) => {
-                                                            setDifferentAdd(!differentAdd);
-                                                            setShippingIncomplete(!differentAdd)
-                                                        }}
-                                                    >
-                                                        <span className="custom-checkbox pl-3">
-                                                            <input type="checkbox" 
-                                                                className="form-check input-bg-color-2 border-0 body-sub-titles" 
-                                                                name="ship-to" id="ship-to"
-                                                            />
-                                                            <label htmlFor="ship-to " className="rounded"></label>
-                                                        </span>
-                                                        <span className="ms-3 create-label">Ship to a different address?</span>
+                                                    <td colSpan={2} className="d-flex">
+                                                        <label className="ms-3 create-label">
+                                                                <input type="checkbox" name="agreement" className="width-checkout"
+                                                                    onClick={(e: any) => {
+                                                                        setDifferentAdd(!differentAdd);
+                                                                        setShippingIncomplete(!differentAdd)
+                                                                    }}
+                                                                /> 
+                                                                Ship to a different address?
+                                                            </label>
                                                     </td>
                                                 </tr>
                                                 {differentAdd && <>
@@ -416,7 +412,7 @@ function Checkout() {
                                                 
                                             </tr>
                                             <tr><td colSpan={2} className="p-3">
-                                                <button type="button" disabled={!checkoutProducts.length}
+                                                <button type="button" disabled={!checkoutProducts?.length}
                                                     className="proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"
                                                     onClick={handlepayment}
                                                 >Proceed to payment</button>

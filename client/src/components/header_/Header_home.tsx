@@ -53,12 +53,12 @@ function Header_home(props: any) {
 
     const logout = () => {
         localStorage.removeItem('usertoken');
+        router.push('/homepage');
         localStorage.removeItem('userdetails');
         setUserToken('');
         setIsLoggedin(false);
         setIsOpen(!isOpen);
         saveUser({});
-        router.push('/homepage');
     };
   
     return (
