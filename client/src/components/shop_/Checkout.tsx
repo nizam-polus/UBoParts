@@ -10,13 +10,13 @@ function Checkout() {
     const [total, setTotal]: any = useState(0);
     const [shippingCost, setShippingCost] = useState<number>(0);
     const [formData, setFormData] = useState({
-        firstname: '',
-        lastname: '',
+        first_name: '',
+        last_name: '',
         company: '',
         email: '',
         phone: '',
-        address_1: '',
-        address_2: '',
+        streetaddress_housenumber: '',
+        streetaddress_apartment: '',
         city: '',
         state: '',
         country: '',
@@ -25,8 +25,8 @@ function Checkout() {
     const [differentAdd, setDifferentAdd] = useState(false);
     const [shippingData, setShippingData] = useState({
         shippingaddress_country: formData.country,
-        shippingaddress_streataddress_housenumber: formData.address_1,
-        shippingaddress_streataddress_apartment: formData.address_2,
+        shippingaddress_streataddress_housenumber: formData.streetaddress_housenumber,
+        shippingaddress_streataddress_apartment: formData.streetaddress_apartment,
         shippingaddress_city: formData.city,
         shippingaddress_state: formData.state,
         shippingaddress_postcode: formData.postcode,
@@ -37,26 +37,26 @@ function Checkout() {
 
     useEffect(() => {
         setFormData((prevFormData) => ({...prevFormData, 
-            firstname: user.first_name,
-            lastname: user.last_name,
+            first_name: user.first_name,
+            last_name: user.last_name,
             company: user.company,
             email: user.email,
             phone: user.phone_number,
-            address_1: user.streetaddress_housenumber,
-            address_2: user.streetaddress_apartment,
+            streetaddress_housenumber: user.streetaddress_housenumber,
+            streetaddress_apartment: user.streetaddress_apartment,
             city: user.city,
             state: user.state,
             country: user.country,
             postcode: user.postcode
         }))
 
-        shippingData.shippingaddress_city = user.shippingaddress_city || user.city;
-        shippingData.shippingaddress_country = user.shippingaddress_country || user.country;
-        shippingData.shippingaddress_phonenumber = user.shippingaddress_phonenumber || user.phone_number;
-        shippingData.shippingaddress_postcode = user.shippingaddress_postcode || user.postcode;
-        shippingData.shippingaddress_state = user.shippingaddress_state || user.state;
-        shippingData.shippingaddress_streataddress_apartment = user.shippingaddress_streataddress_apartment || user.streetaddress_apartment;
-        shippingData.shippingaddress_streataddress_housenumber = user.shippingaddress_streataddress_housenumber || user.streetaddress_housenumber;
+        shippingData.shippingaddress_city = user.shippingaddress_city;
+        shippingData.shippingaddress_country = user.shippingaddress_country;
+        shippingData.shippingaddress_phonenumber = user.shippingaddress_phonenumber;
+        shippingData.shippingaddress_postcode = user.shippingaddress_postcode;
+        shippingData.shippingaddress_state = user.shippingaddress_state;
+        shippingData.shippingaddress_streataddress_apartment = user.shippingaddress_streataddress_apartment;
+        shippingData.shippingaddress_streataddress_housenumber = user.shippingaddress_streataddress_housenumber;
         setShippingData({...shippingData});
 
         // get cart data
@@ -78,11 +78,12 @@ function Checkout() {
 
     const checkFormStatus = () => {
         let incomplete = true;
-        incomplete = !(!!formData.firstname && 
-            !!formData.lastname && !!formData.email && !!formData.phone && 
-            !!formData.address_1 && !!formData.city && !!formData.state && 
+        incomplete = !(!!formData.first_name && 
+            !!formData.last_name && !!formData.email && !!formData.phone && 
+            !!formData.streetaddress_housenumber && !!formData.city && !!formData.state && 
             !!formData.country && !!formData.postcode);
         setIncomplete(incomplete);
+        console.log(incomplete)
         return incomplete;
     }
 
@@ -98,14 +99,13 @@ function Checkout() {
 
     const handleFormChange = (event: any) => {
         const { name, value } = event.target;
+        console.log(name, value)
         setFormData((prevFormData => ({...prevFormData, [name]: value})));
-        checkFormStatus();
     }
 
     const handleShippingAddChange = (event: any) => {
         const { name, value } = event.target;
         setShippingData((prevData) => ({...prevData, [name]: value}));
-        checkShippingDataStatus();
     }
 
     const handlepayment = () => {     
@@ -113,9 +113,16 @@ function Checkout() {
         let shippingincomplete = checkShippingDataStatus();
         let reqElement = document.getElementById('required');
         if (reqElement) reqElement.scrollIntoView({behavior: 'smooth'});
-        console.log(shippingincomplete)
+        shippingData.shippingaddress_city = shippingData.shippingaddress_city || formData.city;
+        shippingData.shippingaddress_country = shippingData.shippingaddress_country || formData.country;
+        shippingData.shippingaddress_phonenumber = shippingData.shippingaddress_phonenumber || formData.phone;
+        shippingData.shippingaddress_postcode = shippingData.shippingaddress_postcode || formData.postcode;
+        shippingData.shippingaddress_state = shippingData.shippingaddress_state || formData.state;
+        shippingData.shippingaddress_streataddress_apartment = shippingData.shippingaddress_streataddress_apartment || formData.streetaddress_apartment;
+        shippingData.shippingaddress_streataddress_housenumber = shippingData.shippingaddress_streataddress_housenumber || formData.streetaddress_housenumber;
+        setShippingData({...shippingData});
         if (!incomplete && !shippingincomplete) {
-            let formdata: any = {...formData, streetaddress_housenumber: formData.address_1, streetaddress_apartment: formData.address_2, ...shippingData};
+            let formdata: any = {...formData, ...shippingData};
             APIs.updateSpecificUser(user.id, formdata).then(response => {
                 saveUser(response.data);
                 localStorage.setItem('userdetails', JSON.stringify(response.data))
@@ -168,17 +175,17 @@ function Checkout() {
                                                 <tr className="double">
                                                     <td>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">First Name</label>
-                                                        <input type="text" value={formData.firstname}
-                                                            className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.firstname ? 'required-field' : 'border-0' }`} 
-                                                            name="first-name" placeholder="Mark"
+                                                        <input type="text" value={formData.first_name}
+                                                            className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.first_name ? 'required-field' : 'border-0' }`} 
+                                                            name="first_name" placeholder="Mark"
                                                             onChange={(e) => handleFormChange(e)}
                                                         />
                                                     </td>
                                                     <td>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Last Name</label>
-                                                        <input type="text" value={formData.lastname}
-                                                            className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.lastname ? 'required-field' : 'border-0' }`} 
-                                                            name="last-name" placeholder="Twain"
+                                                        <input type="text" value={formData.last_name}
+                                                            className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.last_name ? 'required-field' : 'border-0' }`} 
+                                                            name="last_name" placeholder="Twain"
                                                             onChange={(e) => handleFormChange(e)}
                                                         />
                                                     </td>
@@ -188,7 +195,7 @@ function Checkout() {
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Company Name (Optional)</label>
                                                         <input type="text" value={formData.company}
                                                             className="check-form form-control input-bg-color-2 border-0 body-sub-titles" 
-                                                            name="company-name" placeholder="Company Name"
+                                                            name="company" placeholder="Company Name"
                                                             onChange={(e) => handleFormChange(e)}
                                                         />
                                                     </td>
@@ -207,16 +214,16 @@ function Checkout() {
                                                     <td colSpan={2}>
                                                         <div className="mb-3">
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Street Address</label>
-                                                            <input type="text" value={formData.address_1}
-                                                                className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.address_1 ? 'required-field' : 'border-0' }`}  
-                                                                name="address_1" placeholder="House number and street name"
+                                                            <input type="text" value={formData.streetaddress_housenumber}
+                                                                className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.streetaddress_housenumber ? 'required-field' : 'border-0' }`}  
+                                                                name="streetaddress_housenumber" placeholder="House number and street name"
                                                                 onChange={(e) => handleFormChange(e)}
                                                             />
                                                         </div>
                                                         <div>
-                                                            <input type="text" value={formData.address_2}
+                                                            <input type="text" value={formData.streetaddress_apartment}
                                                                 className="check-form form-control input-bg-color-2 border-0 body-sub-titles" 
-                                                                name="address_2" placeholder="Apartment, suite, unit etc..."
+                                                                name="streetaddress_apartment" placeholder="Apartment, suite, unit etc..."
                                                                 onChange={(e) => handleFormChange(e)}
                                                             />
                                                         </div>

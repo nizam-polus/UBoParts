@@ -195,7 +195,7 @@ function Cart() {
                                                     </td>
                                                     <td className="p-3 custom-color-3 semifont mini-text-3 text-center ">€{product.price}</td>
                                                     <td className="p-3 custom-color-3 regularfont">
-                                                        <div className="input-group quanitity-box quanitity-incrementor">
+                                                        <div className="input-group quanitity-box">
                                                             <span className="input-group-btn plus-icon regularfont pointer" onClick={() => handleQuantityChange(product, 'dec', index)}>
                                                                 <i className="fa fa-minus mini-text-0 mini-text-0-color " aria-hidden="true"></i>
                                                             </span>

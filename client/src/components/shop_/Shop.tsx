@@ -52,7 +52,7 @@ function Shop() {
                 category_name: item.attributes.category_name,
                 subcategories: item.attributes.sub_categories.data.map((subItem: any) => ({
                     id: subItem.id,
-                    name: subItem.attributes.name.replace(/\"/g, '')
+                    name: subItem.attributes.name
                 }))
             })
         ))];

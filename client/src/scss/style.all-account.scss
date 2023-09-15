@@ -786,7 +786,6 @@ button.search {
 }	
 .plus-icon,.minus-icon{	
     position: absolute;	
-    top: 3px;	
     z-index: 9;	
 }	
 .plus-icon{	
@@ -847,14 +846,7 @@ button.search {
 .add-to-cart-1 {	
 	display: block;	
 }	
-.quanitity-incrementor {	
-	.plus-icon {	
-		top: 3px;	
-	}	
-	.minus-icon {	
-		top: 3px;	
-	}	
-}	
+	
 .nav-tabs {	
 	.nav-link.active {	
 		border: 0;	
@@ -898,9 +890,7 @@ button.search {
     align-items: center;	
     margin-left: 10px;	
 }	
-.cart-table .quanitity-incrementor .plus-icon,.cart-table .quanitity-incrementor .minus-icon {	
-    top: 3px;	
-}	
+	
 .cart-table tbody td{	
     border: 0;	
     vertical-align: middle;	

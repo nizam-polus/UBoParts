@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import APIs from '~/services/apiService';
 import { BASE_URL } from 'configuration';
 import { UserContext } from '../account_/UserContext';
+import Login from '../account_/Login';
 
 function Productsingle() {
 
@@ -23,6 +24,7 @@ function Productsingle() {
     const [productImage, setProductImage] = useState<any>({})
     const [productGallery, setProductGallery] = useState([])
     const [quantity, setQuantity] = useState(1);
+    const [openLogin, setOpenLogin] = useState(false);
 
     useEffect(() => {
         APIs.getProduct(id).then(response => {
@@ -40,36 +42,45 @@ function Productsingle() {
     }
 
     const handleAddToCart = () => {
-        let cartData = {
-            customerid: user.id,
-            productid: productData?.id,
-            quantity: quantity,
-            productprice: productData?.attributes?.price
+        if (!user || user && !user.id) {
+            setOpenLogin(true);
+        } else {
+            let cartData = {
+                customerid: user.id,
+                productid: productData?.id,
+                quantity: quantity,
+                productprice: productData?.attributes?.price
+            }
+            APIs.addToCart(cartData).then(response => {
+                toast.success(() => (
+                    <>
+                        Item successfully added to <Link href={"/cartpage"}>cart</Link>
+                    </>
+                ));
+                APIs.getCartData({customerid: user.id}).then(response => {
+                    setCartCount(response.data.rows.length);
+                });
+            }).catch(err => {
+                toast.error('Something went wrong!')
+            })
         }
-        APIs.addToCart(cartData).then(response => {
-            toast.success(() => (
-                <>
-                    Item successfully added to <Link href={"/cartpage"}>cart</Link>
-                </>
-            ));
-            APIs.getCartData({customerid: user.id}).then(response => {
-                setCartCount(response.data.rows.length);
-            });
-        }).catch(err => {
-            toast.error('Something went wrong!')
-        })
     }
+
+    const loginModalClose = () => {
+        setOpenLogin(false);
+    };
     
 
     return (
         <>
+            <Login isOpen={openLogin} onClose={loginModalClose} />
             <div className="main-body pb-5 mb-5">
                 <div className="container">
                     <section className="products-description-wrapper mt-5 mb-5">
                         <div className="row">
                             <div className="col-12 col-md-6 col-lg-4">
                                 <div className="row">
-                                <AppImage className="rounded w-100" src={BASE_URL + productImage}/>
+                                    <AppImage style={{objectFit: 'contain', height: '30rem'}} className="rounded w-100" src={BASE_URL + productImage}/>
                                 </div>
                                 <div className="row product-thumbnails g-3 mt-3 justify-content-center">
                                 {productGallery.map((galleryImg: any) => {
@@ -143,7 +154,7 @@ function Productsingle() {
                                             </div>
                                             <div className="row pt-1 pb-1">
                                                 <div className="col-4 col-md-4 col-lg-12 col-xl-5">
-                                                    <div className="input-group quanitity-box mt-3 quanitity-incrementor">
+                                                    <div className="input-group quanitity-box mt-3">
                                                         <span className="input-group-btn plus-icon semifont"
                                                             onClick={() => quantity !== 1 && setQuantity(quantity - 1)}
                                                         >
