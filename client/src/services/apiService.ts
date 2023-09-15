@@ -44,14 +44,9 @@ const APIs = {
     },
 
     searchFilter: (make: string, model: string, year: string, categories: [], sub_category: [], price: string) => {
-
         let searchposition = -1, filterposition = 0;
-        const incrementSearchPosition = () => {
-            return searchposition += 1;
-        };
-        const incrementFilterPosition = () => {
-            return filterposition += 1;
-        };
+        const incrementSearchPosition = () => searchposition += 1;
+        const incrementFilterPosition = () => filterposition += 1;
         let categoryQuery = categories.map((category: any) => (
             `&filters[$or][${incrementFilterPosition() + ''}][category][category_name][$eq]=${category}`
         ));
@@ -59,10 +54,11 @@ const APIs = {
             `&filters[$or][${incrementFilterPosition() + ''}][sub_category][name][$eq]=${subcat}`
         ));
 
-        return axios.get(BACKEND_URL + `products?populate=*${make && `&filters[$or][0][$and][${incrementSearchPosition() + ''}][cardetail][make][$contains]=${make}`}`+
-            `${model && `&filters[$or][0][$and][${incrementSearchPosition() + ''}][cardetail][model][$contains]=${model}`}`+
-            `${year && `&filters[$or][0][$and][${incrementSearchPosition() + ''}][cardetail][year][$eq]=${year}`}`+
-            `${categoryQuery.length ? categoryQuery.join().replace(',', '') : ''}`+
+        return axios.get(
+            BACKEND_URL + `products?populate=*${make && `&filters[$or][0][$and][${incrementSearchPosition() + ''}][cardetail][make][$contains]=${make}`}` +
+            `${model && `&filters[$or][0][$and][${incrementSearchPosition() + ''}][cardetail][model][$contains]=${model}`}` +
+            `${year && `&filters[$or][0][$and][${incrementSearchPosition() + ''}][cardetail][year][$eq]=${year}`}` +
+            `${(categoryQuery.length && !subcategoryQuery.length) ? categoryQuery.join().replace(',', '') : ''}` +
             `${subcategoryQuery.length ? subcategoryQuery.join().replace(',', '') : ''}` + '',
             // `${price ? `filters[$or][0][price][$between]=${'10'}&filters[$or][0][price][$between]=${'500'}` : `filters[$or][0][price][$between]=${'10'}&filters[$or][0][price][$between]=${'500'}`}`, 
             {headers}
