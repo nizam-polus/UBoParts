@@ -90,24 +90,29 @@ function Profile() {
     };
 
     const handlePicUpload = (event: any) => {
-        setProfilePic(event.target.files[0]);
-        const formData = new FormData();
-        console.log('event.target.files[0] :>> ', event.target.files[0]);
-        formData.append('files', event.target.files[0])
-        console.log('formData', formData)
+        const file = event.target.files[0];
+        // Update the state with the selected file
+        setProfilePic(file);
+      
+        // Create the picData object with the selected file
         let picData = {
-            ref: 'plugin::users-permissions.user',
-            refId: user.id,
-            field: 'profile_image',
-            files: profilePic
+          ref: "plugin::users-permissions.user",
+          refId: user.id,
+          field: "profile_image",
+          files: file, // Use the selected file directly
+        };
+      
+        if (file) {
+          // Make the API call with the selected file
+          APIs.uploadImage(picData)
+            .then((response) => {
+              console.log("profileuploadresponse", response);
+              let resData = response.data[0];
+              setProfilePicURL(resData.url);
+            })
+            .catch((err) => console.log(err));
         }
-        if (event.target.files[0]) {
-            APIs.uploadImage(picData).then(response => {
-                let resData = response.data[0];
-                setProfilePicURL(resData.url);
-            }).catch(err => console.log(err))
-        }
-    }
+      };
 
     return (
         <> 
@@ -122,7 +127,7 @@ function Profile() {
                         <div className="row mt-3 ">
                             <div className="col-12 col-md-12 col-xl-3">
                                 <div className="profile-image-wrapper coulmn-bg-color-1 rounded-2 p-5 pb-2 text-center">
-                                    <AppImage src={BASE_URL + (profilePicURL || 'images/img/dummy-profile.png')} className="profile-pic"/>
+                                    <AppImage src={BASE_URL + (profilePicURL || 'images/img/dummy-profile.png')} className="profile-pic" width={"70px"} height={"70px"} style={{borderRadius: "50px"}}/>
                                     <div>
                                         <label  htmlFor="formId" className='position-relative position-overlap-edit-icon'>
                                             <input type="file" id="formId" hidden onChange={handlePicUpload}/>
