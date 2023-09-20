@@ -13,7 +13,7 @@ const getToken = () => {
 const token = '925e88460339fd6cc775aa8f823fcc53e4e8bc4b64a40a4697ccefd8cfea7e8592090979dbd98c2398cf9f3ef42aca0b9386d0fb044d6d5735a12196fa4ca5cbded0e585a65c18410d343e0c751129de9b7370a73a92f0c1e4eebeda1ff3382e50a9567f06308cf6adb26fb8f8b65e0a5cd2e132cd637f85076169e18ba62abf';
 
 const headers = {
-    Authorization: `Bearer ${token}`
+    Authorization: `Bearer ${token}`,
 }
 
 const APIs = {
@@ -65,7 +65,11 @@ const APIs = {
         )
     },
     
+    getParts: () => axios.get(BACKEND_URL + 'parts?populate=*&sort[0]=id:asc', {headers}),
+
     getAllProducts: () => axios.get(BACKEND_URL + 'products?populate=*', {headers}),
+
+    getAllSellerProducts: (username: any) => axios.get(BACKEND_URL + `products?populate=*&filters[$and][][seller][$eq]=${username}`, {headers}),
     
     getProduct: (id: any) => axios.get(BACKEND_URL + 'products/' + id + '?populate=*', {headers}),
 
@@ -94,7 +98,10 @@ const APIs = {
     
     createNewList: (data: any) => ds.post(BACKEND_URL + 'products', {...data}),
 
-    uploadProfilePic: (picData: {}) => ds.post(BACKEND_URL + 'upload', picData),
+    uploadProfilePic: (picData: any) => axios.post(BACKEND_URL + 'upload', picData, {headers: {
+        Authorization: `Bearer ${(localStorage.getItem('usertoken') || "").replace(/"/g, '')}`,
+        'content-type': 'multipart/form-data'
+    }}),
 
 }
 
