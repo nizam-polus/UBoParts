@@ -5,10 +5,36 @@ import { BASE_URL } from 'configuration';
 import SellerSideBar from './SellerSideBar';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import APIs from '~/services/apiService';
+
 function SellerListings() {
     const router = useRouter();
-    return (
+  const [uname, setUname] = useState<any>("");
+  const [sellerList, setSellerList] = useState([]);
 
+        useEffect(() => {
+            (async () => {
+              try {
+                // Retrieve the userDetails string from localStorage
+                const userDetails: any = localStorage.getItem("userdetails");
+                const userDetailsJSON = JSON.parse(userDetails);
+                // Get the username property from the userDetails object
+                const username = userDetailsJSON.username;
+                setUname(username);
+                // Make the API call with the username
+                const res = await APIs.getAllSellerProducts(username);
+                console.log(res);
+                setSellerList(res.data.data);
+              } catch (error) {
+                console.error(error);
+              }
+            })(); // Invoke the async function immediately
+          }, []);
+
+          const handleProductClick = (product: any) => {
+            router.push('/sellerProducts_/' + product.id);
+        }
+    return (
         <>
            <div className="main-body pb-2 mb-5">
             <div className="container">
@@ -30,19 +56,25 @@ function SellerListings() {
                                     </table>
                                 </div>
                                 <div className="row g-4 p-4 pb-4 pt-2">
-                                    <div className="col-12 col-sm-6 col-lg-4">
+                                    {sellerList && sellerList.map((item : any,index) =>{
+                                        return  <div className="col-12 col-sm-6 col-lg-4">
                                         <div className="latest-prods mb-5 card card-shadows seller-listing-products">
                                             <div className="position-relative">
-                                                <AppImage src="/images/cat-prod-1.svg" className="card-img-top"/>
-                                                <span className="product-price button-bg-color-1 text-white regularfont boldfontsize">€230</span>
+                                            <AppImage 
+                                                 src={BASE_URL + item?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
+                                                 className="card-img-top img-prod-height pointer" 
+                                                style={{height: '20rem', objectFit: 'cover'}} 
+                                                 onClick={() => handleProductClick(item)}    
+                                            />
+                                                <span className="product-price button-bg-color-1 text-white regularfont boldfontsize">€ {item.attributes.price}</span>
                                             </div>
                                             <div className="card-body p-4">
-                                                <div className="row g-2">
+                                                <div className="row g-2"  onClick={() => handleProductClick(item)}>
                                                     <div className="col-12">
-                                                        <span className="article-number regularfont mini-text">Body Parts</span>
+                                                        <span className="article-number regularfont mini-text">{item.attributes.category?.data?.attributes?.category_name}</span>
                                                     </div>
                                                     <div className="col-12">
-                                                        <span className="product-name regularfont">Mercedes sprinter achter as</span>
+                                                        <span className="product-name regularfont">{item.attributes.title}</span>
                                                     </div>
                                                     <div className="col-12 d-flex justify-content-between">
                                                         <button type="button" className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2">Edit</button>
@@ -52,116 +84,9 @@ function SellerListings() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-12 col-sm-6 col-lg-4">
-                                        <div className="latest-prods mb-5 card card-shadows seller-listing-products">
-                                            <div className="position-relative">
-                                                <AppImage src="/images/cat-prod-1.svg" className="card-img-top"/>
-                                                <span className="product-price button-bg-color-1 text-white regularfont boldfontsize">€230</span>
-                                            </div>
-                                            <div className="card-body p-4">
-                                                <div className="row g-2">
-                                                    <div className="col-12">
-                                                        <span className="article-number regularfont mini-text">Body Parts</span>
-                                                    </div>
-                                                    <div className="col-12">
-                                                        <span className="product-name regularfont">Mercedes sprinter achter as</span>
-                                                    </div>
-                                                    <div className="col-12 d-flex justify-content-between">
-                                                        <button type="button" className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2">Edit</button>
-                                                        <button type="button" className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1">Delete</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-12 col-sm-6 col-lg-4">
-                                        <div className="latest-prods mb-5 card card-shadows seller-listing-products">
-                                            <div className="position-relative">
-                                                <AppImage src="/images/cat-prod-1.svg" className="card-img-top"/>
-                                                <span className="product-price button-bg-color-1 text-white regularfont boldfontsize">€230</span>
-                                            </div>
-                                            <div className="card-body p-4">
-                                                <div className="row g-2">
-                                                    <div className="col-12">
-                                                        <span className="article-number regularfont mini-text">Body Parts</span>
-                                                    </div>
-                                                    <div className="col-12">
-                                                        <span className="product-name regularfont">Mercedes sprinter achter as</span>
-                                                    </div>
-                                                    <div className="col-12 d-flex justify-content-between">
-                                                        <button type="button" className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2">Edit</button>
-                                                        <button type="button" className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1">Delete</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-12 col-sm-6 col-lg-4">
-                                        <div className="latest-prods mb-5 card card-shadows seller-listing-products">
-                                            <div className="position-relative">
-                                                <AppImage src="/images/cat-prod-1.svg" className="card-img-top"/>
-                                                <span className="product-price button-bg-color-1 text-white regularfont boldfontsize">€230</span>
-                                            </div>
-                                            <div className="card-body p-4">
-                                                <div className="row g-2">
-                                                    <div className="col-12">
-                                                        <span className="article-number regularfont mini-text">Body Parts</span>
-                                                    </div>
-                                                    <div className="col-12">
-                                                        <span className="product-name regularfont">Mercedes sprinter achter as</span>
-                                                    </div>
-                                                    <div className="col-12 d-flex justify-content-between">
-                                                        <button type="button" className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2">Edit</button>
-                                                        <button type="button" className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1">Delete</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-12 col-sm-6 col-lg-4">
-                                        <div className="latest-prods mb-5 card card-shadows seller-listing-products">
-                                            <div className="position-relative">
-                                                <AppImage src="/images/cat-prod-1.svg" className="card-img-top"/>
-                                                <span className="product-price button-bg-color-1 text-white regularfont boldfontsize">€230</span>
-                                            </div>
-                                            <div className="card-body p-4">
-                                                <div className="row g-2">
-                                                    <div className="col-12">
-                                                        <span className="article-number regularfont mini-text">Body Parts</span>
-                                                    </div>
-                                                    <div className="col-12">
-                                                        <span className="product-name regularfont">Mercedes sprinter achter as</span>
-                                                    </div>
-                                                    <div className="col-12 d-flex justify-content-between">
-                                                        <button type="button" className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2">Edit</button>
-                                                        <button type="button" className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1">Delete</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-12 col-sm-6 col-lg-4">
-                                        <div className="latest-prods mb-5 card card-shadows seller-listing-products">
-                                            <div className="position-relative">
-                                                <AppImage src="/images/cat-prod-1.svg" className="card-img-top"/>
-                                                <span className="product-price button-bg-color-1 text-white regularfont boldfontsize">€230</span>
-                                            </div>
-                                            <div className="card-body p-4">
-                                                <div className="row g-2">
-                                                    <div className="col-12">
-                                                        <span className="article-number regularfont mini-text">Body Parts</span>
-                                                    </div>
-                                                    <div className="col-12">
-                                                        <span className="product-name regularfont">Mercedes sprinter achter as</span>
-                                                    </div>
-                                                    <div className="col-12 d-flex justify-content-between">
-                                                        <button type="button" className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2">Edit</button>
-                                                        <button type="button" className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1">Delete</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    })}
+                                   
+                                   
                                 </div>
                             </div>
                             <div className="row mt-5">

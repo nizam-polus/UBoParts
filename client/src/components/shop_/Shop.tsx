@@ -8,7 +8,6 @@ import Footer from '../footer_/Footer';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import APIs from '~/services/apiService';
 import { BASE_URL } from 'configuration';
 import Link from 'next/dist/client/link';
@@ -18,7 +17,6 @@ import Login from '../account_/Login';
 function Shop() {
     
     const {user, saveUser, setCartCount} = UserContext();
-
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
