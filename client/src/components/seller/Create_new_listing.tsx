@@ -282,7 +282,7 @@ function Create_new_listing() {
             // console.log('productGalleryImages', productGalleryImages)
             if (productImage && productImage instanceof File) {
               // Make the API call to upload the featured image
-              APIs.uploadProfilePic({
+              APIs.uploadImage({
                 ref: "api::product.product",
                 refId: resId,
                 field: "product_image",
@@ -292,7 +292,7 @@ function Create_new_listing() {
                 const galleryImage = productGalleryImages[i];
                 // Use a closure to capture the current value of 'i'
                 (function (index) {
-                  APIs.uploadProfilePic({
+                  APIs.uploadImage({
                     ref: "api::product.product",
                     refId: resId,
                     field: "product_gallary_image",

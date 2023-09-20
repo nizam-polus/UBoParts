@@ -6,7 +6,7 @@ const BACKEND_URL = BASE_URL + '/api/'
 
 const getToken = () => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('usertoken')
+      return (localStorage.getItem('usertoken') || '')?.replace(/"/g, '');
     }
 }
 
@@ -98,10 +98,12 @@ const APIs = {
     
     createNewList: (data: any) => ds.post(BACKEND_URL + 'products', {...data}),
 
-    uploadProfilePic: (picData: any) => axios.post(BACKEND_URL + 'upload', picData, {headers: {
-        Authorization: `Bearer ${(localStorage.getItem('usertoken') || "").replace(/"/g, '')}`,
+    uploadImage: (picData: any) => axios.post(BACKEND_URL + 'upload', picData, {headers: {
+        Authorization: `Bearer ${getToken()}`,
         'content-type': 'multipart/form-data'
     }}),
+
+    getCustomerOrder: (username: string) => ds.get(BACKEND_URL + 'order-details?populate=*&filters[$and][][user_name][$eq]=' + username),
 
 }
 
