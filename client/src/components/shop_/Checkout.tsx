@@ -14,7 +14,7 @@ function Checkout() {
         last_name: '',
         company: '',
         email: '',
-        phone: '',
+        phone_number: '',
         streetaddress_housenumber: '',
         streetaddress_apartment: '',
         city: '',
@@ -30,7 +30,7 @@ function Checkout() {
         shippingaddress_city: formData.city,
         shippingaddress_state: formData.state,
         shippingaddress_postcode: formData.postcode,
-        shippingaddress_phonenumber: formData.phone
+        shippingaddress_phonenumber: formData.phone_number
     });
     const [incomplete, setIncomplete] = useState<any>(false);
     const [shippingIncomplete, setShippingIncomplete] = useState(false);
@@ -41,7 +41,7 @@ function Checkout() {
             last_name: user.last_name,
             company: user.company,
             email: user.email,
-            phone: user.phone_number,
+            phone_number: user.phone_number,
             streetaddress_housenumber: user.streetaddress_housenumber,
             streetaddress_apartment: user.streetaddress_apartment,
             city: user.city,
@@ -79,7 +79,7 @@ function Checkout() {
     const checkFormStatus = () => {
         let incomplete = true;
         incomplete = !(!!formData.first_name && 
-            !!formData.last_name && !!formData.email && !!formData.phone && 
+            !!formData.last_name && !!formData.email && !!formData.phone_number && 
             !!formData.streetaddress_housenumber && !!formData.city && !!formData.state && 
             !!formData.country && !!formData.postcode);
         setIncomplete(incomplete);
@@ -115,7 +115,7 @@ function Checkout() {
         if (reqElement) reqElement.scrollIntoView({behavior: 'smooth'});
         shippingData.shippingaddress_city = shippingData.shippingaddress_city || formData.city;
         shippingData.shippingaddress_country = shippingData.shippingaddress_country || formData.country;
-        shippingData.shippingaddress_phonenumber = shippingData.shippingaddress_phonenumber || formData.phone;
+        shippingData.shippingaddress_phonenumber = shippingData.shippingaddress_phonenumber || formData.phone_number;
         shippingData.shippingaddress_postcode = shippingData.shippingaddress_postcode || formData.postcode;
         shippingData.shippingaddress_state = shippingData.shippingaddress_state || formData.state;
         shippingData.shippingaddress_streataddress_apartment = shippingData.shippingaddress_streataddress_apartment || formData.streetaddress_apartment;
@@ -269,9 +269,9 @@ function Checkout() {
                                                     </td>
                                                     <td>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Phone Number</label>
-                                                        <input type="text" value={formData.phone}
-                                                            className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.phone ? 'required-field' : 'border-0' }`} 
-                                                            name="phone" placeholder="(XXX) XXX-XXXX"
+                                                        <input type="text" value={formData.phone_number}
+                                                            className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.phone_number ? 'required-field' : 'border-0' }`} 
+                                                            name="phone_number" placeholder="(XXX) XXX-XXXX"
                                                             onChange={(e) => handleFormChange(e)}
                                                         />
                                                     </td>
