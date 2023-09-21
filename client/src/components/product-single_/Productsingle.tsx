@@ -45,20 +45,49 @@ function Productsingle() {
         if (!user || user && !user.id) {
             setOpenLogin(true);
         } else {
+            let productQuantityInCart = 0
             let cartData = {
                 customerid: user.id,
                 productid: productData?.id,
                 quantity: quantity,
                 productprice: productData?.attributes?.price
             }
-            APIs.addToCart(cartData).then(response => {
-                toast.success(() => (
-                    <>
-                        Item successfully added to <Link href={"/cartpage"}>cart</Link>
-                    </>
-                ));
-                APIs.getCartData({customerid: user.id}).then(response => {
-                    setCartCount(response.data.rows.length);
+           
+            APIs.getCartData({ customerid: user.id }).then(response => {
+                let productCartItems = response.data.rows;
+                // Find the quantity of the product with the given product ID
+                for (const cartItem of productCartItems) {
+                    if (cartItem.product_id === productData?.id) {
+                        productQuantityInCart = cartItem.quantity + 1;
+                        break; 
+                    }
+                }
+                // Fetch the product stock count
+                APIs.getProduct(cartData.productid).then(response => {
+                    let productStock = response.data.data.attributes.stock_count;
+                    console.log(productStock)
+        
+                    // Check if the quantity exceeds the stock count
+                    if (productQuantityInCart <= productStock) {
+                        // Quantity is within stock limit, add to cart
+                        APIs.addToCart(cartData).then(response => {
+                            toast.success(() => (
+                                <>
+                                    Item successfully added to <Link href={"/cartpage"}>cart</Link>
+                                </>
+                            ));
+                            APIs.getCartData({ customerid: user.id }).then(response => {
+                                setCartCount(response.data.rows.length);
+                            });
+                        }).catch(err => {
+                            toast.error('Something went wrong while adding to cart!');
+                        });
+                    } else {
+                        // Quantity exceeds stock limit, display a toast message
+                        toast.error('Stock exceeded. Cannot add this item to the cart.');
+                    }
+                }).catch(err => {
+                    toast.error('Something went wrong while fetching product information.');
                 });
             }).catch(err => {
                 toast.error('Something went wrong!')
@@ -164,7 +193,9 @@ function Productsingle() {
                                                             type="text" name="quant[1]" 
                                                             style={{ maxHeight: '25px' }}
                                                             className="form-control input-number text-center rounded border-0 semifont pb-2 pt-2 mini-text-3 h-auto"
-                                                            value={quantity} min="1" max="10"/>
+                                                            value={quantity} min="1" max="10"
+                                                            // onChange={quantityInputOnChange}
+                                                            />
                                                         <span className="input-group-btn minus-icon semifont" 
                                                             onClick={() => setQuantity(quantity + 1)}
                                                         >

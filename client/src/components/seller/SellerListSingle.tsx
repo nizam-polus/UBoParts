@@ -91,39 +91,60 @@ const SellerListSingle = () => {
                                                 <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">Kila International AUODEMONTAGEBED</span></div>
                                             </div> */}
                                             <div className="row pt-1 pb-1 border-bottom-row">
-                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Category:</span></div>
+                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Category </span></div>
                                                 <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">{productData?.attributes?.category?.data?.attributes?.category_name}</span></div>
                                             </div>
                                             <div className="row pt-1 pb-1 border-bottom-row">
-                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Sub Category:</span></div>
+                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Sub Category </span></div>
                                                 <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">{productData?.attributes?.sub_category?.data?.attributes?.name}</span></div>
                                             </div>
                                             <div className="row pt-1 pb-1 border-bottom-row">
-                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Article #</span></div>
+                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Article  </span></div>
                                                 <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">{productData?.attributes?.article_number}</span></div>
                                             </div>
                                             <div className="row pt-1 pb-1 border-bottom-row">
-                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">warehouse</span></div>
-                                                <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">       
-                                                     <span>{productData?.attributes?.product_location_warehouse}</span>
+                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Warehouse</span></div>
+                                                <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">
+                                                    <span>{productData?.attributes?.product_location_warehouse}</span>
+                                                </span></div>
+                                            </div>
+                                            <div className="row pt-1 pb-1 border-bottom-row">
+                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Status</span></div>
+                                                <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">
+                                                    <span>{productData?.attributes?.product_status}</span>
                                                 </span></div>
                                             </div>
                                             <div className="row pt-1 pb-1 border-bottom-row">
                                                 <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Stock</span></div>
-                                                <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">       
-                                                     <span>{productData?.attributes?.stock_count}</span>
+                                                <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">
+                                                    <span>{productData?.attributes?.stock_count}</span>
                                                 </span></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="more-info p-3 rounded mt-3">
-                                <div className="row mt-3 p-3"  style={{display: "grid", placeContent: "center"}}>
-                                    <div>
-                                        <Qrgenerator qrValue={productData?.attributes?.part_no_barcode_no}/>
+                                    <div className="row mt-3 p-1" style={{ display: "grid", placeContent: "center" }}>
+                                        <div className="col-12 text-center">
+                                            <div className="qr-image">
+                                                <Qrgenerator qrValue={productData?.attributes?.part_no_barcode_no} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row mt-3" style={{ display: "grid", placeContent: "center" }}>
+                                        <div className="col-6 text-center">
+                                            <div className="print-button">
+                                                <button className="btn btn-primary">Print</button>
+                                            </div>
+                                        </div>
+                                        <div className="col-6 text-center">
+                                            <div className="download-button">
+                                                <button className="btn btn-success">Download</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                </div>
+
                             </div>
                         </div>
                     </section>
