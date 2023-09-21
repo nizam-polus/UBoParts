@@ -131,18 +131,12 @@ const SellerListSingle = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="row mt-3" style={{ display: "grid", placeContent: "center" }}>
-                                        <div className="col-6 text-center">
-                                            <div className="print-button">
-                                                <button className="btn btn-primary">Print</button>
-                                            </div>
-                                        </div>
-                                        <div className="col-6 text-center">
-                                            <div className="download-button">
-                                                <button className="btn btn-success">Download</button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <button type="button" 
+                                        className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2 p-2 my-2" style={{ width: "100%" }}
+                                    >Print</button>
+                                    <button type="button" 
+                                        className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2" style={{ width: "100%" }}
+                                    >Download</button>
                                 </div>
 
                             </div>

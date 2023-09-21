@@ -31,19 +31,24 @@ function SellerDashboard() {
                                                             <td className="border-0 text-center semifont pt-3 boldfontsize">{user?.company_name}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td className="border-0 text-center boldfontsize pt-1"><span className="me-2 regularfont mr-5">5 Open</span><span className="ms-2 mediumfont ">0 Completed</span></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td className="p-3 pg-lg-3 pb-xl-0 text-center border-0">
-                                                                <button type="button" className="custom-color-7 boldfont mini-text-3 rounded border-0 button-bg-color-1 pb-2 pt-2 px-3">View Front Shop</button>
+                                                            <td className="border-0 text-center boldfontsize pt-1">
+                                                                <span className="me-2 regularfont mr-5">0 Open</span>
+                                                                <span className="ms-2 mediumfont ">0 Completed</span>
                                                             </td>
                                                         </tr>
+                                                        {/* <tr>
+                                                            <td className="p-3 pg-lg-3 pb-xl-0 text-center border-0">
+                                                                <button type="button" 
+                                                                    className="custom-color-7 boldfont mini-text-3 rounded border-0 button-bg-color-1 pb-2 pt-2 px-3"
+                                                                >View Front Shop</button>
+                                                            </td>
+                                                        </tr> */}
                                                     </tbody>
                                                 </table>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col">
+                                    {/* <div className="col">
                                         <div className="month-wise-wrapper m-2 ms-3 me-3 p-4">
                                             <div className="row d-flex justify-content-between p-4">
                                                 <div className="col-auto"><span className="product-price custom-color-2 semifont boldfontsize">Sales Status</span></div>
@@ -84,10 +89,10 @@ function SellerDashboard() {
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
-                            <div className="coulmn-bg-color-1 rounded mt-4">
+                            {/* <div className="coulmn-bg-color-1 rounded mt-4">
                                 <div className="row d-flex justify-content-between p-3 pb-1 pt-3">
                                     <div className="col-auto"><span className="custom-color-2 boldfont body-sub-titles">Open Orders</span></div>
                                 </div>
@@ -153,7 +158,7 @@ function SellerDashboard() {
                                         </table>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </section>
