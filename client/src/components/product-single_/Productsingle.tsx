@@ -58,7 +58,7 @@ function Productsingle() {
                 // Find the quantity of the product with the given product ID
                 for (const cartItem of productCartItems) {
                     if (cartItem.product_id === productData?.id) {
-                        productQuantityInCart = cartItem.quantity + 1;
+                        productQuantityInCart = cartItem.quantity + quantity;
                         break; 
                     }
                 }
@@ -98,6 +98,10 @@ function Productsingle() {
     const loginModalClose = () => {
         setOpenLogin(false);
     };
+
+    const handleQuantityChange = (newValue : any) =>{
+       setQuantity(newValue)
+    }
     
 
     return (
@@ -194,7 +198,10 @@ function Productsingle() {
                                                             style={{ maxHeight: '25px' }}
                                                             className="form-control input-number text-center rounded border-0 semifont pb-2 pt-2 mini-text-3 h-auto"
                                                             value={quantity} min="1" max="10"
-                                                            // onChange={quantityInputOnChange}
+                                                            onChange={(e) => {
+                                                                const newValue = e.target.value;
+                                                                handleQuantityChange(newValue);
+                                                            }}
                                                             />
                                                         <span className="input-group-btn minus-icon semifont" 
                                                             onClick={() => setQuantity(quantity + 1)}
