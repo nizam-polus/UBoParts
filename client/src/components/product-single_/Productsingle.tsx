@@ -25,6 +25,7 @@ function Productsingle() {
     const [productGallery, setProductGallery] = useState([])
     const [quantity, setQuantity] = useState(1);
     const [openLogin, setOpenLogin] = useState(false);
+    const [addToCartCompleted, setAddToCartCompleted] = useState<any>(true)
 
     useEffect(() => {
         APIs.getProduct(id).then(response => {
@@ -42,26 +43,60 @@ function Productsingle() {
     }
 
     const handleAddToCart = () => {
+        setAddToCartCompleted(false)
         if (!user || user && !user.id) {
             setOpenLogin(true);
         } else {
+            let productQuantityInCart = 0
             let cartData = {
                 customerid: user.id,
                 productid: productData?.id,
                 quantity: quantity,
                 productprice: productData?.attributes?.price
             }
-            APIs.addToCart(cartData).then(response => {
-                toast.success(() => (
-                    <>
-                        Item successfully added to <Link href={"/cartpage"}>cart</Link>
-                    </>
-                ));
-                APIs.getCartData({customerid: user.id}).then(response => {
-                    setCartCount(response.data.rows.length);
+           
+            APIs.getCartData({ customerid: user.id }).then(response => {
+                let productCartItems = response.data.rows;
+                // Find the quantity of the product with the given product ID
+                for (const cartItem of productCartItems) {
+                    if (cartItem.product_id === productData?.id) {
+                        productQuantityInCart = cartItem.quantity + quantity;
+                        break; 
+                    }
+                }
+                // Fetch the product stock count
+                APIs.getProduct(cartData.productid).then(response => {
+                    let productStock = response.data.data.attributes.stock_count;
+                    console.log(productStock)
+        
+                    // Check if the quantity exceeds the stock count
+                    if ((productQuantityInCart <= productStock )&& (quantity <= productStock)) {
+                        // Quantity is within stock limit, add to cart
+                        APIs.addToCart(cartData).then(response => {
+                            toast.success(() => (
+                                <>
+                                    Item successfully added to <Link href={"/cartpage"}>cart</Link>
+                                </>
+                            ));
+                            APIs.getCartData({ customerid: user.id }).then(response => {
+                                setCartCount(response.data.rows.length);
+                            }).then(() => setAddToCartCompleted(true));
+                        }).catch(err => {
+                            toast.error('Something went wrong while adding to cart!');
+                            setAddToCartCompleted(true)
+                        });
+                    } else {
+                        // Quantity exceeds stock limit, display a toast message
+                        toast.error('Stock exceeded. Cannot add this item to the cart.');
+                        setAddToCartCompleted(true)
+                    }
+                }).catch(err => {
+                    toast.error('Something went wrong while fetching product information.');
+                    setAddToCartCompleted(true)
                 });
             }).catch(err => {
                 toast.error('Something went wrong!')
+                setAddToCartCompleted(true)
             })
         }
     }
@@ -69,6 +104,10 @@ function Productsingle() {
     const loginModalClose = () => {
         setOpenLogin(false);
     };
+
+    const handleQuantityChange = (newValue : any) =>{
+       setQuantity(newValue)
+    }
     
 
     return (
@@ -156,7 +195,7 @@ function Productsingle() {
                                                 <div className="col-4 col-md-4 col-lg-12 col-xl-5">
                                                     <div className="input-group quanitity-box mt-3">
                                                         <span className="input-group-btn plus-icon semifont"
-                                                            onClick={() => quantity !== 1 && setQuantity(quantity - 1)}
+                                                            onClick={() => quantity !== 1 && setQuantity(Number(quantity) - 1)}
                                                         >
                                                             <i className="fa fa-minus mini-text-3" aria-hidden="true"></i>
                                                         </span>
@@ -164,19 +203,33 @@ function Productsingle() {
                                                             type="text" name="quant[1]" 
                                                             style={{ maxHeight: '25px' }}
                                                             className="form-control input-number text-center rounded border-0 semifont pb-2 pt-2 mini-text-3 h-auto"
-                                                            value={quantity} min="1" max="10"/>
+                                                            value={quantity} min="1" max="10"
+                                                            onChange={(e) => {
+                                                                const newValue = e.target.value;
+                                                                if(newValue === "0"){
+                                                                    e.target.value = '';
+                                                                    toast.error('Not can type 0');
+                                                                }
+                                                                else{
+                                                                    handleQuantityChange(newValue);
+                                                                }                                                              
+                                                            }}
+                                                            />
                                                         <span className="input-group-btn minus-icon semifont" 
-                                                            onClick={() => setQuantity(quantity + 1)}
+                                                            onClick={() => setQuantity(Number(quantity) + 1)}
                                                         >
                                                             <i className="fa fa-plus mini-text-3" aria-hidden="true"></i>
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div className="col-8 col-md-8 col-lg-12 col-xl-7">
-                                                    <a className="add-to-cart-1 button-bg-color-1 custom-color-7 rounded  pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
+                                                   {addToCartCompleted ? <a className="add-to-cart-1 button-bg-color-1 custom-color-7 rounded  pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
                                                        style={{cursor: 'pointer'}}
                                                        onClick={handleAddToCart}
-                                                    >Add to Cart</a>
+                                                    >Add to Cart</a> :
+                                                    <a className="add-to-cart-1 button-bg-color-1 custom-color-7 rounded  pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
+                                                    style={{cursor: 'pointer'}}
+                                                    >Adding to Cart</a>} 
                                                 </div>
                                             </div>
                                         </div>

@@ -5,6 +5,7 @@ import { UserContext } from '../account_/UserContext';
 import APIs from '~/services/apiService';
 import { BASE_URL } from 'configuration';
 import Link from 'next/dist/client/link';
+import { useRouter } from 'next/router';
 
 function Profile() {
 
@@ -15,6 +16,7 @@ function Profile() {
     }
 
     const {user, saveUser} = UserContext();
+    const router = useRouter();
 
     const [firstname, setFirstname] = useState<string>('');
     const [lastname, setLastname] = useState<string>('');
@@ -31,22 +33,27 @@ function Profile() {
     const [confrmpwd, setConfrmpwd] = useState('');
     const [incomplete, setIncomplete] = useState<any>(false);
     const [profilePic, setProfilePic] = useState<any>(null);
+    const [profilePicURL, setProfilePicURL] = useState<string>('');
 
     useEffect(() => {
-        let userId = !user.id ? userdetails.id : user.id;
-        APIs.getSpecificUser(userId).then((response: any) => {
-            let user = response.data;
-            setFirstname(user.first_name || '');
-            setLastname(user.last_name || '');
-            setEmail(user.email || '');
-            setPhone(user.phone_number || '');
-            setAddress_1(user.streetaddress_housenumber || '');
-            setAddress_2(user.streetaddress_apartment || '');
-            setCity(user.city || '');
-            setState(user.state || '');
-            setCountry(user.country || '');
-            setPostcode(user.postcode || '');
-        })
+        let userId = !user.id ? userdetails?.id : user.id;
+        if (!userId) {
+            router.push('/homepage')
+        } else {
+            APIs.getSpecificUser(userId).then((response: any) => {
+                let user = response.data;
+                setFirstname(user.first_name || '');
+                setLastname(user.last_name || '');
+                setEmail(user.email || '');
+                setPhone(user.phone_number || '');
+                setAddress_1(user.streetaddress_housenumber || '');
+                setAddress_2(user.streetaddress_apartment || '');
+                setCity(user.city || '');
+                setState(user.state || '');
+                setCountry(user.country || '');
+                setPostcode(user.postcode || '');
+            })
+        }
     }, [])
 
     const handleProfileSubmit = (event: any) => {
@@ -83,20 +90,29 @@ function Profile() {
     };
 
     const handlePicUpload = (event: any) => {
-        console.log(event.target.files[0]);
-        setProfilePic(event.target.files[0]);
-        const formData = new FormData();
-        formData.append('files', profilePic, profilePic?.name)
-        console.log(formData, profilePic)
+        const file = event.target.files[0];
+        // Update the state with the selected file
+        setProfilePic(file);
+      
+        // Create the picData object with the selected file
         let picData = {
-            ref: 'plugin::users-permissions.user',
-            refId: user.id,
-            files: formData
+          ref: "plugin::users-permissions.user",
+          refId: user.id,
+          field: "profile_image",
+          files: file, // Use the selected file directly
+        };
+      
+        if (file) {
+          // Make the API call with the selected file
+          APIs.uploadImage(picData)
+            .then((response) => {
+              console.log("profileuploadresponse", response);
+              let resData = response.data[0];
+              setProfilePicURL(resData.url);
+            })
+            .catch((err) => console.log(err));
         }
-        APIs.uploadProfilePic(picData).then(response => {
-            console.log(response)
-        })
-    }
+      };
 
     return (
         <> 
@@ -111,13 +127,13 @@ function Profile() {
                         <div className="row mt-3 ">
                             <div className="col-12 col-md-12 col-xl-3">
                                 <div className="profile-image-wrapper coulmn-bg-color-1 rounded-2 p-5 pb-2 text-center">
-                                    <AppImage src={BASE_URL + '' || 'images/img/dummy-profile.png'} className="profile-pic"/>
+                                    <AppImage src={BASE_URL + (profilePicURL || 'images/img/dummy-profile.png')} className="profile-pic" width={"70px"} height={"70px"} style={{borderRadius: "50px"}}/>
                                     <div>
-                                    <label  htmlFor="formId" className='position-relative position-overlap-edit-icon'>
-                                        <input name="" type="file" id="formId" hidden onChange={(e) => handlePicUpload(e)}/>
-                                        <AppImage className="icon-size1" src={'images/img/Vector.png'}/>
-                                    </label>
-                                </div>
+                                        <label  htmlFor="formId" className='position-relative position-overlap-edit-icon'>
+                                            <input type="file" id="formId" hidden onChange={handlePicUpload}/>
+                                            <AppImage className="icon-size1" src={'images/img/Vector.png'}/>
+                                        </label>
+                                    </div>
                                     <p className="mt-0 mb-1 custom-color-1 boldfont products-name">{(user.first_name || '') + ' ' + (user.last_name || '')}</p>
                                     <p className="mt-1 mb-2 custom-color-1 regularfont products-name">{user.username}</p>
                                 </div>

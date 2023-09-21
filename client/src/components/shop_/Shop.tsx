@@ -8,7 +8,6 @@ import Footer from '../footer_/Footer';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import APIs from '~/services/apiService';
 import { BASE_URL } from 'configuration';
 import Link from 'next/dist/client/link';
@@ -18,7 +17,6 @@ import Login from '../account_/Login';
 function Shop() {
     
     const {user, saveUser, setCartCount} = UserContext();
-
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -43,6 +41,8 @@ function Shop() {
     const [filterCategory, setFilterCategory] = useState<any>([]);
     const [filterSubcategory, setFilterSubcategory] = useState<any>([]);
     const [openLogin, setOpenLogin] = useState(false);
+    const [addToCartCompleted, setAddToCartCompleted] = useState<boolean>(true)
+    const [itemId, setItemId] = useState<any>('')
 
     const router = useRouter();
 
@@ -265,6 +265,8 @@ function Shop() {
     }
 
     const handleAddToCart = (productData: any) => {
+        setAddToCartCompleted(false)
+        setItemId(productData?.id)
         if (!user || user && !user.id) {
             setOpenLogin(true);
         } else {
@@ -292,7 +294,7 @@ function Shop() {
                     console.log(productStock)
         
                     // Check if the quantity exceeds the stock count
-                    if (productQuantityInCart <= productStock) {
+                    if (productQuantityInCart <= productStock && productStock !== 0) {
                         // Quantity is within stock limit, add to cart
                         APIs.addToCart(cartData).then(response => {
                             toast.success(() => (
@@ -302,16 +304,19 @@ function Shop() {
                             ));
                             APIs.getCartData({ customerid: user.id }).then(response => {
                                 setCartCount(response.data.rows.length);
-                            });
+                            }).then(()=> setAddToCartCompleted(true));
                         }).catch(err => {
                             toast.error('Something went wrong while adding to cart!');
+                            setAddToCartCompleted(true)
                         });
                     } else {
+                        setAddToCartCompleted(true)
                         // Quantity exceeds stock limit, display a toast message
                         toast.error('Stock exceeded. Cannot add this item to the cart.');
                     }
                 }).catch(err => {
                     toast.error('Something went wrong while fetching product information.');
+                    setAddToCartCompleted(true)
                 });
             })
     
@@ -548,10 +553,20 @@ function Shop() {
                                                                 </div> */}
                                                                     <div className="col-12 d-flex justify-content-between">
                                                                         <span className="product-price">€{product?.attributes?.price}</span>
+                                                                        {addToCartCompleted ?  <AppImage src="images/cart-svg.svg" 
+                                                                            className='pointer add_to_cart'
+                                                                            onClick={() => handleAddToCart(product)}
+                                                                        />
+                                                                          : 
+                                                                        product.id == itemId
+                                                                         ?
+                                                                         "Adding.." 
+                                                                        : 
                                                                         <AppImage src="images/cart-svg.svg" 
                                                                             className='pointer add_to_cart'
                                                                             onClick={() => handleAddToCart(product)}
                                                                         />
+                                                                        } 
                                                                         {/* <div className="input-group quanitity-box">
                                                                             <span className="input-group-btn plus-icon semifont">
                                                                                 <i className="fa fa-plus mini-text-0 mini-text-0-color" aria-hidden="true"></i>
