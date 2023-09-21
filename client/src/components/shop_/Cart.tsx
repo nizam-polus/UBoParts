@@ -62,20 +62,6 @@ function Cart() {
             console.log(err);
         })
     }
-
-    function customDebounce(func: any, delay: any) {
-        let timeoutId: any;
-        
-        return function (...args: any) {
-            const context = this;
-            
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => {
-                func.apply(context, args);
-            }, delay);
-        };
-    }
-
    
     const handleQuantityChange = (product: any, valueChange: string, index: number) => {
         let newQuantity = product.quantity;
@@ -262,20 +248,26 @@ function Cart() {
                                                             <span className="input-group-btn plus-icon regularfont pointer" onClick={() => handleQuantityChange(product, 'dec', index)}>
                                                                 <i className="fa fa-minus mini-text-0 mini-text-0-color " aria-hidden="true"></i>
                                                             </span>
-
-                                                            <input type="text"
-                                                                name="quant[1]"
-                                                                style={{ maxHeight: '25px' }}
-                                                                className="form-control input-number text-center rounded-pill border-0 regularfont px-2 pb-1 pt-1 mini-text-3 h-auto"
-                                                                value={product.quantity} 
-                                                                min="1" max="10"
-                                                                onChange={
-                                                                     (e) =>{
-                                                                       let newQuantity = e.target.value
-                                                                        quantityInputOnChange(product, newQuantity, index)
+                                                                 <input
+                                                                   type="text"
+                                                                   name="quant[1]"
+                                                                   style={{ maxHeight: '25px' }}
+                                                                   className="form-control input-number text-center rounded-pill border-0 regularfont px-2 pb-1 pt-1 mini-text-3 h-auto"
+                                                                   value={product.quantity}
+                                                                   min="1"
+                                                                   max="10"
+                                                                   onChange={(e) => {
+                                                                     const newValue = e.target.value;
+                                                                     if (newValue === '0') {
+                                                                       // Treat '0' as an empty input
+                                                                       e.target.value = '';
+                                                                       alert("Quantity cannot be zero(0)")
                                                                      }
-                                                                   }
-                                                            />
+                                                                     else{
+                                                                         quantityInputOnChange(product, newValue, index);
+                                                                     }
+                                                                   }}
+                                                                 />
 
                                                             <span className="input-group-btn minus-icon regularfont pointer" onClick={() => handleQuantityChange(product, 'inc', index)}>
                                                                 <i className="fa fa-plus mini-text-0 mini-text-0-color " aria-hidden="true"></i>
