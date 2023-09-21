@@ -47,7 +47,7 @@ function SellerListings() {
                                     <div className="table-responsive">
                                         <table className="table quote-table seller-table">
                                             <thead>
-                                                <th className="p-2 pb-3 ps-4 pt-4 custom-color-2 mediumfont subtitles">
+                                                <th className="p-2 pb-3 px-4 pt-4 custom-color-2 mediumfont subtitles border-top-0">
                                                     <span>Listings</span>
                                                     <span className="lightfont body-sub-titles">(154)</span>
                                                     <button type="button" className="minor-button custom-color-7 boldfont mini-text-3 rounded border-0 button-bg-color-1" onClick={() => router.push('/seller/create_new_listing')}>
@@ -62,7 +62,7 @@ function SellerListings() {
                                                 <div className="latest-prods mb-5 card card-shadows seller-listing-products">
                                                     <div className="position-relative">
                                                         <AppImage
-                                                            src={BASE_URL + item?.attributes?.product_image?.data?.attributes?.formats?.medium?.url}
+                                                            src={BASE_URL + item?.attributes?.product_image?.data?.attributes?.url}
                                                             className="card-img-top img-prod-height pointer"
                                                             style={{ height: '20rem', objectFit: 'cover' }}
                                                             onClick={() => handleProductClick(item)}
