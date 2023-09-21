@@ -44,9 +44,9 @@ function PurchaseHistory() {
                                                     <th className="mediumfont custom-color-2 products-name border-0 fw-normal pl-4 ps-3 pb-2 pt-2">Orders</th>
                                                     <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Product Name</th>
                                                     <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Quantity</th>
-                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Date</th>
+                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Order Date</th>
                                                     <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Status</th>
-                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal pr-4 ps-3 pb-2 pt-2">Total</th>
+                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal pr-4 ps-3 pb-2 pt-2">Order Total</th>
                                                     {/* <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Action</th> */}
                                                 </tr>
                                             </thead>
