@@ -26,12 +26,15 @@ function Productsingle() {
     const [quantity, setQuantity] = useState(1);
     const [openLogin, setOpenLogin] = useState(false);
     const [addToCartCompleted, setAddToCartCompleted] = useState<any>(true)
+    const [stockCount , setStockCount] = useState(1)
 
     useEffect(() => {
         APIs.getProduct(id).then(response => {
             let product = response.data.data;
             let productGallery = response.data.data.attributes?.product_gallary_image?.data;
             let productImage = response.data.data.attributes?.product_gallary_image?.data[0]?.attributes?.url;
+            let productStock = response.data.data.attributes?.stock_count
+            setStockCount(productStock)
             setProductData(product);
             setProductGallery(productGallery);
             setProductImage(productImage);
@@ -165,7 +168,10 @@ function Productsingle() {
                                 <div className="more-info p-3 rounded">
                                     <div className="row d-flex justify-content-between">
                                         <div className="col-auto"><span className="product-price custom-color-3 regularfont">€{quantity * productData?.attributes?.price}</span></div>
-                                        <div className="col-auto"><span className="in-stock custom-color-6 rounded-pill px-3 pb-1 pt-1 d-flex mini-text-2 semifont">In Stock</span></div>
+                                        {stockCount > 0 ? 
+                                         <div className="col-auto"><span className="in-stock custom-color-6 rounded-pill px-3 pb-1 pt-1 d-flex mini-text-2 semifont">In Stock</span></div>
+                                        :
+                                        <div className="col-auto"><span className="in-stock custom-color-6 rounded-pill px-3 pb-1 pt-1 d-flex mini-text-2 semifont">Out of Stock</span></div> }
                                     </div>
                                     <div className="row mt-3">
                                         <div className="col-12">
@@ -208,7 +214,7 @@ function Productsingle() {
                                                                 const newValue = e.target.value;
                                                                 if(newValue === "0"){
                                                                     e.target.value = '';
-                                                                    toast.error('Not can type 0');
+                                                                    toast.error("Quantity cannot be zero(0)");
                                                                 }
                                                                 else{
                                                                     handleQuantityChange(newValue);
@@ -223,13 +229,31 @@ function Productsingle() {
                                                     </div>
                                                 </div>
                                                 <div className="col-8 col-md-8 col-lg-12 col-xl-7">
-                                                   {addToCartCompleted ? <a className="add-to-cart-1 button-bg-color-1 custom-color-7 rounded  pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
-                                                       style={{cursor: 'pointer'}}
-                                                       onClick={handleAddToCart}
-                                                    >Add to Cart</a> :
-                                                    <a className="add-to-cart-1 button-bg-color-1 custom-color-7 rounded  pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
-                                                    style={{cursor: 'pointer'}}
-                                                    >Adding to Cart</a>} 
+                                                {
+  stockCount === 0 ? (
+    <a
+      className="add-to-cart-1 button-bg-color-05 custom-color-7 rounded pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
+      style={{ cursor: 'not-allowed' }}
+    >
+      Out of Stock
+    </a>
+  ) : addToCartCompleted ? (
+    <a
+      className="add-to-cart-1 button-bg-color-1 custom-color-7 rounded pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
+      style={{ cursor: 'pointer' }}
+      onClick={handleAddToCart}
+    >
+      Add to Cart
+    </a>
+  ) : (
+    <a
+      className="add-to-cart-1 button-bg-color-05 custom-color-7 rounded pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
+      style={{ cursor: 'not-allowed' }}
+    >
+      Adding to Cart
+    </a>
+  )
+}
                                                 </div>
                                             </div>
                                         </div>
