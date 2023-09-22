@@ -43,6 +43,7 @@ function Shop() {
     const [openLogin, setOpenLogin] = useState(false);
     const [addToCartCompleted, setAddToCartCompleted] = useState<boolean>(true)
     const [itemId, setItemId] = useState<any>('')
+    const [stockCount, setStockCount] = useState<any>(0)
 
     const router = useRouter();
 
@@ -522,6 +523,7 @@ function Shop() {
                                     <div className="col">
                                         <div className="row g-4">
                                             {searchedProducts.map((product: any, index: any) => {
+                                                console.log(product, index)
                                                 return (
                                                     <div className="col-12 col-sm-6 col-lg-4  mb-4" key={index}>
                                                         <div className="latest-prods card card-shadows">
@@ -531,6 +533,14 @@ function Shop() {
                                                                 style={{height: '20rem', objectFit: 'cover'}} 
                                                                 onClick={() => handleProductClick(product)}    
                                                             />
+                                                            {
+                                                            product.attributes.stock_count == 0 &&  
+                                                                <div style={{position: "absolute", display: "grid", placeContent:"center", width:"100%", height: "80%",zIndex: 33}}>
+                                                                   Out of Stock
+                                                                </div>
+                                                      
+                                                             }
+                                                           
                                                             <div className="card-body">
                                                                 <div className="row g-1">
                                                                     <div className="col-12">
@@ -553,19 +563,23 @@ function Shop() {
                                                                 </div> */}
                                                                     <div className="col-12 d-flex justify-content-between">
                                                                         <span className="product-price">€{product?.attributes?.price}</span>
-                                                                        {addToCartCompleted ?  <AppImage src="images/cart-svg.svg" 
-                                                                            className='pointer add_to_cart'
+                                                                        { product.attributes.stock_count === 0 ? (
+                                                                          <p className="text-danger small">Out of Stock</p>
+                                                                        ) : addToCartCompleted ? (
+                                                                          <AppImage
+                                                                            src="images/cart-svg.svg"
+                                                                            className="pointer add_to_cart"
                                                                             onClick={() => handleAddToCart(product)}
-                                                                        />
-                                                                          : 
-                                                                        product.id == itemId
-                                                                         ?
-                                                                         "Adding.." 
-                                                                        : 
-                                                                        <AppImage src="images/cart-svg.svg" 
-                                                                            className='pointer add_to_cart'
-                                                                            onClick={() => handleAddToCart(product)}
-                                                                        />
+                                                                          />
+                                                                        ) : product.id === itemId ? (
+                                                                          "Adding.."
+                                                                        ) : (
+                                                                          <AppImage
+                                                                            src="images/cart-svg.svg"
+                                                                            className="pointer add_to_cart"
+                                                                                                                                                  onClick={() => handleAddToCart(product)}
+                                                                          />
+                                                                        )
                                                                         } 
                                                                         {/* <div className="input-group quanitity-box">
                                                                             <span className="input-group-btn plus-icon semifont">
