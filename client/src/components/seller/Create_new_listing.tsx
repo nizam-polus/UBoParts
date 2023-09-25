@@ -39,6 +39,7 @@ function Create_new_listing() {
     const [selectedSubcategoryId, setSelectedSubcategoryId] = useState("");
     const [carDetailId, setCarDetailId] = useState()
     const [selectedItem, setSelectedItem] = useState(null);
+    const [showInvaidLicense, setShowInvaidLicense] = useState(false);
 
     const router = useRouter()
 
@@ -80,14 +81,30 @@ function Create_new_listing() {
             const getData = setTimeout(() => {
                 APIs.getCarDetailsUsingLicence(licenseplate).then((response: any) => {
                     if (response.data.licenseplate) {
-                       
+                        // get make
+                        let makesobjarray = makesArray;
+                        let makesarray = makesobjarray.map((item: any) => item.make) 
+                        !makesarray.includes(response.data.make) && makesobjarray.push({make: response.data.make})
+                        setMakesArray(makesobjarray);
                         setSelectedMake(response.data.make);
+                        // get model
                         getModel(response.data.make);
+                        let modelsobjarray = modelArray;
+                        let modelsarray = modelsobjarray.map((item: any) => item.model);
+                        !modelsarray.includes(response.data.model) && modelsobjarray.push({model: response.data.model});
+                        setModelArray(modelsobjarray)
                         setSelectedModel(response.data.model);
+                        //get year
                         getYear(response.data.make, response.data.model);
+                        let yearsobjarray = yearArray;
+                        let yearsarray = yearsobjarray.map((item: any) => item.year);
+                        !yearsarray.includes(response.data.year) && yearsobjarray.push({year: response.data.year});
+                        setYearArray(yearsobjarray);
                         setSelectedYear(response.data.year);
-                    }
-                    else {
+
+                        setShowInvaidLicense(false);
+                    } else {
+                        setShowInvaidLicense(true);
                         setSelectedMake('');
                         setSelectedModel('');
                         setSelectedYear('');
@@ -367,6 +384,11 @@ function Create_new_listing() {
                                                     <td className='px-5 pt-4 pb-4'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Plate Number <span className="required">*</span></label>
                                                         <input type="text" onChange={handleLicenseplateChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" name="last-name" placeholder="Enter Plate Number to Auto Fill form" required/>
+                                                        {showInvaidLicense &&
+                                                    <div className="row mt-2 ml-2" >
+                                                        <span className="advanced_search placeholderfontsize regularfont">No Record Found Against this Plate Number!</span>
+                                                    </div>
+                                                }
                                                     </td>
                                                 </tr>
                                                 <tr className="double">
