@@ -523,21 +523,19 @@ function Shop() {
                                     <div className="col">
                                         <div className="row g-4">
                                             {searchedProducts.map((product: any, index: any) => {
-                                                console.log(product, index)
                                                 return (
                                                     <div className="col-12 col-sm-6 col-lg-4  mb-4" key={index}>
                                                         <div className="latest-prods card card-shadows">
-                                                           {}
-                                                            <AppImage 
+                                                        <AppImage 
                                                                 src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
-                                                                className="card-img-top img-prod-height pointer" 
-                                                                style={{height: '20rem', objectFit: 'cover', opacity:`${product.attributes.stock_count == 0 ? "0.2" : "1"}`}} 
+                                                                className="card-img-top img-prod-height pointer "
+                                                                style={{height: '20rem', objectFit: 'cover', filter:`${product.attributes.stock_count == 0 ? "blur(3px)" : "1"}`}} 
                                                                 onClick={() => handleProductClick(product)}    
                                                             />
                                                             {
                                                             product.attributes.stock_count == 0 &&  
-                                                                <div style={{position: "absolute", display: "grid", placeContent:"center", width:"100%", height: "70%",zIndex: 33, }}>
-                                                                   <p style={{color: "red"}}>Out of Stock</p>
+                                                                <div  onClick={() => handleProductClick(product)} className='out-of-stock d-flex position-absolute justify-content-center align-items-center' >
+                                                                   <p className='text-out-of-stock mb-0'>OUT OF STOCK</p>
                                                                 </div>
                                                       
                                                              }
@@ -565,7 +563,11 @@ function Shop() {
                                                                     <div className="col-12 d-flex justify-content-between">
                                                                         <span className="product-price">€{product?.attributes?.price}</span>
                                                                         { product.attributes.stock_count === 0 ? (
-                                                                          <p className="text-danger small">Out of Stock</p>
+                                                                          <AppImage
+                                                                          src="images/cart-svg.svg"
+                                                                          className="pointer add_to_cart"
+                                                                           style={{opacity: "0.5", cursor: "not-allowed"}}  
+                                                                        />
                                                                         ) : addToCartCompleted ? (
                                                                           <AppImage
                                                                             src="images/cart-svg.svg"
@@ -577,8 +579,7 @@ function Shop() {
                                                                         ) : (
                                                                           <AppImage
                                                                             src="images/cart-svg.svg"
-                                                                            className="pointer add_to_cart"
-                                                                                                                                                  onClick={() => handleAddToCart(product)}
+                                                                            className="pointer add_to_cart"                      
                                                                           />
                                                                         )
                                                                         } 
