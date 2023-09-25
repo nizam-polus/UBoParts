@@ -38,6 +38,7 @@ function Create_new_listing() {
     const [uid, setUid] = useState("")
     const [selectedSubcategoryId, setSelectedSubcategoryId] = useState("");
     const [carDetailId, setCarDetailId] = useState()
+    const [selectedItem, setSelectedItem] = useState(null);
 
     const router = useRouter()
 
@@ -196,10 +197,12 @@ function Create_new_listing() {
     const handleListChange = (event: any) => {
         setInputValue(event.target.value);
         setListName(event.target.value)
+        setSelectedItem(null)
     };
 
     const handlePartSelect = (partName: any) => {
      // Update the listName state with the selected part
+     setSelectedItem(partName);
      setListName(partName);
      setInputValue(partName);
       };
@@ -216,9 +219,9 @@ function Create_new_listing() {
         setListLocation(event.target.value)
     }
 
-    const handleArticleChange = (event: any) => {
-        setListArticle(event.target.value)
-    }
+    // const handleArticleChange = (event: any) => {
+    //     setListArticle(event.target.value)
+    // }
 
     const handleBarcodeChange = (event: any) => {
         setListBarcode(event.target.value)
@@ -268,7 +271,7 @@ function Create_new_listing() {
               "price": listPrice,
               "stock_count": [listQuantity],
               "product_location_warehouse": listLocation,
-              "article_number": listArticle,
+              "article_number": listBarcode,
               "part_no_barcode_no": listBarcode,
               "description": listDescription,
               "product_status": "Active",
@@ -306,13 +309,12 @@ function Create_new_listing() {
                     });
                 })(i);
               }
-              router.push('/seller/listings')
 
             } else {
               // Handle the case where productImage is not defined
               console.error("No product image selected.");
             }
-          })
+          }).then(() => router.push('/seller/listings'))
           .catch((error) => {
             console.log(error);
             setError(error);
@@ -340,15 +342,25 @@ function Create_new_listing() {
                                                     <label className="custom-color-2 regularfont products-name pb-2">List Name <span className="required">*</span></label>
                                                     <input type="text" value={inputValue} onChange={handleListChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" name="first-name" placeholder="24 Inch Tyre for Mustang" required/>
                                                     
-                                                    <ul>
-                                                        <div className="options-container" >
-                                                        {parts
-                                                        .filter((part:any) => part.attributes.parts.toLowerCase().includes(inputValue.toLowerCase()) && inputValue.length >= 3)
-                                                        .map((part:any) => (
-                                                            <li className='options' style={{ border: "1px solid black", listStyle: "none", padding: "0 10px"}} key={part.id} onClick={() => handlePartSelect(part.attributes.parts)}>{part.attributes.parts}</li>
-
-                                                        ))}
+                                                    <ul style={{display: "contents"}}>
+                                                    {selectedItem ? (
+                                                        ""
+                                                      ) : (
+                                                        <div className="options-container" style={{ backgroundColor: "#ebebeb" , boxShadow:"1px 0px 7px 0px grey"}}>
+                                                          {parts
+                                                            .filter((part:any) => part.attributes.parts.toLowerCase().includes(inputValue.toLowerCase()) && inputValue.length >= 3)
+                                                            .map((part:any) => (
+                                                              <li
+                                                                className='options'
+                                                                style={{ border: "0px solid grey", listStyle: "none", padding: "4px 10px", fontSize: "14px" }}
+                                                                key={part.id}
+                                                               onClick={() => handlePartSelect(part.attributes.parts)}
+                                                              >
+                                                                {part.attributes.parts}
+                                                              </li>
+                                                            ))}
                                                         </div>
+                                                      )}
                                                      
                                                     </ul>
                                                   </td>
@@ -442,23 +454,23 @@ function Create_new_listing() {
                                                         <input type="text" onChange={handleLocationChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Location of Part" />
                                                     </td>
                                                 </tr>
-                                                <tr className="single">
+                                                {/* <tr className="single">
                                                     <td colSpan={2} className='px-5 pb-2 border-0'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Article No</label>
                                                         <input type="text" onChange={handleArticleChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Article No" />
                                                     </td>
-                                                </tr>
+                                                </tr> */}
                                                 <tr className="single">
                                                     <td colSpan={2} className='px-5 pb-4 pt-2 border-0'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Part No/Barcode No</label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Article No</label>
                                                         <input type="text" onChange={handleBarcodeChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Listing Part No/Barcode No" />
                                                         {listBarcode && <Qrgenerator qrValue={listBarcode}/>}
                                                     </td>
                                                 </tr>
                                                 <tr className="double">
                                                     <td className='px-5 pt-4 pb-2' >
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Featured Image</label>
-                                                        <input className="form-control pt-2 pb-1 choosefile" type="file" id="featuredImages"  onChange={handleFeaturedImageChange}/>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Featured Image <span className="required">*</span></label>
+                                                        <input className="form-control pt-2 pb-1 choosefile" type="file" id="featuredImages"  onChange={handleFeaturedImageChange} required/>
                                                         
                                                         {productImage && (
                                                     <div className="selected-featured-image" style={{padding: "10px 0"}}>
@@ -471,8 +483,8 @@ function Create_new_listing() {
 
                                                     </td>
                                                     <td className='px-5 pt-4 pb-2'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Image(s)</label>
-                                                        <input className="form-control pt-2 pb-1 choosefile" type="file" id="galleryImages"  onChange={handleGalleryImagesChange} multiple/>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Image(s) <span className="required">*</span></label>
+                                                        <input className="form-control pt-2 pb-1 choosefile" type="file" id="galleryImages"  onChange={handleGalleryImagesChange} multiple required/>
                                                         {productGalleryImages.length > 0 && (
                                                    <div className="selected-gallery-images" style={{padding: "10px 0", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px"}}>
                                                        {productGalleryImages.map((image : any, index: any) => (

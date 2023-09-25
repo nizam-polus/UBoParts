@@ -151,6 +151,25 @@ body {
     background-color: #587E50;
     opacity: 0.5;
 }
+// out of stock
+.out-of-stock{
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
+    // position: absolute;
+    width: 100%;
+    height: 20rem;
+}
+//text out of stock
+.text-out-of-stock{
+    width: 100%;
+    text-align: center;
+    background: #2c25258c;
+    padding: 5px;
+    color: white;
+    font-weight: bolder;
+    font-size: x-large;
+}
 .short-labels{	
     font-size: 12px;	
 }	

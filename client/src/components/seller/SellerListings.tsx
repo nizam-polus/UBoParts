@@ -73,9 +73,16 @@ function SellerListings() {
                                                         <div className="row g-2" onClick={() => handleProductClick(item)}>
                                                             <div className="col-12  d-flex justify-content-between">
                                                                 <span className="article-number regularfont mini-text">{item.attributes.category?.data?.attributes?.category_name}</span>
-                                                                <span className='button-bg-color-1' style={{  color: 'white', padding: '5px 10px', borderRadius: '20px' }}>
-                                                                    {item.attributes.stock_count}
+                                                                {item.attributes.stock_count > 0  ?
+                                                                 <span className='button-bg-color-1' style={{  color: 'white', padding: '5px 12px', borderRadius: '20px' }}>
+                                                                 {item.attributes.stock_count}          
                                                                 </span>
+                                                                :          
+                                                                 <span className='' style={{  color: 'red', padding: '5px 10px', }}>
+                                                          {/* {item.attributes.stock_count} */} Out of Stock
+                                                      </span>
+                                                             }
+                                                               
                                                             </div>
                                                             <div className="col-12 pt-2 pb-2">
                                                                 <span className="product-name regularfont">{item.attributes.title}</span>
