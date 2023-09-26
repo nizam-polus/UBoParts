@@ -14,7 +14,6 @@ function PurchaseHistory() {
 
     useEffect(() => {
         APIs.getCustomerOrder(user.username).then((response: any) => {
-            console.log(response.data.data)
             setOrderDetails(response.data.data);
         })
     }, []);
@@ -51,7 +50,7 @@ function PurchaseHistory() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {orderDetails.map((order: any) => {
+                                                {orderDetails.length > 0 ? orderDetails.map((order: any) => {
                                                     return (
                                                         <tr>
                                                             <td className="custom-color-2 lightfont placeholderfontsize border-0 pl-4 ps-3 pb-3 pt-3 align-middle">
@@ -71,7 +70,10 @@ function PurchaseHistory() {
                                                             <td className="custom-color-2 lightfont placeholderfontsize border-0 pr-4 ps-3 pb-3 pt-3 align-middle">€{order?.attributes?.total_price}</td>
                                                         </tr>
                                                     )
-                                                })}
+                                                })
+                                             :
+                                             <div className="d-flex align-items-center justify-content-center p-5">NO Data</div>
+                                            }
                                             </tbody>
                                         </table>
                                     </div>
