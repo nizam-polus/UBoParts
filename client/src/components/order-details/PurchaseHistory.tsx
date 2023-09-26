@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import SellerSideBar from "./seller/SellerSideBar";
+import SellerSideBar from "../seller/SellerSideBar";
 import APIs from "~/services/apiService";
-import { UserContext } from "./account_/UserContext";
+import { UserContext } from "../account_/UserContext";
 import Link from "next/link";
 import copy from 'copy-to-clipboard'
 import { toast } from "react-toastify";
@@ -55,7 +55,7 @@ function PurchaseHistory() {
                                                     return (
                                                         <tr>
                                                             <td className="custom-color-2 lightfont placeholderfontsize border-0 pl-4 ps-3 pb-3 pt-3 align-middle">
-                                                                {order?.attributes?.orderid.substring(0, 16)}
+                                                                <Link href={'/purchase-history/' + order?.attributes?.orderid}>{order?.attributes?.orderid.substring(0, 16)}</Link>
                                                                 <span title={order?.attributes?.orderid} className="pointer">....</span>
                                                                 <i className="pl-1 fa fa-copy pointer" onClick={() => copyOrderID(order)}></i>
                                                             </td>

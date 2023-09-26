@@ -9,7 +9,7 @@ import { UserContext } from '../account_/UserContext';
 
 function Cart() {
 
-    const { user, saveUser } = UserContext();
+    const { user, saveUser, setCartCount } = UserContext();
     const [cartProducts, setCartProducts] = useState<any>([]);
     const [totalCartPrice, setTotal] = useState(0);
     const [isError, setIsError] = useState<{ [key: string]: string | null }>({});
@@ -47,6 +47,7 @@ function Cart() {
         APIs.deleteCartData({ customerid: product.customer_id, id: product.id }).then(response => {
             APIs.getCartData({ "customerid": user.id }).then((response: any) => {
                 setCartProducts(response.data.rows);
+                setCartCount(response.data.rows.length);
                 let total = 0;
                 if (response.data.rows.length) {
                     for (const obj of response.data.rows) {
@@ -133,8 +134,6 @@ function Cart() {
         setCartProducts(updatedCartProducts); // Update the state with the new quantity
     };
     const debouncedQuantityInputOnChange = (product:any, newQuantity:any, index:any) => {
-        
-    console.log("api called")
         APIs.updateCartData({
             customerid: user.id,
             id: product.id,
@@ -182,26 +181,13 @@ function Cart() {
             // Handle any errors that occur during the updateCartData API call
             console.error(err);
         });
-
     }
 
     const quantityInputOnChange = (product:any, newQuantity:any, index:any) => {
         setInputValue(newQuantity);
         setChangeProduct(product);
         updateLocalState(product, newQuantity, index); // Update local state immediately
-       // debouncedQuantityInputOnChange(product, newQuantity, index); // Debounce API call
     };
-
-// const quantityInputOnChange = (product: any, newQuantity: any, index: any) => {
-//     // Update the local product quantity immediately
-//     product.quantity = newQuantity;
-//     const updatedCartProducts = [...cartProducts]; // Make a copy of the cart products
-//        updatedCartProducts[index].quantity = newQuantity; // Update the quantity in the local copy
-//        setCartProducts(updatedCartProducts); // Update the state with the new quantity
-
-//     // Make the API call to update the cart data
-   
-// }
 
     return (
         <>

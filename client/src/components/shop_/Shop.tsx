@@ -529,7 +529,7 @@ function Shop() {
                                                         <AppImage 
                                                                 src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
                                                                 className="card-img-top img-prod-height pointer "
-                                                                style={{height: '20rem', objectFit: 'cover', filter:`${product.attributes.stock_count == 0 ? "blur(3px)" : "1"}`}} 
+                                                                style={{height: '20rem', objectFit: 'contain', filter:`${product.attributes.stock_count == 0 ? "blur(3px)" : "1"}`}} 
                                                                 onClick={() => handleProductClick(product)}    
                                                             />
                                                             {

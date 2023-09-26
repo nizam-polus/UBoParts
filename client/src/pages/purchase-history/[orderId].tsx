@@ -2,11 +2,11 @@
 import React from 'react';
 
 // application
-import PurchaseHistory from '~/components/PurchaseHistory';
+import OrderDetails from '~/components/order-details/order-detail';
 
 function Page() {
     return (
-        <PurchaseHistory />
+        <OrderDetails />
     );
 }
 
