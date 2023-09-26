@@ -11,10 +11,12 @@ import Login from './account_/Login';
 import { useRouter } from 'next/router';
 import APIs from '../services/apiService';
 import { BASE_URL } from 'configuration';
+import { UserContext } from './account_/UserContext';
+import { toast } from 'react-toastify';
 
 function Home() {
     const router = useRouter();
-    
+    const {user, saveUser, setCartCount} = UserContext();
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -36,10 +38,10 @@ function Home() {
     const [latestItems, setLatestItems] = useState([]);
     const [categoriesDetail, setCategoriesDetail] = useState([])
     const [role, setRole] = useState("")
-
+    const [addToCartCompleted, setAddToCartCompleted] = useState<boolean>(true)
+    const [openLogin, setOpenLogin] = useState(false);
+    const [itemId, setItemId] = useState<any>('')
     const [forgotPasswordPickerIsOpen, setforgotPasswordPickerIsOpen] = useState(false);
-
-
 
     useEffect(() => {
         if (licenseplate && licenseplate.length > 5) {
@@ -66,7 +68,6 @@ function Home() {
                         !yearsarray.includes(response.data.year) && yearsobjarray.push({year: response.data.year});
                         setYearArray(yearsobjarray);
                         setSelectedYear(response.data.year);
-
                         setToggleSearch(true);
                         setShowInvaidLicense(false);
                     } else {
@@ -127,24 +128,12 @@ function Home() {
                 setLoading(false);
             });
     }, []);
-    console.log(categories)
-    console.log(categoriesDetail)
 
     useEffect(() => {
-       
-     APIs.getAllProducts().then((response: any) =>{
-        console.log("products",response)
+     APIs.getAllProducts('&sort[0]=createdAt:desc').then((response: any) =>{
         setProducts(response.data.data)
      })
     }, [])
-
-    useEffect(() =>{
-        let userDetails: any = localStorage.getItem("userdetails")
-        const userDetailsJSON = JSON.parse(userDetails);
-        setRole(userDetailsJSON?.role?.name)
-        
-    })
-
     useEffect(() => {
         // Function to filter and get the latest 4 items based on category
         const getLatestItemsByCategory = (categoryName: any) => {
@@ -152,23 +141,18 @@ function Home() {
             if (!products || products.length === 0) {
               return []; // Handle the case when products array is empty
             }
-          
             if (categoryName === 'All') {
-              return products
-                .sort((a: any, b: any) => new Date(b.createdAt) - new Date(a.createdAt))
-                .slice(0, 4);
+                return products.slice(0, 4);
             } else {
-              // Check if the category exists in the data before filtering
-              const filteredProducts = products.filter(
-                (product: any) => (
-                  product.attributes.category.data.attributes.category_name === categoryName
-                )
-              );
-              return  filteredProducts
-                .sort((a:any, b:any) => new Date(b.createdAt) - new Date(a.createdAt))
-                .slice(0, 4);
+                // Check if the category exists in the data before filtering
+                const filteredProducts = products.filter(
+                  (product: any) => (
+                    product.attributes.category.data.attributes.category_name === categoryName
+                  )
+                );
+                return  filteredProducts.slice(0, 4);
             }
-          };
+        };
     
         // Call the function and set the latest items whenever products or selectedCategory changes
         setLatestItems(getLatestItemsByCategory(selectedItem));
@@ -178,7 +162,6 @@ function Home() {
         setSelectedItem(categoryName);
       };
     
-
     const searchProducts = () => {
         // const filterSearch = 'filters[$and][][cardetail][make][$contains]=';
         // const [selectedMake, selectedModel, ]
@@ -283,67 +266,58 @@ function Home() {
     }
 
     const handleAddToCart = (productData: any) => {
-        // setAddToCartCompleted(false)
-        // setItemId(productData?.id)
-        // if (!user || user && !user.id) {
-        //     setOpenLogin(true);
-        // } else {
-        //     setOpenLogin(false);
-        //     let productQuantityInCart = 0;
-        //     let cartData = {
-        //         customerid: user.id,
-        //         productid: productData?.id,
-        //         quantity: '1',
-        //         productprice: productData?.attributes?.price
-        //     }
-            
-        //     APIs.getCartData({ customerid: user.id }).then(response => {
-        //         let productCartItems = response.data.rows;
-        //         // Find the quantity of the product with the given product ID
-        //         for (const cartItem of productCartItems) {
-        //             if (cartItem.product_id === productData?.id) {
-        //                 productQuantityInCart = cartItem.quantity + 1;
-        //                 break; 
-        //             }
-        //         }
-        //         // Fetch the product stock count
-        //         APIs.getProduct(cartData.productid).then(response => {
-        //             let productStock = response.data.data.attributes.stock_count;
-        //             console.log(productStock)
+        setAddToCartCompleted(false)
+        setItemId(productData?.id)
+        if (!user || user && !user.id) {
+            setOpenLogin(true);
+        } else {
+            setOpenLogin(false);
+            let productQuantityInCart = 0;
+            let cartData = {
+                customerid: user.id,
+                productid: productData?.id,
+                quantity: '1',
+                productprice: productData?.attributes?.price
+            }
+            APIs.getCartData({ customerid: user.id }).then(response => {
+                let productCartItems = response.data.rows;
+                for (const cartItem of productCartItems) {
+                    if (cartItem.product_id === productData?.id) {
+                        productQuantityInCart = cartItem.quantity + 1;
+                        break; 
+                    }
+                }
+                APIs.getProduct(cartData.productid).then(response => {
+                    let productStock = response.data.data.attributes.stock_count;
         
-        //             // Check if the quantity exceeds the stock count
-        //             if (productQuantityInCart <= productStock && productStock !== 0) {
-        //                 // Quantity is within stock limit, add to cart
-        //                 APIs.addToCart(cartData).then(response => {
-        //                     toast.success(() => (
-        //                         <>
-        //                             Item successfully added to <Link href={"/cartpage"}>cart</Link>
-        //                         </>
-        //                     ));
-        //                     APIs.getCartData({ customerid: user.id }).then(response => {
-        //                         setCartCount(response.data.rows.length);
-        //                     }).then(()=> setAddToCartCompleted(true));
-        //                 }).catch(err => {
-        //                     toast.error('Something went wrong while adding to cart!');
-        //                     setAddToCartCompleted(true)
-        //                 });
-        //             } else {
-        //                 setAddToCartCompleted(true)
-        //                 // Quantity exceeds stock limit, display a toast message
-        //                 toast.error('Stock exceeded. Cannot add this item to the cart.');
-        //             }
-        //         }).catch(err => {
-        //             toast.error('Something went wrong while fetching product information.');
-        //             setAddToCartCompleted(true)
-        //         });
-        //     })
-    
-        // }
-        console.log("added To Cart")
+                    // Check if the quantity exceeds the stock count
+                    if (productQuantityInCart <= productStock && productStock !== 0) {
+                        // Quantity is within stock limit, add to cart
+                        APIs.addToCart(cartData).then(response => {
+                            toast.success(() => (
+                                <>
+                                    Item successfully added to <Link href={"/cartpage"}>cart</Link>
+                                </>
+                            ));
+                            APIs.getCartData({ customerid: user.id }).then(response => {
+                                setCartCount(response.data.rows.length);
+                            }).then(()=> setAddToCartCompleted(true));
+                        }).catch(err => {
+                            toast.error('Something went wrong while adding to cart!');
+                            setAddToCartCompleted(true)
+                        });
+                    } else {
+                        setAddToCartCompleted(true)
+                        // Quantity exceeds stock limit, display a toast message
+                        toast.error('Stock exceeded. Cannot add this item to the cart.');
+                    }
+                }).catch(err => {
+                    toast.error('Something went wrong while fetching product information.');
+                    setAddToCartCompleted(true)
+                });
+            })
+        }
     }
-
-    
-
     return (
         <>
             <Forgotpass
@@ -475,24 +449,37 @@ function Home() {
                             })}
                         </div>
                     </section>
-                    {
-                    role !== "seller" && 
-                    <section className="cards-wrapper">
+                {user.role ? user.role.name == "seller" ? null :  (
+                <section className="cards-wrapper">
                     <div className="row mt-3 g-4">
-                        <div className="col" onClick={() => router.push('/request')}>
-                            <div className="specific_part">
-                                <h3 className="text-white bg-image-text semifont m-0 selling-text">Need A <br />Specific Part?</h3>
-                            </div>
+                      <div className="col" onClick={() => router.push('/request')}>
+                       <div className="specific_part">
+                        <h3 className="text-white bg-image-text semifont m-0 selling-text">Need A <br />Specific Part?</h3>
+                       </div>
+                      </div>
+                       <div className="col" onClick={() => router.push('/seller-registration')}>
+                         <div className="start_selling">
+                         <h3 className="text-white bg-image-text semifont m-0 selling-text">Start Selling <br />With Us</h3>
                         </div>
-                        <div className="col" onClick={() => router.push('/seller-registration')}>
-                            <div className="start_selling">
-                                <h3 className="text-white bg-image-text semifont m-0 selling-text">Start Selling <br />With Us</h3>
-                            </div>
-                        </div>
+                       </div>
                     </div>
                 </section>
+                        ) : 
+                <section className="cards-wrapper">
+                  <div className="row mt-3 g-4">
+                     <div className="col" onClick={() => router.push('/request')}>
+                        <div className="specific_part">
+                              <h3 className="text-white bg-image-text semifont m-0 selling-text">Need A <br />Specific Part?</h3>
+                        </div>
+                     </div>
+                     <div className="col" onClick={() => router.push('/seller-registration')}>
+                       <div className="start_selling">
+                          <h3 className="text-white bg-image-text semifont m-0 selling-text">Start Selling <br />With Us</h3>
+                    </div>
+                     </div>
+                  </div>
+                </section>
                 }
-                    
                     <section className="categories-wrapper">
                         <div className="row mt-5">
                             <div className="col-12 d-flex justify-content-between">
@@ -515,7 +502,6 @@ function Home() {
                     <section className="categories-products-wrapper">
                         <div className="row mt-5 mt-lg-4 mt-xxl-5 g-4">
                         {categoriesDetail.length > 0 ? categoriesDetail.slice(0, 4).map((item:any, index:any) => {
-                            console.log("image",BASE_URL + item?.attributes?.category_image?.data?.attributes?.url)
                       return (
                        <div key={index} className="col-6 col-md-3">
                            <div className="prod-cats card">
@@ -529,7 +515,7 @@ function Home() {
                             </div>
                        </div>
                        )
-                       }) : "loading"}
+                       }) : ""}
                            
                             {/* <div className="col-6 col-md-3">
                                 <div className="prod-cats card">
@@ -556,36 +542,36 @@ function Home() {
                             <div className="col-12 d-flex justify-content-between">
                                 <div><span className="popular_categories body-sub-titles regularfont">Latest Products</span>
                                 </div>
-                                <div>
-        <button
-          type="button"
-          className={`saleoffers regularfont body-sub-titles ${selectedItem === 'All' ? 'active' : ''}`}
-          onClick={() => handleCategoryClick('All')}
-        >
-          All
-        </button>
-        <button
-          type="button"
-          className={`saleoffers regularfont body-sub-titles ${selectedItem === 'Audio' ? 'active' : ''}`}
-          onClick={() => handleCategoryClick('Audio')}
-        >
-          Audio
-        </button>
-        <button
-          type="button"
-          className={`saleoffers regularfont body-sub-titles ${selectedItem === 'Lights' ? 'active' : ''}`}
-          onClick={() => handleCategoryClick('Lights')}
-        >
-          Lights
-        </button>
-        <button
-          type="button"
-          className={`saleoffers regularfont body-sub-titles ${selectedItem === 'Body Parts ' ? 'active' : ''}`}
-          onClick={() => handleCategoryClick('Body Parts ')}
-        >
-          Body Parts
-        </button>
-      </div>
+                                  <div>
+                                    <button
+                                      type="button"
+                                      className={`saleoffers regularfont body-sub-titles ${selectedItem === 'All' ? 'active' : ''}`}
+                                      onClick={() => handleCategoryClick('All')}
+                                    >
+                                      All
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className={`saleoffers regularfont body-sub-titles ${selectedItem === 'Audio' ? 'active' : ''}`}
+                                      onClick={() => handleCategoryClick('Audio')}
+                                    >
+                                    Audio
+                                   </button>
+                                    <button
+                                     type="button"
+                                     className={`saleoffers regularfont body-sub-titles ${selectedItem === 'Lights' ? 'active' : ''}`}
+                                     onClick={() => handleCategoryClick('Lights')}
+                                    >
+                                     Lights
+                                   </button>
+                                   <button
+                                     type="button"
+                                     className={`saleoffers regularfont body-sub-titles ${selectedItem === 'Body Parts ' ? 'active' : ''}`}
+                                     onClick={() => handleCategoryClick('Body Parts ')}
+                                   >
+                                     Body Parts
+                                   </button>
+                                 </div>
                             </div>
                             <div className="col"></div>
                             <div className="col text-end">
@@ -603,8 +589,7 @@ function Home() {
                              .map((product: any, index: any) => {
                                                 return (
                                                     <div className="col-12 col-sm-6 col-lg-3 mb-4" key={index}>
-                                                        <div className="latest-prods card card-shadows">
-                                                           
+                                                        <div className="latest-prods card card-shadows">   
                                                             <AppImage 
                                                                 src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
                                                                 className="card-img-top img-prod-height pointer "
@@ -613,12 +598,10 @@ function Home() {
                                                             />
                                                             {
                                                             product.attributes.stock_count == 0 &&  
-                                                                <div  onClick={() => handleProductClick(product)} className='out-of-stock d-flex position-absolute justify-content-center align-items-center' >
+                                                                <div onClick={() => handleProductClick(product)} className='out-of-stock d-flex position-absolute justify-content-center align-items-center' >
                                                                    <p className='text-out-of-stock mb-0'>OUT OF STOCK</p>
                                                                 </div>
-                                                      
                                                              }
-                                                           
                                                             <div className="card-body">
                                                                 <div className="row g-1">
                                                                     <div className="col-12">
@@ -641,24 +624,27 @@ function Home() {
                                                                 </div> */}
                                                                     <div className="col-12 d-flex justify-content-between">
                                                                      <span className="product-price">€{product?.attributes?.price}</span>
-                                                                       {/* { product.attributes.stock_count === 0 ? (
-                                                                          <p className="text-danger small">Out of Stock</p>
-                                                                        ) : addToCartCompleted ? ( */}
+                                                                     { product.attributes.stock_count === 0 ? (
+                                                                          <AppImage
+                                                                          src="images/cart-svg.svg"
+                                                                          className="pointer add_to_cart"
+                                                                           style={{opacity: "0.5", cursor: "not-allowed"}}  
+                                                                        />
+                                                                        ) : addToCartCompleted ? (
                                                                           <AppImage
                                                                             src="images/cart-svg.svg"
                                                                             className="pointer add_to_cart"
                                                                             onClick={() => handleAddToCart(product)}
                                                                           />
-                                                                        {/* ) : product.id === itemId ? (
+                                                                        ) : product.id === itemId ? (
                                                                           "Adding.."
                                                                         ) : (
                                                                           <AppImage
                                                                             src="images/cart-svg.svg"
-                                                                            className="pointer add_to_cart"
-                                                                            onClick={() => handleAddToCart(product)}
+                                                                            className="pointer add_to_cart"                      
                                                                           />
                                                                         )
-                                                                        }  */}
+                                                                        }
                                                                         {/* <div className="input-group quanitity-box">
                                                                             <span className="input-group-btn plus-icon semifont">
                                                                                 <i className="fa fa-plus mini-text-0 mini-text-0-color" aria-hidden="true"></i>
@@ -674,9 +660,7 @@ function Home() {
                                                         </div>
                                                     </div>
                                                 )
-                                            })}
-                           
-                            
+                                            })}   
                         </div>
                     </section>
                 </div>
@@ -684,7 +668,6 @@ function Home() {
                     <div className="container-fluid">
                         <div className="container">
                             <div className="row">
-
                             </div>
                         </div>
                     </div>
