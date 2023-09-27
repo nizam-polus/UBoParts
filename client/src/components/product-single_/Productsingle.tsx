@@ -27,17 +27,25 @@ function Productsingle() {
     const [openLogin, setOpenLogin] = useState(false);
     const [addToCartCompleted, setAddToCartCompleted] = useState<any>(true)
     const [stockCount , setStockCount] = useState(1)
+    const [latestItems, setLatestItems] = useState([]);
+    const [products,setProducts] = useState<any>([])
+    const [productCategory, setProductCategory] = useState("")
+   
 
+    
     useEffect(() => {
         APIs.getProduct(id).then(response => {
             let product = response.data.data;
             let productGallery = response.data.data.attributes?.product_gallary_image?.data;
             let productImage = response.data.data.attributes?.product_gallary_image?.data[0]?.attributes?.url;
             let productStock = response.data.data.attributes?.stock_count
+            let productCategory = response.data.data.attributes?.category.data.attributes.category_name
+           
             setStockCount(productStock)
             setProductData(product);
             setProductGallery(productGallery);
             setProductImage(productImage);
+            setProductCategory(productCategory) 
         }).catch(err => console.log(err))
     }, []);
 
@@ -70,7 +78,6 @@ function Productsingle() {
                 // Fetch the product stock count
                 APIs.getProduct(cartData.productid).then(response => {
                     let productStock = response.data.data.attributes.stock_count;
-                    console.log(productStock)
         
                     // Check if the quantity exceeds the stock count
                     if ((productQuantityInCart <= productStock )&& (quantity <= productStock)) {
@@ -111,7 +118,41 @@ function Productsingle() {
     const handleQuantityChange = (newValue : any) =>{
        setQuantity(newValue)
     }
-    
+
+    useEffect(() => {
+        APIs.getAllProducts('&sort[0]=createdAt:desc').then((response: any) =>{
+           setProducts(response.data.data)
+        })
+       }, [])
+
+       
+       useEffect(() => {
+           // Function to filter and get the latest 4 items based on category
+           const getLatestItemsByCategory = (categoryName: any) => {
+               
+               if (!products || products.length === 0) {
+                 return []; // Handle the case when products array is empty
+               }
+               if (categoryName === 'All') {
+                   return products.slice(0, 4);
+               } else {
+                   // Check if the category exists in the data before filtering
+                   const filteredProducts = products.filter(
+                     (product: any) => (
+                       product.attributes.category.data.attributes.category_name === categoryName
+                     )
+                   );
+                   return  filteredProducts.slice(0, 4);
+               }
+           };
+       
+           // Call the function and set the latest items whenever products or selectedCategory changes
+           setLatestItems(getLatestItemsByCategory(productCategory));
+         }, [products, productCategory]);
+   
+         const handleProductClick = (product: any) => {
+            router.push('/products_/[id]', `/products_/${product.id}`);
+        }
 
     return (
         <>
@@ -229,31 +270,27 @@ function Productsingle() {
                                                     </div>
                                                 </div>
                                                 <div className="col-8 col-md-8 col-lg-12 col-xl-7">
-                                                {
-  stockCount === 0 ? (
-    <a
-      className="add-to-cart-1 button-bg-color-05 custom-color-7 rounded pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
-      style={{ cursor: 'not-allowed' }}
-    >
-      Out of Stock
-    </a>
-  ) : addToCartCompleted ? (
-    <a
-      className="add-to-cart-1 button-bg-color-1 custom-color-7 rounded pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
-      style={{ cursor: 'pointer' }}
-      onClick={handleAddToCart}
-    >
-      Add to Cart
-    </a>
-  ) : (
-    <a
-      className="add-to-cart-1 button-bg-color-05 custom-color-7 rounded pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
-      style={{ cursor: 'not-allowed' }}
-    >
-      Adding to Cart
-    </a>
-  )
-}
+                                                    {stockCount === 0 ? (
+                                                            <a className="add-to-cart-1 button-bg-color-05 custom-color-7 rounded pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
+                                                                style={{ cursor: 'not-allowed' }}
+                                                            >
+                                                                Out of Stock
+                                                            </a>
+                                                        ) : addToCartCompleted ? (
+                                                            <a className="add-to-cart-1 button-bg-color-1 custom-color-7 rounded pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
+                                                                style={{ cursor: 'pointer' }}
+                                                                onClick={handleAddToCart}
+                                                            >
+                                                                Add to Cart
+                                                            </a>
+                                                        ) : (
+                                                            <a className="add-to-cart-1 button-bg-color-05 custom-color-7 rounded pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
+                                                                style={{ cursor: 'not-allowed' }}
+                                                            >
+                                                                Adding to Cart
+                                                            </a>
+                                                        )
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
@@ -302,129 +339,94 @@ function Productsingle() {
                             <div className="col-12 d-lg-flex justify-content-between">
                                 <div><span className="popular_categories body-sub-titles regularfont">Related Products</span>
                                 </div>
-                                <div className="mt-3 mt-lg-0">
+                                {/* <div className="mt-3 mt-lg-0">
                                     <button type="button" className="saleoffers regularfont body-sub-titles active">All</button>
                                     <button type="button" className="saleoffers regularfont body-sub-titles">Audio</button>
                                     <button type="button" className="saleoffers regularfont body-sub-titles">Lights</button>
                                     <button type="button" className="saleoffers regularfont body-sub-titles">Body Parts</button>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </section>
-                    <section className="latest-products-second-wrapper mb-5">
-                        <div className="row mt-5 mt-lg-3 mt-xxl-5 g-4">
-                            <div className="col-6 col-md-3">
-                                <div className="latest-prods card">
-                                <AppImage src="/images/cat-prod-1.svg" className="card-img-top"/>
-                                    <div className="card-body">
-                                        <div className="row g-1">
-                                            <div className="col-12">
-                                                <span className="article-number regularfont mini-text">Article #12345668</span>
-                                            </div>
-                                            <div className="col-12">
-                                                <span className="product-name regularfont">Mercedes sprinter achter as</span>
-                                            </div>
-                                            {/* <div className="col-12">
-                                                <span className="ratings">
-                                                    <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                    <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                    <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                    <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
-                                                </span>
-                                                <span className="rating-count regularfont mini-text-1">675</span>
-                                            </div> */}
-                                            <div className="col-12 d-flex justify-content-between">
-                                                <span className="product-price">€230</span>
-                                                 <AppImage src="/images/cart-svg.svg"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-6 col-md-3">
-                                <div className="latest-prods card">
-                                <AppImage src="/images/cat-prod-1.svg" className="card-img-top"/>
-                                    <div className="card-body">
-                                        <div className="row g-1">
-                                            <div className="col-12">
-                                                <span className="article-number regularfont mini-text">Article #12345668</span>
-                                            </div>
-                                            <div className="col-12">
-                                                <span className="product-name regularfont">Mercedes sprinter achter as</span>
-                                            </div>
-                                            {/* <div className="col-12">
-                                                <span className="ratings">
-                                                    <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                    <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                    <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                    <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
-                                                </span>
-                                                <span className="rating-count regularfont mini-text-1">675</span>
-                                            </div> */}
-                                            <div className="col-12 d-flex justify-content-between">
-                                                <span className="product-price">€230</span>
-                                                 <AppImage src="/images/cart-svg.svg"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-6 col-md-3">
-                                <div className="latest-prods card">
-                                     <AppImage src="/images/cat-prod-1.svg" className="card-img-top"/>
-                                    <div className="card-body">
-                                        <div className="row g-1">
-                                            <div className="col-12">
-                                                <span className="article-number regularfont mini-text">Article #12345668</span>
-                                            </div>
-                                            <div className="col-12">
-                                                <span className="product-name regularfont">Mercedes sprinter achter as</span>
-                                            </div>
-                                            {/* <div className="col-12">
-                                                <span className="ratings">
-                                                    <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                    <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                    <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                    <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
-                                                </span>
-                                                <span className="rating-count regularfont mini-text-1">675</span>
-                                            </div> */}
-                                            <div className="col-12 d-flex justify-content-between">
-                                                <span className="product-price">€230</span>
-                                                 <AppImage src="/images/cart-svg.svg"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-6 col-md-3">
-                                <div className="latest-prods card">
-                                <AppImage src="/images/cat-prod-1.svg" className="card-img-top"/>
-                                    <div className="card-body">
-                                        <div className="row g-1">
-                                            <div className="col-12">
-                                                <span className="article-number regularfont mini-text">Article #12345668</span>
-                                            </div>
-                                            <div className="col-12">
-                                                <span className="product-name regularfont">Mercedes sprinter achter as</span>
-                                            </div>
-                                            {/* <div className="col-12">
-                                                <span className="ratings">
-                                                    <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                    <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                    <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                    <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
-                                                </span>
-                                                <span className="rating-count regularfont mini-text-1">675</span>
-                                            </div> */}
-                                            <div className="col-12 d-flex justify-content-between">
-                                                <span className="product-price">€230</span>
-                                                 <AppImage src="/images/cart-svg.svg"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <section className="latest-products-second-wrapper">
+                        <div className="row mt-5 mt-lg-4 mt-xxl-5 g-4">
+                        {latestItems
+                         && latestItems
+                             .map((product: any, index: any) => {
+                                                return (
+                                                    <div className="col-12 col-sm-6 col-lg-3 mb-4" key={index}>
+                                                        <div className="latest-prods card card-shadows">   
+                                                            <AppImage 
+                                                                src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
+                                                                className="card-img-top img-prod-height pointer "
+                                                                style={{height: '20rem', objectFit: 'cover', filter:`${product.attributes.stock_count == 0 ? "blur(3px)" : "none"}`}} 
+                                                                onClick={() => handleProductClick(product)}    
+                                                            />
+                                                            {
+                                                            product.attributes.stock_count == 0 &&  
+                                                                <div onClick={() => handleProductClick(product)} className='out-of-stock d-flex position-absolute justify-content-center align-items-center' >
+                                                                   <p className='text-out-of-stock mb-0'>OUT OF STOCK</p>
+                                                                </div>
+                                                             }
+                                                            <div className="card-body">
+                                                                <div className="row g-1">
+                                                                    <div className="col-12">
+                                                                        <span className="article-number regularfont mini-text">Article #{product?.attributes?.article_number}</span>
+                                                                    </div>
+                                                                    <div className="col-12">
+                                                                        <span className="product-name regularfont"
+                                                                            style={{"cursor": "pointer"}} 
+                                                                            onClick={() => handleProductClick(product)}
+                                                                        >{product?.attributes?.title}</span>
+                                                                    </div>
+                                                                    {/* <div className="col-12">
+                                                                    <span className="ratings">
+                                                                        <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
+                                                                        <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
+                                                                        <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
+                                                                        <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
+                                                                    </span>
+                                                                    <span className="rating-count regularfont mini-text-1">675</span>
+                                                                </div> */}
+                                                                    <div className="col-12 d-flex justify-content-between">
+                                                                     <span className="product-price">€{product?.attributes?.price}</span>
+                                                                     {/* { product.attributes.stock_count === 0 ? (
+                                                                          <AppImage
+                                                                          src="images/cart-svg.svg"
+                                                                          className="pointer add_to_cart"
+                                                                           style={{opacity: "0.5", cursor: "not-allowed"}}  
+                                                                        />
+                                                                        ) : addToCartCompleted ? (
+                                                                          <AppImage
+                                                                            src="images/cart-svg.svg"
+                                                                            className="pointer add_to_cart"
+                                                                            onClick={() => handleAddToCart(product)}
+                                                                          />
+                                                                        ) : product.id === itemId ? (
+                                                                          "Adding.."
+                                                                        ) : (
+                                                                          <AppImage
+                                                                            src="images/cart-svg.svg"
+                                                                            className="pointer add_to_cart"                      
+                                                                          />
+                                                                        )
+                                                                        } */}
+                                                                        {/* <div className="input-group quanitity-box">
+                                                                            <span className="input-group-btn plus-icon semifont">
+                                                                                <i className="fa fa-plus mini-text-0 mini-text-0-color" aria-hidden="true"></i>
+                                                                            </span>
+                                                                            <input type="text" name="quant[1]" className="form-control input-number text-center rounded-pill border-0 semifont p-1 mini-text-2 h-auto" value="1" min="1" max="10" />
+                                                                            <span className="input-group-btn minus-icon semifont">
+                                                                                <i className="fa fa-minus mini-text-0 mini-text-0-color" aria-hidden="true"></i>
+                                                                            </span>
+                                                                        </div> */}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })}   
                         </div>
                     </section>
                 </div>

@@ -44,6 +44,12 @@ function Shop() {
     const [addToCartCompleted, setAddToCartCompleted] = useState<boolean>(true)
     const [itemId, setItemId] = useState<any>('')
     const [stockCount, setStockCount] = useState<any>(0)
+    const [price, setPrice] = useState(100)
+    const [minPrice, setMinPrice] = useState(0)
+    const [maxPrice, setMaxPrice] = useState(1000)
+    const [filterOption, setFilterOption] = useState('Latest');
+    const [initialproducts, setInitialProducts] = useState<any>([])
+    
 
     const router = useRouter();
 
@@ -98,11 +104,12 @@ function Shop() {
                 searchProducts();
             }, 2000);
         } else {
-            APIs.getAllProducts().then(response => {
+            APIs.getAllProducts('&sort[0]=createdAt:desc').then(response => {
                 let pagination = response.data.meta.pagination;
                 setPageRange(pageRangeFinder(pagination.pageCount));
                 setPagination(pagination);
                 setSearchedProducts(response.data.data);
+                setInitialProducts(response.data.data)
             })
         }
     }, [selectedMake, selectedModel, selectedYear, selectedCategory]);
@@ -151,6 +158,7 @@ function Shop() {
     const searchProducts = () => {
         APIs.searchProducts(selectedMake, selectedModel, selectedYear, selectedCategory).then((response: any) => {
             setSearchedProducts(response.data.data);
+            setInitialProducts(response.data.data)
             let pagination = response.data.meta.pagination
             setPagination(pagination);
             setSearched(true);
@@ -160,6 +168,11 @@ function Shop() {
             setLoading(false);
         });
     }
+    console.log("searched",searchedProducts)
+        
+    useEffect(() =>{
+
+    },[searchProducts])
 
     /*const categoriesArray = (resData: any) => {
         return [...new Set(resData.map((item: any) => item.attributes.category_name))];
@@ -260,7 +273,7 @@ function Shop() {
         event.preventDefault();
         console.log(filterCategory);
         console.log(filterSubcategory);
-        APIs.searchFilter(selectedMake, selectedModel, selectedYear, filterCategory, filterSubcategory, '').then(response => {
+        APIs.searchFilter(selectedMake, selectedModel, selectedYear, filterCategory, filterSubcategory, {min: minPrice, max: maxPrice}).then(response => {
             setSearchedProducts(response.data.data)
         }).catch(err => console.log)
     }
@@ -279,7 +292,6 @@ function Shop() {
                 quantity: '1',
                 productprice: productData?.attributes?.price
             }
-            
             APIs.getCartData({ customerid: user.id }).then(response => {
                 let productCartItems = response.data.rows;
                 // Find the quantity of the product with the given product ID
@@ -293,10 +305,7 @@ function Shop() {
                 APIs.getProduct(cartData.productid).then(response => {
                     let productStock = response.data.data.attributes.stock_count;
                     console.log(productStock)
-        
-                    // Check if the quantity exceeds the stock count
                     if (productQuantityInCart <= productStock && productStock !== 0) {
-                        // Quantity is within stock limit, add to cart
                         APIs.addToCart(cartData).then(response => {
                             toast.success(() => (
                                 <>
@@ -312,7 +321,6 @@ function Shop() {
                         });
                     } else {
                         setAddToCartCompleted(true)
-                        // Quantity exceeds stock limit, display a toast message
                         toast.error('Stock exceeded. Cannot add this item to the cart.');
                     }
                 }).catch(err => {
@@ -322,6 +330,23 @@ function Shop() {
             })
     
         }
+    }
+
+    const handleFilterChange = (event: any) =>{
+        const selectedOption = event.target.value;
+    setFilterOption(selectedOption);
+    console.log(filterOption)
+     if (selectedOption === 'Latest') {
+        setSearchedProducts(initialproducts);
+      } else if (selectedOption === 'highToLow') {
+        // Sort searchedProducts by price high to low
+        const sortedProducts = searchedProducts.slice().sort((a: any, b: any) => b.attributes.price - a.attributes.price);
+        setSearchedProducts(sortedProducts);
+      } else if (selectedOption === 'lowToHigh') {
+        // Sort searchedProducts by price low to high
+        const sortedProducts = searchedProducts.slice().sort((a:any, b:any) => a.attributes.price - b.attributes.price);
+        setSearchedProducts(sortedProducts);
+      }
     }
 
     const loginModalClose = () => {
@@ -458,17 +483,46 @@ function Shop() {
                                                 </div>}
                                             </div>
                                             <div className="row mb-2 flex-column">
-                                                <button 
-                                                    className="btn coulmn-bg-color-1 border-0 text-start justify-content-between 
-                                                                d-flex align-items-center regularfont mini-text-2"
-                                                    onClick={() => {setFiltertoggle((prevValue: any) => ({...prevValue, price: !filterToggle.price}))}}  
-                                                >
-                                                    <span>Price</span><i className={`${filterToggle.price ? 'fa fa-angle-up' : 'fa fa-angle-down'}`}></i>
-                                                </button>
-                                                {filterToggle.price && <div className="group-check p-3">
-                                                    {/* <ReactSlider min={0} max={1000} minDistance={100} /> */}
-                                                </div>}
-                                            </div>
+                                           <button
+                                             className="btn coulmn-bg-color-1 border-0 text-start justify-content-between d-flex align-items-center regularfont mini-text-2"
+                                             onClick={() => {
+                                               setFiltertoggle((prevValue) => ({ ...prevValue, price: !filterToggle.price }));
+                                             }}
+                                           >
+                                             <span>Price</span>
+                                             <i className={`${filterToggle.price ? 'fa fa-angle-up' : 'fa fa-angle-down'}`}></i>
+                                           </button>
+                                           {filterToggle.price && (
+                                             <div className="group-check p-3">
+                                               <div className="form-group">
+                                                 <label htmlFor="minPrice">Min Price:</label>
+                                                 <input
+                                                   type="number"
+                                                   id="minPrice"
+                                                   name="minPrice"
+                                                   value={minPrice}
+                                                   onChange={(e) => setMinPrice(Number(e.target.value))}
+                                                   min={100}
+                                                   max={maxPrice}
+                                                   className="form-control"
+                                                 />
+                                               </div>
+                                               <div className="form-group">
+                                                 <label htmlFor="maxPrice">Max Price:</label>
+                                                 <input
+                                                   type="number"
+                                                   id="maxPrice"
+                                                   name="maxPrice"
+                                                   value={maxPrice}
+                                                   onChange={(e) => setMaxPrice(Number(e.target.value))}
+                                                   min={minPrice}
+                                                   max={2000}
+                                                   className="form-control"
+                                                 />
+                                               </div>
+                                             </div>
+                                           )}
+                                         </div>
                                             {/* Filter based on rating - currently not used */}
                                             {/* <div className="row mb-2 flex-column">
                                                     <button className="btn coulmn-bg-color-1 border-0 text-start justify-content-between d-flex align-items-center regularfont mini-text-2">
@@ -521,6 +575,25 @@ function Shop() {
                                         </div>
                                     </div>
                                     <div className="col">
+                                        <div className="d-flex justify-content-end">
+                                        <div className="col-12 col-md-3 d-flex">
+  <label htmlFor="filterDropdown" className="form-label me-2">Sort by:</label>
+  <select
+    id="filterDropdown"
+    className="form-select mb-2 border-0"
+    value={filterOption}
+    onChange={handleFilterChange}
+  >
+    <option value="Latest">Latest</option>
+    <option value="highToLow">Price: High to Low</option>
+    <option value="lowToHigh">Price: Low to High</option>
+    {/* Add more filter options as needed */}
+  </select>
+</div>
+                                        </div>
+                                    
+
+                                        
                                         <div className="row g-4">
                                             {searchedProducts.map((product: any, index: any) => {
                                                 return (
@@ -529,7 +602,7 @@ function Shop() {
                                                         <AppImage 
                                                                 src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
                                                                 className="card-img-top img-prod-height pointer "
-                                                                style={{height: '20rem', objectFit: 'contain', filter:`${product.attributes.stock_count == 0 ? "blur(3px)" : "1"}`}} 
+                                                                style={{height: '20rem', objectFit: 'contain', filter:`${product.attributes.stock_count == 0 ? "blur(3px)" : "none"}`}} 
                                                                 onClick={() => handleProductClick(product)}    
                                                             />
                                                             {
@@ -634,7 +707,6 @@ function Shop() {
                             </div>
                         </div>
                     </section>
-
                 </div>
             </div>
             <div className="modal fade" id="view-filters" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

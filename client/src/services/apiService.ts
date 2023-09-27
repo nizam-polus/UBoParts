@@ -43,7 +43,7 @@ const APIs = {
         )
     },
 
-    searchFilter: (make: string, model: string, year: string, categories: [], sub_category: [], price: string) => {
+    searchFilter: (make: string, model: string, year: string, categories: [], sub_category: [], price: any) => {
         let searchposition = -1, filterposition = 0;
         const incrementSearchPosition = () => searchposition += 1;
         const incrementFilterPosition = () => filterposition += 1;
@@ -55,12 +55,12 @@ const APIs = {
         ));
 
         return axios.get(
-            BACKEND_URL + `products?populate=*${make && `&filters[$or][0][$and][${incrementSearchPosition() + ''}][cardetail][make][$contains]=${make}`}` +
-            `${model && `&filters[$or][0][$and][${incrementSearchPosition() + ''}][cardetail][model][$contains]=${model}`}` +
-            `${year && `&filters[$or][0][$and][${incrementSearchPosition() + ''}][cardetail][year][$eq]=${year}`}` +
+            BACKEND_URL + `products?populate=*${`&filters[$or][0][price][$between]=${price.min}&filters[$or][0][price][$between]=${price.max}`}` +
+            `${make && `&filters[$or][1][$and][${incrementSearchPosition() + ''}][cardetail][make][$contains]=${make}`}` +
+            `${model && `&filters[$or][1][$and][${incrementSearchPosition() + ''}][cardetail][model][$contains]=${model}`}` +
+            `${year && `&filters[$or][1][$and][${incrementSearchPosition() + ''}][cardetail][year][$eq]=${year}`}` +
             `${(categoryQuery.length && !subcategoryQuery.length) ? categoryQuery.join().replace(',', '') : ''}` +
-            `${subcategoryQuery.length ? subcategoryQuery.join().replace(',', '') : ''}` + '',
-            // `${price ? `filters[$or][0][price][$between]=${'10'}&filters[$or][0][price][$between]=${'500'}` : `filters[$or][0][price][$between]=${'10'}&filters[$or][0][price][$between]=${'500'}`}`, 
+            `${subcategoryQuery.length ? subcategoryQuery.join().replace(',', '') : ''}`, 
             {headers}
         )
     },
@@ -69,7 +69,7 @@ const APIs = {
 
     getAllProducts: (sortFilter = '') => axios.get(BACKEND_URL + 'products?populate=*' + sortFilter, {headers}),
 
-    getAllSellerProducts: (username: any) => axios.get(BACKEND_URL + `products?populate=*&filters[$and][][seller][$eq]=${username}`, {headers}),
+    getAllSellerProducts: (username: any) => axios.get(BACKEND_URL + `products?populate=*&sort[0]=${username}:desc`, {headers}),
     
     getProduct: (id: any) => axios.get(BACKEND_URL + 'products/' + id + '?populate=*', {headers}),
 
@@ -97,6 +97,10 @@ const APIs = {
     updateSpecificUser: (id: number, userData: any) => ds.put(BACKEND_URL + `users/${id}`, userData),
     
     createNewList: (data: any) => ds.post(BACKEND_URL + 'products', {...data}),
+
+    updateList: (id: any , data: any) => ds.put(BACKEND_URL + 'products/' + id, {...data}),
+
+    deleteProduct: (id: any) => ds.delete(BACKEND_URL + 'products/'+ id, {headers}),
 
     uploadImage: (picData: any) => axios.post(BACKEND_URL + 'upload', picData, {headers: {
         Authorization: `Bearer ${getToken()}`,
