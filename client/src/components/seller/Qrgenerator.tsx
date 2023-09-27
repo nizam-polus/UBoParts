@@ -1,7 +1,7 @@
 import React from 'react'
 import { useBarcode } from 'next-barcode';
 
-const Qrgenerator = ({ qrValue }: any) => {
+const Qrgenerator =  React.forwardRef(({ qrValue }: any, ref: any) => {
 
   const { inputRef } = useBarcode({
     value: qrValue,
@@ -11,10 +11,10 @@ const Qrgenerator = ({ qrValue }: any) => {
     }
   });
   return (
-    <div style={{ paddingTop: "10px" }}>
+    <div ref={ref} style={{ paddingTop: "10px" }}>
       <img ref={inputRef} />
     </div>
   )
-}
+})
 
 export default Qrgenerator

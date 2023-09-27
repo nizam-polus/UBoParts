@@ -13,6 +13,16 @@ function SellerListings() {
     const [uname, setUname] = useState<any>("");
     const [sellerList, setSellerList] = useState([]);
 
+
+    const deleteProduct = (id:any) =>{
+        
+        APIs.deleteProduct(id).then((res) => console.log(res))
+      }
+    
+    const editProduct = (id: any) =>{
+        router.push('/sellerUpdates/' + id);
+    }
+
     useEffect(() => {
         (async () => {
             try {
@@ -24,7 +34,6 @@ function SellerListings() {
                 setUname(username);
                 // Make the API call with the username
                 const res = await APIs.getAllSellerProducts(username);
-                console.log(res);
                 setSellerList(res.data.data);
             } catch (error) {
                 console.error(error);
@@ -35,6 +44,8 @@ function SellerListings() {
     const handleProductClick = (product: any) => {
         router.push('/sellerProducts_/' + product.id);
     }
+
+    
     return (
         <>
             <div className="main-body pb-2 mb-5">
@@ -70,9 +81,9 @@ function SellerListings() {
                                                         <span className="product-price button-bg-color-1 text-white regularfont boldfontsize">€ {item.attributes.price}</span>
                                                     </div>
                                                     <div className="card-body p-4">
-                                                        <div className="row g-2" onClick={() => handleProductClick(item)}>
+                                                        <div className="row g-2">
                                                             <div className="col-12  d-flex justify-content-between">
-                                                                <span className="article-number regularfont mini-text">{item.attributes.category?.data?.attributes?.category_name}</span>
+                                                                <span className="article-number regularfont mini-text"  onClick={() => handleProductClick(item)}>{item.attributes.category?.data?.attributes?.category_name}</span>
                                                                 {item.attributes.stock_count > 0  ?
                                                                  <span className='button-bg-color-1' style={{  color: 'white', padding: '5px 12px', borderRadius: '20px' }}>
                                                                  {item.attributes.stock_count}          
@@ -88,8 +99,8 @@ function SellerListings() {
                                                                 <span className="product-name regularfont">{item.attributes.title}</span>
                                                             </div>
                                                             <div className="col-12 d-flex justify-content-between " style={{ gap: "20px" }}>
-                                                                <button type="button" className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2 p-2" style={{ width: "100%" }}>Edit</button>
-                                                                <button type="button" className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2" style={{ width: "100%" }}>Delete</button>
+                                                                <button type="button" onClick={() => editProduct(item.id)} className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2 p-2" style={{ width: "100%" }}>Edit</button>
+                                                                <button type="button" onClick={() =>deleteProduct(item.id)} className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2" style={{ width: "100%" }}>Delete</button>
                                                             </div>
                                                         </div>
                                                     </div>
