@@ -67,7 +67,7 @@ const APIs = {
     
     getParts: () => axios.get(BACKEND_URL + 'parts?populate=*&sort[0]=id:asc', {headers}),
 
-    getAllProducts: () => axios.get(BACKEND_URL + 'products?populate=*', {headers}),
+    getAllProducts: (sortFilter = '') => axios.get(BACKEND_URL + 'products?populate=*' + sortFilter, {headers}),
 
     getAllSellerProducts: (username: any) => axios.get(BACKEND_URL + `products?populate=*&filters[$and][][seller][$eq]=${username}`, {headers}),
     
@@ -104,6 +104,8 @@ const APIs = {
     }}),
 
     getCustomerOrder: (username: string) => ds.get(BACKEND_URL + 'order-details?populate=*&filters[$and][][user_name][$eq]=' + username),
+
+    getOrderDetails: (orderId: string) => ds.get(BACKEND_URL + 'order-details?populate=*&filters[$and][0][orderid][$eq]=' + orderId)
 
 }
 

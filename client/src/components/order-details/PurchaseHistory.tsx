@@ -11,10 +11,13 @@ function PurchaseHistory() {
     const { user } = UserContext();
 
     const [orderDetails, setOrderDetails] = useState<any>([]);
+    const [emptyText, setEmptyText] = useState<string>('')
 
     useEffect(() => {
+        setEmptyText('Loading...')
         APIs.getCustomerOrder(user.username).then((response: any) => {
             setOrderDetails(response.data.data);
+            !response.data.data.length && setEmptyText('No Data');
         })
     }, []);
 
@@ -41,12 +44,9 @@ function PurchaseHistory() {
                                             <thead >
                                                 <tr>
                                                     <th className="mediumfont custom-color-2 products-name border-0 fw-normal pl-4 ps-3 pb-2 pt-2">Orders</th>
-                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Product Name</th>
-                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Quantity</th>
                                                     <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Order Date</th>
                                                     <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Status</th>
                                                     <th className="mediumfont custom-color-2 products-name border-0 fw-normal pr-4 ps-3 pb-2 pt-2">Order Total</th>
-                                                    {/* <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Action</th> */}
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -54,15 +54,10 @@ function PurchaseHistory() {
                                                     return (
                                                         <tr>
                                                             <td className="custom-color-2 lightfont placeholderfontsize border-0 pl-4 ps-3 pb-3 pt-3 align-middle">
-                                                                <Link href={'/purchase-history/' + order?.attributes?.orderid}>{order?.attributes?.orderid.substring(0, 16)}</Link>
+                                                                <Link href={'/purchase-history/' + order?.attributes?.orderid}>{order?.attributes?.orderid.substring(0, 24)}</Link>
                                                                 <span title={order?.attributes?.orderid} className="pointer">....</span>
                                                                 <i className="pl-1 fa fa-copy pointer" onClick={() => copyOrderID(order)}></i>
                                                             </td>
-                                                            <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle pointer">
-                                                                <Link href={'/products_/' + order?.attributes?.product_id}>{order?.attributes?.product_name.substring(0, 20)}</Link>
-                                                                <span title={order?.attributes?.product_name} className="pointer">....</span>
-                                                            </td>
-                                                            <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle text-center">{order?.attributes?.quantity}</td>
                                                             <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle"
                                                             >{new Date(order?.attributes?.updatedAt).toDateString().substring(4)}
                                                             </td>
@@ -72,7 +67,7 @@ function PurchaseHistory() {
                                                     )
                                                 })
                                              :
-                                             <div className="d-flex align-items-center justify-content-center p-5">NO Data</div>
+                                             <div className="d-flex align-items-center justify-content-center p-5">{emptyText}</div>
                                             }
                                             </tbody>
                                         </table>
