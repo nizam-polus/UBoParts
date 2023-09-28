@@ -18,6 +18,8 @@ const headers = {
 
 const APIs = {
 
+    /* ---------------- general token based apis ----------------- */
+
     auth: (userdata: {}) => axios.post(BACKEND_URL + 'auth/local', userdata),
 
     register: (userdata: {}) => axios.post(BACKEND_URL + 'auth/local/register', userdata),
@@ -107,9 +109,11 @@ const APIs = {
         'content-type': 'multipart/form-data'
     }}),
 
-    getCustomerOrder: (username: string) => ds.get(BACKEND_URL + 'order-details?populate=*&filters[$and][][user_name][$eq]=' + username),
+    getCustomerOrder: (username: string) => ds.post(BACKEND_URL + 'order-distinct-user?populate=*', {user_name: username}),
 
-    getOrderDetails: (orderId: string) => ds.get(BACKEND_URL + 'order-details?populate=*&filters[$and][0][orderid][$eq]=' + orderId)
+    getOrderDetails: (orderId: string) => ds.get(BACKEND_URL + 'order-details?populate=*&filters[$and][0][orderid][$eq]=' + orderId),
+
+    getSellerOrder: (sellerUsername: string) => ds.post(BACKEND_URL + 'order-distinct-seller?populate=*', {seller_name: sellerUsername})
 
 }
 
