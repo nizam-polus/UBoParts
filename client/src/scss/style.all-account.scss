@@ -877,6 +877,9 @@ button.search {
 	background-color: #28712536;	
 	font-weight: 500;	
 }	
+.order-no{
+    color:#287125;
+}
 .add-to-cart-1 {	
 	display: block;	
 }	
@@ -1145,6 +1148,29 @@ button.search {
     margin-top: 0px;
 }	
 /*seller end here*/	
+/*order*/
+.order-table {
+	width: -webkit-fill-available;
+	tr {
+		text-align: end;
+	}
+}
+.order-table2{
+    width: -webkit-fill-available;
+}
+.order-data{
+    text-align: left;
+}
+tr {
+	&.order-data {
+		&:last-child {
+			td {
+				border-bottom: 0px!important;
+			}
+		}
+	}
+}
+/*order end here */
 @media screen and (max-width: 1024px){	
     .request-header,.about-header,.dismantle-header,.seller-reg-header {	
         height: 44vh!important;	
