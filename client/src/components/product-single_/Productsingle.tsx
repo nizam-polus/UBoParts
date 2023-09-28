@@ -30,8 +30,6 @@ function Productsingle() {
     const [latestItems, setLatestItems] = useState([]);
     const [products,setProducts] = useState<any>([])
     const [productCategory, setProductCategory] = useState("")
-   
-
     
     useEffect(() => {
         APIs.getProduct(id).then(response => {
@@ -54,10 +52,10 @@ function Productsingle() {
     }
 
     const handleAddToCart = () => {
-        setAddToCartCompleted(false)
         if (!user || user && !user.id) {
             setOpenLogin(true);
         } else {
+            setAddToCartCompleted(false)
             let productQuantityInCart = 0
             let cartData = {
                 customerid: user.id,
@@ -151,7 +149,8 @@ function Productsingle() {
          }, [products, productCategory]);
    
          const handleProductClick = (product: any) => {
-            router.push('/products_/[id]', `/products_/${product.id}`);
+            const newUrl = `/products_/${product.id}`;
+            window.location.href = newUrl;
         }
 
     return (
@@ -238,7 +237,7 @@ function Productsingle() {
                                                     }
                                                 </span></div>
                                             </div>
-                                            <div className="row pt-1 pb-1">
+                                            <div className="row pt-1 pb-1 d-flex justify-content-center align-items-center">
                                                 <div className="col-4 col-md-4 col-lg-12 col-xl-5">
                                                     <div className="input-group quanitity-box mt-3">
                                                         <span className="input-group-btn plus-icon semifont"

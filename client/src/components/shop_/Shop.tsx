@@ -168,11 +168,6 @@ function Shop() {
             setLoading(false);
         });
     }
-    console.log("searched",searchedProducts)
-        
-    useEffect(() =>{
-
-    },[searchProducts])
 
     /*const categoriesArray = (resData: any) => {
         return [...new Set(resData.map((item: any) => item.attributes.category_name))];
@@ -271,20 +266,19 @@ function Shop() {
 
     const handleApplyFilter = (event: any) => {
         event.preventDefault();
-        console.log(filterCategory);
-        console.log(filterSubcategory);
         APIs.searchFilter(selectedMake, selectedModel, selectedYear, filterCategory, filterSubcategory, {min: minPrice, max: maxPrice}).then(response => {
             setSearchedProducts(response.data.data)
         }).catch(err => console.log)
     }
 
     const handleAddToCart = (productData: any) => {
-        setAddToCartCompleted(false)
-        setItemId(productData?.id)
+        
         if (!user || user && !user.id) {
             setOpenLogin(true);
         } else {
             setOpenLogin(false);
+            setAddToCartCompleted(false)
+            setItemId(productData?.id)
             let productQuantityInCart = 0;
             let cartData = {
                 customerid: user.id,
@@ -304,7 +298,6 @@ function Shop() {
                 // Fetch the product stock count
                 APIs.getProduct(cartData.productid).then(response => {
                     let productStock = response.data.data.attributes.stock_count;
-                    console.log(productStock)
                     if (productQuantityInCart <= productStock && productStock !== 0) {
                         APIs.addToCart(cartData).then(response => {
                             toast.success(() => (
@@ -335,7 +328,6 @@ function Shop() {
     const handleFilterChange = (event: any) =>{
         const selectedOption = event.target.value;
     setFilterOption(selectedOption);
-    console.log(filterOption)
      if (selectedOption === 'Latest') {
         setSearchedProducts(initialproducts);
       } else if (selectedOption === 'highToLow') {
@@ -576,24 +568,21 @@ function Shop() {
                                     </div>
                                     <div className="col">
                                         <div className="d-flex justify-content-end">
-                                        <div className="col-12 col-md-3 d-flex">
-  <label htmlFor="filterDropdown" className="form-label me-2">Sort by:</label>
-  <select
-    id="filterDropdown"
-    className="form-select mb-2 border-0"
-    value={filterOption}
-    onChange={handleFilterChange}
-  >
-    <option value="Latest">Latest</option>
-    <option value="highToLow">Price: High to Low</option>
-    <option value="lowToHigh">Price: Low to High</option>
-    {/* Add more filter options as needed */}
-  </select>
-</div>
+                                        <div className="col-12 col-md-5 d-flex">
+                                          <label htmlFor="filterDropdown" className="form-label me-2 d-flex align-items-center justify-content-center mb-2" style={{minWidth: "100px"}}>Sort by:</label>
+                                         <select
+                                           id="filterDropdown"
+                                           className="form-select mb-2 border-0"
+                                           value={filterOption}
+                                           onChange={handleFilterChange}
+                                         >
+                                           <option value="Latest">Latest</option>
+                                           <option value="highToLow">Price: High to Low</option>
+                                           <option value="lowToHigh">Price: Low to High</option>
+                                           {/* Add more filter options as needed */}
+                                         </select>
+                                       </div>
                                         </div>
-                                    
-
-                                        
                                         <div className="row g-4">
                                             {searchedProducts.map((product: any, index: any) => {
                                                 return (

@@ -42,6 +42,7 @@ function Home() {
     const [openLogin, setOpenLogin] = useState(false);
     const [itemId, setItemId] = useState<any>('')
     const [forgotPasswordPickerIsOpen, setforgotPasswordPickerIsOpen] = useState(false);
+    const [userDetail, setUserDetail] = useState()
 
     useEffect(() => {
         if (licenseplate && licenseplate.length > 5) {
@@ -83,6 +84,8 @@ function Home() {
         }
     }, [licenseplate]);
 
+   
+
     const showForgotPassword = () => {
         setforgotPasswordPickerIsOpen(true);
     };
@@ -97,7 +100,7 @@ function Home() {
     };
 
     const onLoginModalClose = () => {
-        setLoginModalIsOpen(false);
+        setOpenLogin(false);
     };
     useEffect(() => {
         APIs.getCarDetails().then((response: any) => {
@@ -134,6 +137,7 @@ function Home() {
         setProducts(response.data.data)
      })
     }, [])
+   
     useEffect(() => {
         // Function to filter and get the latest 4 items based on category
         const getLatestItemsByCategory = (categoryName: any) => {
@@ -266,12 +270,14 @@ function Home() {
     }
 
     const handleAddToCart = (productData: any) => {
-        setAddToCartCompleted(false)
-        setItemId(productData?.id)
+       
         if (!user || user && !user.id) {
             setOpenLogin(true);
         } else {
+
             setOpenLogin(false);
+            setAddToCartCompleted(false)
+            setItemId(productData?.id)
             let productQuantityInCart = 0;
             let cartData = {
                 customerid: user.id,
@@ -325,7 +331,7 @@ function Home() {
                 onClose={onForgotPasswordClose}
             />
             <Login
-                isOpen={loginModalIsOpen}
+                isOpen={openLogin}
                 onClose={onLoginModalClose}
             />
             <div className="main-body pb-5 mb-5">
@@ -449,37 +455,24 @@ function Home() {
                             })}
                         </div>
                     </section>
-                {user.role ? user.role.name == "seller" ? null :  (
-                <section className="cards-wrapper">
-                    <div className="row mt-3 g-4">
-                      <div className="col" onClick={() => router.push('/request')}>
-                       <div className="specific_part">
-                        <h3 className="text-white bg-image-text semifont m-0 selling-text">Need A <br />Specific Part?</h3>
-                       </div>
-                      </div>
-                       <div className="col" onClick={() => router.push('/seller-registration')}>
-                         <div className="start_selling">
-                         <h3 className="text-white bg-image-text semifont m-0 selling-text">Start Selling <br />With Us</h3>
+                    <section className="cards-wrapper">
+                        <div className="row mt-3 g-4">
+                            { !user?.role || user.role.name !== "seller" ? (
+                                <>
+                                    <div className="col" onClick={() => router.push('/request')}>
+                                        <div className="specific_part">
+                                            <h3 className="text-white bg-image-text semifont m-0 selling-text">Need A <br />Specific Part?</h3>
+                                        </div>
+                                    </div>
+                                    <div className="col" onClick={() => router.push('/seller-registration')}>
+                                        <div className="start_selling">
+                                            <h3 className="text-white bg-image-text semifont m-0 selling-text">Start Selling <br />With Us</h3>
+                                        </div>
+                                    </div>
+                                </>
+                            ) : null}
                         </div>
-                       </div>
-                    </div>
-                </section>
-                        ) : 
-                <section className="cards-wrapper">
-                  <div className="row mt-3 g-4">
-                     <div className="col" onClick={() => router.push('/request')}>
-                        <div className="specific_part">
-                              <h3 className="text-white bg-image-text semifont m-0 selling-text">Need A <br />Specific Part?</h3>
-                        </div>
-                     </div>
-                     <div className="col" onClick={() => router.push('/seller-registration')}>
-                       <div className="start_selling">
-                          <h3 className="text-white bg-image-text semifont m-0 selling-text">Start Selling <br />With Us</h3>
-                    </div>
-                     </div>
-                  </div>
-                </section>
-                }
+                    </section>
                     <section className="categories-wrapper">
                         <div className="row mt-5">
                             <div className="col-12 d-flex justify-content-between">

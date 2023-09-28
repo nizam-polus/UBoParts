@@ -6,6 +6,7 @@ import SellerSideBar from './SellerSideBar';
 import APIs from '~/services/apiService';
 import Qrgenerator from './Qrgenerator';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 function Create_new_listing() {
     const [error, setError] = useState(null);
@@ -40,6 +41,8 @@ function Create_new_listing() {
     const [carDetailId, setCarDetailId] = useState()
     const [selectedItem, setSelectedItem] = useState(null);
     const [showInvaidLicense, setShowInvaidLicense] = useState(false);
+    const [incomplete, setIncomplete] = useState<any>(false);
+
 
     const router = useRouter()
 
@@ -53,7 +56,6 @@ function Create_new_listing() {
         //FETCH AND SOTRE PARTS
         APIs.getParts().then((res) => {
             setParts(res.data.data);
-            console.log(parts)
           });
        // Fetch categories data
     APIs.getCategories()
@@ -126,8 +128,6 @@ function Create_new_listing() {
       
         APIs.getCarDetailsUsingLicence(enteredLicenseplate)
           .then((response) => {
-            console.log("carDetail", response);
-            console.log(response.data.id);
             setCarDetailId(response.data.id);
           })
           .catch((error) => {
@@ -278,7 +278,10 @@ function Create_new_listing() {
     };
 
     const createNewList = () => {
-     console.log(selectedCategoryId,parseInt(selectedSubcategoryId),carDetailId )
+    //  console.log(selectedCategoryId,parseInt(selectedSubcategoryId),carDetailId )
+    let incomplete = !(!!listName && !!carDetailId && selectedCategoryId && !!selectedSubcategoryId && !!listPrice && !!listQuantity && !!listLocation && !!listBarcode && !!listDescription && !!uname && !!uid)
+    setIncomplete(incomplete);
+    if(!incomplete){
         APIs.createNewList({
             "data": {
               "title": listName,
@@ -336,6 +339,10 @@ function Create_new_listing() {
             console.log(error);
             setError(error);
           });
+    }else{
+        toast.error("Fill all fields for create new list")
+    }
+        
         }
     return (
 
@@ -357,13 +364,13 @@ function Create_new_listing() {
                                                 <tr className="double">
                                                 <td className='px-5 pt-4 pb-4'>
                                                     <label className="custom-color-2 regularfont products-name pb-2">List Name <span className="required">*</span></label>
-                                                    <input type="text" value={inputValue} onChange={handleListChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" name="first-name" placeholder="24 Inch Tyre for Mustang" required/>
+                                                    <input type="text" value={inputValue} onChange={handleListChange} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listName ? 'required-field' : 'border-0' }`} name="first-name" placeholder="24 Inch Tyre for Mustang" required/>
                                                     
                                                     <ul style={{display: "contents"}}>
                                                     {selectedItem ? (
                                                         ""
                                                       ) : (
-                                                        <div className="options-container" style={{ backgroundColor: "#ebebeb" , boxShadow:"1px 0px 7px 0px grey"}}>
+                                                        <div className="options-container  position-absolute " style={{ backgroundColor: "#ebebeb" , boxShadow:"1px 0px 7px 0px grey", zIndex: 3}}>
                                                           {parts
                                                             .filter((part:any) => part.attributes.parts.toLowerCase().includes(inputValue.toLowerCase()) && inputValue.length >= 3)
                                                             .map((part:any) => (
@@ -383,7 +390,7 @@ function Create_new_listing() {
                                                   </td>
                                                     <td className='px-5 pt-4 pb-4'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Plate Number <span className="required">*</span></label>
-                                                        <input type="text" onChange={handleLicenseplateChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" name="last-name" placeholder="Enter Plate Number to Auto Fill form" required/>
+                                                        <input type="text" onChange={handleLicenseplateChange} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !licenseplate ? 'required-field' : 'border-0' }`} name="last-name" placeholder="Enter Plate Number to Auto Fill form" required/>
                                                         {showInvaidLicense &&
                                                     <div className="row mt-2 ml-2" >
                                                         <span className="advanced_search placeholderfontsize regularfont">No Record Found Against this Plate Number!</span>
@@ -438,30 +445,29 @@ function Create_new_listing() {
                                                     <td colSpan={2} className='px-5 pb-4 border-top-0'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Listing Sub Category</label><br />
                                                         <select
-                                                   className="form-select input-bg-color-2 border-0 products-name custom-color-2"
-                                                   value={selectedSubcategoryId} // Use selectedSubcategoryId to store the ID
-                                                   onChange={(e) => setSelectedSubcategoryId(e.target.value)} // Update the selected subcategory ID
-                                                 >
-                                                 <option value="">Choose Sub Category</option>
-                                                 {subcategories &&
-                                                   subcategories.map((subcategory: any, index: any) => (
-                                                     <option key={index} value={subcategory.id}>
-                                                       {subcategory.name}
-                                                     </option>
-                                                   ))}
-                                               </select>
-
-
+                                                            className="form-select input-bg-color-2 border-0 products-name custom-color-2"
+                                                            value={selectedSubcategoryId}
+                                                            onChange={(e) => setSelectedSubcategoryId(e.target.value)}
+                                                            disabled={!subcategories || subcategories.length === 0}
+                                                        >
+                                                            <option value="">Choose Sub Category</option>
+                                                            {subcategories &&
+                                                                subcategories.map((subcategory: any, index: any) => (
+                                                                    <option key={index} value={subcategory.id}>
+                                                                        {subcategory.name}
+                                                                    </option>
+                                                                ))}
+                                                        </select>
                                                     </td>
                                                 </tr>
                                                 <tr className="double">
                                                     <td className='px-5 pb-2 pt-4'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Listing Price (€)</label>
-                                                        <input type="text" onChange={handlePriceChange} value={listPrice} className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Listing Price (€)" />
+                                                        <input type="text" onChange={handlePriceChange} value={listPrice} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listPrice ? 'required-field' : 'border-0' }`} placeholder="Listing Price (€)" />
                                                     </td>
                                                     <td className='px-5 pb-2 pt-4'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Listing Quantity</label>
-                                                        <input type="text" onChange={handleQuantityChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Listing Quantity" />
+                                                        <input type="text" onChange={handleQuantityChange} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listQuantity ? 'required-field' : 'border-0' }`} placeholder="Listing Quantity" />
                                                     </td>
                                                 </tr>
                                                 <tr className="double">
@@ -473,7 +479,7 @@ function Create_new_listing() {
                                                     </td>
                                                     <td className='px-5 pb-2 border-0'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Location of Part</label>
-                                                        <input type="text" onChange={handleLocationChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Location of Part" />
+                                                        <input type="text" onChange={handleLocationChange} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listLocation ? 'required-field' : 'border-0' }`} placeholder="Location of Part" />
                                                     </td>
                                                 </tr>
                                                 {/* <tr className="single">
@@ -485,34 +491,33 @@ function Create_new_listing() {
                                                 <tr className="single">
                                                     <td colSpan={2} className='px-5 pb-4 pt-2 border-0'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Article No</label>
-                                                        <input type="text" onChange={handleBarcodeChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Listing Part No/Barcode No" />
+                                                        <input type="text" onChange={handleBarcodeChange} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && listBarcode ? 'required-field' : 'border-0' }`} placeholder="Listing Part No/Barcode No" />
                                                         {listBarcode && <Qrgenerator qrValue={listBarcode}/>}
                                                     </td>
                                                 </tr>
                                                 <tr className="double">
-                                                    <td className='px-5 pt-4 pb-2' >
+                                                    <td className='px-5 pt-4 pb-2'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Listing Featured Image <span className="required">*</span></label>
-                                                        <input className="form-control pt-2 pb-1 choosefile" type="file" id="featuredImages"  onChange={handleFeaturedImageChange} required/>
-                                                        
-                                                        {productImage && (
-                                                    <div className="selected-featured-image" style={{padding: "10px 0"}}>
-                                                    <img src={URL.createObjectURL(productImage)} alt="Selected Featured" width={200} height={200} style={{borderRadius: "20px"}}/>
-                                                    {/* <button  onClick={handleDeleteFeaturedImage}>
-                                                      <FaTrash /> Delete
-                                                    </button> */}
-                                                  </div>
-                                                    )}
+                                                        <input className={`form-control pt-2 pb-1 choosefile ${incomplete && !productImage ? 'required-field' : 'border-0' }`} type="file" id="featuredImages" onChange={handleFeaturedImageChange} required />
 
+                                                        {productImage && (
+                                                            <div className="selected-featured-image" style={{ position: "relative", padding: "10px 0", width: "200px"}}>
+                                                                <button style={{ position: 'absolute', top: '10px', right: '15px', border: "none", color: "white", backgroundColor: "transparent", padding: "5px", borderRadius: "50%", cursor: "pointer" }} onClick={() => handleDeleteFeaturedImage()}>
+                                                                    <i className='fa fa-trash'></i>
+                                                                </button>
+                                                                <img src={URL.createObjectURL(productImage)} alt="Selected Featured" width={200} height={200} style={{ borderRadius: "20px" }} />
+                                                            </div>
+                                                        )}
                                                     </td>
                                                     <td className='px-5 pt-4 pb-2'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Listing Image(s) <span className="required">*</span></label>
-                                                        <input className="form-control pt-2 pb-1 choosefile" type="file" id="galleryImages"  onChange={handleGalleryImagesChange} multiple required/>
+                                                        <input className={`form-control pt-2 pb-1 choosefile  ${incomplete && !productGalleryImages ? 'required-field' : 'border-0' }`} type="file" id="galleryImages" onChange={handleGalleryImagesChange} multiple required/>
                                                         {productGalleryImages.length > 0 && (
                                                    <div className="selected-gallery-images" style={{padding: "10px 0", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px"}}>
                                                        {productGalleryImages.map((image : any, index: any) => (
                                                           <div key={index} style={{ position: 'relative' }}>
                                                           <img src={URL.createObjectURL(image)} alt={`Selected ${index + 1}`} height={200} style={{ width: "100%", borderRadius: "20px", maxWidth: "210px" }} />
-                                                          <button  style={{ position: 'absolute', top: '5px', right: '10px', border: "none", background: "none", color: "white" }} onClick={() => handleDeleteGalleryImage(index)}>
+                                                          <button  style={{ position: 'absolute', top: '5px', right: '10px', border: "none", color: "white", background: "none" }} onClick={() => handleDeleteGalleryImage(index)}>
                                                             <i className='fa fa-trash mr-3'></i>
                                                           </button>
                                                         </div>
@@ -524,7 +529,7 @@ function Create_new_listing() {
                                                 <tr className="single">
                                                     <td colSpan={2} className='px-5 pb-2 border-0'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Listing Description</label>
-                                                        <textarea onChange={handleDescriptionChange} className="form-control input-bg-color-2 border-0 products-name rounded" rows={4}></textarea>
+                                                        <textarea onChange={handleDescriptionChange} className={`form-control input-bg-color-2 border-0 products-name rounded ${incomplete && !listDescription ? 'required-field' : 'border-0' }`} rows={4}></textarea>
                                                     </td>
                                                 </tr>
                                                 <tr className="single">
