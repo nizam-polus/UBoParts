@@ -14,7 +14,7 @@ import MainMenu from '~/components/header/MainMenu';
 import Search from '~/components/header/Search';
 import Topbar from '~/components/header/Topbar';
 import url from '~/services/url';
-import { Heart32Svg, Person32Svg, Cart32Svg } from '~/svg';
+// import { Heart32Svg, Person32Svg, Cart32Svg } from '~/svg';
 import { useCart } from '~/store/cart/cartHooks';
 import { useOptions } from '~/store/options/optionsHooks';
 import { useUser } from '~/store/user/userHooks';
@@ -123,13 +123,13 @@ function Header() {
             <div className="header__indicators">
                 <Indicator
                     href={url.wishlist()}
-                    icon={<Heart32Svg />}
+                    icon={''}
                     counter={wishlist.items.length}
                 />
 
                 <Indicator
                     href={url.accountDashboard()}
-                    icon={<Person32Svg />}
+                    icon={''}
                     label={accountIndicatorLabel}
                     value={accountIndicatorValue}
                     trigger="click"
@@ -140,7 +140,7 @@ function Header() {
 
                 <Indicator
                     href={url.cart()}
-                    icon={<Cart32Svg />}
+                    icon={''}
                     label={cartIndicatorLabel}
                     value={<CurrencyFormat value={cart.total} />}
                     counter={cart.quantity}

@@ -19,9 +19,11 @@ function Arrow(props: Props) {
         <div className={rootClasses} {...rootProps}>
             <button className="arrow__button" type="button">
                 {direction === 'prev' && (
+                    ''
                     // <ArrowRoundedLeft7x11Svg />
                 )}
                 {direction === 'next' && (
+                    ''
                     // <ArrowRoundedRight7x11Svg />
                 )}
             </button>
