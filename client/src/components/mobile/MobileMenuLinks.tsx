@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import AppImage from '~/components/shared/AppImage';
 import AppLink from '~/components/shared/AppLink';
 import MobileMenuPanelController from '~/components/mobile/MobileMenuPanelController';
-import { ArrowRoundedRight7x11Svg } from '~/svg';
+// import { ArrowRoundedRight7x11Svg } from '~/svg';
 import { IMobileMenuLink } from '~/interfaces/mobile-menu-link';
 
 interface Props {
@@ -44,7 +44,7 @@ function MobileMenuLinks(props: Props) {
                                 </div>
                             )}
                             {item.title}
-                            {hasSubmenu && <ArrowRoundedRight7x11Svg />}
+                            {/* {hasSubmenu && <ArrowRoundedRight7x11Svg />} */}
                         </React.Fragment>
                     );
 

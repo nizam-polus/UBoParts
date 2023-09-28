@@ -14,15 +14,15 @@ import { useGarageCurrent, useGarageSetCurrent } from '~/store/garage/garageHook
 import { useGlobalMousedown } from '~/services/hooks';
 import { useMobileMenuOpen } from '~/store/mobile-menu/mobileMenuHooks';
 import { useWishlist } from '~/store/wishlist/wishlistHooks';
-import {
-    Car20Svg,
-    Cart20Svg,
-    Cross20Svg,
-    Heart20Svg,
-    Menu18x14Svg,
-    Person20Svg,
-    Search20Svg,
-} from '~/svg';
+// import {
+//     Car20Svg,
+//     Cart20Svg,
+//     Cross20Svg,
+//     Heart20Svg,
+//     Menu18x14Svg,
+//     Person20Svg,
+//     Search20Svg,
+// } from '~/svg';
 
 function MobileHeader() {
     const intl = useIntl();
@@ -106,7 +106,7 @@ function MobileHeader() {
                         type="button"
                         onClick={mobileMenuOpen}
                     >
-                        <Menu18x14Svg />
+                        {/* <Menu18x14Svg /> */}
                     </button>
                     <AppLink href={url.home()} className="mobile-header__logo">
                         <MobileLogo />
@@ -133,20 +133,20 @@ function MobileHeader() {
                                 className="mobile-search__vehicle-picker"
                                 onClick={openVehiclePicker}
                             >
-                                <Car20Svg />
+                                {/* <Car20Svg /> */}
                                 <span className="mobile-search__vehicle-picker-label">
                                     <FormattedMessage id="BUTTON_SEARCH_SELECT_VEHICLE_MOBILE" />
                                 </span>
                             </button>
                             <button type="submit" className="mobile-search__button mobile-search__button--search">
-                                <Search20Svg />
+                                {/* <Search20Svg /> */}
                             </button>
                             <button
                                 type="button"
                                 className="mobile-search__button mobile-search__button--close"
                                 onClick={closeSearch}
                             >
-                                <Cross20Svg />
+                                {/* <Cross20Svg /> */}
                             </button>
                             <div className="mobile-search__field" />
                         </form>
@@ -155,21 +155,21 @@ function MobileHeader() {
                         <div className="mobile-indicator d-md-none" ref={searchIndicatorRef}>
                             <button type="button" className="mobile-indicator__button" onClick={openSearch}>
                                 <span className="mobile-indicator__icon">
-                                    <Search20Svg />
+                                    {/* <Search20Svg /> */}
                                 </span>
                             </button>
                         </div>
                         <div className="mobile-indicator d-none d-md-block">
                             <AppLink href={url.accountDashboard()} className="mobile-indicator__button">
                                 <span className="mobile-indicator__icon">
-                                    <Person20Svg />
+                                    {/* <Person20Svg /> */}
                                 </span>
                             </AppLink>
                         </div>
                         <div className="mobile-indicator d-none d-md-block">
                             <AppLink href={url.wishlist()} className="mobile-indicator__button">
                                 <span className="mobile-indicator__icon">
-                                    <Heart20Svg />
+                                    {/* <Heart20Svg /> */}
                                     {wishlist.items.length > 0 && (
                                         <span className="mobile-indicator__counter">
                                             {wishlist.items.length}
@@ -181,7 +181,7 @@ function MobileHeader() {
                         <div className="mobile-indicator">
                             <AppLink href={url.cart()} className="mobile-indicator__button">
                                 <span className="mobile-indicator__icon">
-                                    <Cart20Svg />
+                                    {/* <Cart20Svg /> */}
                                     {cart.quantity > 0 && (
                                         <span className="mobile-indicator__counter">
                                             {cart.quantity}

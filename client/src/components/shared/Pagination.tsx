@@ -3,7 +3,7 @@ import React from 'react';
 // third-party
 import classNames from 'classnames';
 // application
-import { ArrowRoundedLeft7x11Svg, ArrowRoundedRight7x11Svg } from '~/svg';
+// import { ArrowRoundedLeft7x11Svg, ArrowRoundedRight7x11Svg } from '~/svg';
 
 interface Props {
     siblings?: number;
@@ -72,7 +72,7 @@ function Pagination(props: Props) {
                     onClick={() => setPage(current - 1)}
                 >
                     <span className="page-link__arrow page-link__arrow--left" aria-hidden="true">
-                        <ArrowRoundedLeft7x11Svg />
+                        {/* <ArrowRoundedLeft7x11Svg /> */}
                     </span>
                 </button>
             </li>
@@ -113,7 +113,7 @@ function Pagination(props: Props) {
                     onClick={() => setPage(current + 1)}
                 >
                     <span className="page-link__arrow page-link__arrow--right" aria-hidden="true">
-                        <ArrowRoundedRight7x11Svg />
+                        {/* <ArrowRoundedRight7x11Svg /> */}
                     </span>
                 </button>
             </li>

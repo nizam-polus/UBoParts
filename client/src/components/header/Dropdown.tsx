@@ -4,7 +4,7 @@ import React, { PropsWithChildren, useRef, useState } from 'react';
 import classNames from 'classnames';
 // application
 import AppImage from '~/components/shared/AppImage';
-import { ArrowDownSm7x5Svg } from '~/svg';
+// import { ArrowDownSm7x5Svg } from '~/svg';
 import { useGlobalMousedown } from '~/services/hooks';
 
 export interface IDropdownItem {
@@ -64,7 +64,7 @@ function Dropdown<T extends IDropdownItem>(props: Props<T>) {
                 {hasLabel && <span className="topbar__button-label">{label}</span>}
                 {hasTitle && <span className="topbar__button-title">{title}</span>}
                 <span className="topbar__button-arrow">
-                    <ArrowDownSm7x5Svg />
+                    {/* <ArrowDownSm7x5Svg /> */}
                 </span>
             </button>
             <div className="topbar__menu-body">

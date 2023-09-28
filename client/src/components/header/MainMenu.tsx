@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import AppLink from '~/components/shared/AppLink';
 import Megamenu from '~/components/header/Megamenu';
 import Menu from '~/components/header/Menu';
-import { ArrowDownSm7x5Svg } from '~/svg';
+// import { ArrowDownSm7x5Svg } from '~/svg';
 import { IMainMenuLink } from '~/interfaces/main-menu-link';
 import { useOptions } from '~/store/options/optionsHooks';
 // data
@@ -62,7 +62,7 @@ function MainMenu() {
                                 {...item.customFields?.anchorProps}
                             >
                                 {item.title}
-                                {itemHasSubmenu && <ArrowDownSm7x5Svg />}
+                                {/* {itemHasSubmenu && <ArrowDownSm7x5Svg />} */}
                             </AppLink>
 
                             {itemHasSubmenu && (

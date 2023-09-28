@@ -4,7 +4,7 @@ import React, { useCallback } from 'react';
 import classNames from 'classnames';
 // application
 import Pagination from '~/components/shared/Pagination';
-import { ArrowRoundedLeft7x11Svg, ArrowRoundedRight7x11Svg } from '~/svg';
+// import { ArrowRoundedLeft7x11Svg, ArrowRoundedRight7x11Svg } from '~/svg';
 import { INavigation } from '~/interfaces/list';
 
 export type INavigationEvent =
@@ -61,7 +61,7 @@ function Navigation(props: Props) {
                         onClick={onBefore}
                     >
                         <span className="page-link__arrow page-link__arrow--left" aria-hidden="true">
-                            <ArrowRoundedLeft7x11Svg />
+                            {/* <ArrowRoundedLeft7x11Svg /> */}
                         </span>
                     </button>
                 </li>
@@ -74,7 +74,7 @@ function Navigation(props: Props) {
                         onClick={onAfter}
                     >
                         <span className="page-link__arrow page-link__arrow--right" aria-hidden="true">
-                            <ArrowRoundedRight7x11Svg />
+                            {/* <ArrowRoundedRight7x11Svg /> */}
                         </span>
                     </button>
                 </li>

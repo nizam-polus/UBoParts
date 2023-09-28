@@ -3,7 +3,7 @@ import React from 'react';
 // third-party
 import classNames from 'classnames';
 // application
-import { ArrowRoundedLeft7x11Svg, ArrowRoundedRight7x11Svg } from '~/svg';
+// import { ArrowRoundedLeft7x11Svg, ArrowRoundedRight7x11Svg } from '~/svg';
 
 type Direction = 'next' | 'prev';
 
@@ -19,10 +19,10 @@ function Arrow(props: Props) {
         <div className={rootClasses} {...rootProps}>
             <button className="arrow__button" type="button">
                 {direction === 'prev' && (
-                    <ArrowRoundedLeft7x11Svg />
+                    // <ArrowRoundedLeft7x11Svg />
                 )}
                 {direction === 'next' && (
-                    <ArrowRoundedRight7x11Svg />
+                    // <ArrowRoundedRight7x11Svg />
                 )}
             </button>
         </div>

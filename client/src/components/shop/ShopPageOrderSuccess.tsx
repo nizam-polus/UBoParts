@@ -10,7 +10,7 @@ import BlockSpace from '~/components/blocks/BlockSpace';
 import CurrencyFormat from '~/components/shared/CurrencyFormat';
 import PageTitle from '~/components/shared/PageTitle';
 import url from '~/services/url';
-import { Check100Svg } from '~/svg';
+// import { Check100Svg } from '~/svg';
 import { IOrder } from '~/interfaces/order';
 
 interface Props {
@@ -43,7 +43,7 @@ function ShopPageOrderSuccess(props: Props) {
                 <div className="container">
                     <div className="order-success__body">
                         <div className="order-success__header">
-                            <Check100Svg className="order-success__icon" />
+                            {/* <Check100Svg className="order-success__icon" /> */}
                             <h1 className="order-success__title">
                                 <FormattedMessage id="HEADER_ORDER_SUCCESS_TITLE" />
                             </h1>

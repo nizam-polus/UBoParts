@@ -6,7 +6,7 @@ import classNames from 'classnames';
 // application
 import AppLink from '~/components/shared/AppLink';
 import url from '~/services/url';
-import { ArrowRoundedLeft6x9Svg } from '~/svg';
+// import { ArrowRoundedLeft6x9Svg } from '~/svg';
 import { getCategoryParents } from '~/services/utils';
 import { ICategoryFilter } from '~/interfaces/filter';
 
@@ -23,7 +23,7 @@ function FilterCategory(props: Props) {
                 {options.value && (
                     <li className="filter-category__item filter-category__item--parent">
                         <span className="filter-category__arrow">
-                            <ArrowRoundedLeft6x9Svg />
+                            {/* <ArrowRoundedLeft6x9Svg /> */}
                         </span>
                         <AppLink href={url.products()}>
                             <FormattedMessage id="LINK_ALL_PRODUCTS" />
@@ -35,7 +35,7 @@ function FilterCategory(props: Props) {
                         {getCategoryParents(item).map((parent) => (
                             <li key={parent.id} className="filter-category__item filter-category__item--parent">
                                 <span className="filter-category__arrow">
-                                    <ArrowRoundedLeft6x9Svg />
+                                    {/* <ArrowRoundedLeft6x9Svg /> */}
                                 </span>
                                 <AppLink href={url.category(parent)}>
                                     {parent.name}

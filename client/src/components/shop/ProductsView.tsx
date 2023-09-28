@@ -15,14 +15,14 @@ import ProductCard from '~/components/shared/ProductCard';
 import { isEmptyList } from '~/services/utils';
 import { IShopPageGridLayout, IShopPageLayout, IShopPageOffCanvasSidebar } from '~/interfaces/pages';
 import { SidebarContext } from '~/services/sidebar';
-import {
-    Cross9LightSvg,
-    Filters16Svg,
-    LayoutGrid16Svg,
-    LayoutGridWithDetails16Svg,
-    LayoutList16Svg,
-    LayoutTable16Svg,
-} from '~/svg';
+// import {
+//     Cross9LightSvg,
+//     Filters16Svg,
+//     LayoutGrid16Svg,
+//     LayoutGridWithDetails16Svg,
+//     LayoutList16Svg,
+//     LayoutTable16Svg,
+// } from '~/svg';
 import {
     useSetOption,
     useShop,
@@ -89,10 +89,10 @@ function ProductsView(props: Props) {
     };
 
     const layoutButtons: LayoutButton[] = useMemo(() => [
-        { layout: 'grid', icon: <LayoutGrid16Svg /> },
-        { layout: 'grid-with-features', icon: <LayoutGridWithDetails16Svg /> },
-        { layout: 'list', icon: <LayoutList16Svg /> },
-        { layout: 'table', icon: <LayoutTable16Svg /> },
+        // { layout: 'grid', icon: <LayoutGrid16Svg /> },
+        // { layout: 'grid-with-features', icon: <LayoutGridWithDetails16Svg /> },
+        // { layout: 'list', icon: <LayoutList16Svg /> },
+        // { layout: 'table', icon: <LayoutTable16Svg /> },
     ], []);
 
     const rootClasses = classNames('products-view', {
@@ -161,7 +161,7 @@ function ProductsView(props: Props) {
                                     className="view-options__filters-button filters-button"
                                     onClick={handleFiltersClick}
                                 >
-                                    <span className="filters-button__icon"><Filters16Svg /></span>
+                                    {/* <span className="filters-button__icon"><Filters16Svg /></span> */}
                                     <span className="filters-button__title">
                                         <FormattedMessage id="BUTTON_FILTERS" />
                                     </span>
@@ -302,7 +302,7 @@ function ProductsView(props: Props) {
                                                         )}
                                                         {filter.type === 'color' && filter.item.name}
 
-                                                        <Cross9LightSvg />
+                                                        {/* <Cross9LightSvg /> */}
                                                     </button>
                                                 </li>
                                             ))}
