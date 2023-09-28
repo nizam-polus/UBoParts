@@ -6,6 +6,7 @@ import SellerSideBar from './SellerSideBar';
 import APIs from '~/services/apiService';
 import { useRouter } from 'next/router';
 import { BASE_URL } from 'configuration';
+import { toast } from 'react-toastify';
 
 
 function EditListing() {
@@ -41,6 +42,7 @@ function EditListing() {
     const [carDetailId, setCarDetailId] = useState()
     const [selectedItem, setSelectedItem] = useState(null);
     const [showInvaidLicense, setShowInvaidLicense] = useState(false);
+    const [incomplete, setIncomplete] = useState<any>(false);
 
     const router = useRouter()
     const id = router.query.id;
@@ -52,8 +54,16 @@ function EditListing() {
     useEffect(() => {
         APIs.getProduct(id).then(response => {
             let product = response.data.data;
+            if(response.data.data.attributes?.product_gallary_image?.data.length >0 && response.data.data.attributes?.product_image.data == null){
+              let productImage = response.data.data.attributes?.product_gallary_image?.data[0]?.attributes?.url;
+              setProductImage(productImage);
+            }else{
+              let productImage =response.data.data.attributes?.product_image?.data.attributes.url
+              setProductImage(productImage);
+            }
             let productGallery = response.data.data.attributes?.product_gallary_image?.data;
-            let productImage = response.data.data.attributes?.product_gallary_image?.data[0]?.attributes?.url;
+           
+           
             let make = response.data.data.attributes?.cardetail?.data?.attributes?.make  
             let model = response.data.data.attributes?.cardetail?.data?.attributes?.model
             let year = response.data.data.attributes?.cardetail?.data?.attributes?.year  
@@ -61,7 +71,7 @@ function EditListing() {
 
             setProductData(product);
             setProductGalleryImages(productGallery);
-            setProductImage(productImage);
+            
             setListName(response.data.data.attributes.title)
             setListPrice(response.data.data.attributes.price)
             setListQuantity(response.data.data.attributes.stock_count)
@@ -72,6 +82,7 @@ function EditListing() {
             setSelectedCategoryId(response.data.data.attributes.category.data.id)
             setSelectedSubcategoryId(response.data.data.attributes.sub_category.data.id)
             setSelectedSubcategory(response.data.data.attributes.sub_category.data.attributes.name)
+            setCarDetailId(response.data.data?.attributes?.cardetail?.data.id)
             
             APIs.getSubcategories(response.data.data.attributes.category.data.id)
                 .then((response) => {
@@ -88,7 +99,6 @@ function EditListing() {
                     setSelectedModel(model)
                     setSelectedYear(year)
                     setLicenseplate(licenseplate)
-                    setCarDetailId(response.data.data?.attributes?.cardetail?.data.id)
                 })
         }).catch(err => console.log(err))
     }, []);
@@ -316,58 +326,66 @@ function EditListing() {
     };
 
     const createNewList = () => {
-        APIs.updateList(id,{
-            "data": {
-              "title": listName,
-              "cardetail": [carDetailId],
-              "category": [selectedCategoryId],
-              "sub_category": [parseInt(selectedSubcategoryId)],
-              "price": listPrice,
-              "stock_count": [listQuantity],
-              "product_location_warehouse": listLocation,
-              "part_no_barcode_no": listBarcode,
-              "description": listDescription,
-              "product_status": "Active",
-              "seller": uname,
-              "seller_id" : uid,
-            }
-          }).then((response: any) => {
-            const resId = response.data.data.id;
-            if (productImage && productImage instanceof File) {
-              // Make the API call to upload the featured image
-              APIs.uploadImage({
-                ref: "api::product.product",
-                refId: resId,
-                field: "product_image",
-                files: productImage,
-              })
-              for (let i = 0; i < productGalleryImages.length; i++) {
-                const galleryImage = productGalleryImages[i];
-                // Use a closure to capture the current value of 'i'
-                (function (index) {
-                  APIs.uploadImage({
-                    ref: "api::product.product",
-                    refId: resId,
-                    field: "product_gallary_image",
-                    files: galleryImage,
-                  })
-                    .then((galleryImageUploadResponse) => {
-                    })
-                    .catch((galleryImageUploadError) => {
-                      console.error(`Gallery image ${index + 1} upload error:`, galleryImageUploadError);
-                    });
-                })(i);
-              }
 
-            } else {
-              // Handle the case where productImage is not defined
-              console.error("No product image selected.");
+      let incomplete = !(!!listName && !!carDetailId && selectedCategoryId && !!selectedSubcategoryId && !!listPrice && !!listQuantity && !!listLocation && !!listBarcode && !!listDescription && !!uname && !!uid)
+    setIncomplete(incomplete);
+      if(!incomplete){
+        APIs.updateList(id,{
+          "data": {
+            "title": listName,
+            "cardetail": [carDetailId],
+            "category": [selectedCategoryId],
+            "sub_category": [parseInt(selectedSubcategoryId)],
+            "price": listPrice,
+            "stock_count": [listQuantity],
+            "product_location_warehouse": listLocation,
+            // "part_no_barcode_no": listBarcode,
+            "description": listDescription,
+            "product_status": "Active",
+            "seller": uname,
+            "seller_id" : uid,
+          }
+        }).then((response: any) => {
+          const resId = response.data.data.id;
+          if (productImage && productImage instanceof File) {
+            // Make the API call to upload the featured image
+            APIs.uploadImage({
+              ref: "api::product.product",
+              refId: resId,
+              field: "product_image",
+              files: productImage,
+            })
+            for (let i = 0; i < productGalleryImages.length; i++) {
+              const galleryImage = productGalleryImages[i];
+              // Use a closure to capture the current value of 'i'
+              (function (index) {
+                APIs.uploadImage({
+                  ref: "api::product.product",
+                  refId: resId,
+                  field: "product_gallary_image",
+                  files: galleryImage,
+                })
+                  .then((galleryImageUploadResponse) => {
+                  })
+                  .catch((galleryImageUploadError) => {
+                    console.error(`Gallery image ${index + 1} upload error:`, galleryImageUploadError);
+                  });
+              })(i);
             }
-          }).then(() => router.push('/seller/listings'))
-          .catch((error) => {
-            console.log(error);
-            setError(error);
-          });
+
+          } else {
+            // Handle the case where productImage is not defined
+            console.error("No product image selected.");
+          }
+        }).then(() => router.push('/seller/listings'))
+        .catch((error) => {
+          console.log(error);
+          setError(error);
+        });
+      }else{
+        toast.error("Fill all fields for Edt list")
+      }
+        
         }
     return (
 
@@ -395,7 +413,7 @@ function EditListing() {
                                                     {selectedItem ? (
                                                         ""
                                                       ) : (
-                                                        <div className="options-container" style={{ backgroundColor: "#ebebeb" , boxShadow:"1px 0px 7px 0px grey"}}>
+                                                        <div className="options-container  position-absolute " style={{ backgroundColor: "#ebebeb" , boxShadow:"1px 0px 7px 0px grey", zIndex: 3}}>
                                                           {parts
                                                             .filter((part:any) => part.attributes.parts.toLowerCase().includes(inputValue.toLowerCase()) && inputValue.length >= 3)
                                                             .map((part:any) => (
@@ -473,6 +491,7 @@ function EditListing() {
                                                    className="form-select input-bg-color-2 border-0 products-name custom-color-2"
                                                    value={selectedSubcategoryId} // Use selectedSubcategoryId to store the ID
                                                    onChange={(e) => setSelectedSubcategoryId(e.target.value)} // Update the selected subcategory ID
+                                                   disabled={!subcategories || subcategories.length === 0}
                                                  >
                                                  <option >Choose Sub Category</option>
                                                  {subcategories &&
@@ -521,42 +540,42 @@ function EditListing() {
                                                         {listBarcode && <Qrgenerator qrValue={listBarcode}/>}
                                                     </td>
                                                 </tr> */}
-                                                <tr className="double">
-                                               <td className='px-5 pt-4 pb-2'>
-                                            <label className="custom-color-2 regularfont products-name pb-2">Listing Featured Image <span className="required">*</span></label>
-    <input className="form-control pt-2 pb-1 choosefile" type="file" id="featuredImages" onChange={handleFeaturedImageChange} required />
+                                               <tr className="double">
+                                                <td className='px-5 pt-4 pb-2'>
+                              <label className="custom-color-2 regularfont products-name pb-2">Listing Featured Image <span className="required">*</span></label>
+                              <input className="form-control pt-2 pb-1 choosefile" type="file" id="featuredImages" onChange={handleFeaturedImageChange} required />
 
-    {productImage ? (
-      <div className="selected-featured-image" style={{ padding: "10px 0" }}>
-        {typeof productImage === 'string' ? (
-          <img src={BASE_URL + productImage} alt="Selected Featured" width={200} height={200} style={{ borderRadius: "20px" }} />
-        ) : (
-          <img src={URL.createObjectURL(productImage)} alt="Selected Featured" width={200} height={200} style={{ borderRadius: "20px" }} />
-        )}
-        {/* Add delete button if needed */}
-      </div>
-    ) : null}
-  </td>
-  <td className='px-5 pt-4 pb-2'>
-    <label className="custom-color-2 regularfont products-name pb-2">Listing Image(s) <span className="required">*</span></label>
-    <input className="form-control pt-2 pb-1 choosefile" type="file" id="galleryImages" onChange={handleGalleryImagesChange} multiple required />
+                              {productImage ? (
+                                <div className="selected-featured-image" style={{ padding: "10px 0" }}>
+                                  {typeof productImage === 'string' ? (
+                                    <img src={BASE_URL + productImage} alt="Selected Featured" width={200} height={200} style={{ borderRadius: "20px" }} />
+                                  ) : (
+                                    <img src={URL.createObjectURL(productImage)} alt="Selected Featured" width={200} height={200} style={{ borderRadius: "20px" }} />
+                                  )}
+                                  {/* Add delete button if needed */}
+                                </div>
+                              ) : null}
+                            </td>
+                            <td className='px-5 pt-4 pb-2'>
+                              <label className="custom-color-2 regularfont products-name pb-2">Listing Image(s) <span className="required">*</span></label>
+                              <input className="form-control pt-2 pb-1 choosefile" type="file" id="galleryImages" onChange={handleGalleryImagesChange} multiple required />
 
-    {productGalleryImages.length > 0 && (
-      <div className="selected-gallery-images" style={{ padding: "10px 0", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-        {productGalleryImages.map((image:any, index:any) => (
-          <div key={index} style={{ position: 'relative' }}>
-            {typeof image?.attributes?.url === 'string' ? (
-              <img src={BASE_URL + image?.attributes.url} alt={`Selected ${index + 1}`} height={200} style={{ width: "100%", borderRadius: "20px", maxWidth: "210px" }} />
-            ) : (
-              <img src={URL.createObjectURL(image)} alt={`Selected ${index + 1}`} height={200} style={{ width: "100%", borderRadius: "20px", maxWidth: "210px" }} />
-            )}
-            {/* Add delete button if needed */}
-          </div>
-        ))}
-      </div>
-    )}
-  </td>
-</tr>
+                              {productGalleryImages.length > 0 && (
+                                <div className="selected-gallery-images" style={{ padding: "10px 0", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+                                  {productGalleryImages.map((image: any, index: any) => (
+                                    <div key={index} style={{ position: 'relative' }}>
+                                      {typeof image?.attributes?.url === 'string' ? (
+                                        <img src={BASE_URL + image?.attributes.url} alt={`Selected ${index + 1}`} height={200} style={{ width: "100%", borderRadius: "20px", maxWidth: "210px" }} />
+                                      ) : (
+                                        <img src={URL.createObjectURL(image)} alt={`Selected ${index + 1}`} height={200} style={{ width: "100%", borderRadius: "20px", maxWidth: "210px" }} />
+                                      )}
+                                      {/* Add delete button if needed */}
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </td>
+                          </tr>
                                                 <tr className="single">
                                                     <td colSpan={2} className='px-5 pb-2 border-0'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Listing Description</label>

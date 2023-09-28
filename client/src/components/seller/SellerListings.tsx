@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState} from 'react';
 import AppLink from '~/components/shared/AppLink';
 import AppImage from '~/components/shared/AppImage';
 import { BASE_URL } from 'configuration';
@@ -7,17 +7,25 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import APIs from '~/services/apiService';
 import WidgetSearch from '../widgets/WidgetSearch';
+import { UserContext } from '../account_/UserContext';
+
 
 function SellerListings() {
     const router = useRouter();
     const [uname, setUname] = useState<any>("");
     const [sellerList, setSellerList] = useState([]);
+    const {user} = UserContext();
 
-
-    const deleteProduct = (id:any) =>{
-        
-        APIs.deleteProduct(id).then((res) => console.log(res))
-      }
+     const deleteProduct = async (id: any) => {
+        try {
+          const deleteResponse = await APIs.deleteProduct(id);
+        //   console.log(deleteResponse);
+          const response = await APIs.getAllSellerProducts(user.username);
+          setSellerList(response?.data?.data);
+        } catch (error) {
+          console.error("Error deleting product:", error);
+        }
+      };
     
     const editProduct = (id: any) =>{
         router.push('/sellerUpdates/' + id);
@@ -26,14 +34,8 @@ function SellerListings() {
     useEffect(() => {
         (async () => {
             try {
-                // Retrieve the userDetails string from localStorage
-                const userDetails: any = localStorage.getItem("userdetails");
-                const userDetailsJSON = JSON.parse(userDetails);
-                // Get the username property from the userDetails object
-                const username = userDetailsJSON.username;
-                setUname(username);
                 // Make the API call with the username
-                const res = await APIs.getAllSellerProducts(username);
+                const res = await APIs.getAllSellerProducts(user.username);
                 setSellerList(res.data.data);
             } catch (error) {
                 console.error(error);
