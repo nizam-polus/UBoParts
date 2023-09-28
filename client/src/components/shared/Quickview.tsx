@@ -15,7 +15,7 @@ import ProductGallery from '~/components/shop/ProductGallery';
 import Rating from '~/components/shared/Rating';
 import StockStatusBadge from '~/components/shared/StockStatusBadge';
 import url from '~/services/url';
-import { Compare16Svg, Cross12Svg, Wishlist16Svg } from '~/svg';
+// import { Compare16Svg, Cross12Svg, Wishlist16Svg } from '~/svg';
 import { useCompareAddItem } from '~/store/compare/compareHooks';
 import { useProductForm } from '~/services/forms/product';
 import { useQuickview, useQuickviewClose } from '~/store/quickview/quickviewHooks';
@@ -169,7 +169,7 @@ function Quickview() {
                                 })}
                                 onClick={run}
                             >
-                                <Wishlist16Svg />
+                                {/* <Wishlist16Svg /> */}
                             </button>
                         </div>
                     )}
@@ -186,7 +186,7 @@ function Quickview() {
                                 })}
                                 onClick={run}
                             >
-                                <Compare16Svg />
+                                {/* <Compare16Svg /> */}
                             </button>
                         </div>
                     )}
@@ -198,7 +198,7 @@ function Quickview() {
     return (
         <Modal isOpen={quickview.open} toggle={toggle} centered className="quickview">
             <button type="button" className="quickview__close" onClick={quickviewClose}>
-                <Cross12Svg />
+                {/* <Cross12Svg /> */}
             </button>
 
             <FormProvider {...productForm.methods}>

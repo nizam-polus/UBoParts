@@ -16,7 +16,7 @@ import AppLink from '~/components/shared/AppLink';
 import AppSlick, { ISlickProps } from '~/components/shared/AppSlick';
 import { baseUrl } from '~/services/utils';
 import { useDirection } from '~/services/i18n/hooks';
-import { ZoomIn24Svg } from '~/svg';
+// import { ZoomIn24Svg } from '~/svg';
 
 type CreateGalleryFn = (
     images: PhotoSwipe.Item[],
@@ -277,7 +277,7 @@ function ProductGallery(props: Props) {
         <div className={rootClasses} data-layout={layout} {...rootProps}>
             <div className="product-gallery__featured">
                 <button type="button" className="product-gallery__zoom" onClick={handleZoomButtonClick}>
-                    <ZoomIn24Svg />
+                    {/* <ZoomIn24Svg /> */}
                 </button>
 
                 <AppSlick

@@ -4,7 +4,7 @@ import React from 'react';
 import classNames from 'classnames';
 // application
 import AppLink from '~/components/shared/AppLink';
-import { ArrowRoundedRight6x9Svg } from '~/svg';
+// import { ArrowRoundedRight6x9Svg } from '~/svg';
 import { INestedLink } from '~/interfaces/link';
 
 interface Props {
@@ -36,7 +36,7 @@ function Menu(props: Props) {
                                 {item.title}
                                 {hasSubmenu && (
                                     <span className="menu__arrow">
-                                        <ArrowRoundedRight6x9Svg />
+                                        {/* <ArrowRoundedRight6x9Svg /> */}
                                     </span>
                                 )}
                             </AppLink>

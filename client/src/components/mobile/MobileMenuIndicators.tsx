@@ -8,12 +8,12 @@ import url from '~/services/url';
 import { useWishlist } from '~/store/wishlist/wishlistHooks';
 import { useCart } from '~/store/cart/cartHooks';
 import { useMobileMenuClose } from '~/store/mobile-menu/mobileMenuHooks';
-import {
-    Car20Svg,
-    Cart20Svg,
-    Heart20Svg,
-    Person20Svg,
-} from '~/svg';
+// import {
+//     Car20Svg,
+//     Cart20Svg,
+//     Heart20Svg,
+//     Person20Svg,
+// } from '~/svg';
 
 function MobileMenuIndicators() {
     const mobileMenuClose = useMobileMenuClose();
@@ -24,7 +24,7 @@ function MobileMenuIndicators() {
         <div className="mobile-menu__indicators">
             <AppLink href={url.wishlist()} className="mobile-menu__indicator" onClick={mobileMenuClose}>
                 <span className="mobile-menu__indicator-icon">
-                    <Heart20Svg />
+                    {/* <Heart20Svg /> */}
                     {wishlist.items.length > 0 && (
                         <span className="mobile-menu__indicator-counter">
                             {wishlist.items.length}
@@ -37,7 +37,7 @@ function MobileMenuIndicators() {
             </AppLink>
             <AppLink href={url.accountDashboard()} className="mobile-menu__indicator" onClick={mobileMenuClose}>
                 <span className="mobile-menu__indicator-icon">
-                    <Person20Svg />
+                    {/* <Person20Svg /> */}
                 </span>
                 <span className="mobile-menu__indicator-title">
                     <FormattedMessage id="TEXT_MOBILE_INDICATOR_ACCOUNT" />
@@ -45,7 +45,7 @@ function MobileMenuIndicators() {
             </AppLink>
             <AppLink href={url.cart()} className="mobile-menu__indicator" onClick={mobileMenuClose}>
                 <span className="mobile-menu__indicator-icon">
-                    <Cart20Svg />
+                    {/* <Cart20Svg /> */}
                     {cart.items.length > 0 && (
                         <span className="mobile-menu__indicator-counter">
                             {cart.items.length}
@@ -58,7 +58,7 @@ function MobileMenuIndicators() {
             </AppLink>
             <AppLink href={url.accountGarage()} className="mobile-menu__indicator" onClick={mobileMenuClose}>
                 <span className="mobile-menu__indicator-icon">
-                    <Car20Svg />
+                    {/* <Car20Svg /> */}
                 </span>
                 <span className="mobile-menu__indicator-title">
                     <FormattedMessage id="TEXT_MOBILE_INDICATOR_GARAGE" />

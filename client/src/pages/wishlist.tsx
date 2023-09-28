@@ -14,7 +14,7 @@ import PageTitle from '~/components/shared/PageTitle';
 import Rating from '~/components/shared/Rating';
 import StockStatusBadge from '~/components/shared/StockStatusBadge';
 import url from '~/services/url';
-import { Cross12Svg } from '~/svg';
+// import { Cross12Svg } from '~/svg';
 import { useCartAddItem } from '~/store/cart/cartHooks';
 import { useWishlist, useWishlistRemoveItem } from '~/store/wishlist/wishlistHooks';
 
@@ -207,7 +207,7 @@ function Page() {
                                                         )}
                                                         onClick={run}
                                                     >
-                                                        <Cross12Svg />
+                                                        {/* <Cross12Svg /> */}
                                                     </button>
                                                 )}
                                             />

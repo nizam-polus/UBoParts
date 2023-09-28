@@ -13,7 +13,7 @@ import MobileMenuLinks from '~/components/mobile/MobileMenuLinks';
 import MobileMenuPanel from '~/components/mobile/MobileMenuPanel';
 import MobileMenuSettings from '~/components/mobile/MobileMenuSettings';
 import url from '~/services/url';
-import { Cross12Svg } from '~/svg';
+// import { Cross12Svg } from '~/svg';
 import { useMobileMenu, useMobileMenuClose } from '~/store/mobile-menu/mobileMenuHooks';
 // data
 import dataMobileMenuLinks from '~/data/mobileMenuLinks';
@@ -45,7 +45,7 @@ function MobileMenu() {
             <div className="mobile-menu__backdrop" onClick={mobileMenuClose} />
             <div className="mobile-menu__body" ref={bodyRef} onTransitionEnd={onTransitionEnd}>
                 <button className="mobile-menu__close" type="button" onClick={mobileMenuClose}>
-                    <Cross12Svg />
+                    {/* <Cross12Svg /> */}
                 </button>
 
                 <MobileMenuConveyor controllerRef={conveyorRef}>

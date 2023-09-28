@@ -4,7 +4,7 @@ import React, { useCallback, useMemo } from 'react';
 import AppImage from '~/components/shared/AppImage';
 import MobileMenuLinks from '~/components/mobile/MobileMenuLinks';
 import MobileMenuPanelController from '~/components/mobile/MobileMenuPanelController';
-import { ArrowRoundedRight6x9Svg } from '~/svg';
+// import { ArrowRoundedRight6x9Svg } from '~/svg';
 import { getAllLanguages } from '~/services/i18n/utils';
 import { IMobileMenuLink } from '~/interfaces/mobile-menu-link';
 import { useCurrency, useCurrencyChange } from '~/store/currency/currencyHooks';
@@ -76,7 +76,7 @@ function MobileMenuSettings() {
                                 {language.name}
                             </span>
                             <span className="mobile-menu__setting-arrow">
-                                <ArrowRoundedRight6x9Svg />
+                                {/* <ArrowRoundedRight6x9Svg /> */}
                             </span>
                         </button>
                     )}
@@ -101,7 +101,7 @@ function MobileMenuSettings() {
                                 {currency.name}
                             </span>
                             <span className="mobile-menu__setting-arrow">
-                                <ArrowRoundedRight6x9Svg />
+                                {/* <ArrowRoundedRight6x9Svg /> */}
                             </span>
                         </button>
                     )}

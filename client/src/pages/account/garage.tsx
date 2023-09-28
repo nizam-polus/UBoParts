@@ -11,7 +11,7 @@ import PageTitle from '~/components/shared/PageTitle';
 import url from '~/services/url';
 import VehicleForm from '~/components/shared/VehicleForm';
 import { IVehicle } from '~/interfaces/vehicle';
-import { RecycleBin16Svg } from '~/svg';
+// import { RecycleBin16Svg } from '~/svg';
 import { useGarageAddItem, useGarageRemoveItem, useUserVehicles } from '~/store/garage/garageHooks';
 
 function Page() {
@@ -69,7 +69,7 @@ function Page() {
                                                     })}
                                                     onClick={run}
                                                 >
-                                                    <RecycleBin16Svg />
+                                                    {/* <RecycleBin16Svg /> */}
                                                 </button>
                                             )}
                                         />

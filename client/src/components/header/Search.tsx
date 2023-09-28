@@ -12,7 +12,7 @@ import RadioButton from '~/components/shared/RadioButton';
 import Rating from '~/components/shared/Rating';
 import url from '~/services/url';
 import VehicleForm from '~/components/shared/VehicleForm';
-import { Car20Svg, RecycleBin16Svg, Search20Svg } from '~/svg';
+// import { Car20Svg, RecycleBin16Svg, Search20Svg } from '~/svg';
 import { IProduct } from '~/interfaces/product';
 import { IShopCategory } from '~/interfaces/category';
 import { IVehicle } from '~/interfaces/vehicle';
@@ -205,7 +205,7 @@ export function Search() {
                     ref={selectVehicleButtonRef}
                 >
                     <span className="search__button-icon">
-                        <Car20Svg />
+                        {/* <Car20Svg /> */}
                     </span>
                     <span className="search__button-title">
                         <FormattedMessage id="BUTTON_SEARCH_SELECT_VEHICLE_DESKTOP" />
@@ -214,7 +214,7 @@ export function Search() {
 
                 <button className="search__button search__button--end" type="submit">
                     <span className="search__button-icon">
-                        <Search20Svg />
+                        {/* <Search20Svg /> */}
                     </span>
                 </button>
 
@@ -361,7 +361,7 @@ export function Search() {
                                                             })}
                                                             onClick={run}
                                                         >
-                                                            <RecycleBin16Svg />
+                                                            {/* <RecycleBin16Svg /> */}
                                                         </button>
                                                     )}
                                                 />

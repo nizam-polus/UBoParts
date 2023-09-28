@@ -16,12 +16,12 @@ import { useCartAddItem } from '~/store/cart/cartHooks';
 import { useCompareAddItem } from '~/store/compare/compareHooks';
 import { useQuickviewOpen } from '~/store/quickview/quickviewHooks';
 import { useWishlistAddItem } from '~/store/wishlist/wishlistHooks';
-import {
-    Cart20Svg,
-    Compare16Svg,
-    Quickview16Svg,
-    Wishlist16Svg,
-} from '~/svg';
+// import {
+//     Cart20Svg,
+//     Compare16Svg,
+//     Quickview16Svg,
+//     Wishlist16Svg,
+// } from '~/svg';
 
 export type IProductCardElement = 'actions' | 'status-badge' | 'meta' | 'features' | 'buttons' | 'list-buttons';
 
@@ -70,7 +70,7 @@ function ProductCard(props: Props) {
                             aria-label={intl.formatMessage({ id: 'BUTTON_QUICKVIEW' })}
                             onClick={run}
                         >
-                            <Quickview16Svg />
+                            {/* <Quickview16Svg /> */}
                         </button>
                     )}
                 />
@@ -88,7 +88,7 @@ function ProductCard(props: Props) {
                                     aria-label={intl.formatMessage({ id: 'BUTTON_ADD_TO_WISHLIST' })}
                                     onClick={run}
                                 >
-                                    <Wishlist16Svg />
+                                    {/* <Wishlist16Svg /> */}
                                 </button>
                             )}
                         />
@@ -103,7 +103,7 @@ function ProductCard(props: Props) {
                                     aria-label={intl.formatMessage({ id: 'BUTTON_ADD_TO_COMPARE' })}
                                     onClick={run}
                                 >
-                                    <Compare16Svg />
+                                    {/* <Compare16Svg /> */}
                                 </button>
                             )}
                         />
@@ -204,7 +204,7 @@ function ProductCard(props: Props) {
                                     aria-label={intl.formatMessage({ id: 'BUTTON_ADD_TO_CART' })}
                                     onClick={run}
                                 >
-                                    <Cart20Svg />
+                                    {/* <Cart20Svg /> */}
                                 </button>
                             )}
                         />
@@ -234,7 +234,7 @@ function ProductCard(props: Props) {
                                             })}
                                             onClick={run}
                                         >
-                                            <Wishlist16Svg />
+                                            {/* <Wishlist16Svg /> */}
                                             <span>
                                                 <FormattedMessage id="BUTTON_ADD_TO_WISHLIST" />
                                             </span>
@@ -251,7 +251,7 @@ function ProductCard(props: Props) {
                                             })}
                                             onClick={run}
                                         >
-                                            <Compare16Svg />
+                                            {/* <Compare16Svg /> */}
                                             <span>
                                                 <FormattedMessage id="BUTTON_ADD_TO_COMPARE" />
                                             </span>

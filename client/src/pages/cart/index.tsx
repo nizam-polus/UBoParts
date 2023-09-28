@@ -13,7 +13,7 @@ import CurrencyFormat from '~/components/shared/CurrencyFormat';
 import InputNumber from '~/components/shared/InputNumber';
 import PageTitle from '~/components/shared/PageTitle';
 import url from '~/services/url';
-import { Cross12Svg } from '~/svg';
+// import { Cross12Svg } from '~/svg';
 import { ICartItem } from '~/store/cart/cartTypes';
 import { useCart, useCartRemoveItem, useCartUpdateQuantities } from '~/store/cart/cartHooks';
 
@@ -208,7 +208,7 @@ function Page() {
                                         onClick={run}
                                     >
 
-                                        <Cross12Svg />
+                                        {/* <Cross12Svg /> */}
                                     </button>
                                 )}
                             />
