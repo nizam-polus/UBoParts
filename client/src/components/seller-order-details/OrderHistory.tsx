@@ -5,7 +5,7 @@ import { UserContext } from "../account_/UserContext";
 import Link from "next/link";
 import { toast } from "react-toastify";
 
-function PurchaseHistory() {
+function OrderHistory() {
 
     const { user } = UserContext();
 
@@ -14,10 +14,10 @@ function PurchaseHistory() {
 
     useEffect(() => {
         setEmptyText('Loading...')
-        APIs.getCustomerOrder(user.username).then((response: any) => {
+        APIs.getSellerOrder(user.username).then((response: any) => {
             setOrderDetails(response.data.rows);
             !response.data.rows.length && setEmptyText('No Data');
-        })
+        }).catch(err => console.log(err))
     }, []);
 
     return (
@@ -30,7 +30,7 @@ function PurchaseHistory() {
                         <div className="col-12 col-md-9">
                             <div className="coulmn-bg-color-1 rounded">
                                 <div className="row d-flex justify-content-between  m-0 p-2 pb-1 pt-3">
-                                    <div className="col-auto"><span className="custom-color-2 boldfont body-sub-titles">Purchase History</span></div>
+                                    <div className="col-auto"><span className="custom-color-2 boldfont body-sub-titles">Order History</span></div>
                                 </div>
                                 <div className="row m-0 px-0">
                                     <div className="table-responsive">
@@ -47,10 +47,10 @@ function PurchaseHistory() {
                                                     return (
                                                         <tr>
                                                             <td className="custom-color-2 lightfont placeholderfontsize border-0 pl-4 ps-3 pb-3 pt-3 align-middle">
-                                                                <Link href={'/purchase-history/' + order?.orderid}>{order?.orderid}</Link>
+                                                                <Link href={'/seller/seller-orders/' + order?.orderid}>{order?.orderid}</Link>
                                                             </td>
-                                                            <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle"
-                                                            >{new Date(order?.created_at).toDateString().substring(4)}
+                                                            <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">
+                                                                {new Date(order?.created_at).toDateString().substring(4)}
                                                             </td>
                                                             <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">{order?.status}</td>
                                                         </tr>
@@ -73,4 +73,4 @@ function PurchaseHistory() {
     )
 }
 
-export default PurchaseHistory;
+export default OrderHistory;
