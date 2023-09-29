@@ -37,11 +37,16 @@ function OrderDetails() {
                         <div className="col-12 col-md-9">
                             <div className="coulmn-bg-color-1 rounded p-3">
                                 <div className="d-flex justify-content-between m-0 pt-3 ml-3">
-                                    <span className="custom-color-2 boldfont body-sub-titles">Order details 
-                                        <span className="pl-1">#</span>
-                                        <span className=" order-no regularfont body-sub-titles">{orderId}</span>
-                                    </span>
-                                    <button className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2">Download</button>
+                                    <div className="col-8 p-0">
+                                        <span className="custom-color-2 boldfont body-sub-titles">Order details 
+                                            <span className="pl-1">#</span>
+                                            <span className=" order-no regularfont body-sub-titles">{orderId}</span>
+                                        </span>
+                                    </div>
+                                   
+                                    <div className="col-4 d-flex flex-row-reverse">
+                                        <button className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2">Download</button>
+                                    </div>
                                     <br />
                                 </div>
                                 <div className="row mt-3">
@@ -108,7 +113,7 @@ function OrderDetails() {
                                                                         <td className="custom-color-2 regularfont body-sub-titles-2 py-3 border-bottom w-50">
                                                                             <div className="d-inline-flex">
                                                                                 <div className="col-3"> <AppImage style={{height: '2.9rem', width: '2.9rem'}} src={BASE_URL + order?.attributes?.product_image} className="rounded mr-4" /></div>
-                                                                                <div className="col">{order?.attributes?.product_name}</div>
+                                                                                <div className="col ml-2">{order?.attributes?.product_name}</div>
                                                                             </div>
                                                                         </td>
                                                                         <td className="custom-color-2 regularfont body-sub-titles-2 py-3 border-bottom text-center">{order?.attributes?.quantity}</td>
