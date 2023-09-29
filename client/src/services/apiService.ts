@@ -67,11 +67,11 @@ const APIs = {
         )
     },
     
-    getParts: () => axios.get(BACKEND_URL + 'parts?populate=*&sort[0]=id:asc', {headers}),
+    getParts: (input: any) => axios.get(BACKEND_URL + `parts?populate=*&filters[$and][][parts][$contains]=${input}`, {headers}),
 
     getAllProducts: (sortFilter = '') => axios.get(BACKEND_URL + 'products?populate=*' + sortFilter, {headers}),
 
-    getAllSellerProducts: (username: any) => axios.get(BACKEND_URL + `products?populate=*&sort[0]=${username}:desc`, {headers}),
+    getAllSellerProducts: (username: any) => axios.get(BACKEND_URL + `products?populate=*&filters[$and][][seller][$eq]=${username}&sort[0]=createdAt:desc`, {headers}),
     
     getProduct: (id: any) => axios.get(BACKEND_URL + 'products/' + id + '?populate=*', {headers}),
 
@@ -113,7 +113,9 @@ const APIs = {
 
     getOrderDetails: (orderId: string) => ds.get(BACKEND_URL + 'order-details?populate=*&filters[$and][0][orderid][$eq]=' + orderId),
 
-    getSellerOrder: (sellerUsername: string) => ds.post(BACKEND_URL + 'order-distinct-seller?populate=*', {seller_name: sellerUsername})
+    getSellerOrder: (sellerUsername: string) => ds.post(BACKEND_URL + 'order-distinct-seller?populate=*', {seller_name: sellerUsername}),
+
+    setParts: (data: any) => ds.post(BACKEND_URL + 'parts',  {...data}),
 
 }
 

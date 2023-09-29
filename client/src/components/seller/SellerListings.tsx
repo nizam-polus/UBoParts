@@ -11,19 +11,26 @@ import { UserContext } from '../account_/UserContext';
 
 
 function SellerListings() {
+    
+    const {user} = UserContext();
+
     const router = useRouter();
     const [uname, setUname] = useState<any>("");
     const [sellerList, setSellerList] = useState([]);
-    const {user} = UserContext();
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [itemId, setItemId] = useState<any>('')
 
-     const deleteProduct = async (id: any) => {
+    const handleDelete = async (id: any) => {
+        setIsDeleting(true);
+        setItemId(id)
         try {
           const deleteResponse = await APIs.deleteProduct(id);
-        //   console.log(deleteResponse);
           const response = await APIs.getAllSellerProducts(user.username);
           setSellerList(response?.data?.data);
         } catch (error) {
           console.error("Error deleting product:", error);
+        } finally {
+          setIsDeleting(false);
         }
       };
     
@@ -77,7 +84,7 @@ function SellerListings() {
                                                         <AppImage
                                                             src={BASE_URL + item?.attributes?.product_image?.data?.attributes?.url}
                                                             className="card-img-top img-prod-height pointer"
-                                                            style={{ height: '20rem', objectFit: 'cover' }}
+                                                            style={{ height: '20rem', objectFit: 'contain' }}
                                                             onClick={() => handleProductClick(item)}
                                                         />
                                                         <span className="product-price button-bg-color-1 text-white regularfont boldfontsize">€ {item.attributes.price}</span>
@@ -102,7 +109,26 @@ function SellerListings() {
                                                             </div>
                                                             <div className="col-12 d-flex justify-content-between " style={{ gap: "20px" }}>
                                                                 <button type="button" onClick={() => editProduct(item.id)} className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2 p-2" style={{ width: "100%" }}>Edit</button>
-                                                                <button type="button" onClick={() =>deleteProduct(item.id)} className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2" style={{ width: "100%" }}>Delete</button>
+                                                              {isDeleting && item.id == itemId? 
+                                                               <button
+                                                               type="button"
+                                                               onClick={() => handleDelete(item.id)}
+                                                               className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2"
+                                                               style={{ width: "100%", cursor: "not-allowed", opacity: "0.5"}}
+                                                               disabled={isDeleting}
+                                                           >
+                                                                Deleting...
+                                                           </button>
+                                                           :
+                                                           <button
+                                                           type="button"
+                                                           onClick={() => handleDelete(item.id)}
+                                                           className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2"
+                                                           style={{ width: "100%"}}
+                                                           
+                                                       >
+                                                          Delete
+                                                       </button>} 
                                                             </div>
                                                         </div>
                                                     </div>

@@ -43,14 +43,14 @@ function EditListing() {
     const [selectedItem, setSelectedItem] = useState(null);
     const [showInvaidLicense, setShowInvaidLicense] = useState(false);
     const [incomplete, setIncomplete] = useState<any>(false);
+    const [partsInput, setPartsInput] = useState()
 
     const router = useRouter()
     const id = router.query.id;
     const [productData, setProductData] = useState<any>({})
     const [productGallery, setProductGallery] = useState([])
     const [quantity, setQuantity] = useState(1);
-    const componentRef:any = useRef();
-
+ 
     useEffect(() => {
         APIs.getProduct(id).then(response => {
             let product = response.data.data;
@@ -62,16 +62,12 @@ function EditListing() {
               setProductImage(productImage);
             }
             let productGallery = response.data.data.attributes?.product_gallary_image?.data;
-           
-           
             let make = response.data.data.attributes?.cardetail?.data?.attributes?.make  
             let model = response.data.data.attributes?.cardetail?.data?.attributes?.model
             let year = response.data.data.attributes?.cardetail?.data?.attributes?.year  
             let licenseplate = response.data.data?.attributes?.cardetail?.data?.attributes?.licenseplate
-
             setProductData(product);
             setProductGalleryImages(productGallery);
-            
             setListName(response.data.data.attributes.title)
             setListPrice(response.data.data.attributes.price)
             setListQuantity(response.data.data.attributes.stock_count)
@@ -110,10 +106,7 @@ function EditListing() {
         const userid = userDetailsJSON.id;
         setUname(username)
         setUid(userid)
-        //FETCH AND SOTRE PARTS
-        APIs.getParts().then((res) => {
-            setParts(res.data.data);
-          });
+       
        // Fetch categories data
     APIs.getCategories()
     .then((response) => {
@@ -266,10 +259,23 @@ function EditListing() {
         }
       };
       
+      useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+          console.log(inputValue)
+                  
+          APIs.getParts(inputValue).then((res) => {
+            setParts(res.data.data);
+            
+            // setSelectedItem(null)
+          });
+        }, 500)
+    
+        return () => clearTimeout(delayDebounceFn)
+      }, [inputValue])
+      
     const handleListChange = (event: any) => {
-        setInputValue(event.target.value);
-        setListName(event.target.value)
-        setSelectedItem(null)
+         setInputValue(event.target.value)
+         setListName(event?.target.value)
     };
 
     const handlePartSelect = (partName: any) => {
@@ -407,27 +413,27 @@ function EditListing() {
                                                 <tr className="double">
                                                 <td className='px-5 pt-4 pb-4'>
                                                     <label className="custom-color-2 regularfont products-name pb-2">List Name <span className="required">*</span></label>
-                                                    <input type="text" value={listName} onChange={handleListChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" name="first-name" placeholder="24 Inch Tyre for Mustang" required/>
+                                                    <input type="text" value={inputValue} onChange={handleListChange} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listName ? 'required-field' : 'border-0' }`} name="first-name" placeholder="24 Inch Tyre for Mustang" required/>
                                                     
                                                     <ul style={{display: "contents"}}>
-                                                    {selectedItem ? (
-                                                        ""
-                                                      ) : (
-                                                        <div className="options-container  position-absolute " style={{ backgroundColor: "#ebebeb" , boxShadow:"1px 0px 7px 0px grey", zIndex: 3}}>
-                                                          {parts
-                                                            .filter((part:any) => part.attributes.parts.toLowerCase().includes(inputValue.toLowerCase()) && inputValue.length >= 3)
-                                                            .map((part:any) => (
-                                                              <li
-                                                                className='options'
-                                                                style={{ border: "0px solid grey", listStyle: "none", padding: "4px 10px", fontSize: "14px" }}
-                                                                key={part.id}
-                                                               onClick={() => handlePartSelect(part.attributes.parts)}
-                                                              >
-                                                                {part.attributes.parts}
-                                                              </li>
-                                                            ))}
-                                                        </div>
-                                                      )}
+                                                            {parts.length > 0 && inputValue.length >= 3 && !selectedItem && (
+                                                                <ul style={{ display: "contents" }}>
+                                                                    <div className="options-container  position-absolute" style={{ backgroundColor: "#ebebeb", boxShadow: "1px 0px 7px 0px grey", zIndex: 3, maxHeight: "200px", overflow: "scroll" }}>
+                                                                        {parts
+                                                                            .filter((part: any) => part.attributes.parts.toLowerCase().includes(inputValue.toLowerCase()))
+                                                                            .map((part: any) => (
+                                                                                <li
+                                                                                    className='options'
+                                                                                    style={{ border: "0px solid grey", listStyle: "none", padding: "4px 10px", fontSize: "14px" }}
+                                                                                    key={part.id}
+                                                                                    onClick={() => handlePartSelect(part.attributes.parts)}
+                                                                                >
+                                                                                    {part.attributes.parts}
+                                                                                </li>
+                                                                            ))}
+                                                                    </div>
+                                                                </ul>
+                                                            )}
                                                      
                                                     </ul>
                                                   </td>

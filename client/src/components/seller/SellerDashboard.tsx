@@ -35,7 +35,7 @@ function SellerDashboard() {
                                                     <thead>
                                                         <tr>
                                                             <th className="p-2 pb-3 ps-0 text-center">
-                                                                <AppImage style={{height: '15rem', borderRadius: '100%', width: 'auto'}}
+                                                                <AppImage style={{height: '15rem', borderRadius: '100%', maxWidth: '15rem'}}
                                                                     src={ user.profile_image ? BASE_URL + user.profile_image.url : "/images/svg/my-account.svg"}
                                                                 />
                                                             </th>
