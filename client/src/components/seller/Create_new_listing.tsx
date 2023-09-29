@@ -13,7 +13,6 @@ function Create_new_listing() {
     const [makesArray, setMakesArray] = useState<any>([]);
     const [modelArray, setModelArray] = useState<any>([]);
     const [yearArray, setYearArray] = useState<any>([]);
-    const [categories, setCategories] = useState<any>([]);
     const [selectedMake, setSelectedMake] = useState('');
     const [selectedModel, setSelectedModel] = useState('');
     const [selectedYear, setSelectedYear] = useState('');
@@ -21,7 +20,6 @@ function Create_new_listing() {
     const [listName, setListName] = useState('');
     const [listPrice, setListPrice] = useState('');
     const [listQuantity, setListQuantity] = useState('');
-    const [listArticle, setListArticle] = useState('');
     const [listBarcode, setListBarcode] = useState("");
     const [listDescription, setListDescription] = useState('');
     const [listLocation, setListLocation] = useState('');
@@ -43,7 +41,6 @@ function Create_new_listing() {
     const [showInvaidLicense, setShowInvaidLicense] = useState(false);
     const [incomplete, setIncomplete] = useState<any>(false);
 
-
     const router = useRouter()
 
     useEffect(() => {
@@ -53,10 +50,7 @@ function Create_new_listing() {
         const userid = userDetailsJSON.id;
         setUname(username)
         setUid(userid)
-        //FETCH AND SOTRE PARTS
-        APIs.getParts().then((res) => {
-            setParts(res.data.data);
-          });
+       
        // Fetch categories data
     APIs.getCategories()
     .then((response) => {
@@ -117,10 +111,6 @@ function Create_new_listing() {
             return () => clearTimeout(getData);
         }
     }, [licenseplate]);
-
-    const categoriesArray = (resData: any) => {
-        return [...new Set(resData.map((item: any) => item.attributes.category_name))];
-    }
 
     const handleLicenseplateChange = (event: any) => {
         const enteredLicenseplate = event.target.value.toUpperCase();
@@ -210,11 +200,19 @@ function Create_new_listing() {
             });
         }
       };
+      useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+          APIs.getParts(inputValue).then((res) => {
+            setParts(res.data.data);
+          });
+        }, 500)
+    
+        return () => clearTimeout(delayDebounceFn)
+      }, [inputValue])
       
     const handleListChange = (event: any) => {
-        setInputValue(event.target.value);
-        setListName(event.target.value)
-        setSelectedItem(null)
+         setInputValue(event.target.value)
+         setListName(event?.target.value)
     };
 
     const handlePartSelect = (partName: any) => {
@@ -236,10 +234,6 @@ function Create_new_listing() {
         setListLocation(event.target.value)
     }
 
-    // const handleArticleChange = (event: any) => {
-    //     setListArticle(event.target.value)
-    // }
-
     const handleBarcodeChange = (event: any) => {
         setListBarcode(event.target.value)
     }
@@ -257,7 +251,6 @@ function Create_new_listing() {
         const files = event.target.files;
         const selectedImages = [];
         for (let i = 0; i < files?.length; i++) {
-            console.log('files[i]', files[i])
           selectedImages.push(files[i]);
         }
         setProductGalleryImages(selectedImages);
@@ -273,77 +266,76 @@ function Create_new_listing() {
         const updatedGalleryImages = [...productGalleryImages];
         // Remove the image at the specified index
         updatedGalleryImages.splice(index, 1);
-        // Update the state with the modified gallery images
         setProductGalleryImages(updatedGalleryImages);
     };
 
     const createNewList = () => {
-    //  console.log(selectedCategoryId,parseInt(selectedSubcategoryId),carDetailId )
-    let incomplete = !(!!listName && !!carDetailId && selectedCategoryId && !!selectedSubcategoryId && !!listPrice && !!listQuantity && !!listLocation && !!listBarcode && !!listDescription && !!uname && !!uid)
-    setIncomplete(incomplete);
-    if(!incomplete){
-        APIs.createNewList({
-            "data": {
-              "title": listName,
-              "cardetail": [carDetailId],
-              "category": [selectedCategoryId],
-              "sub_category": [parseInt(selectedSubcategoryId)],
-              "price": listPrice,
-              "stock_count": [listQuantity],
-              "product_location_warehouse": listLocation,
-              "article_number": listBarcode,
-              "part_no_barcode_no": listBarcode,
-              "description": listDescription,
-              "product_status": "Active",
-              "seller": uname,
-              "seller_id" : uid,
+        let incomplete = !(!!listName && !!carDetailId && selectedCategoryId && !!selectedSubcategoryId && !!listPrice && !!listQuantity && !!listLocation && !!listBarcode && !!listDescription && !!uname && !!uid)
+        setIncomplete(incomplete);
+        if(!incomplete){
+            if(!parts.length){
+                   APIs.setParts({
+                    "data": {
+                        "part": listName,
+                        "lang": "EN"
+                    }
+                   }).then((res) => console.log(res))
             }
-          }).then((response: any) => {
-            const resId = response.data.data.id;
-            // console.log(response.data.data.id);
-            // Check if productImage is defined and not null
-            // console.log('productGalleryImages', productGalleryImages)
-            if (productImage && productImage instanceof File) {
-              // Make the API call to upload the featured image
-              APIs.uploadImage({
-                ref: "api::product.product",
-                refId: resId,
-                field: "product_image",
-                files: productImage,
-              })
-              for (let i = 0; i < productGalleryImages.length; i++) {
-                const galleryImage = productGalleryImages[i];
-                // Use a closure to capture the current value of 'i'
-                (function (index) {
-                  APIs.uploadImage({
+            APIs.createNewList({
+                "data": {
+                "title": listName,
+                "cardetail": [carDetailId],
+                "category": [selectedCategoryId],
+                "sub_category": [parseInt(selectedSubcategoryId)],
+                "price": listPrice,
+                "stock_count": [listQuantity],
+                "product_location_warehouse": listLocation,
+                "article_number": listBarcode,
+                "part_no_barcode_no": listBarcode,
+                "description": listDescription,
+                "product_status": "Active",
+                "seller": uname,
+                "seller_id" : uid,
+                }
+            }).then((response: any) => {
+                const resId = response.data.data.id;
+                if (productImage && productImage instanceof File) {
+                // Make the API call to upload the featured image
+                APIs.uploadImage({
                     ref: "api::product.product",
                     refId: resId,
-                    field: "product_gallary_image",
-                    files: galleryImage,
-                  })
-                    .then((galleryImageUploadResponse) => {
-                      console.log(`Gallery image ${index + 1} uploaded successfully:`, galleryImageUploadResponse);
-                    })
-                    .catch((galleryImageUploadError) => {
-                      console.error(`Gallery image ${index + 1} upload error:`, galleryImageUploadError);
-                    });
-                })(i);
-              }
+                    field: "product_image",
+                    files: productImage,
+                })
+                for (let i = 0; i < productGalleryImages.length; i++) {
+                    const galleryImage = productGalleryImages[i];
+                    // Use a closure to capture the current value of 'i'
+                    (function (index) {
+                    APIs.uploadImage({
+                        ref: "api::product.product",
+                        refId: resId,
+                        field: "product_gallary_image",
+                        files: galleryImage,
+                    }).catch((galleryImageUploadError) => {
+                        console.error(`Gallery image ${index + 1} upload error:`, galleryImageUploadError);
+                        });
+                    })(i);
+                }
 
-            } else {
-              // Handle the case where productImage is not defined
-              console.error("No product image selected.");
-            }
-          }).then(() => router.push('/seller/listings'))
-          .catch((error) => {
-            console.log(error);
-            setError(error);
-          });
-    }else{
-        toast.error("Fill all fields for create new list")
+                } else {
+                // Handle the case where productImage is not defined
+                console.error("No product image selected.");
+                }
+            }).then(() => router.push('/seller/listings'))
+            .catch((error) => {
+                console.log(error);
+                setError(error);
+            });
+        }else{
+            toast.error("Fill all fields for create new list")
+        }        
     }
-        
-        }
+
     return (
 
         <>
@@ -367,24 +359,24 @@ function Create_new_listing() {
                                                     <input type="text" value={inputValue} onChange={handleListChange} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listName ? 'required-field' : 'border-0' }`} name="first-name" placeholder="24 Inch Tyre for Mustang" required/>
                                                     
                                                     <ul style={{display: "contents"}}>
-                                                    {selectedItem ? (
-                                                        ""
-                                                      ) : (
-                                                        <div className="options-container  position-absolute " style={{ backgroundColor: "#ebebeb" , boxShadow:"1px 0px 7px 0px grey", zIndex: 3}}>
-                                                          {parts
-                                                            .filter((part:any) => part.attributes.parts.toLowerCase().includes(inputValue.toLowerCase()) && inputValue.length >= 3)
-                                                            .map((part:any) => (
-                                                              <li
-                                                                className='options'
-                                                                style={{ border: "0px solid grey", listStyle: "none", padding: "4px 10px", fontSize: "14px" }}
-                                                                key={part.id}
-                                                               onClick={() => handlePartSelect(part.attributes.parts)}
-                                                              >
-                                                                {part.attributes.parts}
-                                                              </li>
-                                                            ))}
-                                                        </div>
-                                                      )}
+                                                            {parts.length > 0 && inputValue.length >= 3 && !selectedItem && (
+                                                                
+                                                                    <div className="options-container  position-absolute" style={{ backgroundColor: "#ebebeb", boxShadow: "1px 0px 7px 0px grey", zIndex: 3, maxHeight: "200px", overflow: "scroll", width: "25rem" }}>
+                                                                        {parts
+                                                                            .filter((part: any) => part.attributes.parts.toLowerCase().includes(inputValue.toLowerCase()))
+                                                                            .map((part: any) => (
+                                                                                <li
+                                                                                    className='options'
+                                                                                    style={{ border: "0px solid grey", listStyle: "none", padding: "4px 10px", fontSize: "14px" }}
+                                                                                    key={part.id}
+                                                                                    onClick={() => handlePartSelect(part.attributes.parts)}
+                                                                                >
+                                                                                    {part.attributes.parts}
+                                                                                </li>
+                                                                            ))}
+                                                                    </div>
+                                                               
+                                                            )}
                                                      
                                                     </ul>
                                                   </td>

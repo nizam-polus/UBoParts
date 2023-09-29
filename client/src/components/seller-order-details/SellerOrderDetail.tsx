@@ -43,7 +43,7 @@ function SellerOrderDetails() {
                         <div className="row">
                             <SellerSideBar />
                             <div className="col-12 col-md-9">
-                                <div className="coulmn-bg-color-1 rounded p-3">
+                                <div className="coulmn-bg-color-1 rounded px-3 pb-5 pt-3">
                                     <div className="d-flex justify-content-between m-0 pt-3 ml-3">
                                         <div className="col-8 p-0">
                                             <span className="custom-color-2 boldfont body-sub-titles">Order details 
@@ -120,7 +120,7 @@ function SellerOrderDetails() {
                                                                         <tr className="order-data">                                                   
                                                                             <td className="custom-color-2 regularfont body-sub-titles-2 py-3 border-bottom w-50">
                                                                                 <div className="d-inline-flex">
-                                                                                    <div className="col-3"> <AppImage style={{height: '2.9rem', width: '2.9rem'}} src={BASE_URL + order?.attributes?.product_image} className="rounded mr-4" /></div>
+                                                                                    <div className="col-3"> <AppImage style={{height: '2.9rem', width: '2.9rem', objectFit: 'cover'}} src={BASE_URL + order?.attributes?.product_image} className="rounded mr-4" /></div>
                                                                                     <div className="col ml-2">{order?.attributes?.product_name}</div>
                                                                                 </div>
                                                                             </td>
@@ -144,7 +144,7 @@ function SellerOrderDetails() {
                                                             <p className="custom-color-3 semifont body-sub-titles-1 pb-2">Customer Details</p>
                                                             <div className="d-inline-flex pb-4 w-100">
                                                                 <div className="col-3 p-0"> 
-                                                                    <AppImage style={{height: '2.9rem', width: '2.9rem'}} src={BASE_URL + customer?.profile_image?.url} className="rounded mr-4" />
+                                                                    <AppImage style={{height: '3.9rem', width: '3.9rem', objectFit: 'cover'}} src={BASE_URL + customer?.profile_image?.url} className="rounded mr-4" />
                                                                 </div>
                                                                 <div className="col ml-2">
                                                                     <span className="custom-color-2 regularfont body-sub-titles-2">{customer?.first_name && (customer?.first_name + ' ' + customer?.last_name)}</span><br />

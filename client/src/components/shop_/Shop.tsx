@@ -329,15 +329,37 @@ function Shop() {
         const selectedOption = event.target.value;
     setFilterOption(selectedOption);
      if (selectedOption === 'Latest') {
-        setSearchedProducts(initialproducts);
+        APIs.getAllProducts('&sort[0]=createdAt:desc').then(response => {
+            let pagination = response.data.meta.pagination;
+            setPageRange(pageRangeFinder(pagination.pageCount));
+            setPagination(pagination);
+            setSearchedProducts(response.data.data);
+            setInitialProducts(response.data.data)
+        })
+     
       } else if (selectedOption === 'highToLow') {
         // Sort searchedProducts by price high to low
-        const sortedProducts = searchedProducts.slice().sort((a: any, b: any) => b.attributes.price - a.attributes.price);
-        setSearchedProducts(sortedProducts);
+
+        // const sortedProducts = searchedProducts.slice().sort((a: any, b: any) => b.attributes.price - a.attributes.price);
+        APIs.getAllProducts('&sort[0]=price:desc').then(response => {
+            let pagination = response.data.meta.pagination;
+            setPageRange(pageRangeFinder(pagination.pageCount));
+            setPagination(pagination);
+            setSearchedProducts(response.data.data);
+            setInitialProducts(response.data.data)
+        })
+        
       } else if (selectedOption === 'lowToHigh') {
         // Sort searchedProducts by price low to high
-        const sortedProducts = searchedProducts.slice().sort((a:any, b:any) => a.attributes.price - b.attributes.price);
-        setSearchedProducts(sortedProducts);
+        // const sortedProducts = searchedProducts.slice().sort((a:any, b:any) => a.attributes.price - b.attributes.price);
+        APIs.getAllProducts('&sort[0]=price:asc').then(response => {
+            let pagination = response.data.meta.pagination;
+            setPageRange(pageRangeFinder(pagination.pageCount));
+            setPagination(pagination);
+            setSearchedProducts(response.data.data);
+            setInitialProducts(response.data.data)
+        })
+        
       }
     }
 
@@ -485,8 +507,8 @@ function Shop() {
                                              <i className={`${filterToggle.price ? 'fa fa-angle-up' : 'fa fa-angle-down'}`}></i>
                                            </button>
                                            {filterToggle.price && (
-                                             <div className="group-check p-3">
-                                               <div className="form-group">
+                                             <div className="group-check p-4 " style={{display: "grid", gridTemplateColumns: "1fr 1fr" , gap: "20px"}}>
+                                               <div className="form-group d-flex flex-column align-items-center justify-content-center ">
                                                  <label htmlFor="minPrice">Min Price:</label>
                                                  <input
                                                    type="number"
@@ -496,10 +518,10 @@ function Shop() {
                                                    onChange={(e) => setMinPrice(Number(e.target.value))}
                                                    min={100}
                                                    max={maxPrice}
-                                                   className="form-control"
+                                                   className="form-control text-center"
                                                  />
                                                </div>
-                                               <div className="form-group">
+                                               <div className="form-group  d-flex flex-column align-items-center justify-content-center">
                                                  <label htmlFor="maxPrice">Max Price:</label>
                                                  <input
                                                    type="number"
@@ -509,7 +531,7 @@ function Shop() {
                                                    onChange={(e) => setMaxPrice(Number(e.target.value))}
                                                    min={minPrice}
                                                    max={2000}
-                                                   className="form-control"
+                                                   className="form-control text-center"
                                                  />
                                                </div>
                                              </div>
@@ -568,26 +590,29 @@ function Shop() {
                                     </div>
                                     <div className="col">
                                         <div className="d-flex justify-content-end">
-                                        <div className="col-12 col-md-5 d-flex">
-                                          <label htmlFor="filterDropdown" className="form-label me-2 d-flex align-items-center justify-content-center mb-2" style={{minWidth: "100px"}}>Sort by:</label>
-                                         <select
-                                           id="filterDropdown"
-                                           className="form-select mb-2 border-0"
-                                           value={filterOption}
-                                           onChange={handleFilterChange}
-                                         >
-                                           <option value="Latest">Latest</option>
-                                           <option value="highToLow">Price: High to Low</option>
-                                           <option value="lowToHigh">Price: Low to High</option>
-                                           {/* Add more filter options as needed */}
-                                         </select>
-                                       </div>
+                                            <div className="col-12 col-md-5 d-flex">
+                                                <label htmlFor="filterDropdown" 
+                                                    className="form-label me-2 d-flex align-items-center justify-content-center mb-2" 
+                                                    style={{minWidth: "100px"}}
+                                                >Sort by:</label>
+                                                <select
+                                                id="filterDropdown"
+                                                className="form-select mb-2 border-0"
+                                                value={filterOption}
+                                                onChange={handleFilterChange}
+                                                >
+                                                <option value='Latest'>Latest</option>
+                                                <option value="highToLow">Price: High to Low</option>
+                                                <option value="lowToHigh">Price: Low to High</option>
+                                                {/* Add more filter options as needed */}
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div className="row g-4">
+                                        <div className="row g-4 pt-3">
                                             {searchedProducts.map((product: any, index: any) => {
                                                 return (
                                                     <div className="col-12 col-sm-6 col-lg-4  mb-4" key={index}>
-                                                        <div className="latest-prods card card-shadows">
+                                                        <div className="latest-prods card card-shadows" style={{height: "100%"}}>
                                                         <AppImage 
                                                                 src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
                                                                 className="card-img-top img-prod-height pointer "
