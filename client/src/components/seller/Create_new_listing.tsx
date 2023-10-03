@@ -361,7 +361,7 @@ function Create_new_listing() {
                                                     <ul style={{display: "contents"}}>
                                                             {parts.length > 0 && inputValue.length >= 3 && !selectedItem && (
                                                                 
-                                                                    <div className="options-container  position-absolute" style={{ backgroundColor: "#ebebeb", boxShadow: "1px 0px 7px 0px grey", zIndex: 3, maxHeight: "200px", overflow: "scroll", width: "25rem" }}>
+                                                                    <div className="options-container  position-absolute" style={{ backgroundColor: "#ebebeb", boxShadow: "1px 0px 7px 0px grey", zIndex: 3, maxHeight: "200px", overflowY: "scroll", overflowX: "hidden" , width: "25rem" }}>
                                                                         {parts
                                                                             .filter((part: any) => part.attributes.parts.toLowerCase().includes(inputValue.toLowerCase()))
                                                                             .map((part: any) => (
