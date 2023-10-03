@@ -46,23 +46,41 @@ const APIs = {
     },
 
     searchFilter: (make: string, model: string, year: string, categories: [], sub_category: [], price: any) => {
-        let searchposition = -1, filterposition = 0;
+        let searchposition = 0, orposition = -1, andposition = 0;
         const incrementSearchPosition = () => searchposition += 1;
-        const incrementFilterPosition = () => filterposition += 1;
-        let categoryQuery = categories.map((category: any) => (
-            `&filters[$or][${incrementFilterPosition() + ''}][category][category_name][$eq]=${category}`
-        ));
-        let subcategoryQuery = sub_category.map((subcat: any) => (
-            `&filters[$or][${incrementFilterPosition() + ''}][sub_category][name][$eq]=${subcat}`
-        ));
+        const incrementOrPosition = () => orposition += 1;
+        const incrementAndPosition = () => andposition += 1;
+        // console.log(incrementOrPosition(), incrementAndPosition())
+        // let categoryQuery = categories.map((category: any) => (
+        //     `&filters[$or][${incrementFilterPosition() + ''}][category][category_name][$eq]=${category}`
+        // ));
+        // let subcategoryQuery = sub_category.map((subcat: any) => (
+        //     `&filters[$or][${incrementFilterPosition() + ''}][sub_category][name][$eq]=${subcat}`
+        // ));
+
+        // return axios.get(
+        //     BACKEND_URL + `products?populate=*${`&filters[$or][0][price][$between]=${price.min}&filters[$or][0][price][$between]=${price.max}`}` +
+        //     `${make && `&filters[$or][1][$and][${incrementSearchPosition() + ''}][cardetail][make][$contains]=${make}`}` +
+        //     `${model && `&filters[$or][1][$and][${incrementSearchPosition() + ''}][cardetail][model][$contains]=${model}`}` +
+        //     `${year && `&filters[$or][1][$and][${incrementSearchPosition() + ''}][cardetail][year][$eq]=${year}`}` +
+        //     `${(categoryQuery.length && !subcategoryQuery.length) ? categoryQuery.join().replace(',', '') : ''}` +
+        //     `${subcategoryQuery.length ? subcategoryQuery.join().replace(',', '') : ''}`, 
+        //     {headers}
+        // )
+        const categoryQuery = () => (categories.map((category: any) => (
+            `&filters[$or][${incrementOrPosition() + ''}][$and][${incrementAndPosition() + ''}][category][category_name][$eq]=${category}`
+        )).join().replace(',', ''));
+        const subcategoryQuery = () => (sub_category.map((subcat: any) => (
+            `&filters[$or][${incrementOrPosition() + ''}][$and][${incrementAndPosition() + ''}][sub_category][name][$eq]=${subcat}`
+        )).join().replace(',', ''));
 
         return axios.get(
-            BACKEND_URL + `products?populate=*${`&filters[$or][0][price][$between]=${price.min}&filters[$or][0][price][$between]=${price.max}`}` +
-            `${make && `&filters[$or][1][$and][${incrementSearchPosition() + ''}][cardetail][make][$contains]=${make}`}` +
-            `${model && `&filters[$or][1][$and][${incrementSearchPosition() + ''}][cardetail][model][$contains]=${model}`}` +
-            `${year && `&filters[$or][1][$and][${incrementSearchPosition() + ''}][cardetail][year][$eq]=${year}`}` +
-            `${(categoryQuery.length && !subcategoryQuery.length) ? categoryQuery.join().replace(',', '') : ''}` +
-            `${subcategoryQuery.length ? subcategoryQuery.join().replace(',', '') : ''}`, 
+            BACKEND_URL + `products?populate=*${`&filters[$and][0][price][$between]=${price.min}&filters[$and][0][price][$between]=${price.max}`}` +
+            `${make && `&filters[$and][${incrementSearchPosition() + ''}][cardetail][make][$eq]=${make}`}` +
+            `${model && `&filters[$and][${incrementSearchPosition() + ''}][cardetail][model][$eq]=${model}`}` +
+            `${year && `&filters[$and][${incrementSearchPosition() + ''}][cardetail][year][$eq]=${year}`}` +
+            `${(categories.length) ? categoryQuery() : ''}` +
+            `${sub_category.length ? subcategoryQuery() : ''}`, 
             {headers}
         )
     },
@@ -113,9 +131,12 @@ const APIs = {
 
     getOrderDetails: (orderId: string) => ds.get(BACKEND_URL + 'order-details?populate=*&filters[$and][0][orderid][$eq]=' + orderId),
 
+    getOrderWithTransactionid: (transactionId: string) => ds.get(BACKEND_URL + 'order-details?populate=*&filters[$and][0][transaction_id][$eq]=' + transactionId),
+
     getSellerOrder: (sellerUsername: string) => ds.post(BACKEND_URL + 'order-distinct-seller?populate=*', {seller_name: sellerUsername}),
 
     setParts: (data: any) => ds.post(BACKEND_URL + 'parts',  {...data}),
+
 
 }
 
