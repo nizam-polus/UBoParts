@@ -169,19 +169,6 @@ function Shop() {
         });
     }
 
-    /*const categoriesArray = (resData: any) => {
-        return [...new Set(resData.map((item: any) => item.attributes.category_name))];
-    }
-
-    const optionsArray = (value: any) => {
-        return [...new Set(data.map((item: any) => item.attributes[value]))];
-    }
-
-    const handleMakeChange = (event: any) => {
-        setSearched(false);
-        setSelectedMake(event.target.value);
-    };*/
-
     const handleLicenseplateChange = (event: any) => {
         setSearched(false);
         setLicenseplate(event.target.value);
