@@ -69,6 +69,7 @@ function EditListing() {
             setProductData(product);
             setProductGalleryImages(productGallery);
             setListName(response.data.data.attributes.title)
+            console.log(response.data.data.attributes.title)
             setListPrice(response.data.data.attributes.price)
             setListQuantity(response.data.data.attributes.stock_count)
             setListLocation(response.data.data.attributes.product_location_warehouse)
@@ -413,12 +414,12 @@ function EditListing() {
                                                 <tr className="double">
                                                 <td className='px-5 pt-4 pb-4'>
                                                     <label className="custom-color-2 regularfont products-name pb-2">List Name <span className="required">*</span></label>
-                                                    <input type="text" value={inputValue} onChange={handleListChange} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listName ? 'required-field' : 'border-0' }`} name="first-name" placeholder="24 Inch Tyre for Mustang" required/>
+                                                    <input type="text" value={listName} onChange={handleListChange} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listName ? 'required-field' : 'border-0' }`} name="first-name" placeholder="24 Inch Tyre for Mustang" required/>
                                                     
                                                     <ul style={{display: "contents"}}>
                                                             {parts.length > 0 && inputValue.length >= 3 && !selectedItem && (
                                                                 <ul style={{ display: "contents" }}>
-                                                                    <div className="options-container  position-absolute" style={{ backgroundColor: "#ebebeb", boxShadow: "1px 0px 7px 0px grey", zIndex: 3, maxHeight: "200px", overflow: "scroll" }}>
+                                                                    <div className="options-container  position-absolute" style={{ backgroundColor: "#ebebeb", boxShadow: "1px 0px 7px 0px grey", zIndex: 3, maxHeight: "200px", overflowY: "scroll", overflowX: "hidden", width: "22rem" }}>
                                                                         {parts
                                                                             .filter((part: any) => part.attributes.parts.toLowerCase().includes(inputValue.toLowerCase()))
                                                                             .map((part: any) => (
@@ -553,6 +554,9 @@ function EditListing() {
 
                               {productImage ? (
                                 <div className="selected-featured-image" style={{ padding: "10px 0" }}>
+                                  <button style={{ position: 'absolute', top: '10px', right: '15px', border: "none", color: "white", backgroundColor: "transparent", padding: "5px", borderRadius: "50%", cursor: "pointer" }} onClick={() => handleDeleteFeaturedImage()}>
+                                                                    <i className='fa fa-trash'></i>
+                                  </button>
                                   {typeof productImage === 'string' ? (
                                     <img src={BASE_URL + productImage} alt="Selected Featured" width={200} height={200} style={{ borderRadius: "20px" }} />
                                   ) : (
@@ -575,6 +579,9 @@ function EditListing() {
                                       ) : (
                                         <img src={URL.createObjectURL(image)} alt={`Selected ${index + 1}`} height={200} style={{ width: "100%", borderRadius: "20px", maxWidth: "210px" }} />
                                       )}
+                                      <button  style={{ position: 'absolute', top: '5px', right: '10px', border: "none", color: "white", background: "none" }} onClick={() => handleDeleteGalleryImage(index)}>
+                                                            <i className='fa fa-trash mr-3'></i>
+                                                          </button>
                                       {/* Add delete button if needed */}
                                     </div>
                                   ))}
