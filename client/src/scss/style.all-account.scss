@@ -153,13 +153,19 @@ body {
 }
 // out of stock
 .out-of-stock{
-    // display: flex;
-    // align-items: center;
-    // justify-content: center;
-    // position: absolute;
     width: 100%;
     height: 20rem;
 }
+.footer-download{
+    background: black;
+    height: 10rem;
+    place-content: center;
+    display: grid;
+    margin: 10px;
+    color: white;
+}
+
+
 //text out of stock
 .text-out-of-stock{
     width: 100%;

@@ -4,14 +4,22 @@ import { useEffect, useState } from "react";
 import APIs from "~/services/apiService";
 import { BASE_URL } from "configuration";
 import AppImage from "../shared/AppImage";
+import { useRef } from "react";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import { display } from "html2canvas/dist/types/css/property-descriptors/display";
+
 
 function OrderDetails() {
 
     const router = useRouter();
     const orderId: any = router.query.orderId;
+    const pdfRef = useRef(null);
 
     const [orderDetails, setOrderDetails] = useState<any>([]);
     const [total, setTotal] = useState<number>(0);
+    const [hide, setHide] = useState(true)
+
 
     useEffect(() => {
         APIs.getOrderDetails(orderId).then(response => {
@@ -27,6 +35,38 @@ function OrderDetails() {
         })
     },[])
 
+    useEffect(() => {
+        if (!hide) {
+          const input = pdfRef.current;
+    
+          if (input) {
+            const mainPdf = new jsPDF('p', 'mm', 'a4', true);
+    
+            html2canvas(input, { logging: true, allowTaint: false, useCORS: true, onclone: function (clonedDoc: any) {
+                // I made the div hidden and here I am changing it to visible
+               clonedDoc.getElementById('footer1').style.visibility = 'visible';
+             } }).then((canvas) => {
+                
+              const imgData = canvas.toDataURL('image/png');
+              const pdfWidth = mainPdf.internal.pageSize.getWidth();
+              const pdfHeight = mainPdf.internal.pageSize.getHeight();
+              const imgWidth = canvas.width;
+              const imgHeight = canvas.height;
+              const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+              const imgX = (pdfWidth - imgWidth * ratio) / 2;
+              const imgY = 30;
+              mainPdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+              mainPdf.save("invoice.pdf");
+              setHide(true);
+            });
+          }
+        }
+      }, [hide]);
+    
+      const downloadPdf = () => {
+        setHide(false);
+      };
+
     return (
         <> 
             <div className="main-body pb-2 mb-5">
@@ -35,7 +75,8 @@ function OrderDetails() {
                     <div className="row">
                         <SellerSideBar />
                         <div className="col-12 col-md-9">
-                            <div className="coulmn-bg-color-1 rounded p-3">
+                                
+                            <div id="downloadDiv" className="coulmn-bg-color-1 rounded p-3" ref={pdfRef} >
                                 <div className="d-flex justify-content-between m-0 pt-3 ml-3">
                                     <div className="col-8 p-0">
                                         <span className="custom-color-2 boldfont body-sub-titles">Order details 
@@ -45,7 +86,7 @@ function OrderDetails() {
                                     </div>
                                    
                                     <div className="col-4 d-flex flex-row-reverse">
-                                        <button className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2">Download</button>
+                                        <button onClick={downloadPdf}  className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2" style={{visibility: hide ? "visible" : "hidden"}}>Download</button>
                                     </div>
                                     <br />
                                 </div>
@@ -151,6 +192,12 @@ function OrderDetails() {
                                         </div>
                                     </div>
                                 </div>
+                                    <footer id="footer1" className="footer-download custom-border-2 rounded " style={{ visibility: "hidden" }}  >
+                                        <div style={{ textAlign: "center" }}>
+                                            <img src="/images/svg/LOGO.svg" alt="" width="150px" />
+                                        </div>
+                                        <div style={{ textAlign: "center" }}>info@uboparts.com</div>
+                                    </footer>
                             </div>
                         </div>
                     </div>
