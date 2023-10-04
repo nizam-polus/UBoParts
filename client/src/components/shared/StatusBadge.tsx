@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
 import classNames from 'classnames';
 // application
-import { FitSvg, NoFitSvg } from '~/svg';
+// import { FitSvg, NoFitSvg } from '~/svg';
 
 export type IStatusBadgeType = 'success' | 'failure' | 'warning' | 'unknown';
 
@@ -37,10 +37,10 @@ function StatusBadge(props: Props) {
             <div className="status-badge__body">
                 {icon !== undefined && (
                     <div className="status-badge__icon">
-                        {{
+                        {/* {{
                             success: <FitSvg />,
                             failure: <NoFitSvg />,
-                        }[icon]}
+                        }[icon]} */}
                     </div>
                 )}
                 {text !== undefined && <div className="status-badge__text">{text}</div>}

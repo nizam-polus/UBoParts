@@ -1,11 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AppImage from '~/components/shared/AppImage';
 import SellerSideBar from './SellerSideBar';
 import { UserContext } from '../account_/UserContext';
+import { BASE_URL } from 'configuration';
+import APIs from '~/services/apiService';
+import Link from 'next/link';
 
 function SellerDashboard() {
 
     const {user} = UserContext();
+    const [orderDetails, setOrderDetails] = useState<any>([]);
+
+    useEffect(() => {
+        APIs.getSellerOrder(user.username).then((response: any) => {
+            let order = response.data.rows.length ? response.data.rows.slice(0, 4) : [];
+            setOrderDetails(order);
+        }).catch(err => console.log(err))
+    }, [])
 
     return (
         <> 
@@ -15,7 +26,7 @@ function SellerDashboard() {
                     <div className="row mt-3 g-4">
                         <SellerSideBar />
                         <div className="col-12 col-md-9">
-                            <div className="coulmn-bg-color-1 rounded p-5">
+                            <div className="coulmn-bg-color-1 rounded px-5 pt-5 pb-0">
                                 <div className="row">
                                     <div className="col">
                                         <div className="img-seller-wrapper ps-4 pe-4">
@@ -23,26 +34,20 @@ function SellerDashboard() {
                                                 <table className="table seller-table1 m-0">
                                                     <thead>
                                                         <tr>
-                                                            <th className="p-2 pb-3 ps-0 text-center"><AppImage src="/images/seller-prod-1.png"  /></th>
+                                                            <th className="p-2 pb-3 ps-0 text-center">
+                                                                <AppImage style={{height: '15rem', borderRadius: '100%', maxWidth: '15rem'}}
+                                                                    src={ user.profile_image ? BASE_URL + user.profile_image.url : "/images/svg/my-account.svg"}
+                                                                />
+                                                            </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td className="border-0 text-center semifont pt-3 boldfontsize">{user?.company_name}</td>
+                                                            <td className="border-0 text-center semifont pt-3 boldfontsize">{user?.first_name && user?.first_name.toUpperCase() + ' ' + user?.last_name.toUpperCase()}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td className="border-0 text-center boldfontsize pt-1">
-                                                                <span className="me-2 regularfont mr-5">0 Open</span>
-                                                                <span className="ms-2 mediumfont ">0 Completed</span>
-                                                            </td>
+                                                            <td className="border-0 text-center semifont pt-3 boldfontsize">{user?.company_name}</td>
                                                         </tr>
-                                                        {/* <tr>
-                                                            <td className="p-3 pg-lg-3 pb-xl-0 text-center border-0">
-                                                                <button type="button" 
-                                                                    className="custom-color-7 boldfont mini-text-3 rounded border-0 button-bg-color-1 pb-2 pt-2 px-3"
-                                                                >View Front Shop</button>
-                                                            </td>
-                                                        </tr> */}
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -92,9 +97,9 @@ function SellerDashboard() {
                                     </div> */}
                                 </div>
                             </div>
-                            {/* <div className="coulmn-bg-color-1 rounded mt-4">
+                            <div className="coulmn-bg-color-1 rounded mt-4">
                                 <div className="row d-flex justify-content-between p-3 pb-1 pt-3">
-                                    <div className="col-auto"><span className="custom-color-2 boldfont body-sub-titles">Open Orders</span></div>
+                                    <div className="col-auto"><span className="custom-color-2 boldfont body-sub-titles">Latest Orders</span></div>
                                 </div>
                                 <div className="row mt-2 ml-3">
                                     <div className="table-responsive">
@@ -102,63 +107,31 @@ function SellerDashboard() {
                                             <thead>
                                                 <tr>
                                                     <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Orders</th>
-                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Customer</th>
                                                     <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Date</th>
                                                     <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Status</th>
-                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Total</th>
-                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">#12345678</td>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">Geen Geen</td>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">08 Jan, 2023</td>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">Open(Paid)</td>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">€1500.00</td>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">
-                                                        <button type="button" className="custom-color-7 boldfont mini-text-3 rounded custom-border-2 button-bg-color-1 pb-2 pt-2 mr-2 mb-2 mb-md-2 md-lg-0 mb-xl-0">Mark Complete</button>
-                                                        <button type="button" className="custom-color-6 boldfont mini-text-3 rounded custom-border-1 pb-2 pt-2">Cancel</button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">#12345678</td>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">Geen Geen</td>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">08 Jan, 2023</td>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">Open(Paid)</td>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">€1500.00</td>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">
-                                                        <button type="button" className="custom-color-7 boldfont mini-text-3 rounded custom-border-2 button-bg-color-1 pb-2 pt-2 mr-2 mb-2 mb-md-2 md-lg-0 mb-xl-0">Mark Complete</button>
-                                                        <button type="button" className="custom-color-6 boldfont mini-text-3 rounded custom-border-1 pb-2 pt-2">Cancel</button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">#12345678</td>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">Geen Geen</td>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">08 Jan, 2023</td>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">Open(Paid)</td>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">€1500.00</td>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">
-                                                        <button type="button" className="custom-color-7 boldfont mini-text-3 rounded custom-border-2 button-bg-color-1 pb-2 pt-2 mr-2 mb-2 mb-md-2 md-lg-0 mb-xl-0">Mark Complete</button>
-                                                        <button type="button" className="custom-color-6 boldfont mini-text-3 rounded custom-border-1 pb-2 pt-2">Cancel</button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">#12345678</td>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">Geen Geen</td>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">08 Jan, 2023</td>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">Open(Paid)</td>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">€1500.00</td>
-                                                    <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">
-                                                        <button type="button" className="custom-color-7 boldfont mini-text-3 rounded custom-border-2 button-bg-color-1 pb-2 pt-2 mr-2 mb-2 mb-md-2 md-lg-0 mb-xl-0">Mark Complete</button>
-                                                        <button type="button" className="custom-color-6 boldfont mini-text-3 rounded custom-border-1 pb-2 pt-2">Cancel</button>
-                                                    </td>
-                                                </tr>
+                                                {orderDetails.map((order: any) => {
+                                                    return (
+                                                        <>
+                                                            <tr>
+                                                                <td className="custom-color-2 lightfont placeholderfontsize border-0 pl-4 ps-3 pb-3 pt-3 align-middle">
+                                                                    <Link href={'/seller/seller-orders/' + order?.orderid}>{order?.orderid}</Link>
+                                                                </td>
+                                                                <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">
+                                                                    {new Date(order?.created_at).toDateString().substring(4)}
+                                                                </td>
+                                                                <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">{order?.status}</td>
+                                                            </tr>
+                                                        </>
+                                                    )
+                                                })}
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
-                            </div> */}
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -167,4 +140,5 @@ function SellerDashboard() {
         </>
     );
 }
+
 export default SellerDashboard;

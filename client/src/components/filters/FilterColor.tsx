@@ -3,7 +3,7 @@ import React from 'react';
 // third-party
 import classNames from 'classnames';
 // application
-import { Check12x9Svg } from '~/svg';
+// import { Check12x9Svg } from '~/svg';
 import { colorType } from '~/services/color';
 import { IColorFilter, IColorFilterValue } from '~/interfaces/filter';
 
@@ -55,7 +55,7 @@ function FilterColor(props: Props) {
                                 />
                                 <span className="input-check-color__box" />
                                 <span className="input-check-color__icon">
-                                    <Check12x9Svg />
+                                    {/* <Check12x9Svg /> */}
                                 </span>
                                 <span className="input-check-color__stick" />
                             </label>

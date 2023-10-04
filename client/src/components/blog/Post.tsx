@@ -8,7 +8,7 @@ import AppLink from '~/components/shared/AppLink';
 import CommentsList from '~/components/blog/CommentsList';
 import Pagination from '~/components/shared/Pagination';
 import ShareLinks from '~/components/shared/ShareLinks';
-import { ArrowRoundedLeft7x11Svg, ArrowRoundedRight7x11Svg } from '~/svg';
+// import { ArrowRoundedLeft7x11Svg, ArrowRoundedRight7x11Svg } from '~/svg';
 // data
 import dataBlogComments from '~/data/blogComments';
 import dataBlogPosts from '~/data/blogPosts';
@@ -182,7 +182,7 @@ function Post(props: Props) {
                         <div className="post-navigation__item-info">
                             <div className="post-navigation__direction">
                                 <div className="post-navigation__direction-arrow">
-                                    <ArrowRoundedLeft7x11Svg />
+                                    {/* <ArrowRoundedLeft7x11Svg /> */}
                                 </div>
                                 <div className="post-navigation__direction-title">
                                     Previous post
@@ -201,7 +201,7 @@ function Post(props: Props) {
                                     Next post
                                 </div>
                                 <div className="post-navigation__direction-arrow">
-                                    <ArrowRoundedRight7x11Svg />
+                                    {/* <ArrowRoundedRight7x11Svg /> */}
                                 </div>
                             </div>
                             <div className="post-navigation__item-title">

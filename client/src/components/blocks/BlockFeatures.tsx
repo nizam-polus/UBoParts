@@ -3,12 +3,12 @@ import React from 'react';
 // third-party
 import { FormattedMessage } from 'react-intl';
 // application
-import {
-    Fi24Hours48Svg,
-    FiFreeDelivery48Svg,
-    FiPaymentSecurity48Svg,
-    FiTag48Svg,
-} from '~/svg';
+// import {
+//     Fi24Hours48Svg,
+//     FiFreeDelivery48Svg,
+//     FiPaymentSecurity48Svg,
+//     FiTag48Svg,
+// } from '~/svg';
 
 export type IBlockFeaturesLayout = 'top-strip' | 'bottom-strip';
 
@@ -25,7 +25,7 @@ function BlockFeatures(props: Props) {
                 <ul className="block-features__list">
                     <li className="block-features__item">
                         <div className="block-features__item-icon">
-                            <FiFreeDelivery48Svg />
+                            {/* <FiFreeDelivery48Svg /> */}
                         </div>
                         <div className="block-features__item-info">
                             <div className="block-features__item-title">
@@ -38,7 +38,7 @@ function BlockFeatures(props: Props) {
                     </li>
                     <li className="block-features__item">
                         <div className="block-features__item-icon">
-                            <Fi24Hours48Svg />
+                            {/* <Fi24Hours48Svg /> */}
                         </div>
                         <div className="block-features__item-info">
                             <div className="block-features__item-title">
@@ -51,7 +51,7 @@ function BlockFeatures(props: Props) {
                     </li>
                     <li className="block-features__item">
                         <div className="block-features__item-icon">
-                            <FiPaymentSecurity48Svg />
+                            {/* <FiPaymentSecurity48Svg /> */}
                         </div>
                         <div className="block-features__item-info">
                             <div className="block-features__item-title">
@@ -64,7 +64,7 @@ function BlockFeatures(props: Props) {
                     </li>
                     <li className="block-features__item">
                         <div className="block-features__item-icon">
-                            <FiTag48Svg />
+                            {/* <FiTag48Svg /> */}
                         </div>
                         <div className="block-features__item-info">
                             <div className="block-features__item-title">

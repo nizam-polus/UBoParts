@@ -5,7 +5,7 @@ import APIs from "~/services/apiService";
 function PaymentResult() {
 
     const [status, setStatus] = useState('');
-    const [timer, setTimer] = useState(5);
+    const [path, setPath] = useState('')
     const router = useRouter();
 
     let interavls: any = [];
@@ -16,21 +16,24 @@ function PaymentResult() {
             interavls.push(checkPaymentStatus)
             APIs.paymentStatus(transactionId).then((response: any) => {
                 let status = response.data.rows.length ? response.data.rows[0].status : 'failed';
-                setStatus(status);
                 if (status !== 'created') {
                     clearInterval(checkPaymentStatus);
                     switch(status) {
                         case 'completed':
+                            setPath('/order-summary');
                             setStatus('completed');
                             break;
                         case 'failed':
+                            setPath('/homepage');
                             setStatus('failed');
                             break;
                         case 'expired' :
+                            setPath('/homepage');
                             setStatus('expired');
                             break;
                         default:
-                            setStatus(status)
+                            setPath('/homepage');
+                            setStatus(status);
                             console.log('unknown status', status);
                             break;
                     }
@@ -41,19 +44,19 @@ function PaymentResult() {
 
     useEffect(() => {
         setTimeout(() => {
-            router.push('/homepage');
-        }, 10000);
+            router.push(path);
+        }, 7000);
         setTimeout(() => {
             interavls.forEach((interval: any) => clearInterval(interval))
-        }, 30000);
+        }, 1000 * 60 * 5);
     }, [status])
 
     return (
         <>
-            {(!status || status === 'created') ? <h2 className="" style={{textAlign: 'center', position: 'relative', marginTop: '10%'}}>We are processing your payment ...</h2> : 
+            {(!status || status === 'created') ? <h2 className="" style={{textAlign: 'center', position: 'relative', marginTop: '10%'}}>Your request is being processed ...</h2> : 
                 <div style={{textAlign: 'center', position: 'relative', marginTop: '10%'}}>
-                    <h2 className="" >Order {status === 'completed' ? 'placed successfully' : status !== 'created' && status }</h2>
-                    <p>You will be redirected to homepage.</p>
+                    <h2 className="" >Order {status === 'completed' ? 'placed successfully' : status }</h2>
+                    <p>You will be redirected to { status === 'completed' ? ' order summary page' : ' homepage'}.</p>
                 </div>
             }
         </>

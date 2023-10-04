@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import AppLink from '~/components/shared/AppLink';
 import Collapse, { ICollapseRenderFnData } from '~/components/shared/Collapse';
 import url from '~/services/url';
-import { ArrowDown9x6Svg } from '~/svg';
+// import { ArrowDown9x6Svg } from '~/svg';
 import { ICategory } from '~/interfaces/category';
 
 type RenderFnData = ICollapseRenderFnData<HTMLLIElement, HTMLUListElement>;
@@ -75,7 +75,9 @@ function WidgetCategoriesList(props: Props) {
                         >
                             <span className="widget-categories-list__show-more-expand-text">Show More</span>
                             <span className="widget-categories-list__show-more-collapse-text">Show Less</span>
-                            <span className="widget-categories-list__show-more-arrow"><ArrowDown9x6Svg /></span>
+                            <span className="widget-categories-list__show-more-arrow">
+                                {/* <ArrowDown9x6Svg /> */}
+                                </span>
                         </button>
                     </React.Fragment>
                 )}

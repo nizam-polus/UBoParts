@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState} from 'react';
 import AppLink from '~/components/shared/AppLink';
 import AppImage from '~/components/shared/AppImage';
 import { BASE_URL } from 'configuration';
@@ -7,24 +7,42 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import APIs from '~/services/apiService';
 import WidgetSearch from '../widgets/WidgetSearch';
+import { UserContext } from '../account_/UserContext';
+
 
 function SellerListings() {
+    
+    const {user} = UserContext();
+
     const router = useRouter();
     const [uname, setUname] = useState<any>("");
     const [sellerList, setSellerList] = useState([]);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [itemId, setItemId] = useState<any>('')
+
+    const handleDelete = async (id: any) => {
+        setIsDeleting(true);
+        setItemId(id)
+        try {
+          const deleteResponse = await APIs.deleteProduct(id);
+          const response = await APIs.getAllSellerProducts(user.username);
+          setSellerList(response?.data?.data);
+        } catch (error) {
+          console.error("Error deleting product:", error);
+        } finally {
+          setIsDeleting(false);
+        }
+      };
+    
+    const editProduct = (id: any) =>{
+        router.push('/sellerUpdates/' + id);
+    }
 
     useEffect(() => {
         (async () => {
             try {
-                // Retrieve the userDetails string from localStorage
-                const userDetails: any = localStorage.getItem("userdetails");
-                const userDetailsJSON = JSON.parse(userDetails);
-                // Get the username property from the userDetails object
-                const username = userDetailsJSON.username;
-                setUname(username);
                 // Make the API call with the username
-                const res = await APIs.getAllSellerProducts(username);
-                console.log(res);
+                const res = await APIs.getAllSellerProducts(user.username);
                 setSellerList(res.data.data);
             } catch (error) {
                 console.error(error);
@@ -35,6 +53,8 @@ function SellerListings() {
     const handleProductClick = (product: any) => {
         router.push('/sellerProducts_/' + product.id);
     }
+
+    
     return (
         <>
             <div className="main-body pb-2 mb-5">
@@ -64,25 +84,51 @@ function SellerListings() {
                                                         <AppImage
                                                             src={BASE_URL + item?.attributes?.product_image?.data?.attributes?.url}
                                                             className="card-img-top img-prod-height pointer"
-                                                            style={{ height: '20rem', objectFit: 'cover' }}
+                                                            style={{ height: '20rem', objectFit: 'contain' }}
                                                             onClick={() => handleProductClick(item)}
                                                         />
                                                         <span className="product-price button-bg-color-1 text-white regularfont boldfontsize">€ {item.attributes.price}</span>
                                                     </div>
                                                     <div className="card-body p-4">
-                                                        <div className="row g-2" onClick={() => handleProductClick(item)}>
+                                                        <div className="row g-2">
                                                             <div className="col-12  d-flex justify-content-between">
-                                                                <span className="article-number regularfont mini-text">{item.attributes.category?.data?.attributes?.category_name}</span>
-                                                                <span className='button-bg-color-1' style={{  color: 'white', padding: '5px 10px', borderRadius: '20px' }}>
-                                                                    {item.attributes.stock_count}
+                                                                <span className="article-number regularfont mini-text"  onClick={() => handleProductClick(item)}>{item.attributes.category?.data?.attributes?.category_name}</span>
+                                                                {item.attributes.stock_count > 0  ?
+                                                                 <span className='button-bg-color-1' style={{  color: 'white', padding: '5px 12px', borderRadius: '20px' }}>
+                                                                 {item.attributes.stock_count}          
                                                                 </span>
+                                                                :          
+                                                                 <span className='' style={{  color: 'red', padding: '5px 10px', }}>
+                                                          {/* {item.attributes.stock_count} */} Out of Stock
+                                                      </span>
+                                                             }
+                                                               
                                                             </div>
                                                             <div className="col-12 pt-2 pb-2">
                                                                 <span className="product-name regularfont">{item.attributes.title}</span>
                                                             </div>
                                                             <div className="col-12 d-flex justify-content-between " style={{ gap: "20px" }}>
-                                                                <button type="button" className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2 p-2" style={{ width: "100%" }}>Edit</button>
-                                                                <button type="button" className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2" style={{ width: "100%" }}>Delete</button>
+                                                                <button type="button" onClick={() => editProduct(item.id)} className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2 p-2" style={{ width: "100%" }}>Edit</button>
+                                                              {isDeleting && item.id == itemId? 
+                                                               <button
+                                                               type="button"
+                                                               onClick={() => handleDelete(item.id)}
+                                                               className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2"
+                                                               style={{ width: "100%", cursor: "not-allowed", opacity: "0.5"}}
+                                                               disabled={isDeleting}
+                                                           >
+                                                                Deleting...
+                                                           </button>
+                                                           :
+                                                           <button
+                                                           type="button"
+                                                           onClick={() => handleDelete(item.id)}
+                                                           className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2"
+                                                           style={{ width: "100%"}}
+                                                           
+                                                       >
+                                                          Delete
+                                                       </button>} 
                                                             </div>
                                                         </div>
                                                     </div>

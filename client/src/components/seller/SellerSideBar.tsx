@@ -44,16 +44,16 @@ function SellerSideBar() {
                                     {(router.pathname.includes('/listings') || router.pathname.includes('/create_new_listing') )&& <span className="arrow-right"></span>}
                                 </td>
                             </tr>
-                            <tr>
+                            {/* <tr>
                                 <td className={"pointer " + (router.pathname.includes('/messages') ? "active p-1 pl-2" : "")}>
                                     <a onClick={() => router.push('/seller/messages')} className="custom-color-2 regularfont products-name">Messages</a>
                                     {router.pathname.includes('/messages') && <span className="arrow-right"></span>}
                                 </td>
-                            </tr>
+                            </tr> */}
                             <tr>
-                                <td className={"pointer " + (router.pathname.includes('/orders') ? "active p-1 pl-2" : "")}>
-                                    <a onClick={() => router.push('/seller/orders')} className="custom-color-2 regularfont products-name">Orders</a>
-                                    {router.pathname.includes('/orders') && <span className="arrow-right"></span>}
+                                <td className={"pointer " + (router.pathname.includes('/seller-orders') ? "active p-1 pl-2" : "")}>
+                                    <a onClick={() => router.push('/seller/seller-orders')} className="custom-color-2 regularfont products-name">Orders</a>
+                                    {router.pathname.includes('/seller-orders') && <span className="arrow-right"></span>}
                                 </td>
                             </tr>
                             <tr>
@@ -63,6 +63,12 @@ function SellerSideBar() {
                                 </td>
                             </tr>
                             <tr>
+                                <td className={"pointer " + (router.pathname.includes('/purchase-history') ? "active p-1 pl-2" : "")}>
+                                    <a onClick={() => router.push('/purchase-history')} className="custom-color-2 regularfont products-name">Purchase history</a>
+                                    {router.pathname.includes('/purchase-history') && <span className="arrow-right"></span>}
+                                </td>
+                            </tr>
+                            {/* <tr>
                                 <td className={"pointer " + (router.pathname.includes('/password') ? "active p-1 pl-2" : "")}>
                                     <a onClick={() => router.push('/seller/password')} className="custom-color-2 regularfont products-name">Password</a>
                                     {router.pathname.includes('/password') && <span className="arrow-right"></span>}
@@ -73,7 +79,7 @@ function SellerSideBar() {
                                     <a onClick={() => router.push('/seller/logout')} className="custom-color-2 regularfont products-name">Logout</a>
                                     {router.pathname.includes('/logout') && <span className="arrow-right"></span>}
                                 </td>
-                            </tr>
+                            </tr> */}
                         </>}
                     </tbody>
                 </table>

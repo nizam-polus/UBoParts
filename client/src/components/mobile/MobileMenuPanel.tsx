@@ -1,7 +1,7 @@
 // react
 import React, { PropsWithChildren, useContext } from 'react';
 // application
-import { ArrowRoundedLeft7x11Svg } from '~/svg';
+// import { ArrowRoundedLeft7x11Svg } from '~/svg';
 import { MobileMenuLevelContext } from '~/services/mobile-menu';
 
 interface Props extends PropsWithChildren<{}> {
@@ -27,7 +27,7 @@ function MobileMenuPanel(props: Props) {
             <div className="mobile-menu__panel-header">
                 {level > 0 && (
                     <button className="mobile-menu__panel-back" type="button" onClick={onCloseCurrentPanel}>
-                        <ArrowRoundedLeft7x11Svg />
+                        {/* <ArrowRoundedLeft7x11Svg /> */}
                     </button>
                 )}
                 <div className="mobile-menu__panel-title">{label}</div>

@@ -44,6 +44,12 @@ function Shop() {
     const [addToCartCompleted, setAddToCartCompleted] = useState<boolean>(true)
     const [itemId, setItemId] = useState<any>('')
     const [stockCount, setStockCount] = useState<any>(0)
+    const [price, setPrice] = useState(100)
+    const [minPrice, setMinPrice] = useState(0)
+    const [maxPrice, setMaxPrice] = useState(1000)
+    const [filterOption, setFilterOption] = useState('Latest');
+    const [initialproducts, setInitialProducts] = useState<any>([])
+    
 
     const router = useRouter();
 
@@ -98,11 +104,12 @@ function Shop() {
                 searchProducts();
             }, 2000);
         } else {
-            APIs.getAllProducts().then(response => {
+            APIs.getAllProducts('&sort[0]=createdAt:desc').then(response => {
                 let pagination = response.data.meta.pagination;
                 setPageRange(pageRangeFinder(pagination.pageCount));
                 setPagination(pagination);
                 setSearchedProducts(response.data.data);
+                setInitialProducts(response.data.data)
             })
         }
     }, [selectedMake, selectedModel, selectedYear, selectedCategory]);
@@ -151,6 +158,7 @@ function Shop() {
     const searchProducts = () => {
         APIs.searchProducts(selectedMake, selectedModel, selectedYear, selectedCategory).then((response: any) => {
             setSearchedProducts(response.data.data);
+            setInitialProducts(response.data.data)
             let pagination = response.data.meta.pagination
             setPagination(pagination);
             setSearched(true);
@@ -160,19 +168,6 @@ function Shop() {
             setLoading(false);
         });
     }
-
-    /*const categoriesArray = (resData: any) => {
-        return [...new Set(resData.map((item: any) => item.attributes.category_name))];
-    }
-
-    const optionsArray = (value: any) => {
-        return [...new Set(data.map((item: any) => item.attributes[value]))];
-    }
-
-    const handleMakeChange = (event: any) => {
-        setSearched(false);
-        setSelectedMake(event.target.value);
-    };*/
 
     const handleLicenseplateChange = (event: any) => {
         setSearched(false);
@@ -258,20 +253,19 @@ function Shop() {
 
     const handleApplyFilter = (event: any) => {
         event.preventDefault();
-        console.log(filterCategory);
-        console.log(filterSubcategory);
-        APIs.searchFilter(selectedMake, selectedModel, selectedYear, filterCategory, filterSubcategory, '').then(response => {
+        APIs.searchFilter(selectedMake, selectedModel, selectedYear, filterCategory, filterSubcategory, {min: minPrice, max: maxPrice}).then(response => {
             setSearchedProducts(response.data.data)
         }).catch(err => console.log)
     }
 
     const handleAddToCart = (productData: any) => {
-        setAddToCartCompleted(false)
-        setItemId(productData?.id)
+        
         if (!user || user && !user.id) {
             setOpenLogin(true);
         } else {
             setOpenLogin(false);
+            setAddToCartCompleted(false)
+            setItemId(productData?.id)
             let productQuantityInCart = 0;
             let cartData = {
                 customerid: user.id,
@@ -279,7 +273,6 @@ function Shop() {
                 quantity: '1',
                 productprice: productData?.attributes?.price
             }
-            
             APIs.getCartData({ customerid: user.id }).then(response => {
                 let productCartItems = response.data.rows;
                 // Find the quantity of the product with the given product ID
@@ -292,11 +285,7 @@ function Shop() {
                 // Fetch the product stock count
                 APIs.getProduct(cartData.productid).then(response => {
                     let productStock = response.data.data.attributes.stock_count;
-                    console.log(productStock)
-        
-                    // Check if the quantity exceeds the stock count
                     if (productQuantityInCart <= productStock && productStock !== 0) {
-                        // Quantity is within stock limit, add to cart
                         APIs.addToCart(cartData).then(response => {
                             toast.success(() => (
                                 <>
@@ -312,7 +301,6 @@ function Shop() {
                         });
                     } else {
                         setAddToCartCompleted(true)
-                        // Quantity exceeds stock limit, display a toast message
                         toast.error('Stock exceeded. Cannot add this item to the cart.');
                     }
                 }).catch(err => {
@@ -322,6 +310,44 @@ function Shop() {
             })
     
         }
+    }
+
+    const handleFilterChange = (event: any) =>{
+        const selectedOption = event.target.value;
+    setFilterOption(selectedOption);
+     if (selectedOption === 'Latest') {
+        APIs.getAllProducts('&sort[0]=createdAt:desc').then(response => {
+            let pagination = response.data.meta.pagination;
+            setPageRange(pageRangeFinder(pagination.pageCount));
+            setPagination(pagination);
+            setSearchedProducts(response.data.data);
+            setInitialProducts(response.data.data)
+        })
+     
+      } else if (selectedOption === 'highToLow') {
+        // Sort searchedProducts by price high to low
+
+        // const sortedProducts = searchedProducts.slice().sort((a: any, b: any) => b.attributes.price - a.attributes.price);
+        APIs.getAllProducts('&sort[0]=price:desc').then(response => {
+            let pagination = response.data.meta.pagination;
+            setPageRange(pageRangeFinder(pagination.pageCount));
+            setPagination(pagination);
+            setSearchedProducts(response.data.data);
+            setInitialProducts(response.data.data)
+        })
+        
+      } else if (selectedOption === 'lowToHigh') {
+        // Sort searchedProducts by price low to high
+        // const sortedProducts = searchedProducts.slice().sort((a:any, b:any) => a.attributes.price - b.attributes.price);
+        APIs.getAllProducts('&sort[0]=price:asc').then(response => {
+            let pagination = response.data.meta.pagination;
+            setPageRange(pageRangeFinder(pagination.pageCount));
+            setPagination(pagination);
+            setSearchedProducts(response.data.data);
+            setInitialProducts(response.data.data)
+        })
+        
+      }
     }
 
     const loginModalClose = () => {
@@ -458,17 +484,46 @@ function Shop() {
                                                 </div>}
                                             </div>
                                             <div className="row mb-2 flex-column">
-                                                <button 
-                                                    className="btn coulmn-bg-color-1 border-0 text-start justify-content-between 
-                                                                d-flex align-items-center regularfont mini-text-2"
-                                                    onClick={() => {setFiltertoggle((prevValue: any) => ({...prevValue, price: !filterToggle.price}))}}  
-                                                >
-                                                    <span>Price</span><i className={`${filterToggle.price ? 'fa fa-angle-up' : 'fa fa-angle-down'}`}></i>
-                                                </button>
-                                                {filterToggle.price && <div className="group-check p-3">
-                                                    {/* <ReactSlider min={0} max={1000} minDistance={100} /> */}
-                                                </div>}
-                                            </div>
+                                           <button
+                                             className="btn coulmn-bg-color-1 border-0 text-start justify-content-between d-flex align-items-center regularfont mini-text-2"
+                                             onClick={() => {
+                                               setFiltertoggle((prevValue) => ({ ...prevValue, price: !filterToggle.price }));
+                                             }}
+                                           >
+                                             <span>Price</span>
+                                             <i className={`${filterToggle.price ? 'fa fa-angle-up' : 'fa fa-angle-down'}`}></i>
+                                           </button>
+                                           {filterToggle.price && (
+                                             <div className="group-check p-4 " style={{display: "grid", gridTemplateColumns: "1fr 1fr" , gap: "20px"}}>
+                                               <div className="form-group d-flex flex-column align-items-center justify-content-center ">
+                                                 <label htmlFor="minPrice">Min Price:</label>
+                                                 <input
+                                                   type="number"
+                                                   id="minPrice"
+                                                   name="minPrice"
+                                                   value={minPrice}
+                                                   onChange={(e) => setMinPrice(Number(e.target.value))}
+                                                   min={100}
+                                                   max={maxPrice}
+                                                   className="form-control text-center"
+                                                 />
+                                               </div>
+                                               <div className="form-group  d-flex flex-column align-items-center justify-content-center">
+                                                 <label htmlFor="maxPrice">Max Price:</label>
+                                                 <input
+                                                   type="number"
+                                                   id="maxPrice"
+                                                   name="maxPrice"
+                                                   value={maxPrice}
+                                                   onChange={(e) => setMaxPrice(Number(e.target.value))}
+                                                   min={minPrice}
+                                                   max={2000}
+                                                   className="form-control text-center"
+                                                 />
+                                               </div>
+                                             </div>
+                                           )}
+                                         </div>
                                             {/* Filter based on rating - currently not used */}
                                             {/* <div className="row mb-2 flex-column">
                                                     <button className="btn coulmn-bg-color-1 border-0 text-start justify-content-between d-flex align-items-center regularfont mini-text-2">
@@ -521,23 +576,40 @@ function Shop() {
                                         </div>
                                     </div>
                                     <div className="col">
-                                        <div className="row g-4">
+                                        <div className="d-flex justify-content-end">
+                                            <div className="col-12 col-md-5 d-flex">
+                                                <label htmlFor="filterDropdown" 
+                                                    className="form-label me-2 d-flex align-items-center justify-content-center mb-2" 
+                                                    style={{minWidth: "100px"}}
+                                                >Sort by:</label>
+                                                <select
+                                                id="filterDropdown"
+                                                className="form-select mb-2 border-0"
+                                                value={filterOption}
+                                                onChange={handleFilterChange}
+                                                >
+                                                <option value='Latest'>Latest</option>
+                                                <option value="highToLow">Price: High to Low</option>
+                                                <option value="lowToHigh">Price: Low to High</option>
+                                                {/* Add more filter options as needed */}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="row g-4 pt-3">
                                             {searchedProducts.map((product: any, index: any) => {
-                                                console.log(product, index)
                                                 return (
                                                     <div className="col-12 col-sm-6 col-lg-4  mb-4" key={index}>
-                                                        <div className="latest-prods card card-shadows">
-                                                           {}
-                                                            <AppImage 
+                                                        <div className="latest-prods card card-shadows" style={{height: "100%"}}>
+                                                        <AppImage 
                                                                 src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
-                                                                className="card-img-top img-prod-height pointer" 
-                                                                style={{height: '20rem', objectFit: 'cover', opacity:`${product.attributes.stock_count == 0 ? "0.2" : "1"}`}} 
+                                                                className="card-img-top img-prod-height pointer "
+                                                                style={{height: '20rem', objectFit: 'contain', filter:`${product.attributes.stock_count == 0 ? "blur(3px)" : "none"}`}} 
                                                                 onClick={() => handleProductClick(product)}    
                                                             />
                                                             {
                                                             product.attributes.stock_count == 0 &&  
-                                                                <div style={{position: "absolute", display: "grid", placeContent:"center", width:"100%", height: "70%",zIndex: 33, }}>
-                                                                   <p style={{color: "red"}}>Out of Stock</p>
+                                                                <div  onClick={() => handleProductClick(product)} className='out-of-stock d-flex position-absolute justify-content-center align-items-center' >
+                                                                   <p className='text-out-of-stock mb-0'>OUT OF STOCK</p>
                                                                 </div>
                                                       
                                                              }
@@ -565,7 +637,11 @@ function Shop() {
                                                                     <div className="col-12 d-flex justify-content-between">
                                                                         <span className="product-price">€{product?.attributes?.price}</span>
                                                                         { product.attributes.stock_count === 0 ? (
-                                                                          <p className="text-danger small">Out of Stock</p>
+                                                                          <AppImage
+                                                                          src="images/cart-svg.svg"
+                                                                          className="pointer add_to_cart"
+                                                                           style={{opacity: "0.5", cursor: "not-allowed"}}  
+                                                                        />
                                                                         ) : addToCartCompleted ? (
                                                                           <AppImage
                                                                             src="images/cart-svg.svg"
@@ -577,8 +653,7 @@ function Shop() {
                                                                         ) : (
                                                                           <AppImage
                                                                             src="images/cart-svg.svg"
-                                                                            className="pointer add_to_cart"
-                                                                                                                                                  onClick={() => handleAddToCart(product)}
+                                                                            className="pointer add_to_cart"                      
                                                                           />
                                                                         )
                                                                         } 
@@ -633,7 +708,6 @@ function Shop() {
                             </div>
                         </div>
                     </section>
-
                 </div>
             </div>
             <div className="modal fade" id="view-filters" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

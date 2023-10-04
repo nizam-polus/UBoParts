@@ -1,18 +1,20 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import AppLink from '~/components/shared/AppLink';
 import AppImage from '~/components/shared/AppImage';
 import Link from 'next/link';
 import SellerSideBar from './SellerSideBar';
 import APIs from '~/services/apiService';
-import Qrgenerator from './Qrgenerator';
 import { useRouter } from 'next/router';
+import { BASE_URL } from 'configuration';
 import { toast } from 'react-toastify';
 
-function Create_new_listing() {
+
+function EditListing() {
     const [error, setError] = useState(null);
     const [makesArray, setMakesArray] = useState<any>([]);
     const [modelArray, setModelArray] = useState<any>([]);
     const [yearArray, setYearArray] = useState<any>([]);
+    const [categories, setCategories] = useState<any>([]);
     const [selectedMake, setSelectedMake] = useState('');
     const [selectedModel, setSelectedModel] = useState('');
     const [selectedYear, setSelectedYear] = useState('');
@@ -20,6 +22,7 @@ function Create_new_listing() {
     const [listName, setListName] = useState('');
     const [listPrice, setListPrice] = useState('');
     const [listQuantity, setListQuantity] = useState('');
+    const [listArticle, setListArticle] = useState('');
     const [listBarcode, setListBarcode] = useState("");
     const [listDescription, setListDescription] = useState('');
     const [listLocation, setListLocation] = useState('');
@@ -27,7 +30,7 @@ function Create_new_listing() {
     const [productGalleryImages, setProductGalleryImages] = useState<any>([]);
     const [categoriesDetails, setCategoriesDetails] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
-    const [selectedCategoryId, setSelectedCategoryId] = useState(null); // Store the selected category ID
+    const [selectedCategoryId, setSelectedCategoryId] = useState(0); // Store the selected category ID
     const [selectedSubcategory, setSelectedSubcategory] = useState('');
     const [subcategories, setSubcategories] = useState([]);
     const [categoriesData, setCategoriesData] = useState<any>([])
@@ -35,13 +38,67 @@ function Create_new_listing() {
     const [inputValue, setInputValue] = useState('');
     const [uname, setUname] = useState("")
     const [uid, setUid] = useState("")
-    const [selectedSubcategoryId, setSelectedSubcategoryId] = useState("");
+    const [selectedSubcategoryId, setSelectedSubcategoryId] = useState('');
     const [carDetailId, setCarDetailId] = useState()
     const [selectedItem, setSelectedItem] = useState(null);
     const [showInvaidLicense, setShowInvaidLicense] = useState(false);
     const [incomplete, setIncomplete] = useState<any>(false);
+    const [partsInput, setPartsInput] = useState()
 
     const router = useRouter()
+    const id = router.query.id;
+    const [productData, setProductData] = useState<any>({})
+    const [productGallery, setProductGallery] = useState([])
+    const [quantity, setQuantity] = useState(1);
+ 
+    useEffect(() => {
+        APIs.getProduct(id).then(response => {
+            let product = response.data.data;
+            if(response.data.data.attributes?.product_gallary_image?.data.length >0 && response.data.data.attributes?.product_image.data == null){
+              let productImage = response.data.data.attributes?.product_gallary_image?.data[0]?.attributes?.url;
+              setProductImage(productImage);
+            }else{
+              let productImage =response.data.data.attributes?.product_image?.data.attributes.url
+              setProductImage(productImage);
+            }
+            let productGallery = response.data.data.attributes?.product_gallary_image?.data;
+            let make = response.data.data.attributes?.cardetail?.data?.attributes?.make  
+            let model = response.data.data.attributes?.cardetail?.data?.attributes?.model
+            let year = response.data.data.attributes?.cardetail?.data?.attributes?.year  
+            let licenseplate = response.data.data?.attributes?.cardetail?.data?.attributes?.licenseplate
+            setProductData(product);
+            setProductGalleryImages(productGallery);
+            setListName(response.data.data.attributes.title)
+            console.log(response.data.data.attributes.title)
+            setListPrice(response.data.data.attributes.price)
+            setListQuantity(response.data.data.attributes.stock_count)
+            setListLocation(response.data.data.attributes.product_location_warehouse)
+            setListBarcode(response.data.data.attributes.article_number)
+            setListDescription(response.data.data.attributes.description)
+            setSelectedCategory(response.data.data.attributes.category.data.attributes.category_name)
+            setSelectedCategoryId(response.data.data.attributes.category.data.id)
+            setSelectedSubcategoryId(response.data.data.attributes.sub_category.data.id)
+            setSelectedSubcategory(response.data.data.attributes.sub_category.data.attributes.name)
+            setCarDetailId(response.data.data?.attributes?.cardetail?.data.id)
+            
+            APIs.getSubcategories(response.data.data.attributes.category.data.id)
+                .then((response) => {
+                    // Extract subcategory data
+                    const subcategoryData = response.data.rows;
+                    setSubcategories(subcategoryData);
+                    const initialSubcategory: any = subcategories.find(
+                        (subcategory: any) => subcategory.category_id === selectedSubcategoryId
+                    );
+                    if (initialSubcategory) {
+                        setSelectedSubcategoryId(initialSubcategory.id);
+                    }
+                    setSelectedMake(make)
+                    setSelectedModel(model)
+                    setSelectedYear(year)
+                    setLicenseplate(licenseplate)
+                })
+        }).catch(err => console.log(err))
+    }, []);
 
     useEffect(() => {
         let userDetails: any = localStorage.getItem("userdetails")
@@ -62,7 +119,6 @@ function Create_new_listing() {
     }).catch((error) => {
                 setError(error);
             });
-
         APIs.getCarMake().then((response: any) => {
             setMakesArray(response.data.rows);
         })
@@ -70,7 +126,6 @@ function Create_new_listing() {
                 setError(error);
             });
     }, []);
-
 
     useEffect(() => {
         if (licenseplate && licenseplate.length > 5) {
@@ -181,7 +236,6 @@ function Create_new_listing() {
         if (selectedCategoryData) {
           const selectedCategoryId = selectedCategoryData.id;
           setSelectedCategoryId(selectedCategoryId);
-      
           // Fetch subcategories based on the selected category's ID
           APIs.getSubcategories(selectedCategoryId)
             .then((response) => {
@@ -200,10 +254,15 @@ function Create_new_listing() {
             });
         }
       };
+      
       useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
+          console.log(inputValue)
+                  
           APIs.getParts(inputValue).then((res) => {
             setParts(res.data.data);
+            
+            // setSelectedItem(null)
           });
         }, 500)
     
@@ -226,14 +285,12 @@ function Create_new_listing() {
         setListPrice(event.target.value)
     }
     
-
     const handleQuantityChange = (event: any) => {
         setListQuantity(event.target.value)
     }
     const handleLocationChange = (event: any) => {
         setListLocation(event.target.value)
     }
-
     const handleBarcodeChange = (event: any) => {
         setListBarcode(event.target.value)
     }
@@ -266,76 +323,72 @@ function Create_new_listing() {
         const updatedGalleryImages = [...productGalleryImages];
         // Remove the image at the specified index
         updatedGalleryImages.splice(index, 1);
+        // Update the state with the modified gallery images
         setProductGalleryImages(updatedGalleryImages);
     };
 
     const createNewList = () => {
-        let incomplete = !(!!listName && !!carDetailId && selectedCategoryId && !!selectedSubcategoryId && !!listPrice && !!listQuantity && !!listLocation && !!listBarcode && !!listDescription && !!uname && !!uid)
-        setIncomplete(incomplete);
-        if(!incomplete){
-            if(!parts.length){
-                   APIs.setParts({
-                    "data": {
-                        "part": listName,
-                        "lang": "EN"
-                    }
-                   }).then((res) => console.log(res))
-            }
-            APIs.createNewList({
-                "data": {
-                "title": listName,
-                "cardetail": [carDetailId],
-                "category": [selectedCategoryId],
-                "sub_category": [parseInt(selectedSubcategoryId)],
-                "price": listPrice,
-                "stock_count": [listQuantity],
-                "product_location_warehouse": listLocation,
-                "article_number": listBarcode,
-                "part_no_barcode_no": listBarcode,
-                "description": listDescription,
-                "product_status": "Active",
-                "seller": uname,
-                "seller_id" : uid,
-                }
-            }).then((response: any) => {
-                const resId = response.data.data.id;
-                if (productImage && productImage instanceof File) {
-                // Make the API call to upload the featured image
+
+      let incomplete = !(!!listName && !!carDetailId && selectedCategoryId && !!selectedSubcategoryId && !!listPrice && !!listQuantity && !!listLocation && !!listBarcode && !!listDescription && !!uname && !!uid)
+    setIncomplete(incomplete);
+      if(!incomplete){
+        APIs.updateList(id,{
+          "data": {
+            "title": listName,
+            "cardetail": [carDetailId],
+            "category": [selectedCategoryId],
+            "sub_category": [parseInt(selectedSubcategoryId)],
+            "price": listPrice,
+            "stock_count": [listQuantity],
+            "product_location_warehouse": listLocation,
+            // "part_no_barcode_no": listBarcode,
+            "description": listDescription,
+            "product_status": "Active",
+            "seller": uname,
+            "seller_id" : uid,
+          }
+        }).then((response: any) => {
+          const resId = response.data.data.id;
+          if (productImage && productImage instanceof File) {
+            // Make the API call to upload the featured image
+            APIs.uploadImage({
+              ref: "api::product.product",
+              refId: resId,
+              field: "product_image",
+              files: productImage,
+            })
+            for (let i = 0; i < productGalleryImages.length; i++) {
+              const galleryImage = productGalleryImages[i];
+              // Use a closure to capture the current value of 'i'
+              (function (index) {
                 APIs.uploadImage({
-                    ref: "api::product.product",
-                    refId: resId,
-                    field: "product_image",
-                    files: productImage,
+                  ref: "api::product.product",
+                  refId: resId,
+                  field: "product_gallary_image",
+                  files: galleryImage,
                 })
-                for (let i = 0; i < productGalleryImages.length; i++) {
-                    const galleryImage = productGalleryImages[i];
-                    // Use a closure to capture the current value of 'i'
-                    (function (index) {
-                    APIs.uploadImage({
-                        ref: "api::product.product",
-                        refId: resId,
-                        field: "product_gallary_image",
-                        files: galleryImage,
-                    }).catch((galleryImageUploadError) => {
-                        console.error(`Gallery image ${index + 1} upload error:`, galleryImageUploadError);
-                        });
-                    })(i);
-                }
+                  .then((galleryImageUploadResponse) => {
+                  })
+                  .catch((galleryImageUploadError) => {
+                    console.error(`Gallery image ${index + 1} upload error:`, galleryImageUploadError);
+                  });
+              })(i);
+            }
 
-                } else {
-                // Handle the case where productImage is not defined
-                console.error("No product image selected.");
-                }
-            }).then(() => router.push('/seller/listings'))
-            .catch((error) => {
-                console.log(error);
-                setError(error);
-            });
-        }else{
-            toast.error("Fill all fields for create new list")
-        }        
-    }
-
+          } else {
+            // Handle the case where productImage is not defined
+            console.error("No product image selected.");
+          }
+        }).then(() => router.push('/seller/listings'))
+        .catch((error) => {
+          console.log(error);
+          setError(error);
+        });
+      }else{
+        toast.error("Fill all fields for Edt list")
+      }
+        
+        }
     return (
 
         <>
@@ -350,18 +403,18 @@ function Create_new_listing() {
                                         <table className="table profile-table-1 coulmn-bg-color-1 rounded">
                                             <tbody className="double">
                                                 <tr>
-                                                    <th colSpan={2} className="px-5 pb-1 ps-0 custom-color-3  regularfont body-sub-titles border-bottom border-top-0">Create New Listing</th>
+                                                    <th colSpan={2} className="px-5 pb-1 ps-0 custom-color-3  regularfont body-sub-titles border-bottom border-top-0">Edit List</th>
                                                 </tr>
 
                                                 <tr className="double">
                                                 <td className='px-5 pt-4 pb-4'>
                                                     <label className="custom-color-2 regularfont products-name pb-2">List Name <span className="required">*</span></label>
-                                                    <input type="text" value={inputValue} onChange={handleListChange} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listName ? 'required-field' : 'border-0' }`} name="first-name" placeholder="24 Inch Tyre for Mustang" required/>
+                                                    <input type="text" value={listName} onChange={handleListChange} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listName ? 'required-field' : 'border-0' }`} name="first-name" placeholder="24 Inch Tyre for Mustang" required/>
                                                     
                                                     <ul style={{display: "contents"}}>
                                                             {parts.length > 0 && inputValue.length >= 3 && !selectedItem && (
-                                                                
-                                                                    <div className="options-container  position-absolute" style={{ backgroundColor: "#ebebeb", boxShadow: "1px 0px 7px 0px grey", zIndex: 3, maxHeight: "200px", overflowY: "scroll", overflowX: "hidden" , width: "25rem" }}>
+                                                                <ul style={{ display: "contents" }}>
+                                                                    <div className="options-container  position-absolute" style={{ backgroundColor: "#ebebeb", boxShadow: "1px 0px 7px 0px grey", zIndex: 3, maxHeight: "200px", overflowY: "scroll", overflowX: "hidden", width: "22rem" }}>
                                                                         {parts
                                                                             .filter((part: any) => part.attributes.parts.toLowerCase().includes(inputValue.toLowerCase()))
                                                                             .map((part: any) => (
@@ -375,14 +428,14 @@ function Create_new_listing() {
                                                                                 </li>
                                                                             ))}
                                                                     </div>
-                                                               
+                                                                </ul>
                                                             )}
                                                      
                                                     </ul>
                                                   </td>
                                                     <td className='px-5 pt-4 pb-4'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Plate Number <span className="required">*</span></label>
-                                                        <input type="text" onChange={handleLicenseplateChange} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !licenseplate ? 'required-field' : 'border-0' }`} name="last-name" placeholder="Enter Plate Number to Auto Fill form" required/>
+                                                        <input type="text" value={licenseplate} onChange={handleLicenseplateChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" name="last-name" placeholder="Enter Plate Number to Auto Fill form" required/>
                                                         {showInvaidLicense &&
                                                     <div className="row mt-2 ml-2" >
                                                         <span className="advanced_search placeholderfontsize regularfont">No Record Found Against this Plate Number!</span>
@@ -437,29 +490,31 @@ function Create_new_listing() {
                                                     <td colSpan={2} className='px-5 pb-4 border-top-0'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Listing Sub Category</label><br />
                                                         <select
-                                                            className="form-select input-bg-color-2 border-0 products-name custom-color-2"
-                                                            value={selectedSubcategoryId}
-                                                            onChange={(e) => setSelectedSubcategoryId(e.target.value)}
-                                                            disabled={!subcategories || subcategories.length === 0}
-                                                        >
-                                                            <option value="">Choose Sub Category</option>
-                                                            {subcategories &&
-                                                                subcategories.map((subcategory: any, index: any) => (
-                                                                    <option key={index} value={subcategory.id}>
-                                                                        {subcategory.name}
-                                                                    </option>
-                                                                ))}
-                                                        </select>
+                                                   className="form-select input-bg-color-2 border-0 products-name custom-color-2"
+                                                   value={selectedSubcategoryId} // Use selectedSubcategoryId to store the ID
+                                                   onChange={(e) => setSelectedSubcategoryId(e.target.value)} // Update the selected subcategory ID
+                                                   disabled={!subcategories || subcategories.length === 0}
+                                                 >
+                                                 <option >Choose Sub Category</option>
+                                                 {subcategories &&
+                                                   subcategories.map((subcategory: any, index: any) => (
+                                                     <option key={index} value={subcategory.id}>
+                                                       {subcategory.name}
+                                                     </option>
+                                                   ))}
+                                               </select>
+
+
                                                     </td>
                                                 </tr>
                                                 <tr className="double">
                                                     <td className='px-5 pb-2 pt-4'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Listing Price (€)</label>
-                                                        <input type="text" onChange={handlePriceChange} value={listPrice} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listPrice ? 'required-field' : 'border-0' }`} placeholder="Listing Price (€)" />
+                                                        <input type="text" onChange={handlePriceChange} value={listPrice} className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Listing Price (€)" />
                                                     </td>
                                                     <td className='px-5 pb-2 pt-4'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Listing Quantity</label>
-                                                        <input type="text" onChange={handleQuantityChange} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listQuantity ? 'required-field' : 'border-0' }`} placeholder="Listing Quantity" />
+                                                        <input type="text" value={listQuantity} onChange={handleQuantityChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Listing Quantity" />
                                                     </td>
                                                 </tr>
                                                 <tr className="double">
@@ -471,7 +526,7 @@ function Create_new_listing() {
                                                     </td>
                                                     <td className='px-5 pb-2 border-0'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Location of Part</label>
-                                                        <input type="text" onChange={handleLocationChange} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listLocation ? 'required-field' : 'border-0' }`} placeholder="Location of Part" />
+                                                        <input type="text" value={listLocation} onChange={handleLocationChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Location of Part" />
                                                     </td>
                                                 </tr>
                                                 {/* <tr className="single">
@@ -480,53 +535,64 @@ function Create_new_listing() {
                                                         <input type="text" onChange={handleArticleChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Article No" />
                                                     </td>
                                                 </tr> */}
-                                                <tr className="single">
+                                                {/* <tr className="single">
                                                     <td colSpan={2} className='px-5 pb-4 pt-2 border-0'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Article No</label>
-                                                        <input type="text" onChange={handleBarcodeChange} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && listBarcode ? 'required-field' : 'border-0' }`} placeholder="Listing Part No/Barcode No" />
+                                                        <input type="text" value={listBarcode} onChange={handleBarcodeChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Listing Part No/Barcode No" />
                                                         {listBarcode && <Qrgenerator qrValue={listBarcode}/>}
                                                     </td>
-                                                </tr>
-                                                <tr className="double">
-                                                    <td className='px-5 pt-4 pb-2'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Featured Image <span className="required">*</span></label>
-                                                        <input className={`form-control pt-2 pb-1 choosefile ${incomplete && !productImage ? 'required-field' : 'border-0' }`} type="file" id="featuredImages" onChange={handleFeaturedImageChange} required />
+                                                </tr> */}
+                                               <tr className="double">
+                                                <td className='px-5 pt-4 pb-2'>
+                              <label className="custom-color-2 regularfont products-name pb-2">Listing Featured Image <span className="required">*</span></label>
+                              <input className="form-control pt-2 pb-1 choosefile" type="file" id="featuredImages" onChange={handleFeaturedImageChange} required />
 
-                                                        {productImage && (
-                                                            <div className="selected-featured-image" style={{ position: "relative", padding: "10px 0", width: "200px"}}>
-                                                                <button style={{ position: 'absolute', top: '10px', right: '15px', border: "none", color: "white", backgroundColor: "transparent", padding: "5px", borderRadius: "50%", cursor: "pointer" }} onClick={() => handleDeleteFeaturedImage()}>
+                              {productImage ? (
+                                <div className="selected-featured-image" style={{ padding: "10px 0" }}>
+                                  <button style={{ position: 'absolute', top: '10px', right: '15px', border: "none", color: "white", backgroundColor: "transparent", padding: "5px", borderRadius: "50%", cursor: "pointer" }} onClick={() => handleDeleteFeaturedImage()}>
                                                                     <i className='fa fa-trash'></i>
-                                                                </button>
-                                                                <img src={URL.createObjectURL(productImage)} alt="Selected Featured" width={200} height={200} style={{ borderRadius: "20px" }} />
-                                                            </div>
-                                                        )}
-                                                    </td>
-                                                    <td className='px-5 pt-4 pb-2'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Image(s) <span className="required">*</span></label>
-                                                        <input className={`form-control pt-2 pb-1 choosefile  ${incomplete && !productGalleryImages ? 'required-field' : 'border-0' }`} type="file" id="galleryImages" onChange={handleGalleryImagesChange} multiple required/>
-                                                        {productGalleryImages.length > 0 && (
-                                                   <div className="selected-gallery-images" style={{padding: "10px 0", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px"}}>
-                                                       {productGalleryImages.map((image : any, index: any) => (
-                                                          <div key={index} style={{ position: 'relative' }}>
-                                                          <img src={URL.createObjectURL(image)} alt={`Selected ${index + 1}`} height={200} style={{ width: "100%", borderRadius: "20px", maxWidth: "210px" }} />
-                                                          <button  style={{ position: 'absolute', top: '5px', right: '10px', border: "none", color: "white", background: "none" }} onClick={() => handleDeleteGalleryImage(index)}>
+                                  </button>
+                                  {typeof productImage === 'string' ? (
+                                    <img src={BASE_URL + productImage} alt="Selected Featured" width={200} height={200} style={{ borderRadius: "20px" }} />
+                                  ) : (
+                                    <img src={URL.createObjectURL(productImage)} alt="Selected Featured" width={200} height={200} style={{ borderRadius: "20px" }} />
+                                  )}
+                                  {/* Add delete button if needed */}
+                                </div>
+                              ) : null}
+                            </td>
+                            <td className='px-5 pt-4 pb-2'>
+                              <label className="custom-color-2 regularfont products-name pb-2">Listing Image(s) <span className="required">*</span></label>
+                              <input className="form-control pt-2 pb-1 choosefile" type="file" id="galleryImages" onChange={handleGalleryImagesChange} multiple required />
+
+                              {productGalleryImages.length > 0 && (
+                                <div className="selected-gallery-images" style={{ padding: "10px 0", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+                                  {productGalleryImages.map((image: any, index: any) => (
+                                    <div key={index} style={{ position: 'relative' }}>
+                                      {typeof image?.attributes?.url === 'string' ? (
+                                        <img src={BASE_URL + image?.attributes.url} alt={`Selected ${index + 1}`} height={200} style={{ width: "100%", borderRadius: "20px", maxWidth: "210px" }} />
+                                      ) : (
+                                        <img src={URL.createObjectURL(image)} alt={`Selected ${index + 1}`} height={200} style={{ width: "100%", borderRadius: "20px", maxWidth: "210px" }} />
+                                      )}
+                                      <button  style={{ position: 'absolute', top: '5px', right: '10px', border: "none", color: "white", background: "none" }} onClick={() => handleDeleteGalleryImage(index)}>
                                                             <i className='fa fa-trash mr-3'></i>
                                                           </button>
-                                                        </div>
-                                                       ))}
-                                                   </div>
-                                                    )}
-                                                    </td >
-                                                </tr>
+                                      {/* Add delete button if needed */}
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </td>
+                          </tr>
                                                 <tr className="single">
                                                     <td colSpan={2} className='px-5 pb-2 border-0'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Listing Description</label>
-                                                        <textarea onChange={handleDescriptionChange} className={`form-control input-bg-color-2 border-0 products-name rounded ${incomplete && !listDescription ? 'required-field' : 'border-0' }`} rows={4}></textarea>
+                                                        <textarea value={listDescription} onChange={handleDescriptionChange} className="form-control input-bg-color-2 border-0 products-name rounded" rows={4}></textarea>
                                                     </td>
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2} className="border-0 px-5">
-                                                        <button type="submit" onClick={createNewList} className="place-quote text-white mediumfont products-name rounded border-0 button-bg-color-1">Create Listing</button>
+                                                        <button type="submit" onClick={createNewList} className="place-quote text-white mediumfont products-name rounded border-0 button-bg-color-1">Edit Listing</button>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -542,4 +608,4 @@ function Create_new_listing() {
         </>
     );
 }
-export default Create_new_listing;
+export default EditListing;

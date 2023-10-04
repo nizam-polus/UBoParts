@@ -13,7 +13,7 @@ import { FormattedMessage } from 'react-intl';
 // application
 import WidgetFilters from '~/components/widgets/WidgetFilters';
 import WidgetProducts from '~/components/widgets/WidgetProducts';
-import { Cross12Svg } from '~/svg';
+// import { Cross12Svg } from '~/svg';
 import { IProduct } from '~/interfaces/product';
 import { shopApi } from '~/api';
 import { SidebarContext } from '~/services/sidebar';
@@ -85,7 +85,7 @@ function ShopSidebar(props: Props) {
                         <FormattedMessage id="HEADER_FILTERS" />
                     </div>
                     <button className="sidebar__close" type="button" onClick={close}>
-                        <Cross12Svg />
+                        {/* <Cross12Svg /> */}
                     </button>
                 </div>
                 <div className="sidebar__content">

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { ArrowRoundedDown12x7Svg } from '~/svg';
+// import { ArrowRoundedDown12x7Svg } from '~/svg';
 import FilterCategory from '~/components/filters/FilterCategory';
 import FilterVehicle from '~/components/filters/FilterVehicle';
 import { getFilterValue, isDefaultFilterValue, serializeFilterValue } from '~/services/filters';
@@ -40,7 +40,7 @@ function Filter(props: Props) {
             <button type="button" className="filter__title" onClick={toggle}>
                 {filter.name}
                 <span className="filter__arrow">
-                    <ArrowRoundedDown12x7Svg />
+                    {/* <ArrowRoundedDown12x7Svg /> */}
                 </span>
             </button>
             <div className="filter__body" ref={setContentRef}>

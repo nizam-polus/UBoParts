@@ -29,14 +29,14 @@ import { shopApi } from '~/api';
 import { useCompareAddItem } from '~/store/compare/compareHooks';
 import { useProductForm } from '~/services/forms/product';
 import { useWishlistAddItem } from '~/store/wishlist/wishlistHooks';
-import {
-    Compare16Svg,
-    Fi24Hours48Svg,
-    FiFreeDelivery48Svg,
-    FiPaymentSecurity48Svg,
-    FiTag48Svg,
-    Wishlist16Svg,
-} from '~/svg';
+// import {
+//     Compare16Svg,
+//     Fi24Hours48Svg,
+//     FiFreeDelivery48Svg,
+//     FiPaymentSecurity48Svg,
+//     FiTag48Svg,
+//     Wishlist16Svg,
+// } from '~/svg';
 
 interface Props {
     product: IProduct;
@@ -94,7 +94,7 @@ function ShopPageProduct(props: Props) {
             <ul className="shop-features__list">
                 <li className="shop-features__item">
                     <div className="shop-features__item-icon">
-                        <FiFreeDelivery48Svg />
+                        {/* <FiFreeDelivery48Svg /> */}
                     </div>
                     <div className="shop-features__info">
                         <div className="shop-features__item-title">
@@ -108,7 +108,7 @@ function ShopPageProduct(props: Props) {
                 <li className="shop-features__divider" role="presentation" />
                 <li className="shop-features__item">
                     <div className="shop-features__item-icon">
-                        <Fi24Hours48Svg />
+                        {/* <Fi24Hours48Svg /> */}
                     </div>
                     <div className="shop-features__info">
                         <div className="shop-features__item-title">
@@ -122,7 +122,7 @@ function ShopPageProduct(props: Props) {
                 <li className="shop-features__divider" role="presentation" />
                 <li className="shop-features__item">
                     <div className="shop-features__item-icon">
-                        <FiPaymentSecurity48Svg />
+                        {/* <FiPaymentSecurity48Svg /> */}
                     </div>
                     <div className="shop-features__info">
                         <div className="shop-features__item-title">
@@ -136,7 +136,7 @@ function ShopPageProduct(props: Props) {
                 <li className="shop-features__divider" role="presentation" />
                 <li className="shop-features__item">
                     <div className="shop-features__item-icon">
-                        <FiTag48Svg />
+                        {/* <FiTag48Svg /> */}
                     </div>
                     <div className="shop-features__info">
                         <div className="shop-features__item-title">
@@ -267,7 +267,7 @@ function ShopPageProduct(props: Props) {
                         })}
                         onClick={run}
                     >
-                        <Wishlist16Svg />
+                        {/* <Wishlist16Svg /> */}
                         <span>
                             <FormattedMessage id="BUTTON_ADD_TO_WISHLIST" />
                         </span>
@@ -284,7 +284,7 @@ function ShopPageProduct(props: Props) {
                         })}
                         onClick={run}
                     >
-                        <Compare16Svg />
+                        {/* <Compare16Svg /> */}
                         <span>
                             <FormattedMessage id="BUTTON_ADD_TO_COMPARE" />
                         </span>

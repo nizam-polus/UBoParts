@@ -2,7 +2,7 @@
 import React, { ReactElement, useContext, useState } from 'react';
 import ReactDOM from 'react-dom';
 // application
-import { ArrowRoundedLeft7x11Svg } from '~/svg';
+// import { ArrowRoundedLeft7x11Svg } from '~/svg';
 import { MobileMenuContext, MobileMenuLevelContext } from '~/services/mobile-menu';
 
 interface Props {
@@ -40,7 +40,7 @@ function MobileMenuPanelController(props: Props) {
                 <div className="mobile-menu__panel-header">
                     {level > 0 && (
                         <button className="mobile-menu__panel-back" type="button" onClick={conveyor.close}>
-                            <ArrowRoundedLeft7x11Svg />
+                            {/* <ArrowRoundedLeft7x11Svg /> */}
                         </button>
                     )}
                     <div className="mobile-menu__panel-title">{label}</div>

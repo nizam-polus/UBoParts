@@ -7,7 +7,7 @@ import BlockSpace from '~/components/blocks/BlockSpace';
 import InputNumber from '~/components/shared/InputNumber';
 import PageTitle from '~/components/shared/PageTitle';
 import StatusBadge from '~/components/shared/StatusBadge';
-import { Cross12Svg, Quickview16Svg } from '~/svg';
+// import { Cross12Svg, Quickview16Svg } from '~/svg';
 
 function titleCase(str: string) {
     return str
@@ -48,7 +48,7 @@ function Page() {
                                         . Give it a click if you like.
 
                                         <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                                            <Cross12Svg />
+                                            {/* <Cross12Svg /> */}
                                         </button>
                                     </div>
                                 </div>
@@ -152,7 +152,7 @@ function Page() {
                                                 <button type="button" className={`btn btn-${style} btn-xl`}>Extra Large</button>
                                                 {' '}
                                                 <button type="button" className={`btn btn-${style} btn-xl btn-icon`}>
-                                                    <Quickview16Svg />
+                                                    {/* <Quickview16Svg /> */}
                                                 </button>
                                                 {' '}
                                             </div>
@@ -160,7 +160,7 @@ function Page() {
                                                 <button type="button" className={`btn btn-${style} btn-lg`}>Button Large</button>
                                                 {' '}
                                                 <button type="button" className={`btn btn-${style} btn-lg btn-icon`}>
-                                                    <Quickview16Svg />
+                                                    {/* <Quickview16Svg /> */}
                                                 </button>
                                                 {' '}
                                             </div>
@@ -168,7 +168,7 @@ function Page() {
                                                 <button type="button" className={`btn btn-${style}`}>Button Normal</button>
                                                 {' '}
                                                 <button type="button" className={`btn btn-${style} btn-icon`}>
-                                                    <Quickview16Svg />
+                                                    {/* <Quickview16Svg /> */}
                                                 </button>
                                                 {' '}
                                             </div>
@@ -176,7 +176,7 @@ function Page() {
                                                 <button type="button" className={`btn btn-${style} btn-sm`}>Button Small</button>
                                                 {' '}
                                                 <button type="button" className={`btn btn-${style} btn-sm btn-icon`}>
-                                                    <Quickview16Svg />
+                                                    {/* <Quickview16Svg /> */}
                                                 </button>
                                                 {' '}
                                             </div>
@@ -184,7 +184,7 @@ function Page() {
                                                 <button type="button" className={`btn btn-${style} btn-xs`}>Extra Small</button>
                                                 {' '}
                                                 <button type="button" className={`btn btn-${style} btn-xs btn-icon`}>
-                                                    <Quickview16Svg />
+                                                    {/* <Quickview16Svg /> */}
                                                 </button>
                                                 {' '}
                                             </div>
@@ -197,7 +197,7 @@ function Page() {
                                                 </button>
                                                 {' '}
                                                 <button type="button" className={`btn btn-${style} btn-loading btn-xl btn-icon`}>
-                                                    <Quickview16Svg />
+                                                    {/* <Quickview16Svg /> */}
                                                 </button>
                                                 {' '}
                                             </div>
@@ -207,7 +207,7 @@ function Page() {
                                                 </button>
                                                 {' '}
                                                 <button type="button" className={`btn btn-${style} btn-loading btn-lg btn-icon`}>
-                                                    <Quickview16Svg />
+                                                    {/* <Quickview16Svg /> */}
                                                 </button>
                                                 {' '}
                                             </div>
@@ -217,7 +217,7 @@ function Page() {
                                                 </button>
                                                 {' '}
                                                 <button type="button" className={`btn btn-${style} btn-loading btn-icon`}>
-                                                    <Quickview16Svg />
+                                                    {/* <Quickview16Svg /> */}
                                                 </button>
                                                 {' '}
                                             </div>
@@ -227,7 +227,7 @@ function Page() {
                                                 </button>
                                                 {' '}
                                                 <button type="button" className={`btn btn-${style} btn-loading btn-sm btn-icon`}>
-                                                    <Quickview16Svg />
+                                                    {/* <Quickview16Svg /> */}
                                                 </button>
                                                 {' '}
                                             </div>
@@ -237,7 +237,7 @@ function Page() {
                                                 </button>
                                                 {' '}
                                                 <button type="button" className={`btn btn-${style} btn-loading btn-xs btn-icon`}>
-                                                    <Quickview16Svg />
+                                                    {/* <Quickview16Svg /> */}
                                                 </button>
                                                 {' '}
                                             </div>
@@ -250,7 +250,7 @@ function Page() {
                                                 </button>
                                                 {' '}
                                                 <button type="button" className={`btn btn-${style} btn-lg btn-icon`} disabled>
-                                                    <Quickview16Svg />
+                                                    {/* <Quickview16Svg /> */}
                                                 </button>
                                                 {' '}
                                             </div>
@@ -260,7 +260,7 @@ function Page() {
                                                 </button>
                                                 {' '}
                                                 <button type="button" className={`btn btn-${style} btn-icon`} disabled>
-                                                    <Quickview16Svg />
+                                                    {/* <Quickview16Svg /> */}
                                                 </button>
                                                 {' '}
                                             </div>
@@ -270,7 +270,7 @@ function Page() {
                                                 </button>
                                                 {' '}
                                                 <button type="button" className={`btn btn-${style} btn-sm btn-icon`} disabled>
-                                                    <Quickview16Svg />
+                                                    {/* <Quickview16Svg /> */}
                                                 </button>
                                                 {' '}
                                             </div>
@@ -280,7 +280,7 @@ function Page() {
                                                 </button>
                                                 {' '}
                                                 <button type="button" className={`btn btn-${style} btn-xs btn-icon`} disabled>
-                                                    <Quickview16Svg />
+                                                    {/* <Quickview16Svg /> */}
                                                 </button>
                                                 {' '}
                                             </div>

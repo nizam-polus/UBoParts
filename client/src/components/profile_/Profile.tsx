@@ -40,21 +40,27 @@ function Profile() {
         if (!userId) {
             router.push('/homepage')
         } else {
-            APIs.getSpecificUser(userId).then((response: any) => {
-                let user = response.data;
-                setFirstname(user.first_name || '');
-                setLastname(user.last_name || '');
-                setEmail(user.email || '');
-                setPhone(user.phone_number || '');
-                setAddress_1(user.streetaddress_housenumber || '');
-                setAddress_2(user.streetaddress_apartment || '');
-                setCity(user.city || '');
-                setState(user.state || '');
-                setCountry(user.country || '');
-                setPostcode(user.postcode || '');
-            })
+            getSpecificUser(userId);
         }
-    }, [])
+    }, []);
+
+    const getSpecificUser = (userId: any) => {
+        APIs.getSpecificUser(userId).then((response: any) => {
+            let user = response.data;
+            saveUser(user)
+            setFirstname(user.first_name || '');
+            setLastname(user.last_name || '');
+            setEmail(user.email || '');
+            setPhone(user.phone_number || '');
+            setAddress_1(user.streetaddress_housenumber || '');
+            setAddress_2(user.streetaddress_apartment || '');
+            setCity(user.city || '');
+            setState(user.state || '');
+            setCountry(user.country || '');
+            setPostcode(user.postcode || '');
+            setProfilePicURL(user.profile_image?.url || '');
+        })
+    }
 
     const handleProfileSubmit = (event: any) => {
         event.preventDefault();
@@ -81,7 +87,6 @@ function Profile() {
                 shippingaddress_phonenumber: phone
             }
             APIs.updateSpecificUser(user.id, userData).then(response => {
-                console.log(response.data);
                 let user = response.data;
                 localStorage.setItem('userdetails', JSON.stringify(user));
                 saveUser(user);
@@ -103,12 +108,11 @@ function Profile() {
         };
       
         if (file) {
-          // Make the API call with the selected file
-          APIs.uploadImage(picData)
-            .then((response) => {
-              console.log("profileuploadresponse", response);
-              let resData = response.data[0];
-              setProfilePicURL(resData.url);
+            // Make the API call with the selected file
+            APIs.uploadImage(picData).then((response) => {
+                //   let resData = response.data[0];
+                //   setProfilePicURL(resData.url);
+                getSpecificUser(user?.id);
             })
             .catch((err) => console.log(err));
         }
@@ -127,7 +131,7 @@ function Profile() {
                         <div className="row mt-3 ">
                             <div className="col-12 col-md-12 col-xl-3">
                                 <div className="profile-image-wrapper coulmn-bg-color-1 rounded-2 p-5 pb-2 text-center">
-                                    <AppImage src={BASE_URL + (profilePicURL || 'images/img/dummy-profile.png')} className="profile-pic" width={"70px"} height={"70px"} style={{borderRadius: "50px"}}/>
+                                    <AppImage src={BASE_URL + (profilePicURL || '/images/img/dummy-profile.png')} className="profile-pic" width={"70px"} height={"70px"} style={{borderRadius: "100%"}}/>
                                     <div>
                                         <label  htmlFor="formId" className='position-relative position-overlap-edit-icon'>
                                             <input type="file" id="formId" hidden onChange={handlePicUpload}/>

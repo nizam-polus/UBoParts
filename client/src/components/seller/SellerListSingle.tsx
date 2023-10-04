@@ -1,5 +1,5 @@
 // react
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import AppImage from '../shared/AppImage';
 import Header_logged_in from '../header_/Header-logged-in';
 import Footer from '../footer_/Footer';
@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import APIs from '~/services/apiService';
 import { BASE_URL } from 'configuration';
 import Qrgenerator from './Qrgenerator';
+import ReactToPrint from 'react-to-print';
 
 const SellerListSingle = () => {
 
@@ -17,6 +18,7 @@ const SellerListSingle = () => {
     const [productImage, setProductImage] = useState<any>({})
     const [productGallery, setProductGallery] = useState([])
     const [quantity, setQuantity] = useState(1);
+    const componentRef:any = useRef();
 
     useEffect(() => {
         APIs.getProduct(id).then(response => {
@@ -26,12 +28,32 @@ const SellerListSingle = () => {
             setProductData(product);
             setProductGallery(productGallery);
             setProductImage(productImage);
+           
         }).catch(err => console.log(err))
     }, []);
 
     const handleImageChange = (url: string) => {
         setProductImage(url);
     }
+
+    const handleDownload = () => {
+        const qrCodeElement = componentRef.current;
+    
+        if (qrCodeElement) {
+          const qrCodeSVG = new XMLSerializer().serializeToString(qrCodeElement);
+          const blob = new Blob([qrCodeSVG], { type: 'image/svg+xml' });
+    
+          const a = document.createElement('a');
+          a.href = window.URL.createObjectURL(blob);
+          a.download = 'qrcode.svg'; // Specify the desired filename with an SVG extension
+          a.style.display = 'none';
+    
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        }
+      };
+      
     return (
         <>
             <div className="main-body pb-5 mb-5">
@@ -82,7 +104,7 @@ const SellerListSingle = () => {
                                 <div className="more-info p-3 rounded">
                                     <div className="row d-flex justify-content-between">
                                         <div className="col-auto"><span className="product-price custom-color-3 regularfont">€{quantity * productData?.attributes?.price}</span></div>
-                                        <div className="col-auto"><span className="in-stock custom-color-6 rounded-pill px-3 pb-1 pt-1 d-flex mini-text-2 semifont">In Stock</span></div>
+                                        <div className="col-auto"><span className="in-stock custom-color-6 rounded-pill px-3 pb-1 pt-1 d-flex mini-text-2 semifont">{productData?.attributes?.stock_count > 0 ? "In Stock" : "Out of Stock" }</span></div>
                                     </div>
                                     <div className="row mt-3">
                                         <div className="col-12">
@@ -124,21 +146,30 @@ const SellerListSingle = () => {
                                     </div>
                                 </div>
                                 <div className="more-info p-3 rounded mt-3">
-                                    <div className="row mt-3 p-1" style={{ display: "grid", placeContent: "center" }}>
+                                    <div className="row p-1" style={{ display: "grid", placeContent: "center" }}>
                                         <div className="col-12 text-center">
                                             <div className="qr-image">
-                                                <Qrgenerator qrValue={productData?.attributes?.part_no_barcode_no} />
+                                                <Qrgenerator qrValue={productData?.attributes?.part_no_barcode_no}  ref={componentRef}  />
                                             </div>
                                         </div>
                                     </div>
+                                    <div style={{display: "grid", gridTemplateColumns: "1fr 1fr", placeContent: "center", width: "100%", gap: "20px"}}>
+                                        <div>
+                                        <ReactToPrint 
+                                          trigger={() =><button type="button" 
+                                          className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2 p-2 my-2" style={{ width: "100%" }}
+                                        >Print</button>}
+                                          content={() => componentRef.current}
+                                        />
+                                        </div>
+                                    <div>
                                     <button type="button" 
-                                        className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2 p-2 my-2" style={{ width: "100%" }}
-                                    >Print</button>
-                                    <button type="button" 
-                                        className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2" style={{ width: "100%" }}
+                                       onClick={handleDownload} 
+                                       className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2 my-2" style={{ width: "100%" }}
                                     >Download</button>
+                                        </div>
+                                    </div>
                                 </div>
-
                             </div>
                         </div>
                     </section>

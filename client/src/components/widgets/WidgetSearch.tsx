@@ -1,7 +1,7 @@
 // react
 import React from 'react';
 // application
-import { Search20Svg } from '~/svg';
+// import { Search20Svg } from '~/svg';
 
 function WidgetSearch() {
     return (
@@ -9,7 +9,7 @@ function WidgetSearch() {
             <form action="" className="widget-search__form">
                 <input className="widget-search__input" type="search" placeholder="Blog search..." />
                 <button type="submit" className="widget-search__button">
-                    <Search20Svg />
+                    {/* <Search20Svg /> */}
                 </button>
                 <div className="widget-search__field" />
             </form>

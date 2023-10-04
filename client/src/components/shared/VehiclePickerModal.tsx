@@ -8,7 +8,7 @@ import { Modal } from 'reactstrap';
 import AsyncAction from '~/components/shared/AsyncAction';
 import RadioButton from '~/components/shared/RadioButton';
 import VehicleForm from '~/components/shared/VehicleForm';
-import { Cross12Svg, RecycleBin16Svg } from '~/svg';
+// import { Cross12Svg, RecycleBin16Svg } from '~/svg';
 import { IVehicle } from '~/interfaces/vehicle';
 import { useGarageAddItem, useGarageRemoveItem, useUserVehicles } from '~/store/garage/garageHooks';
 
@@ -69,7 +69,7 @@ function VehiclePickerModal(props: Props) {
     return (
         <Modal isOpen={isOpen} toggle={toggle} centered className="vehicle-picker-modal">
             <button type="button" className="vehicle-picker-modal__close" onClick={onClose}>
-                <Cross12Svg />
+                {/* <Cross12Svg /> */}
             </button>
 
             <div
@@ -130,7 +130,7 @@ function VehiclePickerModal(props: Props) {
                                             })}
                                             onClick={run}
                                         >
-                                            <RecycleBin16Svg />
+                                            {/* <RecycleBin16Svg /> */}
                                         </button>
                                     )}
                                 />
