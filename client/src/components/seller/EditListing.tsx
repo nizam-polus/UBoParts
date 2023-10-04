@@ -167,10 +167,6 @@ function EditListing() {
         }
     }, [licenseplate]);
 
-    const categoriesArray = (resData: any) => {
-        return [...new Set(resData.map((item: any) => item.attributes.category_name))];
-    }
-
     const handleLicenseplateChange = (event: any) => {
         const enteredLicenseplate = event.target.value.toUpperCase();
         setLicenseplate(enteredLicenseplate);
@@ -240,7 +236,6 @@ function EditListing() {
         if (selectedCategoryData) {
           const selectedCategoryId = selectedCategoryData.id;
           setSelectedCategoryId(selectedCategoryId);
-      
           // Fetch subcategories based on the selected category's ID
           APIs.getSubcategories(selectedCategoryId)
             .then((response) => {
