@@ -19,7 +19,7 @@ function Login(props: any) {
     const {user, saveUser} = UserContext();
     
     const [loginformData, setLoginFormData] = useState({
-        username: '',
+        username: props.username || '',
         password: ''
     });
     const [loginmodal, setLoginModal] = useState<boolean>(true);

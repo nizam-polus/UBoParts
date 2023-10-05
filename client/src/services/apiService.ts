@@ -127,13 +127,15 @@ const APIs = {
         'content-type': 'multipart/form-data'
     }}),
 
-    getCustomerOrder: (username: string) => ds.post(BACKEND_URL + 'order-distinct-user?populate=*', {user_name: username}),
+    getCustomerOrder: (username: string) => ds.post(BACKEND_URL + 'order-distinct-user?populate=*&sort[0]=createdAt:desc', {user_name: username}),
 
     getOrderDetails: (orderId: string) => ds.get(BACKEND_URL + 'order-details?populate=*&filters[$and][0][orderid][$eq]=' + orderId),
 
     getOrderWithTransactionid: (transactionId: string) => ds.get(BACKEND_URL + 'order-details?populate=*&filters[$and][0][transaction_id][$eq]=' + transactionId),
 
-    getSellerOrder: (sellerUsername: string) => ds.post(BACKEND_URL + 'order-distinct-seller?populate=*', {seller_name: sellerUsername}),
+    getSellerOrder: (sellerUsername: string) => ds.post(BACKEND_URL + 'order-distinct-seller?populate=*&sort[0]=id:desc', {seller_name: sellerUsername}),
+
+    getAllSellerOrders: (sellerUsername: string) => ds.get(BACKEND_URL + 'order-details?populate=*&filters[$and][][seller][$eq]=' + sellerUsername),
 
     setParts: (data: any) => ds.post(BACKEND_URL + 'parts',  {...data}),
 

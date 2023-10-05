@@ -95,22 +95,23 @@ function Register(props: any) {
                     password: regformData.password, 
                     user_type : 'normal', 
                     isApproved : 'Active',
-                    agreed: agreed
+                    agreed: agreed,
+                    confirmed: false
                 }
                 APIs.register(userdata).then((response: any) => {
                     let userData = response.data.user;
                     setRegistered(true);
-                    localStorage.setItem('usertoken', JSON.stringify(response.data.jwt));
-                    localStorage.setItem('userdetails', JSON.stringify(userData));
+                    // localStorage.setItem('usertoken', JSON.stringify(response.data.jwt));
+                    // localStorage.setItem('userdetails', JSON.stringify(userData));
                     const isEmpty = { username: "", email: "", password: "", confirmpassword: "" };
                     setRegFormData(isEmpty);
                     setTimeout(() => {
                         setRegistered(false);
-                        saveUser(userData);
+                        // saveUser(userData);
                         onClose();
-                    }, 2000)
+                    }, 3000)
                     isSubmitting = false;
-                    router.push('/homepage');
+                    // router.push('/homepage');
                 })
                 .catch((error) => {
                     setErrors(error?.response?.data?.error);
@@ -212,7 +213,12 @@ function Register(props: any) {
                                         </div>
                                         {!agreed && <span className="form_validerrors">{errors?.agreement}</span>}
                                         {errors?.status === 400 && <p className='text-center' style={{color: 'rgb(255 102 102)'}}>{errors?.message}</p>}
-                                        {registered && <p className='text-center' style={{color: 'rgb(25, 135, 84)'}}>Registration Completed!</p>}
+                                        {registered && 
+                                            <>
+                                                <p className='text-center' style={{color: 'rgb(25, 135, 84)'}}>Verification mail has been sent to your email.</p>
+                                                <p className='text-center' style={{color: 'rgb(25, 135, 84)'}}>Please Verify your Email!</p>
+                                            </>
+                                        }
                                         <button type="submit" className="btn btn-default body-sub-titles-1 mediumfont" onClick={(e) => onFormSubmit(e)}>Register</button>
                                     </form>
                                 </div>

@@ -32,6 +32,7 @@ function Profile() {
     const [newpwd, setNewpwd] = useState<string>('');
     const [confrmpwd, setConfrmpwd] = useState('');
     const [incomplete, setIncomplete] = useState<any>(false);
+    const [incompletePwd, setIncompletePwd] = useState<any>(false);
     const [profilePic, setProfilePic] = useState<any>(null);
     const [profilePicURL, setProfilePicURL] = useState<string>('');
 
@@ -117,6 +118,12 @@ function Profile() {
             .catch((err) => console.log(err));
         }
       };
+
+      const handlePwdChange = (event: any) => {
+        event.preventDefault();
+        let incompletePswrd = !(!!oldpwd && !!newpwd && !!confrmpwd);
+        setIncompletePwd(incompletePswrd);
+      }
 
     return (
         <> 
@@ -283,8 +290,11 @@ function Profile() {
                                                     <td className="px-5">
                                                         <label className="custom-color-2 regularfont products-name pb-2 pt-2">Old Password</label>
                                                         <span className="password-wrapper-field">
-                                                            <input type="password" className="form-control input-bg-color-2 border-0 products-name" name="old-password" placeholder="Enter Old Password"/>
-                                                            <AppImage className="icon-size" src="images/svg/eye-closed.svg"/>
+                                                            <input type="password" value={oldpwd}
+                                                                className={`form-control input-bg-color-2 products-name ${incompletePwd && !oldpwd ? ' required-field' : 'border-0' }`}
+                                                                name="old-password" placeholder="Enter Old Password"/>
+                                                            <AppImage className="icon-size" src="images/svg/eye-closed.svg"
+                                                        />
                                                         </span>
                                                     </td>
                                                 </tr>
@@ -292,7 +302,10 @@ function Profile() {
                                                     <td className="px-5">
                                                         <label className="custom-color-2 regularfont products-name pb-2">New Password</label>
                                                         <span className="password-wrapper-field">
-                                                            <input type="password" className="form-control input-bg-color-2 border-0 products-name" name="new-password" placeholder="Enter New Password"/>
+                                                            <input type="password" value={newpwd}
+                                                                className={`form-control input-bg-color-2 products-name ${incompletePwd && !newpwd ? ' required-field' : 'border-0' }`} 
+                                                                name="new-password" placeholder="Enter New Password"
+                                                            />
                                                             <AppImage className="icon-size" src="images/svg/eye-open.svg"/>
                                                         </span>
                                                         
@@ -302,7 +315,10 @@ function Profile() {
                                                     <td className="px-5 pb-5">
                                                         <label className="custom-color-2 regularfont products-name pb-2">Confirm Password</label>
                                                         <span className="password-wrapper-field">
-                                                            <input type="password" className="form-control input-bg-color-2 border-0 products-name" name="confirm-password" placeholder="Confirm New Password"/>
+                                                            <input type="password" value={confrmpwd}
+                                                                className={`form-control input-bg-color-2 products-name ${incompletePwd && !confrmpwd ? ' required-field' : 'border-0' }`}
+                                                                name="confirm-password" placeholder="Confirm New Password"
+                                                            />
                                                             <AppImage className="icon-size" src="images/svg/eye-closed.svg"/>
                                                         </span>
                                                     </td>
@@ -314,6 +330,7 @@ function Profile() {
                                         <div className="col">
                                             <button type="submit" 
                                                 className="custom-color-7 mediumfont rounded border-0 button-bg-color-1 pb-2 pt-2 px-5 d-flex align-items-center justify-content-center"
+                                                onClick={(e) => handlePwdChange(e)}
                                             >Change Password</button>
                                         </div>
                                     </div>

@@ -17,6 +17,9 @@ import { toast } from 'react-toastify';
 function Home() {
     const router = useRouter();
     const {user, saveUser, setCartCount} = UserContext();
+    let emailVerified = router.query.emailVerified;
+    let username = router.query.username;
+
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -42,7 +45,7 @@ function Home() {
     const [openLogin, setOpenLogin] = useState(false);
     const [itemId, setItemId] = useState<any>('')
     const [forgotPasswordPickerIsOpen, setforgotPasswordPickerIsOpen] = useState(false);
-    const [userDetail, setUserDetail] = useState()
+    const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
 
     useEffect(() => {
         if (licenseplate && licenseplate.length > 5) {
@@ -94,7 +97,6 @@ function Home() {
         setforgotPasswordPickerIsOpen(false);
     };
 
-    const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
     const showLoginModal = () => {
         setLoginModalIsOpen(true);
     };
@@ -102,7 +104,9 @@ function Home() {
     const onLoginModalClose = () => {
         setOpenLogin(false);
     };
+
     useEffect(() => {
+        emailVerified && showLoginModal();
         APIs.getCarDetails().then((response: any) => {
                 setData(response.data.data);
                 setLoading(false);
@@ -167,40 +171,10 @@ function Home() {
       };
     
     const searchProducts = () => {
-        // const filterSearch = 'filters[$and][][cardetail][make][$contains]=';
-        // const [selectedMake, selectedModel, ]
-        // let c = [selectedMake, selectedModel];
-        // let fil = '&filters[$and][][cardetail][make][$contains]=';
-        // const a = [
-        //     "&filters[$and][][cardetail][make][$contains]=MERCEDES-BENZ",
-        //     "&filters[$and][][cardetail][make][$contains]=B 180"
-        //   ];
-        // const modifiedArray = a.map(item => {
-        //     const withoutQuotes = item.replace(/"/g, '');
-        //     const withoutCommas = withoutQuotes.replace(/,/g, '');
-        //     const withoutBrackets = withoutCommas.replace(/\[|\]/g, '');
-        //     return withoutBrackets;
-        // });
-        //   const outputString = modifiedArray.join('');
-        //   console.log(outputString);
-        // c.forEach((item, key) => { 
-        //     c[key] = fil+item
-        // });
-        // console.log(JSON.stringify(c));
         localStorage.setItem('make',selectedMake);
         localStorage.setItem('model',selectedModel);
         localStorage.setItem('year',selectedYear);
         localStorage.setItem('category',selectedCategory);
-        // axios.get(`http://52.6.187.235:1337/api/products?populate=*&filters[$and][][cardetail][make][$contains]=${selectedMake}&filters[$and][][cardetail][model][$contains]=${selectedModel}&filters[$and][][cardetail][year][$eq]=${selectedYear}&filters[$and][][category][category_name][$contains]=${selectedCategory}`, { headers })
-        //     .then((response: any) => {
-        //         console.log('response :>> ', response.data.data);
-        //         setSearchedProducts(response.data.data);
-        //         setSearched(true);
-        //     })
-        //     .catch((error) => {
-        //         setError(error);
-        //         setLoading(false);
-        //     });
             router.push('/shop')
     }
 
@@ -333,6 +307,7 @@ function Home() {
             <Login
                 isOpen={openLogin}
                 onClose={onLoginModalClose}
+                username={username}
             />
             <div className="main-body pb-5 mb-5">
                 <div className="container">
@@ -498,8 +473,8 @@ function Home() {
                       return (
                        <div key={index} className="col-6 col-md-3">
                            <div className="prod-cats card">
-                           {item.attributes.category_image.data ? (
-                              <AppImage  style={{maxHeight: "270px", objectFit: "contain"}} src={BASE_URL + item.attributes.category_image.data[0].attributes.url} className="card-img-top" />
+                           {item.attributes.category_image?.data ? (
+                              <AppImage  style={{maxHeight: "270px", objectFit: "contain"}} src={BASE_URL + item.attributes.category_image?.data[0].attributes.url} className="card-img-top" />
                             ) : (
                               <AppImage style={{maxHeight: "270px", objectFit: "contain"}} src='data:image/png;base64,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' className="card-img-top" />
                             )}
