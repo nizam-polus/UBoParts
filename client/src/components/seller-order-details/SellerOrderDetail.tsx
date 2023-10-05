@@ -49,6 +49,7 @@ function SellerOrderDetails() {
             html2canvas(input, { logging: true, allowTaint: false, useCORS: true, onclone: function (clonedDoc: any) {
                 // I made the div hidden and here I am changing it to visible
                clonedDoc.getElementById('footer1').style.visibility = 'visible';
+               clonedDoc.getElementById('header1').style.display = 'block';
              } }).then((canvas) => {
                 
               const imgData = canvas.toDataURL('image/png');
@@ -80,6 +81,9 @@ function SellerOrderDetails() {
                             <SellerSideBar />
                             <div className="col-12 col-md-9">
                                 <div className="coulmn-bg-color-1 rounded px-3 pb-5 pt-3" ref={pdfRef}>
+                                    <header id="header1" className="header-download custom-border-2 rounded mb-5 " style={{display: "none"}} >
+                                        <div className="boldfont" style={{ textAlign: "center" }}>Order Invoice</div>
+                                    </header>
                                     <div className="d-flex justify-content-between m-0 pt-3 ml-3">
                                         <div className="col-8 p-0">
                                             <span className="custom-color-2 boldfont body-sub-titles">Order details 
@@ -89,7 +93,7 @@ function SellerOrderDetails() {
                                         </div>
                                     
                                         <div className="col-4 d-flex flex-row-reverse">
-                                            <button onClick={downloadPdf} className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2" style={{visibility: hide ? "visible" : "hidden"}}>Downloa</button>
+                                            <button onClick={downloadPdf} className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2" style={{visibility: hide ? "visible" : "hidden"}}>Download</button>
                                         </div>
                                         <br />
                                     </div>

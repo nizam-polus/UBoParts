@@ -45,6 +45,7 @@ function OrderDetails() {
             html2canvas(input, { logging: true, allowTaint: false, useCORS: true, onclone: function (clonedDoc: any) {
                 // I made the div hidden and here I am changing it to visible
                clonedDoc.getElementById('footer1').style.visibility = 'visible';
+               clonedDoc.getElementById('header1').style.display = 'block';
              } }).then((canvas) => {
                 
               const imgData = canvas.toDataURL('image/png');
@@ -75,8 +76,10 @@ function OrderDetails() {
                     <div className="row">
                         <SellerSideBar />
                         <div className="col-12 col-md-9">
-                                
                             <div id="downloadDiv" className="coulmn-bg-color-1 rounded p-3" ref={pdfRef} >
+                                    <header id="header1" className="header-download custom-border-2 rounded mb-5 " style={{ display: "none" }} >
+                                        <div className="boldfont" style={{ textAlign: "center" }}>Order Invoice</div>
+                                    </header>
                                 <div className="d-flex justify-content-between m-0 pt-3 ml-3">
                                     <div className="col-8 p-0">
                                         <span className="custom-color-2 boldfont body-sub-titles">Order details 
