@@ -45,8 +45,8 @@ const APIs = {
         )
     },
 
-    searchFilter: (make: string, model: string, year: string, categories: [], sub_category: [], price: any) => {
-        let searchposition = 0, orposition = -1, andposition = 0;
+    searchFilter: (make: string, model: string, year: string, categories: [], sub_category: [], price: any, sort: any, page: any) => {
+        let searchposition = -1, filterposition = 0, orposition = -1, andposition = 0;
         const incrementSearchPosition = () => searchposition += 1;
         const incrementOrPosition = () => orposition += 1;
         const incrementAndPosition = () => andposition += 1;
@@ -75,12 +75,13 @@ const APIs = {
         )).join().replace(',', ''));
 
         return axios.get(
-            BACKEND_URL + `products?populate=*${`&filters[$and][0][price][$between]=${price.min}&filters[$and][0][price][$between]=${price.max}`}` +
-            `${make && `&filters[$and][${incrementSearchPosition() + ''}][cardetail][make][$eq]=${make}`}` +
-            `${model && `&filters[$and][${incrementSearchPosition() + ''}][cardetail][model][$eq]=${model}`}` +
-            `${year && `&filters[$and][${incrementSearchPosition() + ''}][cardetail][year][$eq]=${year}`}` +
+            BACKEND_URL + `products?populate=*` + `${sort}&pagination[page]=${page}&pagination[pageSize]=18` +
+            `${`&filters[$or][0][price][$between]=${price.min}&filters[$or][0][price][$between]=${price.max}`}` +
+            `${make && `&filters[$or][1][$and][${incrementSearchPosition() + ''}][cardetail][make][$contains]=${make}`}` +
+            `${model && `&filters[$or][1][$and][${incrementSearchPosition() + ''}][cardetail][model][$contains]=${model}`}` +
+            `${year && `&filters[$or][1][$and][${incrementSearchPosition() + ''}][cardetail][year][$eq]=${year}`}` +
             `${(categories.length) ? categoryQuery() : ''}` +
-            `${sub_category.length ? subcategoryQuery() : ''}`, 
+            `${sub_category.length ? subcategoryQuery() : ''}`,
             {headers}
         )
     },
@@ -89,7 +90,14 @@ const APIs = {
 
     getAllProducts: (sortFilter = '') => axios.get(BACKEND_URL + 'products?populate=*' + sortFilter, {headers}),
 
-    getAllSellerProducts: (username: any) => axios.get(BACKEND_URL + `products?populate=*&filters[$and][][seller][$eq]=${username}&sort[0]=createdAt:desc`, {headers}),
+    getAllPaginationProducts: (page = '1', filter = "sort[0]=createdAt:desc") => {
+        return axios.get(BACKEND_URL + `products?${filter}&pagination[page]=${page}&pagination[pageSize]=18&populate=*`, {headers})
+    },
+
+    getAllSellerProducts: (username: any, page="1") => {
+        return axios.get(BACKEND_URL + `products?populate=*&filters[$and][][seller][$eq]=${username}` + 
+                    `&sort[0]=createdAt:desc&pagination[page]=${page}&pagination[pageSize]=10&populate=*`, {headers})
+    },
     
     getProduct: (id: any) => axios.get(BACKEND_URL + 'products/' + id + '?populate=*', {headers}),
 

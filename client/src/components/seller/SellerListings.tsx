@@ -19,6 +19,11 @@ function SellerListings() {
     const [sellerList, setSellerList] = useState([]);
     const [isDeleting, setIsDeleting] = useState(false);
     const [itemId, setItemId] = useState<any>('')
+    const [pageNumber, setPageNumber] = useState(1)
+
+    const [pageCount, setPageCount] = useState();
+    const [pagination, setPagination] = useState<any>({});
+    const [pageRange, setPageRange] = useState<number[]>([]);
 
     const handleDelete = async (id: any) => {
         setIsDeleting(true);
@@ -38,12 +43,25 @@ function SellerListings() {
         router.push('/sellerUpdates/' + id);
     }
 
+    const pageRangeFinder = (pageCount: number) => {
+        let start = 0, range = []
+        while (start !== pageCount) {
+            range.push(start+1)
+            start++
+        }
+        return range;
+    }
+
     useEffect(() => {
         (async () => {
             try {
                 // Make the API call with the username
-                const res = await APIs.getAllSellerProducts(user.username);
+                const res = await APIs.getAllSellerProducts(user.username,"1");
                 setSellerList(res.data.data);
+                let pagination = res.data.meta.pagination;
+                setPageCount(res.data.meta.pagination.pageCount)
+                setPageRange(pageRangeFinder(pagination.pageCount));
+                setPagination(pagination);
             } catch (error) {
                 console.error(error);
             }
@@ -53,7 +71,19 @@ function SellerListings() {
     const handleProductClick = (product: any) => {
         router.push('/sellerProducts_/' + product.id);
     }
-
+  
+    const handlePageChange = async(page:any) =>{
+        if (page >= 1) {
+            // Update the page number here
+            setPageNumber(page);
+        }
+        const res = await APIs.getAllSellerProducts(user.username,page);
+        setSellerList(res.data.data);
+        let pagination = res.data.meta.pagination;
+        setPageCount(res.data.meta.pagination.pageCount)
+        setPageRange(pageRangeFinder(pagination.pageCount));
+        setPagination(pagination);
+    }
     
     return (
         <>
@@ -140,16 +170,52 @@ function SellerListings() {
                                     </div>
                                 </div>
                                 <div className="row mt-5">
-                                    <div className="col text-center">
-                                        <ul className="pagination d-inline-flex">
-                                            <li className="page-item"><a className="page-link border-0 regularfont mini-text-1 custom-color-4" href="#"><i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> Previous</a></li>
-                                            <li className="page-item"><a className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">1</a></li>
-                                            <li className="page-item active"><a className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">2</a></li>
-                                            <li className="page-item"><a className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">3</a></li>
-                                            <li className="page-item"><a className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">Next <i className="fa fa-angle-right custom-color-3 mini-text-1 m-1"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                 <div className="col text-center">
+                                                <ul className="pagination d-inline-flex">
+                                                    <li className="page-item">
+                                                        {pageNumber !== 1 ? (
+                                                            <a
+                                                                onClick={() => handlePageChange(pageNumber - 1)}
+                                                                className="page-link border-0 regularfont mini-text-1"
+                                                                href="#"
+                                                            >
+                                                                <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> Previous
+                                                            </a>
+                                                        ) : (
+                                                            <a
+                                                                className="page-link border-0 regularfont mini-text-1 disabled custom-color-4"
+                                                                style={{ cursor: "not-allowed" }}
+                                                            >
+                                                                <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> Previous
+                                                            </a>
+                                                        )}
+                                                    </li>
+                                                    {pageRange.map((page: number, idx: number) => {
+                                                        return (
+                                                            <li className={`page-item ${page === pagination.page ? 'active': ''}`}>
+                                                                <a onClick={() => handlePageChange(page)} className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">{page}</a>
+                                                            </li>
+                                                        )
+                                                    })}
+                                                   
+                                                    <li className="page-item">
+                                                    { pageCount &&
+                                                        pageCount == pageNumber || pageCount == '1' ? 
+
+                                                        <a className="page-link border-0 custom-color-4 regularfont mini-text-1 disabled"
+                                                        style={{ cursor: "not-allowed" }} 
+                                                        >Next <i className="fa fa-angle-right custom-color-4 mini-text-1 m-1  ">
+                                                            </i></a>
+                                                          :
+                                                          <a onClick={() => handlePageChange(pageNumber+ 1)} className="page-link border-0 custom-color-3 regularfont mini-text-1"
+                                                          href="#"
+                                                      >Next <i className="fa fa-angle-right custom-color-3 mini-text-1 m-1"></i></a>
+                                                    }
+                                                        
+                                                    </li>
+                                                </ul>
+                                     </div>
+                                </div> 
                             </div>
                         </div>
                     </section>
