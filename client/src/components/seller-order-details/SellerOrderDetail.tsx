@@ -89,10 +89,7 @@ function SellerOrderDetails() {
                                         </div>
                                     
                                         <div className="col-4 d-flex flex-row-reverse">
-                                            <button onClick={downloadPdf} 
-                                                className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2" 
-                                                style={{visibility: hide ? "visible" : "hidden"}}
-                                            >Download</button>
+                                            <button onClick={downloadPdf} className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2" style={{visibility: hide ? "visible" : "hidden"}}>Downloa</button>
                                         </div>
                                         <br />
                                     </div>
@@ -159,12 +156,7 @@ function SellerOrderDetails() {
                                                                         <tr className="order-data">                                                   
                                                                             <td className="custom-color-2 regularfont body-sub-titles-2 py-3 border-bottom w-50">
                                                                                 <div className="d-inline-flex">
-                                                                                    <div className="col-3"> 
-                                                                                        <AppImage style={{height: '2.9rem', width: '2.9rem', objectFit: 'cover'}} 
-                                                                                            src={BASE_URL + order?.attributes?.product_image} 
-                                                                                            className="rounded mr-4" 
-                                                                                        />
-                                                                                    </div>
+                                                                                    <div className="col-3"> <AppImage style={{height: '2.9rem', width: '2.9rem', objectFit: 'cover'}} src={BASE_URL + order?.attributes?.product_image} className="rounded mr-4" /></div>
                                                                                     <div className="col ml-2">{order?.attributes?.product_name}</div>
                                                                                 </div>
                                                                             </td>
