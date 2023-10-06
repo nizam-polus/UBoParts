@@ -1,23 +1,18 @@
 // react
 import React, { useCallback, useEffect, useState } from 'react';
-import { Modal } from 'reactstrap';
-import { IVehicle } from '~/interfaces/vehicle';
-import Image from 'next/image'
 import AppImage from '../shared/AppImage';
-import Footer from '../footer_/Footer';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import APIs from '~/services/apiService';
 import { BASE_URL } from 'configuration';
 import Link from 'next/dist/client/link';
 import { UserContext } from '../account_/UserContext';
 import Login from '../account_/Login';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Shop() {
     
     const {user, saveUser, setCartCount} = UserContext();
-    const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [makesArray, setMakesArray] = useState<any>([]);
@@ -29,9 +24,7 @@ function Shop() {
     const [selectedYear, setSelectedYear] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
     const [toggleSearch, setToggleSearch] = useState(false);
-    const [licenseplate, setLicenseplate] = useState('');
     const [searchedProducts, setSearchedProducts] = useState<any>([]);
-    const [searched, setSearched] = useState(false);
     const [pagination, setPagination] = useState<any>({});
     const [pageRange, setPageRange] = useState<number[]>([]);
     const [filterToggle, setFiltertoggle] = useState({
@@ -43,8 +36,6 @@ function Shop() {
     const [openLogin, setOpenLogin] = useState(false);
     const [addToCartCompleted, setAddToCartCompleted] = useState<boolean>(true)
     const [itemId, setItemId] = useState<any>('')
-    const [stockCount, setStockCount] = useState<any>(0)
-    const [price, setPrice] = useState(100)
     const [minPrice, setMinPrice] = useState(0)
     const [maxPrice, setMaxPrice] = useState(1000)
     const [filterOption, setFilterOption] = useState('Latest');
@@ -113,7 +104,6 @@ function Shop() {
                 setPageRange(pageRangeFinder(pagination.pageCount));
                 setPagination(pagination);
                 setSearchedProducts(response.data.data);
-                setInitialProducts(response.data.data)
             })
         }
     }, [selectedMake, selectedModel, selectedYear, selectedCategory]);
@@ -140,16 +130,6 @@ function Shop() {
             });
     }
 
-    const optionsArray = (value: any) => {
-        return [...new Set(data.map((item: any) => item.attributes[value]))];
-    }
-
-    useEffect(() => {
-        setMakesArray(optionsArray('make'));
-        setModelArray(optionsArray('model'));
-        setYearArray(optionsArray('year'));
-    }, [data]);
-
     const pageRangeFinder = (pageCount: number) => {
         let start = 0, range = []
         while (start !== pageCount) {
@@ -162,10 +142,8 @@ function Shop() {
     const searchProducts = () => {
         APIs.searchProducts(selectedMake, selectedModel, selectedYear, selectedCategory).then((response: any) => {
             setSearchedProducts(response.data.data);
-            setInitialProducts(response.data.data)
             let pagination = response.data.meta.pagination
             setPagination(pagination);
-            setSearched(true);
             setPageRange(pageRangeFinder(pagination.pageCount));
             setPageCount(response.data.meta.pagination.pageCount)
         }).catch((error) => {
@@ -174,13 +152,7 @@ function Shop() {
         });
     }
 
-    const handleLicenseplateChange = (event: any) => {
-        setSearched(false);
-        setLicenseplate(event.target.value);
-    };
-
     const handleModelChange = (event: any) => {
-        setSearched(false);
         setSelectedModel(event.target.value);
     };
 
@@ -201,10 +173,6 @@ function Shop() {
         getModel(event.target.value);
         setSelectedMake(event.target.value);
     };
-
-    const toggleAdvancedSearch = () => {
-        setToggleSearch(!toggleSearch);
-    }
 
     const clearSearch = (event: any) => {
         event.preventDefault();
@@ -264,10 +232,13 @@ function Shop() {
 
     const handleApplyFilter = (event: any) => {
         event.preventDefault();
-        APIs.searchFilter(selectedMake, selectedModel, selectedYear, filterCategory, filterSubcategory, {min: minPrice, max: maxPrice}, "&sort[0]=createdAt:desc","1").then(response => {
-            let pagination = response.data.meta.pagination;
-            setPageRange(pageRangeFinder(pagination.pageCount));
-            setPagination(pagination);
+        APIs.searchFilter(
+            {make: selectedMake, model: selectedModel, year: selectedYear}, 
+            categories, filterCategory, 
+            filterSubcategory, 
+            {min: minPrice, max: maxPrice}, 
+            {sort: '&sort[0]=createdAt:desc', page: '1'}
+        ).then(response => {
             setSearchedProducts(response.data.data)
             console.log(response.data.data)
             setPageCount(response.data.meta.pagination.pageCount)
@@ -329,11 +300,14 @@ function Shop() {
     }
 
     const handleFilterChange = (event: any) =>{
+        let sort = ''
+        let vehicleDetails = {make: selectedMake, model: selectedModel, year: selectedYear}
         const selectedOption = event.target.value;
         setFilterOption(selectedOption);
         if (selectedOption === 'Latest') {
-            setSortState('&sort[0]=createdAt:desc')
-            APIs.searchFilter(selectedMake, selectedModel, selectedYear, filterCategory, filterSubcategory, {min: minPrice, max: maxPrice}, "&sort[0]=createdAt:desc","1").then(response => {
+            setSortState('&sort[0]=createdAt:desc');
+            sort = '&sort[0]=createdAt:desc';
+            APIs.searchFilter(vehicleDetails, categories, filterCategory, filterSubcategory, {min: minPrice, max: maxPrice}, {sort, page: '1'}).then(response => {
                 let pagination = response.data.meta.pagination;
                 setPageRange(pageRangeFinder(pagination.pageCount));
                 setPagination(pagination);
@@ -343,9 +317,10 @@ function Shop() {
             }).catch(err => console.log)
         } else if (selectedOption === 'highToLow') {
             // Sort searchedProducts by price high to low
-            setSortState("&sort[0]=price:desc")
+            setSortState("&sort[0]=price:desc");
+            sort = '&sort[0]=price:desc';
             // const sortedProducts = searchedProducts.slice().sort((a: any, b: any) => b.attributes.price - a.attributes.price);
-            APIs.searchFilter(selectedMake, selectedModel, selectedYear, filterCategory, filterSubcategory, {min: minPrice, max: maxPrice}, "&sort[0]=price:desc","1").then(response => {
+            APIs.searchFilter(vehicleDetails, categories, filterCategory, filterSubcategory, {min: minPrice, max: maxPrice}, {sort, page: '1'}).then(response => {
                 let pagination = response.data.meta.pagination;
                 setPageRange(pageRangeFinder(pagination.pageCount));
                 setPagination(pagination);
@@ -356,8 +331,9 @@ function Shop() {
         } else if (selectedOption === 'lowToHigh') {
             // Sort searchedProducts by price low to high
             setSortState('&sort[0]=price:asc')
+            sort = '&sort[0]=price:asc';
             // const sortedProducts = searchedProducts.slice().sort((a:any, b:any) => a.attributes.price - b.attributes.price);
-            APIs.searchFilter(selectedMake, selectedModel, selectedYear, filterCategory, filterSubcategory, {min: minPrice, max: maxPrice}, "&sort[0]=price:asc","1").then(response => {
+            APIs.searchFilter(vehicleDetails, categories, filterCategory, filterSubcategory, {min: minPrice, max: maxPrice}, {sort, page: '1'}).then(response => {
                 let pagination = response.data.meta.pagination;
                 setPageRange(pageRangeFinder(pagination.pageCount));
                 setPagination(pagination);

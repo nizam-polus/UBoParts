@@ -93,6 +93,7 @@ function PaymentResult() {
                                                 <div className="row">
                                                     <div className="col-12">
                                                         <span className="custom-color-2 boldfont body-sub-titles">Order Summary</span>
+                                                        <p className="custom-color-2 regularfont body-sub-titles-2">Order Id: {products[0].attributes.orderid}</p>
                                                         <hr />
                                                     </div>
                                                 </div>
