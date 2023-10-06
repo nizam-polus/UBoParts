@@ -8,8 +8,11 @@ const Qrgenerator =  React.forwardRef(({ qrValue }: any, ref: any) => {
     options: {
       displayValue: true,
       background: '#FFCF00',
+      format: "EAN13",
+
     }
   });
+
   return (
     <div ref={ref} style={{ paddingTop: "10px" }}>
       <img ref={inputRef} style={{maxWidth: "100%"}}/>

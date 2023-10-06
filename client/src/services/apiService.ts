@@ -90,6 +90,9 @@ const APIs = {
 
     getAllProducts: (sortFilter = '') => axios.get(BACKEND_URL + 'products?populate=*' + sortFilter, {headers}),
 
+    getCheckAllProducts: (articleNumber: any) => axios.get(BACKEND_URL + 'products?populate=*' + 
+                                       `&filters[$and][0][article_number][$eq]=${articleNumber}`, {headers}),
+
     getAllPaginationProducts: (page = '1', filter = "sort[0]=createdAt:desc") => {
         return axios.get(BACKEND_URL + `products?${filter}&pagination[page]=${page}&pagination[pageSize]=18&populate=*`, {headers})
     },
@@ -100,6 +103,11 @@ const APIs = {
     },
     
     getProduct: (id: any) => axios.get(BACKEND_URL + 'products/' + id + '?populate=*', {headers}),
+       
+    getCountries: () => axios.get(BACKEND_URL + 'countries/', {headers}),
+
+    getMakes: () => axios.get(BACKEND_URL + 'makes?populate=*&sort[0]=id:asc'),
+
 
     paymentUpdate: () => axios.post(BACKEND_URL + 'payment-status-update', {headers}),
 

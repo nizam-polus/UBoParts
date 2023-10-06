@@ -37,12 +37,12 @@ function Home() {
     const [selectedItem, setSelectedItem] = useState<any>('All')
     const [latestItems, setLatestItems] = useState([]);
     const [categoriesDetail, setCategoriesDetail] = useState([])
-    const [role, setRole] = useState("")
     const [addToCartCompleted, setAddToCartCompleted] = useState<boolean>(true)
     const [openLogin, setOpenLogin] = useState(false);
     const [itemId, setItemId] = useState<any>('')
     const [forgotPasswordPickerIsOpen, setforgotPasswordPickerIsOpen] = useState(false);
-    const [userDetail, setUserDetail] = useState()
+    const [startIndex, setStartIndex] = useState(0)
+    const [makeData, setMakeData] = useState<any>([]);
 
     useEffect(() => {
         if (licenseplate && licenseplate.length > 5) {
@@ -83,6 +83,16 @@ function Home() {
             return () => clearTimeout(getData);
         }
     }, [licenseplate]);
+
+      useEffect(() => {
+        APIs.getMakes()
+          .then(response => {
+            setMakeData(response.data.data);
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+          });
+      }, []); 
 
    
 
@@ -324,6 +334,18 @@ function Home() {
             })
         }
     }
+    const handleArrowClick = () => {
+        // Calculate the next start index by adding 4
+        const nextIndex = startIndex + 4;
+        // Ensure that the next index doesn't exceed the length of makesData
+        if (nextIndex < makeData.length) {
+          setStartIndex(nextIndex);
+        } else {
+          // If it exceeds, wrap around to the beginning
+          setStartIndex(0);
+        }
+      };
+    
     return (
         <>
             <Forgotpass
@@ -343,18 +365,27 @@ function Home() {
                                     <div className="row g-2 flex-column flex-lg-row">
                                         <div className="col">
                                             <div className="form-group">
-                                                <input type="form-control" onChange={handleLicenseplateChange} name="plate_number" className="semifont placeholderfontsize" placeholder="Search with Car's Plate Number" />
+                                                <input type="form-control" 
+                                                    onChange={handleLicenseplateChange} name="plate_number" 
+                                                    className="semifont placeholderfontsize" 
+                                                    placeholder="Search with Car's Plate Number" 
+                                                />
                                                 {showInvaidLicense &&
                                                     <div className="row mt-2 ml-2" >
-                                                        <span className="advanced_search placeholderfontsize regularfont">No Record Found Against this Plate Number!</span>
+                                                        <span className="advanced_search placeholderfontsize regularfont"
+                                                        >No Record Found Against this Plate Number!</span>
                                                     </div>
                                                 }
                                             </div>
                                         </div>
-                                        <div className="col-auto or_block"><span className="or_label semifont placeholderfontsize field3">or</span></div>
+                                        <div className="col-auto or_block">
+                                            <span className="or_label semifont placeholderfontsize field3">or</span>
+                                        </div>
                                         <div className="col">
                                             <div className="form-group">
-                                                <input type="form-control" name="article_number" className="semifont placeholderfontsize" placeholder="Search with product Article" />
+                                                <input type="form-control" name="article_number"
+                                                 className="semifont placeholderfontsize" placeholder="Search with product Article" 
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -372,8 +403,10 @@ function Home() {
                                         </div>
                                         <div className="col">
                                             <div className="form-group">
-                                                <select disabled={!selectedMake} className="form-select semifont placeholderfontsize" name="model" id="modelOption"
-                                                    value={selectedModel} onChange={handleModelChange}>
+                                                <select disabled={!selectedMake} 
+                                                    className="form-select semifont placeholderfontsize" name="model" id="modelOption"
+                                                    value={selectedModel} onChange={handleModelChange}
+                                                >
                                                     <option value="" disabled={true}>Select Model</option>
                                                     {modelArray.map((model: any, index: any) => (
                                                         <option key={index} value={model.model}>{model.model}</option>
@@ -383,8 +416,10 @@ function Home() {
                                         </div>
                                         <div className="col">
                                             <div className="form-group">
-                                                <select disabled={!selectedModel || (yearArray && yearArray.length && !yearArray[0].year)} className="form-select semifont placeholderfontsize" name="year" id="yearOption"
-                                                    value={selectedYear} onChange={handleYearChange}>
+                                                <select disabled={!selectedModel || (yearArray && yearArray.length && !yearArray[0].year)}
+                                                    className="form-select semifont placeholderfontsize" name="year" id="yearOption"
+                                                    value={selectedYear} onChange={handleYearChange}
+                                                >
                                                     <option value="" disabled={true}>Select Year</option>
                                                     {yearArray.map((year: any, index: any) => (
                                                         <option key={index} value={year.year}>{year.year}</option>
@@ -394,8 +429,10 @@ function Home() {
                                         </div>
                                         <div className="col">
                                             <div className="form-group">
-                                                <select disabled={!selectedYear} className="form-select semifont placeholderfontsize" name="category" id="categoryOption"
-                                                    value={selectedCategory} onChange={handleCategoryChange}>
+                                                <select disabled={!selectedYear} 
+                                                    className="form-select semifont placeholderfontsize" name="category" id="categoryOption"
+                                                    value={selectedCategory} onChange={handleCategoryChange}
+                                                >
                                                     <option value="" disabled={true}>Select Category</option>
                                                     {categories.map((category: any, index: any) => (
                                                         <option key={index} value={category}>{category}</option>
@@ -406,13 +443,15 @@ function Home() {
                                     </div>}
                                 </div>
                                 <div className="col-12 col-lg-3 d-flex align-items-end mb-3">
-                                {/* <Link href={`/shop`}> */}
-                                    <button type="button" onClick={searchProducts} className="search boldfont boldfontsize" disabled={showInvaidLicense}>Search</button>
-                                {/* </Link> */}
+                                    <button type="button" onClick={searchProducts} 
+                                        className="search boldfont boldfontsize" disabled={showInvaidLicense}
+                                    >Search</button>
                                 </div>
                             </div>
                             <div className="row mt-2 ml-2" >
-                                <span onClick={toggleAdvancedSearch} style={{ cursor: 'pointer' }} className="advanced_search placeholderfontsize regularfont">{toggleSearch ? 'Show less' : 'Advanced Search'}</span>
+                                <span onClick={toggleAdvancedSearch} style={{ cursor: 'pointer' }} 
+                                    className="advanced_search placeholderfontsize regularfont"
+                                >{toggleSearch ? 'Show less' : 'Advanced Search'}</span>
                             </div>
                         </form>
                     </section>
@@ -425,24 +464,19 @@ function Home() {
                                     <div className="col-6 col-md-3" key={index}>
                                             <Link href={`/products_/${product?.id}`}>
                                         <div className="latest-prods card">
-                                                <AppImage src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} className="card-img-top" />
+                                                <AppImage 
+                                                    src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
+                                                    className="card-img-top" 
+                                                />
                                                 <div className="card-body">
                                                     <div className="row g-1">
                                                         <div className="col-12">
-                                                            <span className="article-number regularfont mini-text">Article #{product?.attributes?.article_number}</span>
+                                                            <span className="article-number regularfont mini-text"
+                                                                >Article #{product?.attributes?.article_number}</span>
                                                         </div>
                                                         <div className="col-12">
                                                             <span className="product-name regularfont">{product?.attributes?.title}</span>
                                                         </div>
-                                                        {/* <div className="col-12">
-                                                            <span className="ratings">
-                                                                <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                                <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                                <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                                <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
-                                                            </span>
-                                                            <span className="rating-count regularfont mini-text-1">675</span>
-                                                        </div> */}
                                                         <div className="col-12 d-flex justify-content-between">
                                                             <span className="product-price">€{product?.attributes?.price}</span>
                                                             <i className="fa fa-shopping-cart body-sub-titles"></i>
@@ -492,78 +526,84 @@ function Home() {
                             </div>
                         </div>
                     </section>
+                    
                     <section className="categories-products-wrapper">
                         <div className="row mt-5 mt-lg-4 mt-xxl-5 g-4">
-                        {categoriesDetail.length > 0 ? categoriesDetail.slice(0, 4).map((item:any, index:any) => {
-                      return (
-                       <div key={index} className="col-6 col-md-3">
-                           <div className="prod-cats card">
-                           {item.attributes.category_image.data ? (
-                              <AppImage  style={{maxHeight: "270px", objectFit: "contain"}} src={BASE_URL + item.attributes.category_image.data[0].attributes.url} className="card-img-top" />
-                            ) : (
-                              <AppImage style={{maxHeight: "270px", objectFit: "contain"}} src='data:image/png;base64,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' className="card-img-top" />
-                            )}
-                              
-                                  <div className="card-body"><a href="" className="boldfont body-sub-titles">{item.attributes.category_name}</a></div>
-                            </div>
-                       </div>
-                       )
-                       }) : ""}
-                           
-                            {/* <div className="col-6 col-md-3">
-                                <div className="prod-cats card">
-                                    <AppImage src="/images/prod2.svg" className="card-img-top" />
-                                    <div className="card-body"><a href="" className="boldfont body-sub-titles">Engine</a></div>
+                            {categoriesDetail.length > 0 ? categoriesDetail.slice(0, 4).map((item:any, index:any) => {
+                                return (
+                                <div key={index} className="col-6 col-md-3">
+                                    <div className="prod-cats card">
+                                    {item.attributes.category_image.data ? (
+                                            <AppImage style={{height: "270px", objectFit: "contain"}} 
+                                                src={BASE_URL + item.attributes.category_image.data[0].attributes.url} className="card-img-top" 
+                                            />
+                                        ) : (
+                                            <AppImage style={{height: "270px", objectFit: "contain"}} src='' className="card-img-top" />
+                                        )}
+                                            <div className="card-body">
+                                                <a href="" className="boldfont body-sub-titles">{item.attributes.category_name}</a>
+                                            </div>
+                                        </div>
                                 </div>
-                            </div>
-                            <div className="col-6 col-md-3">
-                                <div className="prod-cats card">
-                                    <AppImage src="/images/prod2.svg" className="card-img-top" />
-                                    <div className="card-body"><a href="" className="boldfont body-sub-titles">Engine</a></div>
-                                </div>
-                            </div>
-                            <div className="col-6 col-md-3">
-                                <div className="prod-cats card">
-                                    <AppImage src="/images/prod3.svg" className="card-img-top" />
-                                    <div className="card-body"><a href="" className="boldfont body-sub-titles">Engine</a></div>
-                                </div>
-                            </div> */}
+                                )
+                            }) : ""}
                         </div>
                     </section>
-                    <section className="latest-products-wrapper">
+                <section className='d-flex align-items-center justify-content-center' 
+                    style={{ height: "200px", margin: "50px 0", background: "white" }}
+                >
+                   <div className='p-4 d-flex flex-row align-items-center justify-content-center'>
+                        <div style={{ width: "200px" }}>
+                            <h4>Search by Car Brand</h4>
+                        </div>
+                        {makeData.slice(startIndex, startIndex + 4).map((item :any, index:any) => (
+                            <div key={index} style={{ width: "200px" }}>
+                                <img src={item.attributes.make_logo.data ? 
+                                        BASE_URL + item.attributes.make_logo.data.attributes.url : ""} 
+                                    alt="" width="120px" height="120px"  style={{ cursor: 'pointer' }} 
+                                />
+                            </div>
+                        ))}
+                        <button onClick={handleArrowClick} 
+                            style={{ height: "75px", width: "75px", borderRadius: "50%", border: "3px solid green" }}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" 
+                                width="20" height="20" fill="currentColor" 
+                                className="bi bi-arrow-right" viewBox="0 0 16 16"
+                            >
+                                <path fillRule="evenodd" 
+                                    d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" 
+                                />
+                            </svg>
+                        </button>
+                   </div>
+                </section>
+                <section className="latest-products-wrapper">
                         <div className="row mt-5">
                             <div className="col-12 d-flex justify-content-between">
                                 <div><span className="popular_categories body-sub-titles regularfont">Latest Products</span>
                                 </div>
                                   <div>
                                     <button
-                                      type="button"
-                                      className={`saleoffers regularfont body-sub-titles ${selectedItem === 'All' ? 'active' : ''}`}
-                                      onClick={() => handleCategoryClick('All')}
-                                    >
-                                      All
-                                    </button>
+                                        type="button"
+                                        className={`saleoffers regularfont body-sub-titles ${selectedItem === 'All' ? 'active' : ''}`}
+                                        onClick={() => handleCategoryClick('All')}
+                                    >All</button>
                                     <button
-                                      type="button"
-                                      className={`saleoffers regularfont body-sub-titles ${selectedItem === 'Audio' ? 'active' : ''}`}
-                                      onClick={() => handleCategoryClick('Audio')}
-                                    >
-                                    Audio
-                                   </button>
+                                        type="button"
+                                        className={`saleoffers regularfont body-sub-titles ${selectedItem === 'Audio' ? 'active' : ''}`}
+                                        onClick={() => handleCategoryClick('Audio')}
+                                    >Audio</button>
                                     <button
-                                     type="button"
-                                     className={`saleoffers regularfont body-sub-titles ${selectedItem === 'Lights' ? 'active' : ''}`}
-                                     onClick={() => handleCategoryClick('Lights')}
-                                    >
-                                     Lights
-                                   </button>
+                                        type="button"
+                                        className={`saleoffers regularfont body-sub-titles ${selectedItem === 'Lights' ? 'active' : ''}`}
+                                        onClick={() => handleCategoryClick('Lights')}
+                                    >Lights</button>
                                    <button
-                                     type="button"
-                                     className={`saleoffers regularfont body-sub-titles ${selectedItem === 'Body Parts ' ? 'active' : ''}`}
-                                     onClick={() => handleCategoryClick('Body Parts ')}
-                                   >
-                                     Body Parts
-                                   </button>
+                                        type="button"
+                                        className={`saleoffers regularfont body-sub-titles ${selectedItem === 'Body Parts ' ? 'active' : ''}`}
+                                        onClick={() => handleCategoryClick('Body Parts ')}
+                                   >Body Parts</button>
                                  </div>
                             </div>
                             <div className="col"></div>
@@ -577,91 +617,65 @@ function Home() {
                     </section>
                     <section className="latest-products-second-wrapper">
                         <div className="row mt-5 mt-lg-4 mt-xxl-5 g-4">
-                        {latestItems
-                         && latestItems
-                             .map((product: any, index: any) => {
-                                                return (
-                                                    <div className="col-12 col-sm-6 col-lg-3 mb-4" key={index}>
-                                                        <div className="latest-prods card card-shadows " style={{height: "100%"}} >   
-                                                            <AppImage 
-                                                                src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
-                                                                className="card-img-top img-prod-height pointer "
-                                                                style={{height: '20rem', objectFit: 'contain', filter:`${product.attributes.stock_count == 0 ? "blur(3px)" : "none"}`}} 
-                                                                onClick={() => handleProductClick(product)}    
-                                                            />
-                                                            {
-                                                            product.attributes.stock_count == 0 &&  
-                                                                <div onClick={() => handleProductClick(product)} className='out-of-stock d-flex position-absolute justify-content-center align-items-center' >
-                                                                   <p className='text-out-of-stock mb-0'>OUT OF STOCK</p>
-                                                                </div>
-                                                             }
-                                                            <div className="card-body">
-                                                                <div className="row g-1">
-                                                                    <div className="col-12">
-                                                                        <span className="article-number regularfont mini-text">Article #{product?.attributes?.article_number}</span>
-                                                                    </div>
-                                                                    <div className="col-12">
-                                                                        <span className="product-name regularfont"
-                                                                            style={{"cursor": "pointer"}} 
-                                                                            onClick={() => handleProductClick(product)}
-                                                                        >{product?.attributes?.title}</span>
-                                                                    </div>
-                                                                    {/* <div className="col-12">
-                                                                    <span className="ratings">
-                                                                        <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                                        <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                                        <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                                        <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
-                                                                    </span>
-                                                                    <span className="rating-count regularfont mini-text-1">675</span>
-                                                                </div> */}
-                                                                    <div className="col-12 d-flex justify-content-between">
-                                                                     <span className="product-price">€{product?.attributes?.price}</span>
-                                                                     { product.attributes.stock_count === 0 ? (
-                                                                          <AppImage
-                                                                          src="images/cart-svg.svg"
-                                                                          className="pointer add_to_cart"
-                                                                           style={{opacity: "0.5", cursor: "not-allowed"}}  
-                                                                        />
-                                                                        ) : addToCartCompleted ? (
-                                                                          <AppImage
-                                                                            src="images/cart-svg.svg"
-                                                                            className="pointer add_to_cart"
-                                                                            onClick={() => handleAddToCart(product)}
-                                                                          />
-                                                                        ) : product.id === itemId ? (
-                                                                          "Adding.."
-                                                                        ) : (
-                                                                          <AppImage
-                                                                            src="images/cart-svg.svg"
-                                                                            className="pointer add_to_cart"                      
-                                                                          />
-                                                                        )
-                                                                        }
-                                                                        {/* <div className="input-group quanitity-box">
-                                                                            <span className="input-group-btn plus-icon semifont">
-                                                                                <i className="fa fa-plus mini-text-0 mini-text-0-color" aria-hidden="true"></i>
-                                                                            </span>
-                                                                            <input type="text" name="quant[1]" className="form-control input-number text-center rounded-pill border-0 semifont p-1 mini-text-2 h-auto" value="1" min="1" max="10" />
-                                                                            <span className="input-group-btn minus-icon semifont">
-                                                                                <i className="fa fa-minus mini-text-0 mini-text-0-color" aria-hidden="true"></i>
-                                                                            </span>
-                                                                        </div> */}
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                )
-                                            })}   
+                        {latestItems && latestItems .map((product: any, index: any) => {
+                            return (
+                                <div className="col-12 col-sm-6 col-lg-3 mb-4" key={index}>
+                                    <div className="latest-prods card card-shadows " style={{height: "100%"}} >   
+                                        <AppImage 
+                                            src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
+                                            className="card-img-top img-prod-height pointer "
+                                            style={{height: '20rem', objectFit: 'contain', filter:`${product.attributes.stock_count == 0 ? "blur(3px)" : "none"}`}} 
+                                            onClick={() => handleProductClick(product)}    
+                                        />
+                                        {product.attributes.stock_count == 0 &&  
+                                            <div onClick={() => handleProductClick(product)} className='out-of-stock d-flex position-absolute justify-content-center align-items-center' >
+                                                <p className='text-out-of-stock mb-0'>OUT OF STOCK</p>
+                                            </div>
+                                        }
+                                        <div className="card-body">
+                                            <div className="row g-1">
+                                                <div className="col-12">
+                                                    <span className="article-number regularfont mini-text"
+                                                        >Article #{product?.attributes?.article_number}</span>
+                                                </div>
+                                                <div className="col-12">
+                                                    <span className="product-name regularfont"
+                                                        style={{"cursor": "pointer"}} 
+                                                        onClick={() => handleProductClick(product)}
+                                                    >{product?.attributes?.title}</span>
+                                                </div>
+                                                <div className="col-12 d-flex justify-content-between">
+                                                    <span className="product-price">€{product?.attributes?.price}</span>
+                                                    {product.attributes.stock_count === 0 ? 
+                                                        (<AppImage
+                                                            src="images/cart-svg.svg"
+                                                            className="pointer add_to_cart"
+                                                            style={{opacity: "0.5", cursor: "not-allowed"}}  
+                                                        />) : addToCartCompleted ? 
+                                                        (<AppImage
+                                                            src="images/cart-svg.svg"
+                                                            className="pointer add_to_cart"
+                                                            onClick={() => handleAddToCart(product)}
+                                                        />) : product.id === itemId ? ("Adding..") : 
+                                                        (<AppImage
+                                                            src="images/cart-svg.svg"
+                                                            className="pointer add_to_cart"                      
+                                                        />)
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                )
+                            })}   
                         </div>
                     </section>
                 </div>
                 <section className="brands-section">
                     <div className="container-fluid">
                         <div className="container">
-                            <div className="row">
-                            </div>
+                            <div className="row"></div>
                         </div>
                     </div>
                 </section>
