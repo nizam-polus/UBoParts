@@ -49,6 +49,9 @@ function Shop() {
     const [maxPrice, setMaxPrice] = useState(1000)
     const [filterOption, setFilterOption] = useState('Latest');
     const [initialproducts, setInitialProducts] = useState<any>([])
+    const [pageNumber, setPageNumber] = useState(1)
+    const [pageCount, setPageCount] = useState();
+    const [sortState, setSortState] = useState("sort[0]=createdAt:desc")
     
 
     const router = useRouter();
@@ -104,8 +107,9 @@ function Shop() {
                 searchProducts();
             }, 2000);
         } else {
-            APIs.getAllProducts('&sort[0]=createdAt:desc').then(response => {
+            APIs.getAllPaginationProducts("1",sortState).then(response => {
                 let pagination = response.data.meta.pagination;
+                setPageCount(response.data.meta.pagination.pageCount)
                 setPageRange(pageRangeFinder(pagination.pageCount));
                 setPagination(pagination);
                 setSearchedProducts(response.data.data);
@@ -163,6 +167,7 @@ function Shop() {
             setPagination(pagination);
             setSearched(true);
             setPageRange(pageRangeFinder(pagination.pageCount));
+            setPageCount(response.data.meta.pagination.pageCount)
         }).catch((error) => {
             setError(error);
             setLoading(false);
@@ -185,6 +190,11 @@ function Shop() {
 
     const handleCategoryChange = (event: any) => {
         setSelectedCategory(event.target.value);
+        console.log(event.target.value)
+        setFiltertoggle((prevValue: any) => ({ ...prevValue }));
+        // Do not directly modify filterCategory; create a new array instead
+        const updatedFilterCategory = [...filterCategory, event.target.value];
+        setFilterCategory(updatedFilterCategory);
     };
 
     const handleMakeChange = (event: any) => {
@@ -201,6 +211,7 @@ function Shop() {
         setSelectedMake('');
         setSelectedModel('');
         setSelectedYear('');
+        setSelectedCategory('');
         localStorage.removeItem('make');
         localStorage.removeItem('model');
         localStorage.removeItem('year');
@@ -253,8 +264,13 @@ function Shop() {
 
     const handleApplyFilter = (event: any) => {
         event.preventDefault();
-        APIs.searchFilter(selectedMake, selectedModel, selectedYear, filterCategory, filterSubcategory, {min: minPrice, max: maxPrice}).then(response => {
+        APIs.searchFilter(selectedMake, selectedModel, selectedYear, filterCategory, filterSubcategory, {min: minPrice, max: maxPrice}, "&sort[0]=createdAt:desc","1").then(response => {
+            let pagination = response.data.meta.pagination;
+            setPageRange(pageRangeFinder(pagination.pageCount));
+            setPagination(pagination);
             setSearchedProducts(response.data.data)
+            console.log(response.data.data)
+            setPageCount(response.data.meta.pagination.pageCount)
         }).catch(err => console.log)
     }
 
@@ -314,45 +330,61 @@ function Shop() {
 
     const handleFilterChange = (event: any) =>{
         const selectedOption = event.target.value;
-    setFilterOption(selectedOption);
-     if (selectedOption === 'Latest') {
-        APIs.getAllProducts('&sort[0]=createdAt:desc').then(response => {
-            let pagination = response.data.meta.pagination;
-            setPageRange(pageRangeFinder(pagination.pageCount));
-            setPagination(pagination);
-            setSearchedProducts(response.data.data);
-            setInitialProducts(response.data.data)
-        })
-     
-      } else if (selectedOption === 'highToLow') {
-        // Sort searchedProducts by price high to low
-
-        // const sortedProducts = searchedProducts.slice().sort((a: any, b: any) => b.attributes.price - a.attributes.price);
-        APIs.getAllProducts('&sort[0]=price:desc').then(response => {
-            let pagination = response.data.meta.pagination;
-            setPageRange(pageRangeFinder(pagination.pageCount));
-            setPagination(pagination);
-            setSearchedProducts(response.data.data);
-            setInitialProducts(response.data.data)
-        })
-        
-      } else if (selectedOption === 'lowToHigh') {
-        // Sort searchedProducts by price low to high
-        // const sortedProducts = searchedProducts.slice().sort((a:any, b:any) => a.attributes.price - b.attributes.price);
-        APIs.getAllProducts('&sort[0]=price:asc').then(response => {
-            let pagination = response.data.meta.pagination;
-            setPageRange(pageRangeFinder(pagination.pageCount));
-            setPagination(pagination);
-            setSearchedProducts(response.data.data);
-            setInitialProducts(response.data.data)
-        })
-        
-      }
+        setFilterOption(selectedOption);
+        if (selectedOption === 'Latest') {
+            setSortState('&sort[0]=createdAt:desc')
+            APIs.searchFilter(selectedMake, selectedModel, selectedYear, filterCategory, filterSubcategory, {min: minPrice, max: maxPrice}, "&sort[0]=createdAt:desc","1").then(response => {
+                let pagination = response.data.meta.pagination;
+                setPageRange(pageRangeFinder(pagination.pageCount));
+                setPagination(pagination);
+                setSearchedProducts(response.data.data)
+                console.log(response.data.data)
+                setPageCount(response.data.meta.pagination.pageCount)
+            }).catch(err => console.log)
+        } else if (selectedOption === 'highToLow') {
+            // Sort searchedProducts by price high to low
+            setSortState("&sort[0]=price:desc")
+            // const sortedProducts = searchedProducts.slice().sort((a: any, b: any) => b.attributes.price - a.attributes.price);
+            APIs.searchFilter(selectedMake, selectedModel, selectedYear, filterCategory, filterSubcategory, {min: minPrice, max: maxPrice}, "&sort[0]=price:desc","1").then(response => {
+                let pagination = response.data.meta.pagination;
+                setPageRange(pageRangeFinder(pagination.pageCount));
+                setPagination(pagination);
+                setSearchedProducts(response.data.data)
+                console.log(response.data.data)
+                setPageCount(response.data.meta.pagination.pageCount)
+            }).catch(err => console.log)
+        } else if (selectedOption === 'lowToHigh') {
+            // Sort searchedProducts by price low to high
+            setSortState('&sort[0]=price:asc')
+            // const sortedProducts = searchedProducts.slice().sort((a:any, b:any) => a.attributes.price - b.attributes.price);
+            APIs.searchFilter(selectedMake, selectedModel, selectedYear, filterCategory, filterSubcategory, {min: minPrice, max: maxPrice}, "&sort[0]=price:asc","1").then(response => {
+                let pagination = response.data.meta.pagination;
+                setPageRange(pageRangeFinder(pagination.pageCount));
+                setPagination(pagination);
+                setSearchedProducts(response.data.data)
+                console.log(response.data.data)
+                setPageCount(response.data.meta.pagination.pageCount)
+            }).catch(err => console.log) 
+        }
     }
 
     const loginModalClose = () => {
         setOpenLogin(false);
     };
+
+    const handlePageChange = (page:any) =>{
+        if (page >= 1) {
+            // Update the page number here
+            setPageNumber(page);
+        }
+        APIs.getAllPaginationProducts(page, sortState).then(response => {
+            let pagination = response.data.meta.pagination;
+            setPageRange(pageRangeFinder(pagination.pageCount));
+            setPagination(pagination);
+            setSearchedProducts(response.data.data);
+            setInitialProducts(response.data.data)
+        })
+    }
 
     return (
         <>
@@ -384,7 +416,7 @@ function Shop() {
                                         <div className="form-group">
                                             <select disabled={!selectedMake} className="form-select semifont placeholderfontsize" name="model" id="modelOption"
                                                 value={selectedModel} onChange={handleModelChange}>
-                                                <option value="" disabled={true}>Select Model</option>
+                                                <option value="" disabled={!selectedMake}>Select Model</option>
                                                 {modelArray.map((model: any, index: any) => (
                                                     <option key={index} value={model.model}>{model.model}</option>
                                                 ))}
@@ -395,7 +427,7 @@ function Shop() {
                                         <div className="form-group">
                                             <select disabled={!selectedModel || (yearArray && yearArray.length && !yearArray[0].year)} className="form-select semifont placeholderfontsize" name="year" id="yearOption"
                                                 value={selectedYear} onChange={handleYearChange}>
-                                                <option value="" disabled={true}>Select Year</option>
+                                                <option value="" disabled={!selectedModel}>Select Year</option>
                                                 {yearArray.map((year: any, index: any) => (
                                                     <option key={index} value={year.year}>{year.year}</option>
                                                 ))}
@@ -460,11 +492,23 @@ function Shop() {
                                                     {categories.map((category: any, idx: any) => 
                                                         <div>
                                                             <div className="form-check mb-2" key={idx}>
-                                                                <input type="checkbox" 
-                                                                    className="form-check-input border-0" 
-                                                                    id={idx} name={category.category_name} value={category.category_name} 
-                                                                    onChange={(e) => handleCategoryFilter(e)}
-                                                                />
+
+                                                                {category.category_name == selectedCategory ? 
+                                                                  <input type="checkbox" 
+                                                                  className="form-check-input border-0" 
+                                                                  id={idx} name={category.category_name} value={category.category_name} 
+                                                                  onChange={(e) => handleCategoryFilter(e)}
+                                                                  checked={category.category_name == selectedCategory ? true : false}
+                                                              /> 
+                                                               :
+                                                               <input type="checkbox" 
+                                                               className="form-check-input border-0" 
+                                                               id={idx} name={category.category_name} value={category.category_name} 
+                                                               onChange={(e) => handleCategoryFilter(e)}
+                                                        
+                                                           />
+                                                                }
+                                                               
                                                                 <label className="form-check-label" htmlFor={idx}>{category.category_name}</label>
                                                                 {filterCategory.map((item: any) => item === category.category_name && category.subcategories.map((subcategory: any) => (
                                                                     <div>
@@ -678,19 +722,45 @@ function Shop() {
                                             <div className="col text-center">
                                                 <ul className="pagination d-inline-flex">
                                                     <li className="page-item">
-                                                        <a className="page-link border-0 regularfont mini-text-1 custom-color-4" href="#">
-                                                    <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> Previous</a></li>
+                                                        {pageNumber !== 1 ? (
+                                                            <a
+                                                                onClick={() => handlePageChange(pageNumber - 1)}
+                                                                className="page-link border-0 regularfont mini-text-1"
+                                                                href="#"
+                                                            >
+                                                                <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> Previous
+                                                            </a>
+                                                        ) : (
+                                                            <a
+                                                                className="page-link border-0 regularfont mini-text-1 disabled custom-color-4"
+                                                                style={{ cursor: "not-allowed" }}
+                                                            >
+                                                                <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> Previous
+                                                            </a>
+                                                        )}
+                                                    </li>
                                                     {pageRange.map((page: number, idx: number) => {
                                                         return (
                                                             <li className={`page-item ${page === pagination.page ? 'active': ''}`}>
-                                                                <a className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">{page}</a>
+                                                                <a onClick={() => handlePageChange(page)} className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">{page}</a>
                                                             </li>
                                                         )
                                                     })}
+                                                   
                                                     <li className="page-item">
-                                                        <a className="page-link border-0 custom-color-3 regularfont mini-text-1"
-                                                            href="#"
-                                                        >Next <i className="fa fa-angle-right custom-color-3 mini-text-1 m-1"></i></a>
+                                                    { pageCount &&
+                                                        pageCount == pageNumber || pageCount == '1' ? 
+
+                                                        <a className="page-link border-0 custom-color-4 regularfont mini-text-1 disabled"
+                                                        style={{ cursor: "not-allowed" }} 
+                                                        >Next <i className="fa fa-angle-right custom-color-4 mini-text-1 m-1  ">
+                                                            </i></a>
+                                                          :
+                                                          <a onClick={() => handlePageChange(pageNumber+ 1)} className="page-link border-0 custom-color-3 regularfont mini-text-1"
+                                                          href="#"
+                                                      >Next <i className="fa fa-angle-right custom-color-3 mini-text-1 m-1"></i></a>
+                                                    }
+                                                        
                                                     </li>
                                                 </ul>
                                             </div>
