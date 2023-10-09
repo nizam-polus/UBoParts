@@ -486,7 +486,13 @@ function Create_new_listing() {
                                                     </td>
                                                     <td className='px-5 pb-2 pt-4'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Listing Quantity</label>
-                                                        <input type="text" onChange={handleQuantityChange} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listQuantity ? 'required-field' : 'border-0' }`} placeholder="Listing Quantity" />
+                                                        <input type="text" onChange={handleQuantityChange} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listQuantity ? 'required-field' : 'border-0' }`} placeholder="Listing Quantity"
+                                                        value={listQuantity}
+                                                        onKeyPress={(e: any) => {
+                                                            if (e.key === '0' && e.target.value === '') {
+                                                              e.preventDefault();
+                                                            }
+                                                          }} />
                                                     </td>
                                                 </tr>
                                                 <tr className="double">
