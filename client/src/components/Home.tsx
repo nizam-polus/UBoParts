@@ -177,41 +177,11 @@ function Home() {
       };
     
     const searchProducts = () => {
-        // const filterSearch = 'filters[$and][][cardetail][make][$contains]=';
-        // const [selectedMake, selectedModel, ]
-        // let c = [selectedMake, selectedModel];
-        // let fil = '&filters[$and][][cardetail][make][$contains]=';
-        // const a = [
-        //     "&filters[$and][][cardetail][make][$contains]=MERCEDES-BENZ",
-        //     "&filters[$and][][cardetail][make][$contains]=B 180"
-        //   ];
-        // const modifiedArray = a.map(item => {
-        //     const withoutQuotes = item.replace(/"/g, '');
-        //     const withoutCommas = withoutQuotes.replace(/,/g, '');
-        //     const withoutBrackets = withoutCommas.replace(/\[|\]/g, '');
-        //     return withoutBrackets;
-        // });
-        //   const outputString = modifiedArray.join('');
-        //   console.log(outputString);
-        // c.forEach((item, key) => { 
-        //     c[key] = fil+item
-        // });
-        // console.log(JSON.stringify(c));
         localStorage.setItem('make',selectedMake);
         localStorage.setItem('model',selectedModel);
         localStorage.setItem('year',selectedYear);
         localStorage.setItem('category',selectedCategory);
-        // axios.get(`http://52.6.187.235:1337/api/products?populate=*&filters[$and][][cardetail][make][$contains]=${selectedMake}&filters[$and][][cardetail][model][$contains]=${selectedModel}&filters[$and][][cardetail][year][$eq]=${selectedYear}&filters[$and][][category][category_name][$contains]=${selectedCategory}`, { headers })
-        //     .then((response: any) => {
-        //         console.log('response :>> ', response.data.data);
-        //         setSearchedProducts(response.data.data);
-        //         setSearched(true);
-        //     })
-        //     .catch((error) => {
-        //         setError(error);
-        //         setLoading(false);
-        //     });
-            router.push('/shop')
+        router.push('/shop')
     }
 
     const getModel = (make: string) => {

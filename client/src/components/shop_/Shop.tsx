@@ -60,53 +60,35 @@ function Shop() {
     }
 
     useEffect(() => {
-        setSelectedMake(localStorage.getItem('make') || '');
-        setSelectedModel(localStorage.getItem('model') || '');
-        setSelectedYear(localStorage.getItem('year') || '');
-        setSelectedCategory(localStorage.getItem('category') || '');
-        APIs.getCategories().then((response: any) => {
-                setCategories(categoriesArray(response.data.data));
-                filterToggle.categories = true;
-                setFiltertoggle({...filterToggle});
-            })
-            .catch((error) => {
-                setError(error);
-            });
-
+        let make, model, year, category;
         APIs.getCarMake().then((response: any) => {
-                setMakesArray(response.data.rows);
-            })
-            .catch((error) => {
-                setError(error);
-            });
-        getModel(selectedMake);
-        getYear(selectedMake, selectedModel);
+            setMakesArray(response.data.rows);
+            make = localStorage.getItem('make') || '';
+            model = localStorage.getItem('model') || '';
+            year = localStorage.getItem('year') || '';
+            category = localStorage.getItem('category') || '';
+            getModel(make);
+            getYear(make, model);
+            setSelectedMake(make);
+            setSelectedModel(model);
+            setSelectedYear(year);
+            setSelectedCategory(category);
+            if (make && model && year) {
+                searchProducts(make, model, year, category)
+            } else {
+                getAllProducts();
+            }
+        }).catch((error) => {
+            setError(error);
+        });
+        APIs.getCategories().then((response: any) => {
+            setCategories(categoriesArray(response.data.data));
+            filterToggle.categories = true;
+            setFiltertoggle({...filterToggle});
+        }).catch((error) => {
+            setError(error);
+        });
     }, []);
-
-    useEffect(() => {
-        getModel(selectedMake);
-        getYear(selectedMake, selectedModel);
-    }, [selectedMake]);
-
-    useEffect(() => {
-        getYear(selectedMake, selectedModel);
-    }, [selectedModel]);
-
-    useEffect(() => {
-        if (selectedMake || selectedModel || selectedYear || selectedCategory) {
-            setTimeout(() => {
-                searchProducts();
-            }, 2000);
-        } else {
-            APIs.getAllPaginationProducts("1",sortState).then(response => {
-                let pagination = response.data.meta.pagination;
-                setPageCount(response.data.meta.pagination.pageCount)
-                setPageRange(pageRangeFinder(pagination.pageCount));
-                setPagination(pagination);
-                setSearchedProducts(response.data.data);
-            })
-        }
-    }, [selectedMake, selectedModel, selectedYear, selectedCategory]);
 
     const getModel = (make: string) => {
         const setData = { 'param_make': make }
@@ -139,8 +121,8 @@ function Shop() {
         return range;
     }
 
-    const searchProducts = () => {
-        APIs.searchProducts(selectedMake, selectedModel, selectedYear, selectedCategory).then((response: any) => {
+    const searchProducts = (make: any, model: any, year: any, category: any) => {
+        APIs.searchProducts(make, model, year, category).then((response: any) => {
             setSearchedProducts(response.data.data);
             let pagination = response.data.meta.pagination
             setPagination(pagination);
@@ -152,26 +134,38 @@ function Shop() {
         });
     }
 
-    const handleModelChange = (event: any) => {
-        setSelectedModel(event.target.value);
-    };
-
-    const handleYearChange = (event: any) => {
-        setSelectedYear(event.target.value);
-    };
-
-    const handleCategoryChange = (event: any) => {
-        setSelectedCategory(event.target.value);
-        console.log(event.target.value)
-        setFiltertoggle((prevValue: any) => ({ ...prevValue }));
-        // Do not directly modify filterCategory; create a new array instead
-        const updatedFilterCategory = [...filterCategory, event.target.value];
-        setFilterCategory(updatedFilterCategory);
-    };
+    const getAllProducts = () => {
+        APIs.getAllPaginationProducts("1",sortState).then(response => {
+            let pagination = response.data.meta.pagination;
+            setPageCount(response.data.meta.pagination.pageCount)
+            setPageRange(pageRangeFinder(pagination.pageCount));
+            setPagination(pagination);
+            setSearchedProducts(response.data.data);
+        })
+    }
 
     const handleMakeChange = (event: any) => {
         getModel(event.target.value);
         setSelectedMake(event.target.value);
+    };
+
+    const handleModelChange = (event: any) => {
+        let model = event.target.value;
+        getYear(selectedMake, model);
+        setSelectedModel(model);
+        searchProducts(selectedMake, model, '', '');
+    };
+
+    const handleYearChange = (event: any) => {
+        let year = event.target.value
+        setSelectedYear(year);
+        searchProducts(selectedMake, selectedModel, year, '');
+    };
+
+    const handleCategoryChange = (event: any) => {
+        let category = event.target.value
+        setSelectedCategory(category);
+        searchProducts(selectedMake, selectedModel, selectedYear, category);
     };
 
     const clearSearch = (event: any) => {
@@ -184,6 +178,7 @@ function Shop() {
         localStorage.removeItem('model');
         localStorage.removeItem('year');
         localStorage.removeItem('category');
+        getAllProducts();
     }
 
     const handleProductClick = (product: any) => {
@@ -468,23 +463,11 @@ function Shop() {
                                                     {categories.map((category: any, idx: any) => 
                                                         <div>
                                                             <div className="form-check mb-2" key={idx}>
-
-                                                                {category.category_name == selectedCategory ? 
-                                                                  <input type="checkbox" 
-                                                                  className="form-check-input border-0" 
-                                                                  id={idx} name={category.category_name} value={category.category_name} 
-                                                                  onChange={(e) => handleCategoryFilter(e)}
-                                                                  checked={category.category_name == selectedCategory ? true : false}
-                                                              /> 
-                                                               :
-                                                               <input type="checkbox" 
-                                                               className="form-check-input border-0" 
-                                                               id={idx} name={category.category_name} value={category.category_name} 
-                                                               onChange={(e) => handleCategoryFilter(e)}
-                                                        
-                                                           />
-                                                                }
-                                                               
+                                                                <input type="checkbox" 
+                                                                    className="form-check-input border-0" 
+                                                                    id={idx} name={category.category_name} value={category.category_name} 
+                                                                    onChange={(e) => handleCategoryFilter(e)}
+                                                                />
                                                                 <label className="form-check-label" htmlFor={idx}>{category.category_name}</label>
                                                                 {filterCategory.map((item: any) => item === category.category_name && category.subcategories.map((subcategory: any) => (
                                                                     <div>
@@ -603,15 +586,15 @@ function Shop() {
                                                     style={{minWidth: "100px"}}
                                                 >Sort by:</label>
                                                 <select
-                                                id="filterDropdown"
-                                                className="form-select mb-2 border-0"
-                                                value={filterOption}
-                                                onChange={handleFilterChange}
+                                                    id="filterDropdown"
+                                                    className="form-select mb-2 border-0"
+                                                    value={filterOption}
+                                                    onChange={handleFilterChange}
                                                 >
-                                                <option value='Latest'>Latest</option>
-                                                <option value="highToLow">Price: High to Low</option>
-                                                <option value="lowToHigh">Price: Low to High</option>
-                                                {/* Add more filter options as needed */}
+                                                    <option value='Latest'>Latest</option>
+                                                    <option value="highToLow">Price: High to Low</option>
+                                                    <option value="lowToHigh">Price: Low to High</option>
+                                                    {/* Add more filter options as needed */}
                                                 </select>
                                             </div>
                                         </div>

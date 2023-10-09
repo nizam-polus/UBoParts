@@ -40,8 +40,8 @@ const APIs = {
 
     searchProducts: (make: string, model: string, year: string, category: string) => {
         return axios.get(
-            BACKEND_URL + `products?populate=*&filters[$and][][cardetail][make][$contains]=${make}&filters[$and][][cardetail][model][$contains]=${model}${year && 
-                '&filters[$and][][cardetail][year][$eq]='+year}&filters[$and][][category][category_name][$contains]=${category}`, {headers}
+            BACKEND_URL + `products?populate=*&filters[$and][][cardetail][make][$eq]=${make}&filters[$and][][cardetail][model][$eq]=${model}${year && 
+                '&filters[$and][][cardetail][year][$eq]='+year}${category && `&filters[$and][][category][category_name][$eq]=${category}`}`, {headers}
         )
     },
 
@@ -70,13 +70,11 @@ const APIs = {
                 }
             }
         }
-        console.log(filterCategories)
         
         const categoryQuery = () => {
             let query = '';
             filterCategories.forEach((filtered: any) => {
                 query += filtered.category ? `&filters[$or][${incrementOrPosition() + ''}][category][category_name][$eq]=${filtered.category}` : '';
-                incrementAndPosition();
                 query += filtered.subcategory.length ? 
                         filtered.subcategory.map((subcat: any) => (`&filters[$or][${incrementOrPosition() + ''}][sub_category][name][$eq]=${subcat}`)).join().replace(',', '') : '';
             })
