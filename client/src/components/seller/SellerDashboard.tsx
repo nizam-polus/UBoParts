@@ -35,7 +35,7 @@ function SellerDashboard() {
                                                     <thead>
                                                         <tr>
                                                             <th className="p-2 pb-3 ps-0 text-center">
-                                                                <AppImage style={{height: '15rem', borderRadius: '100%', maxWidth: '15rem'}}
+                                                                <AppImage style={{height: '15rem', borderRadius: '100%', width: '15rem', objectFit: 'cover'}}
                                                                     src={ user.profile_image ? BASE_URL + user.profile_image.url : "/images/svg/my-account.svg"}
                                                                 />
                                                             </th>
@@ -97,11 +97,11 @@ function SellerDashboard() {
                                     </div> */}
                                 </div>
                             </div>
-                            <div className="coulmn-bg-color-1 rounded mt-4">
+                            <div className="coulmn-bg-color-1 rounded mt-4 pb-4">
                                 <div className="row d-flex justify-content-between p-3 pb-1 pt-3">
                                     <div className="col-auto"><span className="custom-color-2 boldfont body-sub-titles">Latest Orders</span></div>
                                 </div>
-                                <div className="row mt-2 ml-3">
+                                <div className="row mt-2 mx-3">
                                     <div className="table-responsive">
                                         <table className="table m-0 seller-table3">
                                             <thead>
