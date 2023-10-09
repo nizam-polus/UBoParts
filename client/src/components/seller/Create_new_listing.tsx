@@ -482,17 +482,28 @@ function Create_new_listing() {
                                                 <tr className="double">
                                                     <td className='px-5 pb-2 pt-4'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Listing Price (€)</label>
-                                                        <input type="text" onChange={handlePriceChange} value={listPrice} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listPrice ? 'required-field' : 'border-0' }`} placeholder="Listing Price (€)" />
+                                                        <input type="number" 
+                                                            onChange={handlePriceChange} 
+                                                            value={listPrice} 
+                                                            style={{height: '2.6rem'}}
+                                                            className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listPrice ? 'required-field' : 'border-0' }`} 
+                                                            placeholder="Listing Price (€)" 
+                                                        />
                                                     </td>
                                                     <td className='px-5 pb-2 pt-4'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Listing Quantity</label>
-                                                        <input type="text" onChange={handleQuantityChange} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listQuantity ? 'required-field' : 'border-0' }`} placeholder="Listing Quantity"
-                                                        value={listQuantity}
-                                                        onKeyPress={(e: any) => {
-                                                            if (e.key === '0' && e.target.value === '') {
-                                                              e.preventDefault();
-                                                            }
-                                                          }} />
+                                                        <input type="number" 
+                                                            onChange={handleQuantityChange} 
+                                                            style={{height: '2.6rem'}}
+                                                            className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listQuantity ? 'required-field' : 'border-0' }`} 
+                                                            placeholder="Listing Quantity"
+                                                            value={listQuantity}
+                                                            onKeyPress={(e: any) => {
+                                                                if (e.key === '0' && e.target.value === '') {
+                                                                e.preventDefault();
+                                                                }
+                                                            }} 
+                                                        />
                                                     </td>
                                                 </tr>
                                                 <tr className="double">
