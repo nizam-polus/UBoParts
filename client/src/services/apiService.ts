@@ -40,48 +40,54 @@ const APIs = {
 
     searchProducts: (make: string, model: string, year: string, category: string) => {
         return axios.get(
-            BACKEND_URL + `products?populate=*&filters[$and][][cardetail][make][$contains]=${make}&filters[$and][][cardetail][model][$contains]=${model}${year && 
-                '&filters[$and][][cardetail][year][$eq]='+year}&filters[$and][][category][category_name][$contains]=${category}`, {headers}
+            BACKEND_URL + `products?populate=*&filters[$and][][cardetail][make][$eq]=${make}&filters[$and][][cardetail][model][$eq]=${model}${year && 
+                '&filters[$and][][cardetail][year][$eq]='+year}${category && `&filters[$and][][category][category_name][$eq]=${category}`}`, {headers}
         )
     },
 
-    searchFilter: (make: string, model: string, year: string, categories: [], sub_category: [], price: any, sort: any, page: any) => {
-        let searchposition = -1, filterposition = 0, orposition = -1, andposition = 0;
+    searchFilter: (vehicle: any, categories: [], selectedCategories: [], selectedSubcategories: [], price: any, filter: any) => {
+        let searchposition = -1, orposition = -1, andposition = 0;
+        let filterCategories: any = [];
         const incrementSearchPosition = () => searchposition += 1;
         const incrementOrPosition = () => orposition += 1;
         const incrementAndPosition = () => andposition += 1;
-        // console.log(incrementOrPosition(), incrementAndPosition())
-        // let categoryQuery = categories.map((category: any) => (
-        //     `&filters[$or][${incrementFilterPosition() + ''}][category][category_name][$eq]=${category}`
-        // ));
-        // let subcategoryQuery = sub_category.map((subcat: any) => (
-        //     `&filters[$or][${incrementFilterPosition() + ''}][sub_category][name][$eq]=${subcat}`
-        // ));
 
-        // return axios.get(
-        //     BACKEND_URL + `products?populate=*${`&filters[$or][0][price][$between]=${price.min}&filters[$or][0][price][$between]=${price.max}`}` +
-        //     `${make && `&filters[$or][1][$and][${incrementSearchPosition() + ''}][cardetail][make][$contains]=${make}`}` +
-        //     `${model && `&filters[$or][1][$and][${incrementSearchPosition() + ''}][cardetail][model][$contains]=${model}`}` +
-        //     `${year && `&filters[$or][1][$and][${incrementSearchPosition() + ''}][cardetail][year][$eq]=${year}`}` +
-        //     `${(categoryQuery.length && !subcategoryQuery.length) ? categoryQuery.join().replace(',', '') : ''}` +
-        //     `${subcategoryQuery.length ? subcategoryQuery.join().replace(',', '') : ''}`, 
-        //     {headers}
-        // )
-        const categoryQuery = () => (categories.map((category: any) => (
-            `&filters[$or][${incrementOrPosition() + ''}][$and][${incrementAndPosition() + ''}][category][category_name][$eq]=${category}`
-        )).join().replace(',', ''));
-        const subcategoryQuery = () => (sub_category.map((subcat: any) => (
-            `&filters[$or][${incrementOrPosition() + ''}][$and][${incrementAndPosition() + ''}][sub_category][name][$eq]=${subcat}`
-        )).join().replace(',', ''));
+        for (let obj of categories) {
+            for (let category of selectedCategories) {
+                let newCategory: any = {category: '', subcategory: []}
+                if (category === obj['category_name']) {
+                    newCategory.category = category;
+                    let subCategoryObject: any = obj['subcategories'];
+                    for (let subCatObj of subCategoryObject) {
+                        for (let subCat of selectedSubcategories) {
+                            if (subCatObj.name === subCat) {
+                                delete newCategory.category;
+                                newCategory.subcategory.push(subCat);
+                            }
+                        }
+                    }
+                    filterCategories.push(newCategory);
+                }
+            }
+        }
+        
+        const categoryQuery = () => {
+            let query = '';
+            filterCategories.forEach((filtered: any) => {
+                query += filtered.category ? `&filters[$or][${incrementOrPosition() + ''}][category][category_name][$eq]=${filtered.category}` : '';
+                query += filtered.subcategory.length ? 
+                        filtered.subcategory.map((subcat: any) => (`&filters[$or][${incrementOrPosition() + ''}][sub_category][name][$eq]=${subcat}`)).join().replace(',', '') : '';
+            })
+            return query;
+        };
 
         return axios.get(
-            BACKEND_URL + `products?populate=*` + `${sort}&pagination[page]=${page}&pagination[pageSize]=18` +
-            `${`&filters[$or][0][price][$between]=${price.min}&filters[$or][0][price][$between]=${price.max}`}` +
-            `${make && `&filters[$or][1][$and][${incrementSearchPosition() + ''}][cardetail][make][$contains]=${make}`}` +
-            `${model && `&filters[$or][1][$and][${incrementSearchPosition() + ''}][cardetail][model][$contains]=${model}`}` +
-            `${year && `&filters[$or][1][$and][${incrementSearchPosition() + ''}][cardetail][year][$eq]=${year}`}` +
-            `${(categories.length) ? categoryQuery() : ''}` +
-            `${sub_category.length ? subcategoryQuery() : ''}`,
+            BACKEND_URL + `products?populate=*` + `${filter.sort}&pagination[page]=${filter.page}&pagination[pageSize]=18` +
+            `${`&filters[$and][0][price][$between]=${price.min}&filters[$and][0][price][$between]=${price.max}`}` +
+            `${vehicle.make && `&filters[$and][${incrementAndPosition() + ''}][cardetail][make][$contains]=${vehicle.make}`}` +
+            `${vehicle.model && `&filters[$and][${incrementAndPosition() + ''}][cardetail][model][$contains]=${vehicle.model}`}` +
+            `${vehicle.year && `&filters[$and][${incrementAndPosition() + ''}][cardetail][year][$eq]=${vehicle.year}`}` +
+            `${(filterCategories.length) ? categoryQuery() : ''}`,
             {headers}
         )
     },
@@ -89,6 +95,9 @@ const APIs = {
     getParts: (input: any) => axios.get(BACKEND_URL + `parts?populate=*&filters[$and][][parts][$contains]=${input}`, {headers}),
 
     getAllProducts: (sortFilter = '') => axios.get(BACKEND_URL + 'products?populate=*' + sortFilter, {headers}),
+
+    getCheckAllProducts: (articleNumber: any) => axios.get(BACKEND_URL + 'products?populate=*' + 
+                                       `&filters[$and][0][article_number][$eq]=${articleNumber}`, {headers}),
 
     getAllPaginationProducts: (page = '1', filter = "sort[0]=createdAt:desc") => {
         return axios.get(BACKEND_URL + `products?${filter}&pagination[page]=${page}&pagination[pageSize]=18&populate=*`, {headers})
@@ -100,6 +109,11 @@ const APIs = {
     },
     
     getProduct: (id: any) => axios.get(BACKEND_URL + 'products/' + id + '?populate=*', {headers}),
+       
+    getCountries: () => axios.get(BACKEND_URL + 'countries/', {headers}),
+
+    getMakes: () => axios.get(BACKEND_URL + 'makes?populate=*&sort[0]=id:asc'),
+
 
     paymentUpdate: () => axios.post(BACKEND_URL + 'payment-status-update', {headers}),
 

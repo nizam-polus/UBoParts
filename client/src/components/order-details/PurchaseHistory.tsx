@@ -3,23 +3,33 @@ import SellerSideBar from "../seller/SellerSideBar";
 import APIs from "~/services/apiService";
 import { UserContext } from "../account_/UserContext";
 import Link from "next/link";
-import { toast } from "react-toastify";
 
 function PurchaseHistory() {
 
     const { user } = UserContext();
 
     const [orderDetails, setOrderDetails] = useState<any>([]);
-    const [emptyText, setEmptyText] = useState<string>('')
+    const [emptyText, setEmptyText] = useState<string>('');
+    const [rowCount, setRowCount] = useState<any>();
+    const [currentPage, setCurrentPage] = useState(1); // Current page number
+    const itemsPerPage = 10; 
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const displayedOrders = orderDetails?.slice(indexOfFirstItem, indexOfLastItem);
 
     useEffect(() => {
         setEmptyText('Loading...')
         APIs.getCustomerOrder(user.username).then((response: any) => {
             setOrderDetails(response.data.rows);
-            !response.data.rows.length && setEmptyText('No Data');
+            setRowCount(response.data.rowCount)
+            console.log(response.data)
+            !response.data.rows?.length && setEmptyText('No Data');
         })
     }, []);
 
+    const handlePageChange = (newPage: number) => {
+        setCurrentPage(newPage);
+    };
     return (
         <> 
             <div className="main-body pb-2 mb-5">
@@ -43,27 +53,74 @@ function PurchaseHistory() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {orderDetails && orderDetails.length > 0 ? orderDetails.map((order: any) => {
+                                                {displayedOrders && displayedOrders.length > 0 ? displayedOrders.map((order: any) => {
                                                     return (
                                                         <tr>
                                                             <td className="custom-color-2 lightfont placeholderfontsize border-0 pl-4 ps-3 pb-3 pt-3 align-middle">
                                                                 <Link href={'/purchase-history/' + order?.orderid}>{order?.orderid}</Link>
                                                             </td>
-                                                            <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle"
-                                                            >{new Date(order?.created_at).toDateString().substring(4)}
+                                                            <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">
+                                                                {new Date(order?.created_at).toDateString().substring(4)}
                                                             </td>
-                                                            <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">{order?.status}</td>
+                                                            <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">
+                                                                {order?.status}
+                                                            </td>
                                                         </tr>
-                                                    )
-                                                })
-                                             :
-                                             <div className="d-flex align-items-center justify-content-center p-5">{emptyText}</div>
-                                            }
+                                                    )}) : <div className="d-flex align-items-center justify-content-center p-5">{emptyText}</div>
+                                                }
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
+                            <div className="row mt-5">
+                                <div className="col text-center">
+                                    <ul className="pagination d-inline-flex">
+                                        <li className="page-item">
+                                            {currentPage !== 1 ? 
+                                                (<a
+                                                    onClick={() => handlePageChange(currentPage - 1)}
+                                                    className="page-link border-0 regularfont mini-text-1"
+                                                    href="#"
+                                                >
+                                                    <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> Previous
+                                                </a> ) : 
+                                                (<span className="page-link border-0 regularfont mini-text-1 disabled custom-color-4">
+                                                    <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> Previous
+                                                </span>)
+                                            }
+                                        </li>
+                                        {Array.from({ length: Math.min(rowCount, 5) }, (_, index) => {
+                                            const page = currentPage - 2 + index;
+                                            return page > 0 && page <= Math.ceil(rowCount / itemsPerPage) ? 
+                                                (<li
+                                                    key={index}
+                                                    className={`page-item ${currentPage === page ? 'active' : ''}`}
+                                                >
+                                                    <a
+                                                        onClick={() => handlePageChange(page)}
+                                                        className="page-link border-0 custom-color-3 regularfont mini-text-1"
+                                                        href="#"
+                                                    >{page}</a>
+                                                </li>) : null;
+                                            })
+                                        }
+                                        <li className="page-item">
+                                            {currentPage < Math.ceil(rowCount / itemsPerPage) ? 
+                                                (<a
+                                                    onClick={() => handlePageChange(currentPage + 1)}
+                                                    className="page-link border-0 custom-color-3 regularfont mini-text-1"
+                                                    href="#"
+                                                >Next <i className="fa fa-angle-right custom-color-3 mini-text-1 m-1"></i>
+                                                </a>) : 
+                                                (<span className="page-link border-0 custom-color-4 regularfont mini-text-1 disabled">
+                                                    Next <i className="fa fa-angle-right custom-color-4 mini-text-1 m-1"></i>
+                                                </span>)
+                                            }
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div> 
                         </div>
                     </div>
                 </section>

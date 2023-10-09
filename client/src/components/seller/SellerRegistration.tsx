@@ -25,6 +25,9 @@ function SellerRegistration() {
         postcode: '',
         company_name: '',
         Account_type: '',
+        Account_title: '',
+        Bank_name: '',
+        iban_number: '',
         password: '',
         kvk_number: '',
         company_btw: '',
@@ -34,6 +37,7 @@ function SellerRegistration() {
     const [password, setPassword] = useState('');
     const [cnfrmPassword, setCnfrmPassword] = useState('');
     const [pwdmatch, setPwdmatch] = useState(true);
+    const [countries, setCountries] = useState<any>([]);
 
     useEffect(() => {
         window.onbeforeunload = function() {
@@ -54,6 +58,18 @@ function SellerRegistration() {
             setFormData({...formData});
         }
     }, [])
+
+    useEffect(() => {
+        APIs.getCountries()
+          .then(response => {
+            setCountries(response.data.data);
+            console.log(response.data.data)
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+          });
+      }, []); 
+    
 
     const checkFormStatus = () => {
         let incomplete = true;
@@ -100,6 +116,9 @@ function SellerRegistration() {
             postcode: formData.postcode,
             company_name: formData.company_name,
             Account_type: formData.Account_type,
+            account_title: formData.Account_title,
+            bank_name: formData.Bank_name,
+            iban_number: formData.iban_number,
             user_type: "seller",
             isApproved: "Pending",
             shippingaddress_company: formData.company_name,
@@ -249,6 +268,36 @@ function SellerRegistration() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Account Title</label>
+                                                            <input type="text" value={formData.Account_title}
+                                                                className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.Account_title ? 'required-field' : 'border-0'}`}
+                                                                name="company_name" placeholder="Aw parts corp." 
+                                                                onChange={(e) => handleFormChange(e)}
+                                                            />
+                                                        </td>
+                                                    </tr>
+                                                    <tr className="single">
+                                                        <td colSpan={2}>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Bank Name</label>
+                                                            <input type="text" value={formData.Bank_name}
+                                                                className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.Bank_name ? 'required-field' : 'border-0'}`}
+                                                                name="company_name" placeholder="Aw parts corp." 
+                                                                onChange={(e) => handleFormChange(e)}
+                                                            />
+                                                        </td>
+                                                    </tr>
+                                                    <tr className="single">
+                                                        <td colSpan={2}>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Iban Number</label>
+                                                            <input type="text" value={formData.iban_number}
+                                                                className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.iban_number ? 'required-field' : 'border-0'}`}
+                                                                name="company_name" placeholder="Aw parts corp." 
+                                                                onChange={(e) => handleFormChange(e)}
+                                                            />
+                                                        </td>
+                                                    </tr>
+                                                    <tr className="single">
+                                                        <td colSpan={2}>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Company or Shop name</label>
                                                             <input type="text" value={formData.company_name}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.company_name ? 'required-field' : 'border-0'}`}
@@ -288,8 +337,9 @@ function SellerRegistration() {
                                                                 style={{height: '3.5rem'}} name="country" value={formData.country}
                                                                 onChange={(e) => handleFormChange(e)} disabled={user.country}
                                                             >
-                                                                <option className="mini-text-2" value="" selected disabled>Select Country</option>
-                                                                <option value="Netherlands">Netherlands</option>
+                                                                <option className="mini-text-2" value="" disabled>Select Country</option>
+                                                                {countries.map((country: any) => (
+                                                                <option key={country.id} value={country.attributes.country}>{country.attributes.country}</option>))}
                                                             </select>
                                                         </td>
                                                     </tr>

@@ -40,6 +40,7 @@ function Create_new_listing() {
     const [selectedItem, setSelectedItem] = useState(null);
     const [showInvaidLicense, setShowInvaidLicense] = useState(false);
     const [incomplete, setIncomplete] = useState<any>(false);
+    const [randomNumber, setRandomNumber] = useState('');
 
     const router = useRouter()
 
@@ -71,7 +72,33 @@ function Create_new_listing() {
             });
     }, []);
 
+    const generateRandomNumber = () => {
+        const min = 100000000000; // Minimum 12-digit number
+        const max = 999999999999; // Maximum 12-digit number
+        const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+        return randomNumber.toString(); // Convert the number to a string
+      };
 
+    const generateRandomNumberAndFetchData = () => {
+        const newRandomNumber = generateRandomNumber();
+    
+        // Fetch data using the new random number
+        APIs.getCheckAllProducts(newRandomNumber).then((res) => {
+          if (Array.isArray(res.data.data) && res.data.data.length === 0) {
+            // If the response is an empty array, set the randomNumber state
+            setRandomNumber(newRandomNumber);
+            setListBarcode(newRandomNumber)
+          } else {
+            // If the response is not empty, call the function again
+            generateRandomNumberAndFetchData();
+          }
+        });
+      };
+
+      // Call the function initially
+    useEffect(() => {
+        generateRandomNumberAndFetchData();
+    }, []);
     useEffect(() => {
         if (licenseplate && licenseplate.length > 5) {
             const getData = setTimeout(() => {
@@ -455,11 +482,28 @@ function Create_new_listing() {
                                                 <tr className="double">
                                                     <td className='px-5 pb-2 pt-4'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Listing Price (€)</label>
-                                                        <input type="text" onChange={handlePriceChange} value={listPrice} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listPrice ? 'required-field' : 'border-0' }`} placeholder="Listing Price (€)" />
+                                                        <input type="number" 
+                                                            onChange={handlePriceChange} 
+                                                            value={listPrice} 
+                                                            style={{height: '2.6rem'}}
+                                                            className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listPrice ? 'required-field' : 'border-0' }`} 
+                                                            placeholder="Listing Price (€)" 
+                                                        />
                                                     </td>
                                                     <td className='px-5 pb-2 pt-4'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Listing Quantity</label>
-                                                        <input type="text" onChange={handleQuantityChange} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listQuantity ? 'required-field' : 'border-0' }`} placeholder="Listing Quantity" />
+                                                        <input type="number" 
+                                                            onChange={handleQuantityChange} 
+                                                            style={{height: '2.6rem'}}
+                                                            className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listQuantity ? 'required-field' : 'border-0' }`} 
+                                                            placeholder="Listing Quantity"
+                                                            value={listQuantity}
+                                                            onKeyPress={(e: any) => {
+                                                                if (e.key === '0' && e.target.value === '') {
+                                                                e.preventDefault();
+                                                                }
+                                                            }} 
+                                                        />
                                                     </td>
                                                 </tr>
                                                 <tr className="double">
@@ -474,16 +518,9 @@ function Create_new_listing() {
                                                         <input type="text" onChange={handleLocationChange} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listLocation ? 'required-field' : 'border-0' }`} placeholder="Location of Part" />
                                                     </td>
                                                 </tr>
-                                                {/* <tr className="single">
-                                                    <td colSpan={2} className='px-5 pb-2 border-0'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Article No</label>
-                                                        <input type="text" onChange={handleArticleChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Article No" />
-                                                    </td>
-                                                </tr> */}
                                                 <tr className="single">
                                                     <td colSpan={2} className='px-5 pb-4 pt-2 border-0'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Article No</label>
-                                                        <input type="text" onChange={handleBarcodeChange} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && listBarcode ? 'required-field' : 'border-0' }`} placeholder="Listing Part No/Barcode No" />
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Article Number :</label>
                                                         {listBarcode && <Qrgenerator qrValue={listBarcode}/>}
                                                     </td>
                                                 </tr>

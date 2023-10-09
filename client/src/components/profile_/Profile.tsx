@@ -34,6 +34,7 @@ function Profile() {
     const [incomplete, setIncomplete] = useState<any>(false);
     const [profilePic, setProfilePic] = useState<any>(null);
     const [profilePicURL, setProfilePicURL] = useState<string>('');
+    const [countries, setCountries] = useState<any>([]);
 
     useEffect(() => {
         let userId = !user.id ? userdetails?.id : user.id;
@@ -43,6 +44,14 @@ function Profile() {
             getSpecificUser(userId);
         }
     }, []);
+
+    useEffect(() => {
+        APIs.getCountries().then(response => {
+            setCountries(response.data.data);
+        }).catch(error => {
+            console.error('Error fetching data:', error);
+        });
+      }, []); 
 
     const getSpecificUser = (userId: any) => {
         APIs.getSpecificUser(userId).then((response: any) => {
@@ -246,11 +255,14 @@ function Profile() {
                                                 <tr className="double">
                                                     <td className="pb-0 pb-xl-5 pb-md-5 pl-5 pr-xl-3 pr-md-3 pr-5">
                                                         <label className="custom-color-2 regularfont products-name pb-2">Country</label>
-                                                        <input type="text" value={country}
-                                                            className={`form-control input-bg-color-2 products-name ${incomplete && !country ? ' required-field' : 'border-0' }`} 
-                                                            name="country" placeholder="Country"
-                                                            onChange={(e) => setCountry(e.target.value)}
-                                                        />
+                                                            <select className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !country ? 'required-field' : 'border-0'}`}
+                                                                style={{height: '3.5rem'}} name="country" value={country}
+                                                                onChange={(e) => setCountry(e.target.value)} 
+                                                            >
+                                                                <option className="mini-text-2" value="" disabled>Select Country</option>
+                                                                {countries.map((country: any) => (
+                                                                <option key={country.id} value={country.attributes.country}>{country.attributes.country}</option>))}
+                                                            </select>
                                                     </td>
                                                     <td className="pb-5 pr-5 pl-xl-3 pl-md-3 pl-5">
                                                         <label className="custom-color-2 regularfont products-name pb-2">Postcode</label>

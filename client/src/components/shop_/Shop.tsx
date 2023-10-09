@@ -1,23 +1,18 @@
 // react
 import React, { useCallback, useEffect, useState } from 'react';
-import { Modal } from 'reactstrap';
-import { IVehicle } from '~/interfaces/vehicle';
-import Image from 'next/image'
 import AppImage from '../shared/AppImage';
-import Footer from '../footer_/Footer';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import APIs from '~/services/apiService';
 import { BASE_URL } from 'configuration';
 import Link from 'next/dist/client/link';
 import { UserContext } from '../account_/UserContext';
 import Login from '../account_/Login';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Shop() {
     
     const {user, saveUser, setCartCount} = UserContext();
-    const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [makesArray, setMakesArray] = useState<any>([]);
@@ -29,9 +24,7 @@ function Shop() {
     const [selectedYear, setSelectedYear] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
     const [toggleSearch, setToggleSearch] = useState(false);
-    const [licenseplate, setLicenseplate] = useState('');
     const [searchedProducts, setSearchedProducts] = useState<any>([]);
-    const [searched, setSearched] = useState(false);
     const [pagination, setPagination] = useState<any>({});
     const [pageRange, setPageRange] = useState<number[]>([]);
     const [filterToggle, setFiltertoggle] = useState({
@@ -43,12 +36,13 @@ function Shop() {
     const [openLogin, setOpenLogin] = useState(false);
     const [addToCartCompleted, setAddToCartCompleted] = useState<boolean>(true)
     const [itemId, setItemId] = useState<any>('')
-    const [stockCount, setStockCount] = useState<any>(0)
-    const [price, setPrice] = useState(100)
     const [minPrice, setMinPrice] = useState(0)
     const [maxPrice, setMaxPrice] = useState(1000)
     const [filterOption, setFilterOption] = useState('Latest');
     const [initialproducts, setInitialProducts] = useState<any>([])
+    const [pageNumber, setPageNumber] = useState(1)
+    const [pageCount, setPageCount] = useState();
+    const [sortState, setSortState] = useState("sort[0]=createdAt:desc")
     
 
     const router = useRouter();
@@ -66,53 +60,35 @@ function Shop() {
     }
 
     useEffect(() => {
-        setSelectedMake(localStorage.getItem('make') || '');
-        setSelectedModel(localStorage.getItem('model') || '');
-        setSelectedYear(localStorage.getItem('year') || '');
-        setSelectedCategory(localStorage.getItem('category') || '');
-        APIs.getCategories().then((response: any) => {
-                setCategories(categoriesArray(response.data.data));
-                filterToggle.categories = true;
-                setFiltertoggle({...filterToggle});
-            })
-            .catch((error) => {
-                setError(error);
-            });
-
+        let make, model, year, category;
         APIs.getCarMake().then((response: any) => {
-                setMakesArray(response.data.rows);
-            })
-            .catch((error) => {
-                setError(error);
-            });
-        getModel(selectedMake);
-        getYear(selectedMake, selectedModel);
+            setMakesArray(response.data.rows);
+            make = localStorage.getItem('make') || '';
+            model = localStorage.getItem('model') || '';
+            year = localStorage.getItem('year') || '';
+            category = localStorage.getItem('category') || '';
+            getModel(make);
+            getYear(make, model);
+            setSelectedMake(make);
+            setSelectedModel(model);
+            setSelectedYear(year);
+            setSelectedCategory(category);
+            if (make && model && year) {
+                searchProducts(make, model, year, category)
+            } else {
+                getAllProducts();
+            }
+        }).catch((error) => {
+            setError(error);
+        });
+        APIs.getCategories().then((response: any) => {
+            setCategories(categoriesArray(response.data.data));
+            filterToggle.categories = true;
+            setFiltertoggle({...filterToggle});
+        }).catch((error) => {
+            setError(error);
+        });
     }, []);
-
-    useEffect(() => {
-        getModel(selectedMake);
-        getYear(selectedMake, selectedModel);
-    }, [selectedMake]);
-
-    useEffect(() => {
-        getYear(selectedMake, selectedModel);
-    }, [selectedModel]);
-
-    useEffect(() => {
-        if (selectedMake || selectedModel || selectedYear || selectedCategory) {
-            setTimeout(() => {
-                searchProducts();
-            }, 2000);
-        } else {
-            APIs.getAllProducts('&sort[0]=createdAt:desc').then(response => {
-                let pagination = response.data.meta.pagination;
-                setPageRange(pageRangeFinder(pagination.pageCount));
-                setPagination(pagination);
-                setSearchedProducts(response.data.data);
-                setInitialProducts(response.data.data)
-            })
-        }
-    }, [selectedMake, selectedModel, selectedYear, selectedCategory]);
 
     const getModel = (make: string) => {
         const setData = { 'param_make': make }
@@ -136,16 +112,6 @@ function Shop() {
             });
     }
 
-    const optionsArray = (value: any) => {
-        return [...new Set(data.map((item: any) => item.attributes[value]))];
-    }
-
-    useEffect(() => {
-        setMakesArray(optionsArray('make'));
-        setModelArray(optionsArray('model'));
-        setYearArray(optionsArray('year'));
-    }, [data]);
-
     const pageRangeFinder = (pageCount: number) => {
         let start = 0, range = []
         while (start !== pageCount) {
@@ -155,56 +121,64 @@ function Shop() {
         return range;
     }
 
-    const searchProducts = () => {
-        APIs.searchProducts(selectedMake, selectedModel, selectedYear, selectedCategory).then((response: any) => {
+    const searchProducts = (make: any, model: any, year: any, category: any) => {
+        APIs.searchProducts(make, model, year, category).then((response: any) => {
             setSearchedProducts(response.data.data);
-            setInitialProducts(response.data.data)
             let pagination = response.data.meta.pagination
             setPagination(pagination);
-            setSearched(true);
             setPageRange(pageRangeFinder(pagination.pageCount));
+            setPageCount(response.data.meta.pagination.pageCount)
         }).catch((error) => {
             setError(error);
             setLoading(false);
         });
     }
 
-    const handleLicenseplateChange = (event: any) => {
-        setSearched(false);
-        setLicenseplate(event.target.value);
-    };
-
-    const handleModelChange = (event: any) => {
-        setSearched(false);
-        setSelectedModel(event.target.value);
-    };
-
-    const handleYearChange = (event: any) => {
-        setSelectedYear(event.target.value);
-    };
-
-    const handleCategoryChange = (event: any) => {
-        setSelectedCategory(event.target.value);
-    };
+    const getAllProducts = () => {
+        APIs.getAllPaginationProducts("1",sortState).then(response => {
+            let pagination = response.data.meta.pagination;
+            setPageCount(response.data.meta.pagination.pageCount)
+            setPageRange(pageRangeFinder(pagination.pageCount));
+            setPagination(pagination);
+            setSearchedProducts(response.data.data);
+        })
+    }
 
     const handleMakeChange = (event: any) => {
         getModel(event.target.value);
         setSelectedMake(event.target.value);
     };
 
-    const toggleAdvancedSearch = () => {
-        setToggleSearch(!toggleSearch);
-    }
+    const handleModelChange = (event: any) => {
+        let model = event.target.value;
+        getYear(selectedMake, model);
+        setSelectedModel(model);
+        searchProducts(selectedMake, model, '', '');
+    };
+
+    const handleYearChange = (event: any) => {
+        let year = event.target.value
+        setSelectedYear(year);
+        searchProducts(selectedMake, selectedModel, year, '');
+    };
+
+    const handleCategoryChange = (event: any) => {
+        let category = event.target.value
+        setSelectedCategory(category);
+        searchProducts(selectedMake, selectedModel, selectedYear, category);
+    };
 
     const clearSearch = (event: any) => {
         event.preventDefault();
         setSelectedMake('');
         setSelectedModel('');
         setSelectedYear('');
+        setSelectedCategory('');
         localStorage.removeItem('make');
         localStorage.removeItem('model');
         localStorage.removeItem('year');
         localStorage.removeItem('category');
+        getAllProducts();
     }
 
     const handleProductClick = (product: any) => {
@@ -253,8 +227,16 @@ function Shop() {
 
     const handleApplyFilter = (event: any) => {
         event.preventDefault();
-        APIs.searchFilter(selectedMake, selectedModel, selectedYear, filterCategory, filterSubcategory, {min: minPrice, max: maxPrice}).then(response => {
+        APIs.searchFilter(
+            {make: selectedMake, model: selectedModel, year: selectedYear}, 
+            categories, filterCategory, 
+            filterSubcategory, 
+            {min: minPrice, max: maxPrice}, 
+            {sort: '&sort[0]=createdAt:desc', page: '1'}
+        ).then(response => {
             setSearchedProducts(response.data.data)
+            console.log(response.data.data)
+            setPageCount(response.data.meta.pagination.pageCount)
         }).catch(err => console.log)
     }
 
@@ -313,46 +295,67 @@ function Shop() {
     }
 
     const handleFilterChange = (event: any) =>{
+        let sort = ''
+        let vehicleDetails = {make: selectedMake, model: selectedModel, year: selectedYear}
         const selectedOption = event.target.value;
-    setFilterOption(selectedOption);
-     if (selectedOption === 'Latest') {
-        APIs.getAllProducts('&sort[0]=createdAt:desc').then(response => {
-            let pagination = response.data.meta.pagination;
-            setPageRange(pageRangeFinder(pagination.pageCount));
-            setPagination(pagination);
-            setSearchedProducts(response.data.data);
-            setInitialProducts(response.data.data)
-        })
-     
-      } else if (selectedOption === 'highToLow') {
-        // Sort searchedProducts by price high to low
-
-        // const sortedProducts = searchedProducts.slice().sort((a: any, b: any) => b.attributes.price - a.attributes.price);
-        APIs.getAllProducts('&sort[0]=price:desc').then(response => {
-            let pagination = response.data.meta.pagination;
-            setPageRange(pageRangeFinder(pagination.pageCount));
-            setPagination(pagination);
-            setSearchedProducts(response.data.data);
-            setInitialProducts(response.data.data)
-        })
-        
-      } else if (selectedOption === 'lowToHigh') {
-        // Sort searchedProducts by price low to high
-        // const sortedProducts = searchedProducts.slice().sort((a:any, b:any) => a.attributes.price - b.attributes.price);
-        APIs.getAllProducts('&sort[0]=price:asc').then(response => {
-            let pagination = response.data.meta.pagination;
-            setPageRange(pageRangeFinder(pagination.pageCount));
-            setPagination(pagination);
-            setSearchedProducts(response.data.data);
-            setInitialProducts(response.data.data)
-        })
-        
-      }
+        setFilterOption(selectedOption);
+        if (selectedOption === 'Latest') {
+            setSortState('&sort[0]=createdAt:desc');
+            sort = '&sort[0]=createdAt:desc';
+            APIs.searchFilter(vehicleDetails, categories, filterCategory, filterSubcategory, {min: minPrice, max: maxPrice}, {sort, page: '1'}).then(response => {
+                let pagination = response.data.meta.pagination;
+                setPageRange(pageRangeFinder(pagination.pageCount));
+                setPagination(pagination);
+                setSearchedProducts(response.data.data)
+                console.log(response.data.data)
+                setPageCount(response.data.meta.pagination.pageCount)
+            }).catch(err => console.log)
+        } else if (selectedOption === 'highToLow') {
+            // Sort searchedProducts by price high to low
+            setSortState("&sort[0]=price:desc");
+            sort = '&sort[0]=price:desc';
+            // const sortedProducts = searchedProducts.slice().sort((a: any, b: any) => b.attributes.price - a.attributes.price);
+            APIs.searchFilter(vehicleDetails, categories, filterCategory, filterSubcategory, {min: minPrice, max: maxPrice}, {sort, page: '1'}).then(response => {
+                let pagination = response.data.meta.pagination;
+                setPageRange(pageRangeFinder(pagination.pageCount));
+                setPagination(pagination);
+                setSearchedProducts(response.data.data)
+                console.log(response.data.data)
+                setPageCount(response.data.meta.pagination.pageCount)
+            }).catch(err => console.log)
+        } else if (selectedOption === 'lowToHigh') {
+            // Sort searchedProducts by price low to high
+            setSortState('&sort[0]=price:asc')
+            sort = '&sort[0]=price:asc';
+            // const sortedProducts = searchedProducts.slice().sort((a:any, b:any) => a.attributes.price - b.attributes.price);
+            APIs.searchFilter(vehicleDetails, categories, filterCategory, filterSubcategory, {min: minPrice, max: maxPrice}, {sort, page: '1'}).then(response => {
+                let pagination = response.data.meta.pagination;
+                setPageRange(pageRangeFinder(pagination.pageCount));
+                setPagination(pagination);
+                setSearchedProducts(response.data.data)
+                console.log(response.data.data)
+                setPageCount(response.data.meta.pagination.pageCount)
+            }).catch(err => console.log) 
+        }
     }
 
     const loginModalClose = () => {
         setOpenLogin(false);
     };
+
+    const handlePageChange = (page:any) =>{
+        if (page >= 1) {
+            // Update the page number here
+            setPageNumber(page);
+        }
+        APIs.getAllPaginationProducts(page, sortState).then(response => {
+            let pagination = response.data.meta.pagination;
+            setPageRange(pageRangeFinder(pagination.pageCount));
+            setPagination(pagination);
+            setSearchedProducts(response.data.data);
+            setInitialProducts(response.data.data)
+        })
+    }
 
     return (
         <>
@@ -384,7 +387,7 @@ function Shop() {
                                         <div className="form-group">
                                             <select disabled={!selectedMake} className="form-select semifont placeholderfontsize" name="model" id="modelOption"
                                                 value={selectedModel} onChange={handleModelChange}>
-                                                <option value="" disabled={true}>Select Model</option>
+                                                <option value="" disabled={!selectedMake}>Select Model</option>
                                                 {modelArray.map((model: any, index: any) => (
                                                     <option key={index} value={model.model}>{model.model}</option>
                                                 ))}
@@ -395,7 +398,7 @@ function Shop() {
                                         <div className="form-group">
                                             <select disabled={!selectedModel || (yearArray && yearArray.length && !yearArray[0].year)} className="form-select semifont placeholderfontsize" name="year" id="yearOption"
                                                 value={selectedYear} onChange={handleYearChange}>
-                                                <option value="" disabled={true}>Select Year</option>
+                                                <option value="" disabled={!selectedModel}>Select Year</option>
                                                 {yearArray.map((year: any, index: any) => (
                                                     <option key={index} value={year.year}>{year.year}</option>
                                                 ))}
@@ -583,15 +586,15 @@ function Shop() {
                                                     style={{minWidth: "100px"}}
                                                 >Sort by:</label>
                                                 <select
-                                                id="filterDropdown"
-                                                className="form-select mb-2 border-0"
-                                                value={filterOption}
-                                                onChange={handleFilterChange}
+                                                    id="filterDropdown"
+                                                    className="form-select mb-2 border-0"
+                                                    value={filterOption}
+                                                    onChange={handleFilterChange}
                                                 >
-                                                <option value='Latest'>Latest</option>
-                                                <option value="highToLow">Price: High to Low</option>
-                                                <option value="lowToHigh">Price: Low to High</option>
-                                                {/* Add more filter options as needed */}
+                                                    <option value='Latest'>Latest</option>
+                                                    <option value="highToLow">Price: High to Low</option>
+                                                    <option value="lowToHigh">Price: Low to High</option>
+                                                    {/* Add more filter options as needed */}
                                                 </select>
                                             </div>
                                         </div>
@@ -678,19 +681,45 @@ function Shop() {
                                             <div className="col text-center">
                                                 <ul className="pagination d-inline-flex">
                                                     <li className="page-item">
-                                                        <a className="page-link border-0 regularfont mini-text-1 custom-color-4" href="#">
-                                                    <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> Previous</a></li>
+                                                        {pageNumber !== 1 ? (
+                                                            <a
+                                                                onClick={() => handlePageChange(pageNumber - 1)}
+                                                                className="page-link border-0 regularfont mini-text-1"
+                                                                href="#"
+                                                            >
+                                                                <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> Previous
+                                                            </a>
+                                                        ) : (
+                                                            <a
+                                                                className="page-link border-0 regularfont mini-text-1 disabled custom-color-4"
+                                                                style={{ cursor: "not-allowed" }}
+                                                            >
+                                                                <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> Previous
+                                                            </a>
+                                                        )}
+                                                    </li>
                                                     {pageRange.map((page: number, idx: number) => {
                                                         return (
                                                             <li className={`page-item ${page === pagination.page ? 'active': ''}`}>
-                                                                <a className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">{page}</a>
+                                                                <a onClick={() => handlePageChange(page)} className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">{page}</a>
                                                             </li>
                                                         )
                                                     })}
+                                                   
                                                     <li className="page-item">
-                                                        <a className="page-link border-0 custom-color-3 regularfont mini-text-1"
-                                                            href="#"
-                                                        >Next <i className="fa fa-angle-right custom-color-3 mini-text-1 m-1"></i></a>
+                                                    { pageCount &&
+                                                        pageCount == pageNumber || pageCount == '1' ? 
+
+                                                        <a className="page-link border-0 custom-color-4 regularfont mini-text-1 disabled"
+                                                        style={{ cursor: "not-allowed" }} 
+                                                        >Next <i className="fa fa-angle-right custom-color-4 mini-text-1 m-1  ">
+                                                            </i></a>
+                                                          :
+                                                          <a onClick={() => handlePageChange(pageNumber+ 1)} className="page-link border-0 custom-color-3 regularfont mini-text-1"
+                                                          href="#"
+                                                      >Next <i className="fa fa-angle-right custom-color-3 mini-text-1 m-1"></i></a>
+                                                    }
+                                                        
                                                     </li>
                                                 </ul>
                                             </div>
