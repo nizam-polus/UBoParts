@@ -8,12 +8,13 @@ import { useRouter } from 'next/router';
 import Link from 'next/dist/client/link';
 import APIs from '~/services/apiService';
 import { UserContext } from '../account_/UserContext';
+import { BASE_URL } from 'configuration';
 
 
 function Header_home(props: any) {
   
     const router = useRouter();
-    const {user, saveUser, cartCount, setCartCount} = UserContext();
+    const {user, saveUser, cartCount} = UserContext();
     const [userToken, setUserToken] = useState<any>();
 
     useEffect(() => {
@@ -39,17 +40,6 @@ function Header_home(props: any) {
 
     const [isOpen, setIsOpen] = useState(false);
     const [isLoggedin, setIsLoggedin] = useState(true);
-
-    useEffect(() => {
-        if (user.id) {
-            APIs.getCartData({customerid: user.id}).then(response => {
-                if (!response.data.error) {
-                    let totalCartItem = response.data.rows.length;
-                    setCartCount(totalCartItem)
-                }
-            }).catch((error) => console.log(error));
-        }
-    })
 
     const logout = () => {
         localStorage.removeItem('usertoken');
@@ -114,7 +104,11 @@ function Header_home(props: any) {
                                         </div>
                                     )}
                                 </div>
-                                <span className='' onClick={() =>setIsOpen(false)}><AppImage src="/images/svg/my-account.svg" className="my-account"/></span>
+                                <span className='ml-2' onClick={() =>setIsOpen(false)} style={{borderRadius: '100%'}}>
+                                    <AppImage src={user?.profile_image?.url ? BASE_URL + user?.profile_image?.url : "/images/svg/my-account.svg"} 
+                                        style={{height: '2.4rem', width: '2.4rem', objectFit: 'cover', borderRadius: '100%'}}
+                                    />
+                                </span>
                                 <li className='mt-1 pointer' 
                                     onClick={() =>setIsOpen(false)}
                                 >

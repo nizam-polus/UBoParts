@@ -10,7 +10,7 @@ const getToken = () => {
     }
 }
 
-const token = '925e88460339fd6cc775aa8f823fcc53e4e8bc4b64a40a4697ccefd8cfea7e8592090979dbd98c2398cf9f3ef42aca0b9386d0fb044d6d5735a12196fa4ca5cbded0e585a65c18410d343e0c751129de9b7370a73a92f0c1e4eebeda1ff3382e50a9567f06308cf6adb26fb8f8b65e0a5cd2e132cd637f85076169e18ba62abf';
+const token = 'ac7cd719ea6cf69e2d51cc2557266b0db324d45548e1eb8dabd3805e75f0f63a1a6561be97698cd636b593d609b3e16adbba69e5a0680864851e63d604712ae3963296a6b79e4876c715420ae5fc0d8237c62c9fb2455948d3711a5f33763a3b5f5c83165033eb063cbec01f2464267bf1df92a620cd71f44907835c8f26fa8d';
 
 const headers = {
     Authorization: `Bearer ${token}`,
@@ -34,9 +34,9 @@ const APIs = {
 
     getCarMake: () => axios.get(BACKEND_URL + 'cardetail-make', {headers}),
 
-    getCarModel: (make: {}) => axios.post(BACKEND_URL + 'cardetailmodel', make, {headers}),
+    getCarModel: (makeId: number) => axios.post(BACKEND_URL + 'cardetailmodel', {param_make: makeId}, {headers}),
 
-    getCarYear: (make_model: {}) => axios.post(BACKEND_URL + 'cardetailyear', make_model, {headers}),
+    getCarYear: (modelId: number) => axios.post(BACKEND_URL + 'cardetailyear', {param_model: modelId}, {headers}),
 
     searchProducts: (make: string, model: string, year: string, category: string) => {
         return axios.get(
@@ -105,7 +105,7 @@ const APIs = {
 
     getAllSellerProducts: (username: any, page="1") => {
         return axios.get(BACKEND_URL + `products?populate=*&filters[$and][][seller][$eq]=${username}` + 
-                    `&sort[0]=createdAt:desc&pagination[page]=${page}&pagination[pageSize]=10&populate=*`, {headers})
+                    `&sort[0]=createdAt:desc&pagination[page]=${page}&pagination[pageSize]=10`, {headers})
     },
     
     getProduct: (id: any) => axios.get(BACKEND_URL + 'products/' + id + '?populate=*', {headers}),
@@ -113,7 +113,6 @@ const APIs = {
     getCountries: () => axios.get(BACKEND_URL + 'countries/', {headers}),
 
     getMakes: () => axios.get(BACKEND_URL + 'makes?populate=*&sort[0]=id:asc'),
-
 
     paymentUpdate: () => axios.post(BACKEND_URL + 'payment-status-update', {headers}),
 
