@@ -39,6 +39,7 @@ function Home() {
     const [categoriesDetail, setCategoriesDetail] = useState([])
     const [addToCartCompleted, setAddToCartCompleted] = useState<boolean>(true)
     const [openLogin, setOpenLogin] = useState(false);
+    const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
     const [itemId, setItemId] = useState<any>('')
     const [forgotPasswordPickerIsOpen, setforgotPasswordPickerIsOpen] = useState(false);
     const [startIndex, setStartIndex] = useState(0)
@@ -49,26 +50,52 @@ function Home() {
             const getData = setTimeout(() => {
                 APIs.getCarDetailsUsingLicence(licenseplate).then((response: any) => {
                     if (response.data.licenseplate) {
-                        // get make
-                        let makesobjarray = makesArray;
-                        let makesarray = makesobjarray.map((item: any) => item.make) 
-                        !makesarray.includes(response.data.make) && makesobjarray.push({make: response.data.make})
-                        setMakesArray(makesobjarray);
-                        setSelectedMake(response.data.make);
-                        // get model
-                        getModel(response.data.make);
-                        let modelsobjarray = modelArray;
-                        let modelsarray = modelsobjarray.map((item: any) => item.model);
-                        !modelsarray.includes(response.data.model) && modelsobjarray.push({model: response.data.model});
-                        setModelArray(modelsobjarray)
-                        setSelectedModel(response.data.model);
-                        //get year
-                        getYear(response.data.make, response.data.model);
-                        let yearsobjarray = yearArray;
-                        let yearsarray = yearsobjarray.map((item: any) => item.year);
-                        !yearsarray.includes(response.data.year) && yearsobjarray.push({year: response.data.year});
-                        setYearArray(yearsobjarray);
-                        setSelectedYear(response.data.year);
+                        let make = response.data.make.toUpperCase();
+                        let model = response.data.model.toUpperCase();
+                        let year = response.data.year;
+                        for (let makeObj of makesArray) {
+                            if (makeObj.make.toUpperCase() === make) {
+                                setSelectedMake(makeObj.id);
+                                setSelectedModel('');
+                                setSelectedYear('');
+                                APIs.getCarModel(makeObj.id).then(response => {
+                                    let modelArray = response.data.rows;
+                                    setModelArray(modelArray);
+                                    let similarModels: any = [], i = 0;
+                                    for (let modelObj of modelArray) {
+                                        if (modelObj.model.toUpperCase() === model) {
+                                            setSelectedModel(modelObj.id);
+                                            APIs.getCarYear(modelObj.id).then(response => {
+                                                let yearArray = response.data.rows;
+                                                setYearArray(yearArray);
+                                                for (let yearObj of yearArray) {
+                                                    if (yearObj.year === year) {
+                                                        setSelectedYear(yearObj.id);
+                                                    }
+                                                }
+                                            })
+                                        } else {
+                                            if (modelObj.model.toUpperCase().includes(model)) {
+                                                i += 1;
+                                                similarModels.push(modelObj);
+                                                if (i === 1) {
+                                                    setSelectedModel(modelObj.id);
+                                                    APIs.getCarYear(modelObj.id).then(response => {
+                                                        let yearArray = response.data.rows;
+                                                        setYearArray(yearArray);
+                                                        for (let yearObj of yearArray) {
+                                                            if (yearObj.year === year) {
+                                                                setSelectedYear(yearObj.id);
+                                                            }
+                                                        }
+                                                    })
+                                                } 
+                                            }
+                                        }
+                                    }
+                                })
+                            }
+                        }
                         setToggleSearch(true);
                         setShowInvaidLicense(false);
                     } else {
@@ -84,69 +111,42 @@ function Home() {
         }
     }, [licenseplate]);
 
-      useEffect(() => {
-        APIs.getMakes()
-          .then(response => {
-            setMakeData(response.data.data);
-          })
-          .catch(error => {
-            console.error('Error fetching data:', error);
-          });
-      }, []); 
-
-   
-
-    const showForgotPassword = () => {
-        setforgotPasswordPickerIsOpen(true);
-    };
-
-    const onForgotPasswordClose = () => {
-        setforgotPasswordPickerIsOpen(false);
-    };
-
-    const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
-    const showLoginModal = () => {
-        setLoginModalIsOpen(true);
-    };
-
-    const onLoginModalClose = () => {
-        setOpenLogin(false);
-    };
     useEffect(() => {
         APIs.getCarDetails().then((response: any) => {
-                setData(response.data.data);
-                setLoading(false);
-            })
-            .catch((error) => {
-                setError(error);
-                setLoading(false);
-            });
+            setData(response.data.data);
+            setLoading(false);
+        }).catch((error) => {
+            setError(error);
+            setLoading(false);
+        });
 
         APIs.getCategories().then((response: any) => {
-                setCategories(categoriesArray(response.data.data));
-                setLoading(false);
-                setCategoriesDetail(response.data.data)
-            })
-            .catch((error) => {
-                setError(error);
-                setLoading(false);
-            });
+            setCategories(categoriesArray(response.data.data));
+            setLoading(false);
+            setCategoriesDetail(response.data.data)
+        }).catch((error) => {
+            setError(error);
+            setLoading(false);
+        });
 
         APIs.getCarMake().then((response: any) => {
-                setMakesArray(response.data.rows);
-                setLoading(false);
-            })
-            .catch((error) => {
-                setError(error);
-                setLoading(false);
-            });
-    }, []);
+            setMakesArray(response.data.rows);
+            setLoading(false);
+        }).catch((error) => {
+            setError(error);
+            setLoading(false);
+        });
 
-    useEffect(() => {
-     APIs.getAllProducts('&sort[0]=createdAt:desc').then((response: any) =>{
-        setProducts(response.data.data)
-     })
-    }, [])
+        APIs.getMakes().then(response => {
+            setMakeData(response.data.data);
+        }).catch(error => {
+            console.error('Error fetching data:', error);
+        });
+
+        APIs.getAllProducts('&sort[0]=createdAt:desc').then((response: any) =>{
+            setProducts(response.data.data)
+        })
+    }, []);
    
     useEffect(() => {
         // Function to filter and get the latest 4 items based on category
@@ -172,51 +172,63 @@ function Home() {
         setLatestItems(getLatestItemsByCategory(selectedItem));
       }, [products, selectedItem]);
 
-      const handleCategoryClick = (categoryName : any) => {
-        setSelectedItem(categoryName);
-      };
+    const showForgotPassword = () => {
+        setforgotPasswordPickerIsOpen(true);
+    };
+
+    const onForgotPasswordClose = () => {
+        setforgotPasswordPickerIsOpen(false);
+    };
+
+    const showLoginModal = () => {
+        setLoginModalIsOpen(true);
+    };
+
+    const onLoginModalClose = () => {
+        setOpenLogin(false);
+    };
+
+    const handleCategoryClick = (categoryName : any) => {
+    setSelectedItem(categoryName);
+    };
     
     const searchProducts = () => {
-        localStorage.setItem('make',selectedMake);
-        localStorage.setItem('model',selectedModel);
-        localStorage.setItem('year',selectedYear);
-        localStorage.setItem('category',selectedCategory);
+        localStorage.setItem('makeId', selectedMake);
+        localStorage.setItem('modelId', selectedModel);
+        localStorage.setItem('yearId', selectedYear);
+        localStorage.setItem('category', selectedCategory);
         router.push('/shop')
     }
 
-    const getModel = (make: string) => {
-        const setData = { 'param_make': make }
-        APIs.getCarModel(setData).then((response: any) => {
-                setModelArray(response.data.rows);
-            })
-            .catch((error) => {
-                setError(error);
-                setLoading(false);
-            });
+    const getModel = (makeId: any) => {
+        Number(makeId);
+        APIs.getCarModel(makeId).then((response: any) => {
+            setModelArray(response.data.rows);
+        }).catch((error) => {
+            setError(error);
+            setLoading(false);
+        });
     }
 
-    const getYear = (make: string, model: string) => {
-        const setData = { 'param_make': make, 'param_model': model }
-        APIs.getCarYear(setData).then((response: any) => {
-                setYearArray(response.data.rows);
-            })
-            .catch((error) => {
-                setError(error);
-                setLoading(false);
-            });
+    const getYear = (modelId: any) => {
+        Number(modelId);
+        APIs.getCarYear(modelId).then((response: any) => {
+            setYearArray(response.data.rows);
+        }).catch((error) => {
+            setError(error);
+            setLoading(false);
+        });
     }
 
     const categoriesArray = (resData: any) => {
         return [...new Set(resData.map((item: any) => item.attributes.category_name))];
     }
 
-    const optionsArray = (value: any) => {
-        return [...new Set(data.map((item: any) => item.attributes[value]))];
-    }
-
     const handleMakeChange = (event: any) => {
         getModel(event.target.value);
         setSelectedMake(event.target.value);
+        setSelectedModel('');
+        setSelectedYear('');
     };
 
     const handleLicenseplateChange = (event: any) => {
@@ -229,7 +241,8 @@ function Home() {
         setSelectedModel(event.target.value);
         setSelectedYear('');
         setSelectedCategory('');
-        getYear(selectedModel, event.target.value);
+        setSelectedYear('');
+        getYear(event.target.value);
     };
 
     const handleYearChange = (event: any) => {
@@ -366,7 +379,7 @@ function Home() {
                                                     value={selectedMake} onChange={handleMakeChange}>
                                                     <option value="" disabled={true}>Select Make</option>
                                                     {makesArray.map((make: any, index: any) => (
-                                                        <option key={index} value={make.make}>{make.make}</option>
+                                                        <option key={index} value={make.id}>{make.make}</option>
                                                     ))}
                                                 </select>
                                             </div>
@@ -379,7 +392,7 @@ function Home() {
                                                 >
                                                     <option value="" disabled={true}>Select Model</option>
                                                     {modelArray.map((model: any, index: any) => (
-                                                        <option key={index} value={model.model}>{model.model}</option>
+                                                        <option key={index} value={model.id}>{model.model}</option>
                                                     ))}
                                                 </select>
                                             </div>
@@ -392,7 +405,7 @@ function Home() {
                                                 >
                                                     <option value="" disabled={true}>Select Year</option>
                                                     {yearArray.map((year: any, index: any) => (
-                                                        <option key={index} value={year.year}>{year.year}</option>
+                                                        <option key={index} value={year.id}>{year.year}</option>
                                                     ))}
                                                 </select>
                                             </div>
