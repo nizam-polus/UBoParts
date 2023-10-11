@@ -19,7 +19,7 @@ function Shop() {
     const [modelArray, setModelArray] = useState<any>([]);
     const [yearArray, setYearArray] = useState<any>([]);
     const [categories, setCategories] = useState<any>([]);
-    const [selectedMake, setSelectedMake] = useState('');
+    const [selectedMake, setSelectedMake] = useState<any>('');
     const [selectedModel, setSelectedModel] = useState('');
     const [selectedYear, setSelectedYear] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -44,8 +44,8 @@ function Shop() {
     const [pageCount, setPageCount] = useState();
     const [sortState, setSortState] = useState("sort[0]=createdAt:desc")
     
-
     const router = useRouter();
+    const { HomeMake } : any = router.query;
 
     const categoriesArray = (resData: any) => {
         return [...new Set(resData.map((item: any) => ({
@@ -122,7 +122,7 @@ function Shop() {
     }
 
     const searchProducts = (make: any, model: any, year: any, category: any) => {
-        APIs.searchProducts(make, model, year, category).then((response: any) => {
+        APIs.searchProducts(make, model, year, category, {sort: '&sort[0]=createdAt:desc', page: "1"}).then((response: any) => {
             setSearchedProducts(response.data.data);
             let pagination = response.data.meta.pagination
             setPagination(pagination);
@@ -148,6 +148,7 @@ function Shop() {
         let makeId = event.target.value
         getModel(makeId);
         setSelectedMake(event.target.value);
+        setFilterCategory([])
     };
 
     const handleModelChange = (event: any) => {
@@ -161,12 +162,14 @@ function Shop() {
         let year = event.target.value
         setSelectedYear(year);
         searchProducts(selectedMake, selectedModel, year, '');
+        setFilterCategory([])
     };
 
     const handleCategoryChange = (event: any) => {
         let category = event.target.value
         setSelectedCategory(category);
         searchProducts(selectedMake, selectedModel, selectedYear, category);
+        setFilterCategory([])
     };
 
     const clearSearch = (event: any) => {
@@ -235,6 +238,9 @@ function Shop() {
             {min: minPrice, max: maxPrice}, 
             {sort: '&sort[0]=createdAt:desc', page: '1'}
         ).then(response => {
+            let pagination = response.data.meta.pagination;
+            setPageRange(pageRangeFinder(pagination.pageCount));
+            setPagination(pagination);
             setSearchedProducts(response.data.data)
             console.log(response.data.data)
             setPageCount(response.data.meta.pagination.pageCount)
@@ -295,50 +301,64 @@ function Shop() {
         }
     }
 
-    const handleFilterChange = (event: any) =>{
+    const handleFilterChange = (event: any) => {
         let sort = ''
-        let vehicleDetails = {make: selectedMake, model: selectedModel, year: selectedYear}
         const selectedOption = event.target.value;
         setFilterOption(selectedOption);
+      
         if (selectedOption === 'Latest') {
-            setSortState('&sort[0]=createdAt:desc');
-            sort = '&sort[0]=createdAt:desc';
-            APIs.searchFilter(vehicleDetails, categories, filterCategory, filterSubcategory, {min: minPrice, max: maxPrice}, {sort, page: '1'}).then(response => {
-                let pagination = response.data.meta.pagination;
-                setPageRange(pageRangeFinder(pagination.pageCount));
-                setPagination(pagination);
-                setSearchedProducts(response.data.data)
-                console.log(response.data.data)
-                setPageCount(response.data.meta.pagination.pageCount)
-            }).catch(err => console.log)
+          setSortState('&sort[0]=createdAt:desc');
+          sort = '&sort[0]=createdAt:desc';
         } else if (selectedOption === 'highToLow') {
-            // Sort searchedProducts by price high to low
-            setSortState("&sort[0]=price:desc");
-            sort = '&sort[0]=price:desc';
-            // const sortedProducts = searchedProducts.slice().sort((a: any, b: any) => b.attributes.price - a.attributes.price);
-            APIs.searchFilter(vehicleDetails, categories, filterCategory, filterSubcategory, {min: minPrice, max: maxPrice}, {sort, page: '1'}).then(response => {
-                let pagination = response.data.meta.pagination;
-                setPageRange(pageRangeFinder(pagination.pageCount));
-                setPagination(pagination);
-                setSearchedProducts(response.data.data)
-                console.log(response.data.data)
-                setPageCount(response.data.meta.pagination.pageCount)
-            }).catch(err => console.log)
+          setSortState('&sort[0]=price:desc');
+          sort = '&sort[0]=price:desc';
         } else if (selectedOption === 'lowToHigh') {
-            // Sort searchedProducts by price low to high
-            setSortState('&sort[0]=price:asc')
-            sort = '&sort[0]=price:asc';
-            // const sortedProducts = searchedProducts.slice().sort((a:any, b:any) => a.attributes.price - b.attributes.price);
-            APIs.searchFilter(vehicleDetails, categories, filterCategory, filterSubcategory, {min: minPrice, max: maxPrice}, {sort, page: '1'}).then(response => {
-                let pagination = response.data.meta.pagination;
-                setPageRange(pageRangeFinder(pagination.pageCount));
-                setPagination(pagination);
-                setSearchedProducts(response.data.data)
-                console.log(response.data.data)
-                setPageCount(response.data.meta.pagination.pageCount)
-            }).catch(err => console.log) 
+          setSortState('&sort[0]=price:asc');
+          sort = '&sort[0]=price:asc';
         }
-    }
+        
+        // The API calls will be made inside the useEffect hook
+      };
+
+    useEffect(() => {
+        let vehicleDetails = {make: selectedMake, model: selectedModel, year: selectedYear}
+        if (filterCategory.length > 0) {
+          APIs.searchFilter(vehicleDetails, categories, filterCategory, filterSubcategory, { min: minPrice, max: maxPrice }, { sort: sortState, page: '1' })
+            .then((response) => {
+              let pagination = response.data.meta.pagination;
+              setPageRange(pageRangeFinder(pagination.pageCount));
+              setPagination(pagination);
+              setSearchedProducts(response.data.data);
+              console.log(response.data.data);
+              setPageCount(response.data.meta.pagination.pageCount);
+            })
+            .catch((err) => console.log(err));
+        } else {
+            if(selectedMake){
+                APIs.searchProducts(selectedMake, selectedModel, selectedYear, selectedCategory, { sort: sortState, page: '1' })
+                .then((response: any) => {
+                  setSearchedProducts(response.data.data);
+                  let pagination = response.data.meta.pagination;
+                  setPagination(pagination);
+                  setPageRange(pageRangeFinder(pagination.pageCount));
+                  setPageCount(response.data.meta.pagination.pageCount);
+                })
+                .catch((error) => {
+                  setError(error);
+                  setLoading(false);
+                });
+            } else{
+                APIs.getAllPaginationProducts("1",sortState).then(response => {
+                    let pagination = response.data.meta.pagination;
+                    setPageCount(response.data.meta.pagination.pageCount)
+                    setPageRange(pageRangeFinder(pagination.pageCount));
+                    setPagination(pagination);
+                    setSearchedProducts(response.data.data);
+                })
+            }
+          
+        }
+      }, [sortState]);
 
     const loginModalClose = () => {
         setOpenLogin(false);
@@ -439,12 +459,6 @@ function Shop() {
                             <div className="col-12 d-lg-flex justify-content-between">
                                 <div><span className="custom-color-2 mediumfont bg-image-text">Explore</span>
                                 </div>
-                                {/* <div className="mt-3 mt-lg-0">
-                                        <span className="label-color-1 mediumfont select-options m-0 m-lg-3">Sort By: </span>
-                                        <select className="coulmn-bg-color-1 p-2 border-0 filter-by-rating rounded regularfont mini-text-2">
-                                            <option>Top Rated</option>
-                                        </select>
-                                    </div> */}
                             </div>
                             <div className="col-12 mt-5">
                                 <div className="row g-5">

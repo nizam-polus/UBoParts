@@ -328,6 +328,13 @@ function Home() {
           setStartIndex(0);
         }
       };
+
+    const handleMakeClick = (HomeMake: any) =>{
+        router.push({
+            pathname: '/shop',
+            query: { 'HomeMake': HomeMake },
+        })
+    }
     
     return (
         <>
@@ -539,14 +546,17 @@ function Home() {
                         <div style={{ width: "200px" }}>
                             <h4>Search by Car Brand</h4>
                         </div>
+                        <div style={{display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", minWidth: "800px"}}>
                         {makeData.slice(startIndex, startIndex + 4).map((item :any, index:any) => (
-                            <div key={index} style={{ width: "200px" }}>
+                            <div key={index} style={{ width: "200px" }} onClick={() => handleMakeClick(item.attributes.make_name)}>
                                 <img src={item.attributes.make_logo.data ? 
                                         BASE_URL + item.attributes.make_logo.data.attributes.url : ""} 
                                     alt="" width="120px" height="120px"  style={{ cursor: 'pointer' }} 
                                 />
                             </div>
                         ))}
+                        </div>
+                      
                         <button onClick={handleArrowClick} 
                             style={{ height: "75px", width: "75px", borderRadius: "50%", border: "3px solid green" }}
                         >

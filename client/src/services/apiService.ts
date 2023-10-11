@@ -10,7 +10,7 @@ const getToken = () => {
     }
 }
 
-const token = 'ac7cd719ea6cf69e2d51cc2557266b0db324d45548e1eb8dabd3805e75f0f63a1a6561be97698cd636b593d609b3e16adbba69e5a0680864851e63d604712ae3963296a6b79e4876c715420ae5fc0d8237c62c9fb2455948d3711a5f33763a3b5f5c83165033eb063cbec01f2464267bf1df92a620cd71f44907835c8f26fa8d';
+const token = '16a1c655799a2c5d2dc3a390d2ee7b0cc86d38c8f3facdb8a42e76332906d3f52fd2288f9675f996b17efbb264e72e4479237f7e34abb6221017c5acfa53569cb6e24bcdb0b434d27a2383625734321b2e58ba29e75ba437b97430c7af9fcb70962ce73eef1b4a31add2910407a4c9b80df6dc741c2e2be049c3628dbeba1f92';
 
 const headers = {
     Authorization: `Bearer ${token}`,
@@ -38,9 +38,11 @@ const APIs = {
 
     getCarYear: (modelId: number) => axios.post(BACKEND_URL + 'cardetailyear', {param_model: modelId}, {headers}),
 
-    searchProducts: (make: string, model: string, year: string, category: string) => {
+    getSale: () => axios.get(BACKEND_URL + 'sales?sort[0]=createdAt:asc'),
+
+    searchProducts: (make: string, model: string, year: string, category: string, filter: any) => {
         return axios.get(
-            BACKEND_URL + `products?populate=*&filters[$and][][cardetail][make][$eq]=${make}&filters[$and][][cardetail][model][$eq]=${model}${year && 
+            BACKEND_URL + `products?populate=*` + `${filter.sort}&pagination[page]=${filter.page}&pagination[pageSize]=18` + `&filters[$and][][cardetail][make][$eq]=${make}&filters[$and][][cardetail][model][$eq]=${model}${year && 
                 '&filters[$and][][cardetail][year][$eq]='+year}${category && `&filters[$and][][category][category_name][$eq]=${category}`}`, {headers}
         )
     },

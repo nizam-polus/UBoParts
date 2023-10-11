@@ -191,10 +191,17 @@ function Profile() {
                                                     </td>
                                                     <td className="pr-5 pl-xl-3 pl-md-3 pl-5 pb-5 pb-xl-5 pb-md-5 border-0">
                                                         <label className="custom-color-2 regularfont products-name pb-2">Phone</label>
-                                                        <input type="text" value={phone}
-                                                            className={`form-control input-bg-color-2 products-name ${incomplete && !phone ? ' required-field' : 'border-0' }`} 
-                                                            name="phone" placeholder="(XXX) XXX-XXXX"
-                                                            onChange={(e) => setPhone(e.target.value)}
+                                                        <input
+                                                            type="text"
+                                                            value={phone}
+                                                            className={`form-control input-bg-color-2 products-name ${incomplete && !phone ? 'required-field' : 'border-0'}`}
+                                                            name="phone"
+                                                            placeholder="(XXX) XXX-XXXX"
+                                                            onChange={(e) => {
+                                                                // Use a regular expression to allow only numeric characters
+                                                                const numericValue = e.target.value.replace(/\D/g, '');
+                                                                setPhone(numericValue);
+                                                            }}
                                                         />
                                                     </td>
                                                 </tr>
