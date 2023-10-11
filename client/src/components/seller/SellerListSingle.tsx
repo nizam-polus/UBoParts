@@ -23,8 +23,15 @@ const SellerListSingle = () => {
     useEffect(() => {
         APIs.getProduct(id).then(response => {
             let product = response.data.data;
-            let productGallery = response.data.data.attributes?.product_gallary_image?.data;
-            let productImage = response.data.data.attributes?.product_gallary_image?.data[0]?.attributes?.url;
+            let productGallery: any = [];
+            let productImage = response.data.data.attributes?.product_image?.data.attributes.url;
+            productGallery.unshift({attributes: {url: productImage}})
+            if (response.data.data.attributes?.product_gallary_image?.data) {
+                let gallery = response.data.data.attributes?.product_gallary_image?.data;
+                for(let obj of gallery) {
+                    productGallery.push(obj);
+                }
+            }
             setProductData(product);
             setProductGallery(productGallery);
             setProductImage(productImage);           

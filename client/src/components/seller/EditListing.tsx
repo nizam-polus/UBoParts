@@ -28,6 +28,7 @@ function EditListing() {
     const [listLocation, setListLocation] = useState('');
     const [productImage, setProductImage] = useState<File | null>(null);
     const [productGalleryImages, setProductGalleryImages] = useState<any>([]);
+    const [tempProductGalleryImages, setTempProductGalleryImages] = useState<any>([]);
     const [categoriesDetails, setCategoriesDetails] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedCategoryId, setSelectedCategoryId] = useState(0); // Store the selected category ID
@@ -44,14 +45,48 @@ function EditListing() {
     const [showInvaidLicense, setShowInvaidLicense] = useState(false);
     const [incomplete, setIncomplete] = useState<any>(false);
     const [partsInput, setPartsInput] = useState()
+    const [makeName, setMakeName] = useState('')
+    const [modelName, setModelName] = useState('')
+    const [year, setYear] = useState('')
 
     const router = useRouter()
     const id = router.query.id;
     const [productData, setProductData] = useState<any>({})
     const [productGallery, setProductGallery] = useState([])
     const [quantity, setQuantity] = useState(1);
+
+    const inputRef: any = useRef()
+    const galleryRef: any = useRef()
  
     useEffect(() => {
+      let userDetails: any = localStorage.getItem("userdetails")
+      const userDetailsJSON = JSON.parse(userDetails);
+      const username = userDetailsJSON.username;
+      const userid = userDetailsJSON.id;
+      setUname(username)
+      setUid(userid)
+      
+      // Fetch categories data
+      APIs.getCategories()
+      .then((response) => {
+        const categoriesData = response.data.data; // Access the "data" property
+        // Extract category names
+        const categoryNames = categoriesData.map((category: any) => category.attributes.category_name);
+        setCategoriesDetails(categoryNames);
+        setCategoriesData(categoriesData); // Set categoriesData state here
+      }).catch((error) => {
+                  setError(error);
+              });
+      APIs.getCarMake().then((response: any) => {
+          setMakesArray(response.data.rows);
+          getCardetails();
+      })
+        .catch((error) => {
+            setError(error);
+        });
+    }, []);
+
+    const getCardetails = () => {
         APIs.getProduct(id).then(response => {
             let product = response.data.data;
             if(response.data.data.attributes?.product_gallary_image?.data.length >0 && response.data.data.attributes?.product_image.data == null){
@@ -62,12 +97,13 @@ function EditListing() {
               setProductImage(productImage);
             }
             let productGallery = response.data.data.attributes?.product_gallary_image?.data;
-            let make = response.data.data.attributes?.cardetail?.data?.attributes?.make  
-            let model = response.data.data.attributes?.cardetail?.data?.attributes?.model
-            let year = response.data.data.attributes?.cardetail?.data?.attributes?.year  
+            let make = response.data.data.attributes?.make?.data?.id 
+            let model = response.data.data.attributes?.model?.data?.attributes?.model_name
+            let year = response.data.data.attributes?.year?.data?.attributes?.year  
             let licenseplate = response.data.data?.attributes?.cardetail?.data?.attributes?.licenseplate
             setProductData(product);
             setProductGalleryImages(productGallery);
+            setTempProductGalleryImages(productGallery)
             setListName(response.data.data.attributes.title)
             console.log(response.data.data.attributes.title)
             setListPrice(response.data.data.attributes.price)
@@ -98,74 +134,74 @@ function EditListing() {
                     setLicenseplate(licenseplate)
                 })
         }).catch(err => console.log(err))
-    }, []);
+    }
+
+    
 
     useEffect(() => {
-        let userDetails: any = localStorage.getItem("userdetails")
-        const userDetailsJSON = JSON.parse(userDetails);
-        const username = userDetailsJSON.username;
-        const userid = userDetailsJSON.id;
-        setUname(username)
-        setUid(userid)
-       
-       // Fetch categories data
-    APIs.getCategories()
-    .then((response) => {
-      const categoriesData = response.data.data; // Access the "data" property
-      // Extract category names
-      const categoryNames = categoriesData.map((category: any) => category.attributes.category_name);
-      setCategoriesDetails(categoryNames);
-      setCategoriesData(categoriesData); // Set categoriesData state here
-    }).catch((error) => {
-                setError(error);
-            });
-        APIs.getCarMake().then((response: any) => {
-            setMakesArray(response.data.rows);
-        })
-            .catch((error) => {
-                setError(error);
-            });
-    }, []);
-
-    useEffect(() => {
-        if (licenseplate && licenseplate.length > 5) {
-            const getData = setTimeout(() => {
-                APIs.getCarDetailsUsingLicence(licenseplate).then((response: any) => {
-                    if (response.data.licenseplate) {
-                        // get make
-                        let makesobjarray = makesArray;
-                        let makesarray = makesobjarray.map((item: any) => item.make) 
-                        !makesarray.includes(response.data.make) && makesobjarray.push({make: response.data.make})
-                        setMakesArray(makesobjarray);
-                        setSelectedMake(response.data.make);
-                        // get model
-                        getModel(response.data.make);
-                        let modelsobjarray = modelArray;
-                        let modelsarray = modelsobjarray.map((item: any) => item.model);
-                        !modelsarray.includes(response.data.model) && modelsobjarray.push({model: response.data.model});
-                        setModelArray(modelsobjarray)
-                        setSelectedModel(response.data.model);
-                        //get year
-                        getYear(response.data.make, response.data.model);
-                        let yearsobjarray = yearArray;
-                        let yearsarray = yearsobjarray.map((item: any) => item.year);
-                        !yearsarray.includes(response.data.year) && yearsobjarray.push({year: response.data.year});
-                        setYearArray(yearsobjarray);
-                        setSelectedYear(response.data.year);
-
-                        setShowInvaidLicense(false);
-                    } else {
-                        setShowInvaidLicense(true);
-                        setSelectedMake('');
-                        setSelectedModel('');
-                        setSelectedYear('');
-                        setSelectedCategory('')
-                    }
-                });
-            }, 1000);
-            return () => clearTimeout(getData);
-        }
-    }, [licenseplate]);
+      if (licenseplate && licenseplate.length > 5) {
+          const getData = setTimeout(() => {
+              APIs.getCarDetailsUsingLicence(licenseplate).then((response: any) => {
+                  if (response.data.licenseplate) {
+                      let make = response.data.make.toUpperCase();
+                      let model = response.data.model.toUpperCase();
+                      let year = response.data.year;
+                      for (let makeObj of makesArray) {
+                          if (makeObj.make.toUpperCase() === make) {
+                              setSelectedMake(makeObj.id);
+                              setSelectedModel('');
+                              setSelectedYear('');
+                              APIs.getCarModel(makeObj.id).then(response => {
+                                  let modelArray = response.data.rows;
+                                  setModelArray(modelArray);
+                                  let similarModels: any = [], i = 0;
+                                  for (let modelObj of modelArray) {
+                                      if (modelObj.model.toUpperCase() === model) {
+                                          setSelectedModel(modelObj.id);
+                                          APIs.getCarYear(modelObj.id).then(response => {
+                                              let yearArray = response.data.rows;
+                                              setYearArray(yearArray);
+                                              for (let yearObj of yearArray) {
+                                                  if (yearObj.year === year) {
+                                                      setSelectedYear(yearObj.id);
+                                                  }
+                                              }
+                                          })
+                                      } else {
+                                          if (modelObj.model.toUpperCase().includes(model)) {
+                                              i += 1;
+                                              similarModels.push(modelObj);
+                                              if (i === 1) {
+                                                  setSelectedModel(modelObj.id);
+                                                  APIs.getCarYear(modelObj.id).then(response => {
+                                                      let yearArray = response.data.rows;
+                                                      setYearArray(yearArray);
+                                                      for (let yearObj of yearArray) {
+                                                          if (yearObj.year === year) {
+                                                              setSelectedYear(yearObj.id);
+                                                          }
+                                                      }
+                                                  })
+                                              } 
+                                          }
+                                      }
+                                  }
+                              })
+                          }
+                      }
+                      setShowInvaidLicense(false);
+                  } else {
+                      setShowInvaidLicense(true);
+                      setSelectedMake('');
+                      setSelectedModel('');
+                      setSelectedYear('');
+                      setSelectedCategory('')
+                  }
+              });
+          }, 1000);
+          return () => clearTimeout(getData);
+      }
+  }, [licenseplate]);
 
     const handleLicenseplateChange = (event: any) => {
         const enteredLicenseplate = event.target.value.toUpperCase();
@@ -188,41 +224,59 @@ function EditListing() {
     };
 
     const handleMakeChange = (event: any) => {
-        getModel(event.target.value);
-        setSelectedMake(event.target.value);
+      const selectedValue = event.target.value;
+      setSelectedMake(selectedValue);
+      getModel(selectedValue)
+      const selectedMake = makesArray.find((make: any) => make.id == selectedValue);
+      if (selectedMake) {
+          setMakeName(selectedMake.make);
+      }
     };
 
-    const getModel = (make: string) => {
-        const setData = { 'param_make': make }
-        APIs.getCarModel(setData).then((response: any) => {
-            setModelArray(response.data.rows);
-        })
-            .catch((error) => {
-                setError(error);
-            });
-    }
+    const getModel = (makeId: any) => {
+      // const setData : any = { 'param_make': make }
+      Number(makeId)
+      APIs.getCarModel(makeId).then((response: any) => {
+          setModelArray(response.data.rows);
+      })
+          .catch((error) => {
+              setError(error);
+          });
+  }
 
-    const getYear = (make: string, model: string) => {
-        const setData = { 'param_make': make, 'param_model': model }
-        APIs.getCarYear(setData).then((response: any) => {
-            setYearArray(response.data.rows);
-        })
-            .catch((error) => {
-                setError(error);
-            });
-    }
+  const getYear = (make: string, modelId: any) => {
+    const setData : any = { 'param_make': make, 'param_model': modelId }
+    APIs.getCarYear(Number(modelId)).then((response: any) => {
+        setYearArray(response.data.rows);
+    })
+        .catch((error) => {
+            setError(error);
+        });
+}
 
-    const handleModelChange = (event: any) => {
-        setSelectedModel(event.target.value);
-        setSelectedYear('');
-        setSelectedCategory('');
-        getYear(selectedModel, event.target.value);
-    };
+const handleModelChange = (event: any) => {
+  const selectedValue = event.target.value;
+  setSelectedModel(event.target.value);
+  setSelectedYear('');
+  setSelectedCategory('');
+  getYear(selectedModel, event.target.value);
+ 
+  const selectedModelName : any = modelArray.find((model: any) => model.id == selectedValue);
+  if(selectedModelName){
+      setModelName(selectedModelName.model)
+  }
+};
 
-    const handleYearChange = (event: any) => {
-        setSelectedYear(event.target.value);
-        setSelectedCategory('');
-    };
+const handleYearChange = (event: any) => {
+  const selectedValue = event.target.value;
+  setSelectedYear(event.target.value);
+  setSelectedCategory('');
+
+  const selectedYearName = yearArray.find((year: any) => year.id == selectedValue);
+  if(selectedYearName){
+      setYear(selectedYearName.year)
+  }
+};
 
     const handleCategoryChange = (event: any) => {
         const selectedCategory = event.target.value;
@@ -300,33 +354,46 @@ function EditListing() {
     }
 
     const handleFeaturedImageChange = (event: any) => {
-        const file = event.target.files[0];
-        setProductImage(file);
-    };
+      const file = event.target.files[0];
+          // setProductGalleryImages([...productGalleryImages, file]);
+          setProductImage(file);
+          setTempProductGalleryImages([file,...productGalleryImages])
+  }; 
 
-    const handleGalleryImagesChange = (event: any) => {
-        const files = event.target.files;
-        const selectedImages = [];
-        for (let i = 0; i < files?.length; i++) {
-          selectedImages.push(files[i]);
-        }
-        setProductGalleryImages(selectedImages);
-      };
+  const handleGalleryImagesChange = (event: any) => {
+      const files = event.target.files;
+      const selectedImages = [...productGalleryImages]; // Copy existing items
+      for (let i = 0; i < files?.length; i++) {
+          selectedImages.push(files[i]); // Add new items
+      }
+      setProductGalleryImages(selectedImages); // Update the state with the combined array
+      setTempProductGalleryImages([productImage, ...selectedImages])
+  };
 
-    const handleDeleteFeaturedImage = () => {
-        // Remove the featured image by setting it to null
-        setProductImage(null);
-    };
-    
-    const handleDeleteGalleryImage = (index: any) => {
-        // Create a copy of the gallery images array
-        const updatedGalleryImages = [...productGalleryImages];
-        // Remove the image at the specified index
-        updatedGalleryImages.splice(index, 1);
-        // Update the state with the modified gallery images
-        setProductGalleryImages(updatedGalleryImages);
-    };
+  const handleDeleteFeaturedImage = () => {
+      // Remove the featured image by setting it to null
+      tempProductGalleryImages.shift()
+      setProductImage(null);
+      inputRef.current.value = ''
+  };
 
+  const handleDeleteGalleryImage = (index: any) => {
+      // Create a copy of the gallery images array
+      const updatedGalleryImages = [...productGalleryImages];
+      const updatedTempGalleryImages = [...tempProductGalleryImages]
+      // Remove the image at the specified index
+      updatedGalleryImages.splice(index, 1);
+      setProductGalleryImages(updatedGalleryImages);
+      updatedTempGalleryImages.splice(index, 1);
+      setTempProductGalleryImages(updatedTempGalleryImages);
+     
+      if(index == 0){
+          setProductImage(null)
+          inputRef.current.value = ''
+          galleryRef.current.value = ''
+          setTempProductGalleryImages([])
+      }
+  };
     const createNewList = () => {
 
       let incomplete = !(!!listName && !!carDetailId && selectedCategoryId && !!selectedSubcategoryId && !!listPrice && !!listQuantity && !!listLocation && !!listBarcode && !!listDescription && !!uname && !!uid)
@@ -450,7 +517,7 @@ function EditListing() {
                                                             value={selectedMake} onChange={handleMakeChange}>
                                                             <option value="" disabled={true}>Select Make</option>
                                                             {makesArray && makesArray.map((make: any, index: any) => (
-                                                                <option key={index} value={make.make}>{make.make}</option>
+                                                                <option key={index} value={make.id}>{make.make}</option>
                                                             ))}
                                                         </select>
                                                     </td>
@@ -460,7 +527,7 @@ function EditListing() {
                                                             value={selectedModel} onChange={handleModelChange}>
                                                             <option value="" disabled={true}>Select Model</option>
                                                             {modelArray && modelArray.map((model: any, index: any) => (
-                                                                <option key={index} value={model.model}>{model.model}</option>
+                                                                <option key={index} value={model.id}>{model.model}</option>
                                                             ))}
                                                         </select>
                                                     </td>
@@ -472,7 +539,7 @@ function EditListing() {
                                                             value={selectedYear} onChange={handleYearChange}>
                                                             <option value="" disabled={true}>Select Year</option>
                                                             {yearArray && yearArray.map((year: any, index: any) => (
-                                                                <option key={index} value={year.year}>{year.year}</option>
+                                                                <option key={index} value={year.id}>{year.year}</option>
                                                             ))}
                                                         </select>
                                                     </td>
@@ -545,7 +612,7 @@ function EditListing() {
                                                <tr className="double">
                                                 <td className='px-5 pt-4 pb-2'>
                               <label className="custom-color-2 regularfont products-name pb-2">Listing Featured Image <span className="required">*</span></label>
-                              <input className="form-control pt-2 pb-1 choosefile" type="file" id="featuredImages" onChange={handleFeaturedImageChange} required />
+                              <input className="form-control pt-2 pb-1 choosefile" type="file" id="featuredImages" onChange={handleFeaturedImageChange} ref={inputRef} required />
 
                               {productImage ? (
                                 <div className="selected-featured-image" style={{ padding: "10px 0" }}>
@@ -563,11 +630,11 @@ function EditListing() {
                             </td>
                             <td className='px-5 pt-4 pb-2'>
                               <label className="custom-color-2 regularfont products-name pb-2">Listing Image(s) <span className="required">*</span></label>
-                              <input className="form-control pt-2 pb-1 choosefile" type="file" id="galleryImages" onChange={handleGalleryImagesChange} multiple required />
+                              <input className="form-control pt-2 pb-1 choosefile" type="file" id="galleryImages" onChange={handleGalleryImagesChange} multiple ref={galleryRef} />
 
-                              {productGalleryImages.length > 0 && (
+                              {tempProductGalleryImages.length > 0 && (
                                 <div className="selected-gallery-images" style={{ padding: "10px 0", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-                                  {productGalleryImages.map((image: any, index: any) => (
+                                  {tempProductGalleryImages.map((image: any, index: any) => (
                                     <div key={index} style={{ position: 'relative' }}>
                                       {typeof image?.attributes?.url === 'string' ? (
                                         <img src={BASE_URL + image?.attributes.url} alt={`Selected ${index + 1}`} height={200} style={{ width: "100%", borderRadius: "20px", maxWidth: "210px" }} />
