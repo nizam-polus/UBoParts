@@ -112,6 +112,7 @@ function Create_new_listing() {
     useEffect(() => {
         generateRandomNumberAndFetchData();
     }, []);
+
     useEffect(() => {
         if (licenseplate && licenseplate.length > 5) {
             const getData = setTimeout(() => {
@@ -120,9 +121,11 @@ function Create_new_listing() {
                         let make = response.data.make.toUpperCase();
                         let model = response.data.model.toUpperCase();
                         let year = response.data.year;
+                        console.log(year)
                         for (let makeObj of makesArray) {
                             if (makeObj.make.toUpperCase() === make) {
                                 setSelectedMake(makeObj.id);
+                                setMakeNameFn(makeObj.id)
                                 setSelectedModel('');
                                 setSelectedYear('');
                                 APIs.getCarModel(makeObj.id).then(response => {
@@ -132,12 +135,14 @@ function Create_new_listing() {
                                     for (let modelObj of modelArray) {
                                         if (modelObj.model.toUpperCase() === model) {
                                             setSelectedModel(modelObj.id);
+                                            setModelNameFn(modelObj.id, modelArray)
                                             APIs.getCarYear(modelObj.id).then(response => {
                                                 let yearArray = response.data.rows;
                                                 setYearArray(yearArray);
                                                 for (let yearObj of yearArray) {
                                                     if (yearObj.year === year) {
                                                         setSelectedYear(yearObj.id);
+                                                        setYearChangeFn(yearObj.id, yearArray)
                                                     }
                                                 }
                                             })
@@ -147,12 +152,14 @@ function Create_new_listing() {
                                                 similarModels.push(modelObj);
                                                 if (i === 1) {
                                                     setSelectedModel(modelObj.id);
+                                                    setModelNameFn(modelObj.id, modelArray)
                                                     APIs.getCarYear(modelObj.id).then(response => {
                                                         let yearArray = response.data.rows;
                                                         setYearArray(yearArray);
                                                         for (let yearObj of yearArray) {
                                                             if (yearObj.year === year) {
                                                                 setSelectedYear(yearObj.id);
+                                                                setYearChangeFn(yearObj.id, yearArray)
                                                             }
                                                         }
                                                     })
@@ -197,14 +204,35 @@ function Create_new_listing() {
             });
     };
 
+    const setMakeNameFn = (Id: any) => {
+        const selectedMake = makesArray.find((make: any) => make.id == Id);
+        if (selectedMake) {
+            setMakeName(selectedMake.make);
+        }
+    }
+
+    const setModelNameFn = (Id: any, modelArray: any) => {
+        const selectedModelName = modelArray.find((model: any) => model.id == Id);
+        console.log(selectedModelName)
+
+        if(selectedModelName){
+            setModelName(selectedModelName.model)
+        }
+    }
+
+    const setYearChangeFn = (Id: any, yearArray: any) => {
+        const selectedYearName = yearArray.find((year: any) => year.id == Id);
+        if(selectedYearName){
+            setYear(selectedYearName.year)
+        }
+    }
+
     const handleMakeChange = (event: any) => {
         const selectedValue = event.target.value;
         setSelectedMake(selectedValue);
         getModel(selectedValue)
-        const selectedMake = makesArray.find((make: any) => make.id == selectedValue);
-        if (selectedMake) {
-            setMakeName(selectedMake.make);
-        }
+        setMakeNameFn(selectedValue)
+
     };
 
     const getModel = (makeId: any) => {
@@ -234,22 +262,14 @@ function Create_new_listing() {
         setSelectedYear('');
         setSelectedCategory('');
         getYear(selectedModel, event.target.value);
-       
-        const selectedModelName = modelArray.find((model: any) => model.id == selectedValue);
-        if(selectedModelName){
-            setModelName(selectedModelName.model)
-        }
+        setModelNameFn(selectedValue, modelArray)
     };
 
     const handleYearChange = (event: any) => {
         const selectedValue = event.target.value;
         setSelectedYear(event.target.value);
         setSelectedCategory('');
-
-        const selectedYearName = yearArray.find((year: any) => year.id == selectedValue);
-        if(selectedYearName){
-            setYear(selectedYearName.year)
-        }
+        setYearChangeFn(selectedValue, yearArray)
     };
 
     const handleCategoryChange = (event: any) => {
@@ -315,12 +335,10 @@ function Create_new_listing() {
 
     const handleLocationNoChange = (event: any) => {
         setLocationNo(event.target.value)
-        console.log("locno",event.target.value)
     }
     const handleLocationChange = (event: any) => {
-        const newValue = event.target.value.replace(/[^0-9.]/g, ''); // Allow only numbers and dots
+        const newValue = event.target.value.replace(/[^0-9.]/g, ''); 
         if (newValue !== event.target.value) {
-            // If the input contains non-numeric characters, update the input value
             event.target.value = newValue;
         }
         setListLocation( locationNo + '.' + newValue);
@@ -336,50 +354,46 @@ function Create_new_listing() {
 
     const handleFeaturedImageChange = (event: any) => {
         const file = event.target.files[0];
-            // setProductGalleryImages([...productGalleryImages, file]);
             setProductImage(file);
             setTempProductGalleryImages([file,...productGalleryImages])
     }; 
 
     const handleGalleryImagesChange = (event: any) => {
         const files = event.target.files;
-        const selectedImages = [...productGalleryImages]; // Copy existing items
+        const selectedImages = [...productGalleryImages]; 
         for (let i = 0; i < files?.length; i++) {
-            selectedImages.push(files[i]); // Add new items
+            selectedImages.push(files[i]);
         }
-        setProductGalleryImages(selectedImages); // Update the state with the combined array
+        setProductGalleryImages(selectedImages); 
         setTempProductGalleryImages([productImage, ...selectedImages])
     };
 
     const handleDeleteFeaturedImage = () => {
-        // Remove the featured image by setting it to null
         tempProductGalleryImages.shift()
         setProductImage(null);
         inputRef.current.value = ''
     };
 
     const handleDeleteGalleryImage = (index: any) => {
-        // Create a copy of the gallery images array
         const updatedGalleryImages = [...productGalleryImages];
         const updatedTempGalleryImages = [...tempProductGalleryImages]
-        // Remove the image at the specified index
         updatedGalleryImages.splice(index, 1);
         setProductGalleryImages(updatedGalleryImages);
         updatedTempGalleryImages.splice(index, 1);
         setTempProductGalleryImages(updatedTempGalleryImages);
-       
+
         if(index == 0){
             setProductImage(null)
             inputRef.current.value = ''
             galleryRef.current.value = ''
             setTempProductGalleryImages([])
+            setProductGalleryImages([])
         }
     };
 
     const createNewList = () => {
-        let incomplete = !(!!listName && !!selectedCategoryId  && !!selectedMake  && !!selectedModel  && !!selectedYear  && !!listPrice && !!listQuantity && !!listBarcode && !!listDescription && !!uname && !!uid)
+        let incomplete = !(!!listName && !! productImage && !!selectedCategoryId  && !!selectedMake  && !!selectedModel  && !!selectedYear  && !!listPrice && !!listQuantity && !!listBarcode && !!listDescription && !!uname && !!uid)
         setIncomplete(incomplete);
-       console.log(selectedMake, selectedModel, selectedYear)
         if (!incomplete) {
             if (!parts.length) {
                 APIs.setParts({
@@ -412,6 +426,9 @@ function Create_new_listing() {
             
             if (selectedSubcategoryId) {
                 requestData.data.sub_category = [parseInt(selectedSubcategoryId)];
+            }
+            if(saleOffer){
+                requestData.data.sale = saleOffer
             }
             APIs.createNewList(requestData).then((response: any) => {
                 const resId = response.data.data.id;
@@ -556,7 +573,7 @@ function Create_new_listing() {
                                                         <select className={`form-select input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !selectedCategory ? 'required-field' : 'border-0'}`}  
                                                             value={selectedCategory} onChange={handleCategoryChange}
                                                         >
-                                                            <option>Choose Category</option>
+                                                            <option value="" disabled={!!categoriesDetails}>Choose Category</option>
                                                             {categoriesDetails && categoriesDetails.map((category: any, index: any) => (
                                                                 <option key={index} value={category}>{category}</option>
                                                             ))}
@@ -564,7 +581,6 @@ function Create_new_listing() {
                                                     </td>
                                                     <td colSpan={2} className='px-5 pb-4 border-top-0'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Listing Sub Category 
-                                                        <span className="required">*</span>
                                                         </label><br />
                                                         <select
                                                             className="form-select input-bg-color-2 border-0 products-name custom-color-2"
@@ -606,7 +622,7 @@ function Create_new_listing() {
                                                         />
                                                     </td>
                                                 </tr>
-                                                <tr className="doubl">
+                                                <tr className="double">
                                                     <td className='px-5 pb-2 border-0'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">On Sale</label><br />
                                                         <select className="form-select input-bg-color-2 border-0 products-name custom-color-2"
@@ -614,7 +630,7 @@ function Create_new_listing() {
                                                             <option value="">Select Sale</option>
                                                            
                                                                 {saleArray && saleArray.map((sale: any) => (
-                                                                <option key={sale.id} value={sale.attributes.discount}>{sale.attributes.discount} discount</option>))}
+                                                                <option key={sale.id} value={sale.id}>{sale.attributes.discount} discount</option>))}
                                                         </select>  
                                                     </td>
                                                     <td className='px-5 pb-2 border-0 d-flex' style={{ gap: "10px" }}>
@@ -651,7 +667,7 @@ function Create_new_listing() {
                                                             <div className="details" style={{ width: "100%", fontWeight: "bold" }}>
                                                                 <div className='d-flex justify-content-between'>
                                                                     <div>UBOPARTS</div>
-                                                                    <div>ZEKERINKAST</div>
+                                                                    <div>{listName}</div>
                                                                 </div>
                                                                 <div className='d-flex justify-content-between'>
                                                                     <div>REK NO: {listLocation}</div>
@@ -699,10 +715,14 @@ function Create_new_listing() {
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2} className='px-5 pb-2 border-0'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Description</label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Description
+                                                            <span className="required"> *</span>
+                                                        </label>
                                                         <textarea onChange={handleDescriptionChange} 
                                                             className={`form-control input-bg-color-2 border-0 products-name rounded 
-                                                            ${incomplete && !listDescription ? 'required-field' : 'border-0'}`} rows={4}>
+                                                            ${incomplete && !listDescription ? 'required-field' : 'border-0'}`} rows={4}
+                                                            required
+                                                        >
                                                         </textarea>
                                                     </td>
                                                 </tr>
