@@ -161,7 +161,7 @@ const SellerListSingle = () => {
                                                     <div className="details" style={{ width: "100%", fontWeight: "bold" }}>
                                                         <div className='d-flex justify-content-between'>
                                                             <div>UBOPARTS</div>
-                                                            <div>ZEKERINKAST</div>
+                                                            <div>{productData?.attributes?.title}</div>
                                                         </div>
                                                         <div className='d-flex justify-content-between'>
                                                             <div>REK NO: {productData?.attributes?.product_location_warehouse}</div>
