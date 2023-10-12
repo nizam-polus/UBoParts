@@ -34,10 +34,18 @@ function Productsingle() {
     useEffect(() => {
         APIs.getProduct(id).then(response => {
             let product = response.data.data;
-            let productGallery = response.data.data.attributes?.product_gallary_image?.data;
-            let productImage = response.data.data.attributes?.product_gallary_image?.data[0]?.attributes?.url;
+            let productGallery: any = [];
+            let productImage = response.data.data.attributes?.product_image?.data.attributes.url;
+            productGallery.unshift({attributes: {url: productImage}})
+            if (response.data.data.attributes?.product_gallary_image?.data) {
+                let gallery = response.data.data.attributes?.product_gallary_image?.data;
+                for(let obj of gallery) {
+                    productGallery.push(obj);
+                }
+            }
             let productStock = response.data.data.attributes?.stock_count
             let productCategory = response.data.data.attributes?.category.data.attributes.category_name
+            console.log(response.data.data)
            
             setStockCount(productStock)
             setProductData(product);
@@ -165,7 +173,7 @@ function Productsingle() {
                                     <AppImage style={{objectFit: 'contain', height: '30rem'}} className="rounded w-100" src={BASE_URL + productImage}/>
                                 </div>
                                 <div className="row product-thumbnails g-3 mt-3 justify-content-center">
-                                {productGallery.map((galleryImg: any) => {
+                                {productGallery && productGallery.map((galleryImg: any) => {
                                     return (
                                         <div className="col-auto px-2" 
                                             style={{"cursor": "pointer"}}
@@ -197,9 +205,9 @@ function Productsingle() {
                                 <hr/>
                                 <p className="semifont placeholderfontsize custom-color-5 mb-1">Key Features:</p>
                                 <ul className="list-group custom-color-2 regularfont placeholderfontsize p-3 pt-0 pb-4">
-                                    <li className="mb-1">Make: {productData?.attributes?.cardetail?.data?.attributes?.make}</li>
-                                    <li className="mb-1">Model: {productData?.attributes?.cardetail?.data?.attributes?.model}</li>
-                                    <li>Year: {productData?.attributes?.cardetail?.data?.attributes?.year}</li>
+                                    <li className="mb-1">Make: {productData?.attributes?.make?.data?.attributes?.make_name}</li>
+                                    <li className="mb-1">Model: {productData?.attributes?.model?.data?.attributes?.model_name}</li>
+                                    <li>Year: {productData?.attributes?.year?.data?.attributes?.year}</li>
                                 </ul>
                                 <hr/>
                                 {/* <p className="custom-color-6 regularfont mini-text-2">See Full Specifications</p> */}

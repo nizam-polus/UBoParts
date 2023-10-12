@@ -10,7 +10,7 @@ const getToken = () => {
     }
 }
 
-const token = '925e88460339fd6cc775aa8f823fcc53e4e8bc4b64a40a4697ccefd8cfea7e8592090979dbd98c2398cf9f3ef42aca0b9386d0fb044d6d5735a12196fa4ca5cbded0e585a65c18410d343e0c751129de9b7370a73a92f0c1e4eebeda1ff3382e50a9567f06308cf6adb26fb8f8b65e0a5cd2e132cd637f85076169e18ba62abf';
+const token = '16a1c655799a2c5d2dc3a390d2ee7b0cc86d38c8f3facdb8a42e76332906d3f52fd2288f9675f996b17efbb264e72e4479237f7e34abb6221017c5acfa53569cb6e24bcdb0b434d27a2383625734321b2e58ba29e75ba437b97430c7af9fcb70962ce73eef1b4a31add2910407a4c9b80df6dc741c2e2be049c3628dbeba1f92';
 
 const headers = {
     Authorization: `Bearer ${token}`,
@@ -34,13 +34,15 @@ const APIs = {
 
     getCarMake: () => axios.get(BACKEND_URL + 'cardetail-make', {headers}),
 
-    getCarModel: (make: {}) => axios.post(BACKEND_URL + 'cardetailmodel', make, {headers}),
+    getCarModel: (makeId: number) => axios.post(BACKEND_URL + 'cardetailmodel', {param_make: makeId}, {headers}),
 
-    getCarYear: (make_model: {}) => axios.post(BACKEND_URL + 'cardetailyear', make_model, {headers}),
+    getCarYear: (modelId: number) => axios.post(BACKEND_URL + 'cardetailyear', {param_model: modelId}, {headers}),
 
-    searchProducts: (make: string, model: string, year: string, category: string) => {
+    getSale: () => axios.get(BACKEND_URL + 'sales?sort[0]=createdAt:asc'),
+
+    searchProducts: (make: string, model: string, year: string, category: string, filter: any) => {
         return axios.get(
-            BACKEND_URL + `products?populate=*&filters[$and][][cardetail][make][$eq]=${make}&filters[$and][][cardetail][model][$eq]=${model}${year && 
+            BACKEND_URL + `products?populate=*` + `${filter.sort}&pagination[page]=${filter.page}&pagination[pageSize]=18` + `&filters[$and][][cardetail][make][$eq]=${make}&filters[$and][][cardetail][model][$eq]=${model}${year && 
                 '&filters[$and][][cardetail][year][$eq]='+year}${category && `&filters[$and][][category][category_name][$eq]=${category}`}`, {headers}
         )
     },
@@ -105,7 +107,7 @@ const APIs = {
 
     getAllSellerProducts: (username: any, page="1") => {
         return axios.get(BACKEND_URL + `products?populate=*&filters[$and][][seller][$eq]=${username}` + 
-                    `&sort[0]=createdAt:desc&pagination[page]=${page}&pagination[pageSize]=10&populate=*`, {headers})
+                    `&sort[0]=createdAt:desc&pagination[page]=${page}&pagination[pageSize]=10`, {headers})
     },
     
     getProduct: (id: any) => axios.get(BACKEND_URL + 'products/' + id + '?populate=*', {headers}),
@@ -113,7 +115,6 @@ const APIs = {
     getCountries: () => axios.get(BACKEND_URL + 'countries/', {headers}),
 
     getMakes: () => axios.get(BACKEND_URL + 'makes?populate=*&sort[0]=id:asc'),
-
 
     paymentUpdate: () => axios.post(BACKEND_URL + 'payment-status-update', {headers}),
 

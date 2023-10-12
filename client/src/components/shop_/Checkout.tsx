@@ -9,6 +9,7 @@ function Checkout() {
     const [checkoutProducts, setCheckoutProducts]: any = useState([]);
     const [total, setTotal]: any = useState(0);
     const [shippingCost, setShippingCost] = useState<number>(0);
+    const [countries, setCountries] = useState([])
     const [formData, setFormData] = useState({
         first_name: '',
         last_name: '',
@@ -34,6 +35,16 @@ function Checkout() {
     });
     const [incomplete, setIncomplete] = useState<any>(false);
     const [shippingIncomplete, setShippingIncomplete] = useState(false);
+
+    useEffect(() => {
+        APIs.getCountries()
+          .then(response => {
+            setCountries(response.data.data);
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+          });
+      }, []); 
 
     useEffect(() => {
         setFormData((prevFormData) => ({...prevFormData, 
@@ -103,7 +114,7 @@ function Checkout() {
         setFormData((prevFormData => ({...prevFormData, [name]: value})));
     }
 
-    const handleShippingAddChange = (event: any) => {
+    const   handleShippingAddChange = (event: any) => {
         const { name, value } = event.target;
         setShippingData((prevData) => ({...prevData, [name]: value}));
     }
@@ -203,11 +214,14 @@ function Checkout() {
                                                 <tr className="single">
                                                     <td colSpan={2}>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Country</label>
-                                                        <input type="text" value={formData.country}
-                                                            className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.country ? 'required-field' : 'border-0' }`} 
-                                                            name="country" placeholder="Select Country..."
+                                                        <select className={`form-control input-bg-color-2 body-sub-titles  ${incomplete && !formData.country ? 'required-field' : 'border-0' }`}
+                                                            style={{ height: '3.5rem' }} name="country" value={formData.country}
                                                             onChange={(e) => handleFormChange(e)}
-                                                        />
+                                                        >
+                                                            <option className="mini-text-2" value="" disabled>Select Country</option>
+                                                            {countries.map((country: any) => (
+                                                                <option key={country.id} value={country.attributes.country}>{country.attributes.country}</option>))}
+                                                        </select>
                                                     </td>
                                                 </tr>
                                                 <tr className="single">
@@ -303,11 +317,14 @@ function Checkout() {
                                                     <tr className="single">
                                                         <td colSpan={2}>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Country</label>
-                                                            <input type="text" value={shippingData.shippingaddress_country}
-                                                                className={`check-form form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_country ? 'required-field' : 'border-0' }`} 
-                                                                name="shippingaddress_country" placeholder="Select Country..."
+                                                            <select className={`form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_country ? 'required-field' : 'border-0' }`}
+                                                                style={{ height: '3.5rem' }} name="shippingaddress_country" value={shippingData.shippingaddress_country}
                                                                 onChange={(e) => handleShippingAddChange(e)}
-                                                            />
+                                                            >
+                                                                <option className="mini-text-2" value="" disabled>Select Country</option>
+                                                                {countries.map((country: any) => (
+                                                                    <option key={country.id} value={country.attributes.country}>{country.attributes.country}</option>))}
+                                                            </select>
                                                         </td>
                                                     </tr>
                                                     <tr className="single">
