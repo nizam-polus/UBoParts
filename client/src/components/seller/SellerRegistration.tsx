@@ -63,7 +63,6 @@ function SellerRegistration() {
         APIs.getCountries()
           .then(response => {
             setCountries(response.data.data);
-            console.log(response.data.data)
           })
           .catch(error => {
             console.error('Error fetching data:', error);
@@ -116,7 +115,7 @@ function SellerRegistration() {
             postcode: formData.postcode,
             company_name: formData.company_name,
             Account_type: formData.Account_type,
-            account_title: formData.Account_title,
+            Account_title: formData.Account_title,
             bank_name: formData.Bank_name,
             iban_number: formData.iban_number,
             user_type: "seller",
@@ -246,10 +245,18 @@ function SellerRegistration() {
                                                     <tr className="single">
                                                         <td colSpan={2}>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Phone Number</label>
-                                                            <input type="text" value={formData.phone_number} disabled={user.phone_number}
-                                                                className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.phone_number ? 'required-field' : 'border-0'}`}
-                                                                name="phone_number" placeholder="(XXX) XXX-XXXX" 
-                                                                onChange={(e) => handleFormChange(e)}
+                                                            <input
+                                                                type="tel" 
+                                                                value={formData.phone_number}
+                                                                disabled={user.phone_number}
+                                                                className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.phone_number ? 'required-field' : 'border-0'
+                                                                    }`}
+                                                                name="phone_number"
+                                                                placeholder="(XXX) XXX-XXXX"
+                                                                onChange={(e) => {
+                                                                    const numericValue = e.target.value.replace(/\D/g, '');
+                                                                    handleFormChange({ target: { name: 'phone_number', value: numericValue } });
+                                                                }}
                                                             />
                                                         </td>
                                                     </tr>
@@ -271,7 +278,7 @@ function SellerRegistration() {
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Account Title</label>
                                                             <input type="text" value={formData.Account_title}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.Account_title ? 'required-field' : 'border-0'}`}
-                                                                name="company_name" placeholder="Aw parts corp." 
+                                                                name="Account_title" placeholder="Account Title." 
                                                                 onChange={(e) => handleFormChange(e)}
                                                             />
                                                         </td>
@@ -281,7 +288,7 @@ function SellerRegistration() {
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Bank Name</label>
                                                             <input type="text" value={formData.Bank_name}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.Bank_name ? 'required-field' : 'border-0'}`}
-                                                                name="company_name" placeholder="Aw parts corp." 
+                                                                name="bank_name" placeholder="bank Name." 
                                                                 onChange={(e) => handleFormChange(e)}
                                                             />
                                                         </td>
@@ -289,10 +296,18 @@ function SellerRegistration() {
                                                     <tr className="single">
                                                         <td colSpan={2}>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Iban Number</label>
-                                                            <input type="text" value={formData.iban_number}
-                                                                className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.iban_number ? 'required-field' : 'border-0'}`}
-                                                                name="company_name" placeholder="Aw parts corp." 
-                                                                onChange={(e) => handleFormChange(e)}
+                                                            <input
+                                                                type="text"
+                                                                value={formData.iban_number}
+                                                                className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.iban_number ? 'required-field' : 'border-0'
+                                                                    }`}
+                                                                name="iban_number"
+                                                                placeholder="Iban Number."
+                                                                onChange={(e) => {
+                                                                    // Use a regular expression to allow only numeric characters
+                                                                    const numericValue = e.target.value.replace(/\D/g, '');
+                                                                    handleFormChange({ target: { name: 'iban_number', value: numericValue } });
+                                                                }}
                                                             />
                                                         </td>
                                                     </tr>
@@ -301,7 +316,7 @@ function SellerRegistration() {
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Company or Shop name</label>
                                                             <input type="text" value={formData.company_name}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.company_name ? 'required-field' : 'border-0'}`}
-                                                                name="company_name" placeholder="Aw parts corp." 
+                                                                name="company_name" placeholder="shop Name." 
                                                                 onChange={(e) => handleFormChange(e)}
                                                             />
                                                         </td>

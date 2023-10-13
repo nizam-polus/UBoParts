@@ -45,8 +45,9 @@ function Shop() {
     const [sortState, setSortState] = useState("sort[0]=createdAt:desc")
     
     const router = useRouter();
-    const { HomeMake } : any = router.query;
-
+    const { HomeMakeId } : any = router.query;
+    console.log("Mke", HomeMakeId)
+    
     const categoriesArray = (resData: any) => {
         return [...new Set(resData.map((item: any) => ({
                 id: item.id,
@@ -70,6 +71,10 @@ function Shop() {
             makeId && getModel(makeId);
             makeId && modelId && getYear(modelId);
             setSelectedMake(makeId);
+            if(HomeMakeId){
+                setSelectedMake(HomeMakeId)
+                getModel(HomeMakeId)
+            }
             setSelectedModel(modelId);
             setSelectedYear(yearId);
             setSelectedCategory(category);

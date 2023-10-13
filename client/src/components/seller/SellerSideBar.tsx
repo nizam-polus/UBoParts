@@ -58,7 +58,7 @@ function SellerSideBar() {
                             </tr>
                             <tr>
                                 <td className={"pointer " + (router.pathname.includes('/edit_shop') ? "active p-1 pl-2" : "")}>
-                                    <a  className="custom-color-2 regularfont products-name">Edit shop</a>
+                                    <a onClick={() => router.push('/seller/edit_shop')} className="custom-color-2 regularfont products-name">Edit shop</a>
                                     {router.pathname.includes('/edit_shop') && <span className="arrow-right"></span>}
                                 </td>
                             </tr>
