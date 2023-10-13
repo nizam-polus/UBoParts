@@ -53,6 +53,7 @@ function Create_new_listing() {
     const router = useRouter()
     const inputRef: any = useRef()
     const galleryRef: any = useRef()
+    const upperCaseListName = listName.toUpperCase();
 
     useEffect(() => {
         let userDetails: any = localStorage.getItem("userdetails")
@@ -430,36 +431,50 @@ function Create_new_listing() {
             if(saleOffer){
                 requestData.data.sale = saleOffer
             }
-            APIs.createNewList(requestData).then((response: any) => {
-                const resId = response.data.data.id;
-                if (productImage && productImage instanceof File) {
-                    // Make the API call to upload the featured image
-                    APIs.uploadImage({
-                        ref: "api::product.product",
-                        refId: resId,
-                        field: "product_image",
-                        files: productImage,
-                    })
-                    for (let i = 0; i < productGalleryImages.length; i++) {
-                        const galleryImage = productGalleryImages[i];
-                        // Use a closure to capture the current value of 'i'
-                        (function (index) {
+            APIs.createNewList(requestData)
+                .then((response: any) => {
+                    const resId = response.data.data.id;
+                    const uploadPromises = [];
+
+                    if (productImage && productImage instanceof File) {
+                        // Make the API call to upload the featured image
+                        uploadPromises.push(
                             APIs.uploadImage({
                                 ref: "api::product.product",
                                 refId: resId,
-                                field: "product_gallary_image",
-                                files: galleryImage,
-                            }).catch((galleryImageUploadError) => {
-                                console.error(`Gallery image ${index + 1} upload error:`, galleryImageUploadError);
-                            });
-                        })(i);
+                                field: "product_image",
+                                files: productImage,
+                            })
+                        );
+
+                        for (let i = 0; i < productGalleryImages.length; i++) {
+                            const galleryImage = productGalleryImages[i];
+                            // Use a closure to capture the current value of 'i'
+                            (function (index) {
+                                uploadPromises.push(
+                                    APIs.uploadImage({
+                                        ref: "api::product.product",
+                                        refId: resId,
+                                        field: "product_gallary_image",
+                                        files: galleryImage,
+                                    }).catch((galleryImageUploadError) => {
+                                        console.error(`Gallery image ${index + 1} upload error:`, galleryImageUploadError);
+                                    })
+                                );
+                            })(i);
+                        }
+                    } else {
+                        // Handle the case where productImage is not defined
+                        console.error("No product image selected.");
                     }
 
-                } else {
-                    // Handle the case where productImage is not defined
-                    console.error("No product image selected.");
-                }
-            }).then(() => router.push('/seller/listings'))
+                    // Wait for all image upload promises to complete
+                    return Promise.all(uploadPromises);
+                })
+                .then(() => {
+                    // All images have been uploaded, now you can navigate to the new page
+                    router.push('/seller/listings');
+                })
                 .catch((error) => {
                     console.log(error);
                     setError(error);
@@ -667,11 +682,16 @@ function Create_new_listing() {
                                                             <div className="details" style={{ width: "100%", fontWeight: "bold" }}>
                                                                 <div className='d-flex justify-content-between'>
                                                                     <div>UBOPARTS</div>
-                                                                    <div>{listName}</div>
+                                                                    <div>{upperCaseListName}</div>
                                                                 </div>
                                                                 <div className='d-flex justify-content-between'>
-                                                                    <div>REK NO: {listLocation}</div>
-                                                                    <div>{makeName} {modelName} {year}</div>
+                                                                    <div style={{minWidth: "120px"}}>
+                                                                        <div>REK NUMMER</div>
+                                                                        <div> {listLocation}</div>
+                                                                    </div>
+                                                                    <div className='text-right'>
+                                                                       {makeName} {modelName} {year}
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             {listBarcode && <Qrgenerator qrValue={listBarcode} />}

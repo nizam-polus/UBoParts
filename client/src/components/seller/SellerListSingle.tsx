@@ -151,24 +151,26 @@ const SellerListSingle = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="more-info p-3 rounded mt-3">
+                                <div className="more-info p-3 rounded mt-3" style={{background: "none"}}>
                                     <div className="row p-1" style={{ display: "grid", placeContent: "center" }}>
-                                        <div className="col-12 text-center">
+                                        <div className="col-12 text-center" style={{background: "#fff", padding: "20px", marginTop: "20px", borderRadius: "10px"}}>
                                             <div className="qr-image" ref={componentRef}>
-                                                {/* <Qrgenerator qrValue={productData?.attributes?.part_no_barcode_no}  ref={componentRef}  /> */}
-                                                <div style={{ padding: "20px", background: `#ffcf00`, width: "300px" }} 
+                                                <div style={{ padding: "5px", background: `#ffcf00`, width: "415.7480315px", height: "188.97637795px" }} 
                                                     className='d-flex align-items-center justify-content-center flex-column'>
-                                                    <div className="details" style={{ width: "100%", fontWeight: "bold" }}>
+                                                    <div className="details" style={{ width: "100%", fontWeight: "bolder", padding: "0px 10px 0 10px", fontSize: "14px" }}>
                                                         <div className='d-flex justify-content-between'>
                                                             <div>UBOPARTS</div>
-                                                            <div>{productData?.attributes?.title}</div>
+                                                            <div className='text-right'>{productData?.attributes?.title.toUpperCase()}</div>
                                                         </div>
                                                         <div className='d-flex justify-content-between'>
-                                                            <div>REK NO: {productData?.attributes?.product_location_warehouse}</div>
-                                                            <div>{productData?.attributes?.make?.data?.attributes?.make_name} {productData?.attributes?.model?.data?.attributes?.model_name} {productData?.attributes?.year?.data?.attributes?.year}</div>
+                                                            <div className='text-left' style={{minWidth: "110px"}}>
+                                                                <div>REK NUMMER</div>
+                                                                <div> {productData?.attributes?.product_location_warehouse}</div>
+                                                            </div>
+                                                            <div className='text-right'>{productData?.attributes?.make?.data?.attributes?.make_name} {productData?.attributes?.model?.data?.attributes?.model_name} {productData?.attributes?.year?.data?.attributes?.year}</div>
                                                         </div>
                                                     </div>
-                                                    <Qrgenerator qrValue={productData?.attributes?.part_no_barcode_no}  />
+                                                    <Qrgenerator qrValue={productData?.attributes?.part_no_barcode_no}/>
                                                 </div>
                                                 
                                                 
@@ -177,18 +179,38 @@ const SellerListSingle = () => {
                                     </div>
                                     <div style={{display: "grid", gridTemplateColumns: "1fr 1fr", placeContent: "center", width: "100%", gap: "20px"}}>
                                         <div>
-                                        <ReactToPrint 
-                                          trigger={() =><button type="button" 
-                                          className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2 p-2 my-2" style={{ width: "100%" }}
-                                        >Print</button>}
-                                          content={() => componentRef.current}
+                                        <ReactToPrint
+                                             pageStyle={`
+                                             @page {
+                                                 size: 11cm 5cm;
+                                                 margin: 0;
+                                             }
+                                             @media print {
+                                                 body {
+                                                     width: 11cm;
+                                                     height: 5cm;
+                                                 }
+                                             }
+                                         `}
+                                            trigger={() => (
+                                                <button
+                                                type="button"
+                                                className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2 p-2 my-2"
+                                                style={{ width: "100%" }}
+                                                >
+                                                Print
+                                                </button>
+                                            )}
+                                            content={() => componentRef.current}
                                         />
                                         </div>
-                                    <div>
-                                    <button type="button" 
-                                       onClick={handleDownload} 
-                                       className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2 my-2" style={{ width: "100%" }}
-                                    >Download</button>
+                                        <div>
+                                            <button type="button"
+                                                onClick={handleDownload}
+                                                className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2 my-2" style={{ width: "100%" }}
+                                            >
+                                                Download
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
