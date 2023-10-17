@@ -42,6 +42,18 @@ const SellerListSingle = () => {
         setProductImage(url);
     }
 
+    function discountedPrice(originalPrice: any, discountPercentage:any) {
+        const original = parseFloat(originalPrice);
+        const discount = parseFloat(discountPercentage);
+      
+        if (isNaN(discount)) {
+          return original; 
+        }
+        const discountAmount = (original * discount) / 100;
+        const discounted = original - discountAmount;
+        return +discounted.toFixed(2); 
+    }
+
     const handleDownload = () => {
         const qrCodeElement = componentRef.current;
     
@@ -95,7 +107,14 @@ const SellerListSingle = () => {
                                     </span>
                                     <span className="rating-count regularfont mini-text-1">675</span>
                                 </p> */}
-                                <p><span className="product-price custom-color-3 regularfont boldfontsize">€{productData?.attributes?.price}</span></p>
+                                <p>
+                                    {
+                                        productData.attributes?.sale?.data ?
+                                        <span className="product-price custom-color-3 regularfont boldfontsize"><s>€{productData?.attributes?.price} </s>  €{discountedPrice(productData.attributes.price, productData.attributes.sale.data.attributes.discount)}</span>
+                                        :
+                                        <span className="product-price custom-color-3 regularfont boldfontsize">€{productData?.attributes?.price} </span>
+                                    }
+                                </p>
                                 <hr />
                                 <p className="semifont placeholderfontsize custom-color-5 mb-1">Key Features:</p>
                                 <ul className="list-group custom-color-2 regularfont placeholderfontsize p-3 pt-0 pb-4">
@@ -109,7 +128,14 @@ const SellerListSingle = () => {
                             <div className="col-12 col-md-12 col-lg-3 mt-5 mt-lg-0">
                                 <div className="more-info p-3 rounded">
                                     <div className="row d-flex justify-content-between">
-                                        <div className="col-auto"><span className="product-price custom-color-3 regularfont">€{quantity * productData?.attributes?.price}</span></div>
+                                        <div className="col-auto">
+                                            {
+                                                productData.attributes?.sale?.data ?
+                                                <span className="product-price custom-color-3 regularfont"><s>€{productData?.attributes?.price} </s>  €{discountedPrice(productData.attributes.price, productData.attributes.sale.data.attributes.discount)}</span>
+                                                :
+                                                <span className="product-price custom-color-3 regularfont">€{quantity * productData?.attributes?.price}</span>
+                                            }
+                                        </div>
                                         <div className="col-auto"><span className="in-stock custom-color-6 rounded-pill px-3 pb-1 pt-1 d-flex mini-text-2 semifont">{productData?.attributes?.stock_count > 0 ? "In Stock" : "Out of Stock" }</span></div>
                                     </div>
                                     <div className="row mt-3">
@@ -157,20 +183,23 @@ const SellerListSingle = () => {
                                             <div className="qr-image" ref={componentRef}>
                                                 <div style={{ padding: "5px", background: `#ffcf00`, width: "415.7480315px", height: "188.97637795px" }} 
                                                     className='d-flex align-items-center justify-content-center flex-column'>
-                                                    <div className="details" style={{ width: "100%", fontWeight: "bolder", padding: "0px 10px 0 10px", fontSize: "14px" }}>
-                                                        <div className='d-flex justify-content-between'>
-                                                            <div>UBOPARTS</div>
-                                                            <div className='text-right'>{productData?.attributes?.title.toUpperCase()}</div>
+                                                    <div className="details d-flex" style={{ width: "100%", fontWeight: "bolder", padding: "0px 10px 0 10px", fontSize: "14px" }}>
+                                                        <div className='d-flex justify-content-between' style={{minWidth: "180px"}}>
+                                                            <Qrgenerator qrValue={productData?.attributes?.part_no_barcode_no}/>
                                                         </div>
-                                                        <div className='d-flex justify-content-between'>
-                                                            <div className='text-left' style={{minWidth: "110px"}}>
-                                                                <div>REK NUMMER</div>
-                                                                <div> {productData?.attributes?.product_location_warehouse}</div>
+                                                        <div className='d-flex flex-column'>
+                                                            <div>
+                                                                 <div className='text-right'>UBOPARTS</div>
+                                                                 <div className='text-right'>{productData?.attributes?.title.toUpperCase()}</div>
                                                             </div>
+                                                            <div className='text-right' style={{minWidth: "110px"}}>
+                                                                <div>REK NUMMER : {productData?.attributes?.product_location_warehouse}</div>
+                                                                {/* <div> {productData?.attributes?.product_location_warehouse}</div> */}
+                                                            </div>
+                                                            <div className='text-right'>Article No {productData?.attributes?.article_number}</div>
                                                             <div className='text-right'>{productData?.attributes?.make?.data?.attributes?.make_name} {productData?.attributes?.model?.data?.attributes?.model_name} {productData?.attributes?.year?.data?.attributes?.year}</div>
                                                         </div>
                                                     </div>
-                                                    <Qrgenerator qrValue={productData?.attributes?.part_no_barcode_no}/>
                                                 </div>
                                                 
                                                 

@@ -160,6 +160,7 @@ const APIs = {
 
     setParts: (data: any) => ds.post(BACKEND_URL + 'parts',  {...data}),
 
+    getShippingCost: (data: any) => ds.post(BACKEND_URL + 'shipping-cost', data),
 
 }
 

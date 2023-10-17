@@ -132,34 +132,45 @@ function Productsingle() {
        }, [])
 
        
-       useEffect(() => {
+    useEffect(() => {
            // Function to filter and get the latest 4 items based on category
-           const getLatestItemsByCategory = (categoryName: any) => {
-               
-               if (!products || products.length === 0) {
-                 return []; // Handle the case when products array is empty
-               }
-               if (categoryName === 'All') {
-                   return products.slice(0, 4);
-               } else {
+        const getLatestItemsByCategory = (categoryName: any) => {
+           
+        if (!products || products.length === 0) {
+             return []; // Handle the case when products array is empty
+        }
+        if (categoryName === 'All') {
+            return products.slice(0, 4);
+        } else {
                    // Check if the category exists in the data before filtering
-                   const filteredProducts = products.filter(
-                     (product: any) => (
-                       product.attributes.category.data.attributes.category_name === categoryName
-                     )
-                   );
-                   return  filteredProducts.slice(0, 4);
-               }
-           };
+                const filteredProducts = products.filter(
+                (product: any) => (
+                product.attributes.category.data.attributes.category_name === categoryName
+                )
+            );
+            return  filteredProducts.slice(0, 4);
+        }
+    };
        
            // Call the function and set the latest items whenever products or selectedCategory changes
-           setLatestItems(getLatestItemsByCategory(productCategory));
-         }, [products, productCategory]);
+        setLatestItems(getLatestItemsByCategory(productCategory));
+    }, [products, productCategory]);
    
-         const handleProductClick = (product: any) => {
+    const handleProductClick = (product: any) => {
             const newUrl = `/products_/${product.id}`;
             window.location.href = newUrl;
-        }
+    }
+    
+    function discountedPrice(originalPrice: any, discountPercentage:any) {
+            const original = parseFloat(originalPrice);
+            const discount = parseFloat(discountPercentage);
+            if (isNaN(discount)) {
+              return original; 
+            }
+            const discountAmount = (original * discount) / 100;
+            const discounted = original - discountAmount;
+            return +discounted.toFixed(2); 
+    }
 
     return (
         <>
@@ -201,7 +212,14 @@ function Productsingle() {
                                     </span>
                                     <span className="rating-count regularfont mini-text-1">675</span>
                                 </p> */}
-                                <p><span className="product-price custom-color-3 regularfont boldfontsize">€{productData?.attributes?.price}</span></p>
+                                <p>
+                                    {
+                                        productData?.attributes?.sale?.data ?
+                                        <span className="product-price custom-color-3 regularfont boldfontsize"><s>€{productData?.attributes?.price}</s> €{discountedPrice(productData.attributes.price, productData.attributes.sale.data.attributes.discount)}</span>
+                                        :
+                                        <span className="product-price custom-color-3 regularfont boldfontsize">€{productData?.attributes?.price}</span>
+                                    }
+                                </p>
                                 <hr/>
                                 <p className="semifont placeholderfontsize custom-color-5 mb-1">Key Features:</p>
                                 <ul className="list-group custom-color-2 regularfont placeholderfontsize p-3 pt-0 pb-4">
@@ -215,7 +233,15 @@ function Productsingle() {
                             <div className="col-12 col-md-12 col-lg-3 mt-5 mt-lg-0">
                                 <div className="more-info p-3 rounded">
                                     <div className="row d-flex justify-content-between">
-                                        <div className="col-auto"><span className="product-price custom-color-3 regularfont">€{quantity * productData?.attributes?.price}</span></div>
+                                        <div className="col-auto">
+                                            {
+                                                productData?.attributes?.sale?.data ?
+                                                    <span className="product-price"><s>€{quantity * productData?.attributes?.price}</s> €{discountedPrice(quantity *productData.attributes.price, productData.attributes.sale.data.attributes.discount)}</span>
+                                                    :
+                                                    <span className="product-price custom-color-3 regularfont">€{quantity * productData?.attributes?.price}</span>
+                                            }
+                                            
+                                        </div>
                                         {stockCount > 0 ? 
                                          <div className="col-auto"><span className="in-stock custom-color-6 rounded-pill px-3 pb-1 pt-1 d-flex mini-text-2 semifont">In Stock</span></div>
                                         :

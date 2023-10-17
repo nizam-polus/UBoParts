@@ -52,6 +52,17 @@ function SellerListings() {
         return range;
     }
 
+    function discountedPrice(originalPrice: any, discountPercentage:any) {
+        const original = parseFloat(originalPrice);
+        const discount = parseFloat(discountPercentage); 
+        if (isNaN(discount)) {
+          return original; 
+        }
+        const discountAmount = (original * discount) / 100;
+        const discounted = original - discountAmount;
+        return +discounted.toFixed(2); 
+    }
+
     useEffect(() => {
         (async () => {
             try {
@@ -112,6 +123,9 @@ function SellerListings() {
                                         {sellerList && sellerList.map((item: any, index: any) => {
                                             return <div className="col-12 col-sm-6 col-lg-4">
                                                 <div className="latest-prods mb-5 card card-shadows seller-listing-products">
+                                                    {item.attributes.sale.data && (
+                                                        <span  className="sale-tag position-absolute">{item.attributes.sale.data.attributes.discount} Offer</span>
+                                                    )}
                                                     <div className="position-relative">
                                                         <AppImage
                                                             src={BASE_URL + item?.attributes?.product_image?.data?.attributes?.url}
@@ -119,7 +133,19 @@ function SellerListings() {
                                                             style={{ height: '20rem', objectFit: 'contain' }}
                                                             onClick={() => handleProductClick(item)}
                                                         />
-                                                        <span className="product-price button-bg-color-1 text-white regularfont boldfontsize">€ {item.attributes.price}</span>
+                                                        {
+                                                            item.attributes.sale.data != null ? 
+                                                                <div className=' button-bg-color-1 product-price d-flex' >
+                                                                    <div >
+                                                                        <span className=" text-white regularfont boldfontsize"> <s>€{item.attributes.price} </s> </span>
+                                                                    </div>
+                                                                    <div>
+                                                                        <span className=" text-white regularfont boldfontsize"> €{discountedPrice(item.attributes.price, item.attributes.sale.data.attributes.discount)}</span>
+                                                                    </div>
+                                                                </div>
+                                                            :
+                                                            <span className="product-price button-bg-color-1 text-white regularfont boldfontsize">€ {item.attributes.price}</span>
+                                                        }
                                                     </div>
                                                     <div className="card-body p-4">
                                                         <div className="row g-2">
