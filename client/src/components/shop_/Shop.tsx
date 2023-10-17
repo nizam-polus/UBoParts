@@ -265,8 +265,8 @@ function Shop() {
                 productid: productData?.id,
                 quantity: '1',
                 productprice: productData?.attributes?.price,
-                "productWeight":"2",
-                "discountPrice": "20",
+                "productWeight": productData?.attributes?.product_weight,
+                "discountPrice": discountAmount(productData?.attributes?.price, productData?.attributes?.sale?.data?.attributes?.discount),
             }
             APIs.getCartData({ customerid: user.id }).then(response => {
                 let productCartItems = response.data.rows;
@@ -375,6 +375,17 @@ function Shop() {
         const discounted = original - discountAmount;
         return +discounted.toFixed(2); 
     }
+
+    function discountAmount(originalPrice: any, discountPercentage: any) {
+        const original = parseFloat(originalPrice);
+        const discount = parseFloat(discountPercentage);
+        if (isNaN(discount)) {
+            return 0; 
+        }
+        const discountAmount = (original * discount) / 100;
+        return +discountAmount.toFixed(2); 
+    }
+
 
     const loginModalClose = () => {
         setOpenLogin(false);
