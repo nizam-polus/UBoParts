@@ -14,8 +14,10 @@ function SellerOrderDetails() {
     const orderId: any = router.query.orderId;
     const pdfRef = useRef(null);
     const { user } = UserContext();
-
+    
+    const [invoiceId, setInvoiceId] = useState(0)
     const [orderDetails, setOrderDetails] = useState<any>([]);
+    const [totalDiscount, setTotalDiscount] = useState<any>(0)
     const [total, setTotal] = useState<number>(0);
     const [customer, setCustomer] = useState<any>();
     const [hide, setHide] = useState(true)
@@ -25,16 +27,21 @@ function SellerOrderDetails() {
             let orders = response.data.data;
             setOrderDetails(orders);
             let customerId = orders[0]?.attributes?.customer_id;
+            let invoiceID = orders[0]?.attributes?.invoice_id
+            setInvoiceId(invoiceID)
             APIs.getSpecificUser(customerId).then(response => {
                 setCustomer(response.data);
                 console.log(response.data)
             })
             if (orders.length) {
                 let total = 0;
+                let totalDiscount = 0
                 for (const obj of orders) {
                     total += obj?.attributes?.total_price;
+                    totalDiscount += obj?.attributes?.discount_price
                 }
                 setTotal(total);
+                setTotalDiscount(totalDiscount)
             }
         }).catch(err => console.log(err))
     },[])
@@ -113,6 +120,9 @@ function SellerOrderDetails() {
                                                                     <tr>
                                                                         <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Order No</th>
                                                                     </tr>
+                                                                    {/* <tr>
+                                                                        <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">discount</th>
+                                                                    </tr> */}
                                                                     <tr>
                                                                         <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Order Total</th>
                                                                     </tr>
@@ -135,14 +145,21 @@ function SellerOrderDetails() {
                                                                             {orderId}
                                                                         </td>
                                                                     </tr>
-                                                                    <tr>
+                                                                    {/* <tr>
                                                                         <td className="custom-color-2 regularfont body-sub-titles-2 my-0">
-                                                                            €{total}
+                                                                            {totalDiscount}
                                                                         </td>
-                                                                    </tr>
+                                                                    </tr> */}
+                                                                    <tr>
+                                                                    
+                                                                        <td className="custom-color-2 regularfont body-sub-titles-2 my-0">
+
+                                                                             {total - totalDiscount}
+                                                                        </td>
+                                                                     </tr>
                                                                     <tr>
                                                                         <td className="custom-color-2 regularfont body-sub-titles-2 my-0">
-                                                                            {orderId}
+                                                                            {invoiceId}
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
@@ -173,7 +190,7 @@ function SellerOrderDetails() {
                                                                                 </div>
                                                                             </td>
                                                                             <td className="custom-color-2 regularfont body-sub-titles-2 py-3 border-bottom text-center">{order?.attributes?.quantity}</td>
-                                                                            <td className="custom-color-2 regularfont body-sub-titles-2 py-3 border-bottom text-center">{order?.attributes?.product_price}</td>
+                                                                           <td className="custom-color-2 regularfont body-sub-titles-2 py-3 border-bottom text-center"> {order?.attributes?.product_price - order?.attributes?.discount_price}</td>
                                                                             <td className="custom-color-2 regularfont body-sub-titles-2 py-3 border-bottom text-center">{order?.attributes?.total_price}</td>
                                                                         </tr>
                                                                     </>
@@ -227,11 +244,19 @@ function SellerOrderDetails() {
                                             </div>
                                         </div>    
                                     </div>
-                                    <footer id="footer1" className="footer-download custom-border-2 rounded " style={{visibility: "hidden"}}  >
-                                        <div style={{textAlign: "center" }}>
-                                            <img src="/images/svg/LOGO.svg" alt="" width="150px"/>
+                                    <footer id="footer1" className="footer-download custom-border-2 rounded " style={{visibility: "hidden"}} >
+                                        <div className="d-flex" style={{gap: "20px"}}>
+                                            <div style={{width: "400px"}}>
+                                                <div>
+                                                    <img src="/images/svg/LOGO.svg" alt="" width="150px" />
+                                                </div>
+                                                <div>info@uboparts.com</div>
+                                                <div>UboParts, Zomerdijk 11, 1505HW Zaandam, The Netherlands</div>
+                                            </div>
+                                            <div className="align-items-start">
+                                                <h6>This invoice is generated at  {new Date(orderDetails[0]?.attributes?.publishedAt).toDateString()}</h6>
+                                            </div>
                                         </div>
-                                        <div style={{textAlign: "center"}}>info@uboparts.com</div>
                                     </footer>
                                 </div>
                             </div>

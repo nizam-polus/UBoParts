@@ -12,6 +12,7 @@ function Cart() {
     const { user, saveUser, setCartCount } = UserContext();
     const [cartProducts, setCartProducts] = useState<any>([]);
     const [totalCartPrice, setTotal] = useState(0);
+    const [totalDiscount, setTotalDiscount] = useState(0)
     const [isError, setIsError] = useState<{ [key: string]: string | null }>({});
     const [inputValue, setInputValue] = useState("");
     const [debouncedInputValue, setDebouncedInputValue] = useState("");
@@ -32,10 +33,13 @@ function Cart() {
             setCartProducts(response.data.rows);
             if (response.data.rows.length) {
                 let total = 0;
+                let totalDiscount = 0
                 for (const obj of response.data.rows) {
                     total += obj.total_price;
+                    totalDiscount += obj.discount_price
                 }
                 setTotal(total);
+                setTotalDiscount(totalDiscount)
             }
         })
             .catch((error) => {
@@ -49,12 +53,15 @@ function Cart() {
                 setCartProducts(response.data.rows);
                 setCartCount(response.data.rows.length);
                 let total = 0;
+                let totalDiscount = 0;
                 if (response.data.rows.length) {
                     for (const obj of response.data.rows) {
                         total += obj.total_price;
+                        totalDiscount += obj.discount_price
                     }
                 }
                 setTotal(total);
+                setTotalDiscount(totalDiscount)
             })
                 .catch((error) => {
                     // setError(error);
@@ -62,6 +69,16 @@ function Cart() {
         }).catch(err => {
             console.log(err);
         })
+    }
+
+    function discountAmount(originalPrice: any, discountPercentage: any) {
+        const original = parseFloat(originalPrice);
+        const discount = parseFloat(discountPercentage);
+        if (isNaN(discount)) {
+            return 0; 
+        }
+        const discountAmount = (original * discount) / 100;
+        return +discountAmount.toFixed(2); 
     }
    
     const handleQuantityChange = (product: any, valueChange: string, index: number) => {
@@ -83,7 +100,9 @@ function Cart() {
             customerid: user.id,
             id: product.id,
             quantity: newQuantity,
-            productprice: product.price
+            productprice: product.price,
+            "productWeight": product?.product_weight,
+            "discountPrice": discountAmount(product.price,product.discount),
         }).then(response => {
             if (response.data.error) {
                 // Set the error state using the error's id as the key
@@ -112,10 +131,13 @@ function Cart() {
                 setCartProducts(response.data.rows);
                 if (response.data.rows.length) {
                     let total = 0;
+                    let totalDiscount =0;
                     for (const obj of response.data.rows) {
                         total += obj.total_price;
+                        totalDiscount += obj.discount_price
                     }
                     setTotal(total);
+                    setTotalDiscount(totalDiscount)
                 }
             }).catch((error) => {
                 console.error(error);
@@ -138,7 +160,9 @@ function Cart() {
             customerid: user.id,
             id: product.id,
             quantity: newQuantity,
-            productprice: product.price
+            productprice: product.price,
+            "productWeight": product?.product_weight,
+            "discountPrice": discountAmount(product.price,product.discount),
         }).then(response => {
             if (response.data.error) {
                 // Set the error state using the error id as the key
@@ -166,10 +190,13 @@ function Cart() {
                     setCartProducts(response.data.rows);
                     if (response.data.rows.length) {
                         let total = 0;
+                        let totalDiscount = 0;
                         for (const obj of response.data.rows) {
                             total += obj.total_price;
+                            totalDiscount += obj.discount_price
                         }
                         setTotal(total);
+                        setTotalDiscount(totalDiscount)
                     }
                 }).catch((error) => {
                     // Handle any errors that occur during fetching
@@ -228,7 +255,14 @@ function Cart() {
                                                             <span>Kila International</span>
                                                             <span className="in-stock custom-color-6 rounded-pill d-flex mini-text-4">Seller</span></div> */}
                                                     </td>
-                                                    <td className="p-3 custom-color-3 semifont mini-text-3 text-center ">€{product.price}</td>
+                                                    {
+                                                    product.discount_price == 0
+                                                        ?
+                                                        <td className="p-3 custom-color-3 semifont mini-text-3 text-center ">€{product.price}</td>
+                                                        :
+                                                        <td className="p-3 custom-color-3 semifont mini-text-3 text-center "><s style={{color: "grey"}}>€{product.price}</s> €{(product.price - product.discount_price / product.quantity).toFixed(2)}</td>
+                                                    }
+                                                    
                                                     <td className="p-3 custom-color-3 regularfont">
                                                         <div className="input-group quanitity-box quanitity-incrementor">
                                                             <span className="input-group-btn plus-icon regularfont pointer" onClick={() => handleQuantityChange(product, 'dec', index)}>
@@ -263,7 +297,7 @@ function Cart() {
                                                             </span>
                                                         </div>
                                                     </td>
-                                                    <td className="p-3 custom-color-3 semifont mini-text-3 text-center">€{product.total_price}</td>
+                                                    <td className="p-3 custom-color-3 semifont mini-text-3 text-center">€{product.total_price - product.discount_price}</td>
                                                     <td className='pl-3'><i className='fa fa-trash pointer' onClick={() => handleCartItemDelete(product)}></i></td>
                                                 </tr>)
                                             })}
@@ -287,18 +321,28 @@ function Cart() {
                                             <tr>
                                                 <th className="p-3 custom-color-3 boldfont subtitles-1 border-top-0">Cart Total</th>
                                             </tr>
-
-                                            <tr className="border-top">
-                                                <td className="pb-1 pt-4 pl-3 regularfont placeholderfontsize border-top-0">Subtotal</td>
-                                                <td className="pb-1 pt-4 semifont border-top-0 menu_font_size custom-color-3">€{totalCartPrice}</td>
-                                            </tr>
+                                            {totalDiscount != 0 
+                                            ?
+                                                <>
+                                                    <tr className="border-top">
+                                                        <td className="pb-1 pt-4 pl-3 regularfont placeholderfontsize border-top-0">Total</td>
+                                                        <td className="pb-1 pt-4 semifont border-top-0 menu_font_size custom-color-3">€{totalCartPrice}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className="pb-1 pt-4 pl-3 regularfont placeholderfontsize border-top-0">Discount</td>
+                                                        <td className="pb-1 pt-4 semifont border-top-0 menu_font_size custom-color-3">- €{totalDiscount}</td>
+                                                    </tr>
+                                                </>
+                                            :
+                                                ""
+                                            }
                                             <tr>
                                                 <td className="pb-0 pt-0 pr-0 pl-3 semifont boldfontsize border-top-0"> <hr className="p-0 m-0 " /></td>
                                                 <td className="pb-0 pt-0 pl-0 pr-4 regularfont boldfontsize border-top-0"> <hr className="p-0 m-0" /></td>
                                             </tr>
                                             <tr>
-                                                <td className="pb-2 pt-1 pr-0 pl-3 semifont boldfontsize border-top-0"> Total</td>
-                                                <td className="pb-2 pt-1 pl-0 semifont boldfontsize border-top-0 custom-color-3">€{totalCartPrice}</td>
+                                                <td className="pb-2 pt-1 pr-0 pl-3 semifont boldfontsize border-top-0"> SubTotal</td>
+                                                <td className="pb-2 pt-1 pl-0 semifont boldfontsize border-top-0 custom-color-3">€{totalCartPrice - totalDiscount}</td>
                                             </tr>
                                             <tr><td colSpan={2} className="px-3 pt-3 pb-2 w-100">
                                                 <button type="button" className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1">

@@ -13,7 +13,7 @@ function OrderHistory() {
     const [emptyText, setEmptyText] = useState<string>('');
     const [rowCount, setRowCount] = useState<any>() 
     const [currentPage, setCurrentPage] = useState(1); // Current page number
-    const itemsPerPage = 2; 
+    const itemsPerPage = 5; 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const displayedOrders = orderDetails?.slice(indexOfFirstItem, indexOfLastItem);
@@ -21,7 +21,12 @@ function OrderHistory() {
     useEffect(() => {
         setEmptyText('Loading...')
         APIs.getSellerOrder(user.username).then((response: any) => {
-            setOrderDetails(response.data.rows);
+            const sortedOrders = response.data.rows.sort((a : any, b : any) => {
+                const dateA : any = new Date(a.created_at);
+                const dateB : any = new Date(b.created_at);
+                return dateB - dateA;
+            });
+            setOrderDetails(sortedOrders);
             setRowCount(response.data.rowCount)
             !response.data.rows.length && setEmptyText('No Data');
         }).catch(err => console.log(err))
