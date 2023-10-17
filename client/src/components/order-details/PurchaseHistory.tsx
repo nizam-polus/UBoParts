@@ -20,7 +20,12 @@ function PurchaseHistory() {
     useEffect(() => {
         setEmptyText('Loading...')
         APIs.getCustomerOrder(user.username).then((response: any) => {
-            setOrderDetails(response.data.rows);
+            const sortedOrders = response.data.rows.sort((a : any, b : any) => {
+                const dateA : any = new Date(a.created_at);
+                const dateB : any = new Date(b.created_at);
+                return dateB - dateA;
+            });
+            setOrderDetails(sortedOrders);
             setRowCount(response.data.rowCount)
             console.log(response.data)
             !response.data.rows?.length && setEmptyText('No Data');

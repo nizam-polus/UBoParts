@@ -265,7 +265,7 @@ function Shop() {
                 productid: productData?.id,
                 quantity: '1',
                 productprice: productData?.attributes?.price,
-                "productWeight": productData?.attributes?.product_weight,
+                "productWeight": productData?.attributes?.product_weight || 0,
                 "discountPrice": discountAmount(productData?.attributes?.price, productData?.attributes?.sale?.data?.attributes?.discount),
             }
             APIs.getCartData({ customerid: user.id }).then(response => {
