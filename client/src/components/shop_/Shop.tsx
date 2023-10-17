@@ -247,7 +247,6 @@ function Shop() {
             setPageRange(pageRangeFinder(pagination.pageCount));
             setPagination(pagination);
             setSearchedProducts(response.data.data)
-            console.log(response.data.data)
             setPageCount(response.data.meta.pagination.pageCount)
         }).catch(err => console.log)
     }
@@ -265,7 +264,9 @@ function Shop() {
                 customerid: user.id,
                 productid: productData?.id,
                 quantity: '1',
-                productprice: productData?.attributes?.price
+                productprice: productData?.attributes?.price,
+                "productWeight":"2",
+                "discountPrice": "20",
             }
             APIs.getCartData({ customerid: user.id }).then(response => {
                 let productCartItems = response.data.rows;
@@ -334,7 +335,6 @@ function Shop() {
               setPageRange(pageRangeFinder(pagination.pageCount));
               setPagination(pagination);
               setSearchedProducts(response.data.data);
-              console.log(response.data.data);
               setPageCount(response.data.meta.pagination.pageCount);
             })
             .catch((err) => console.log(err));
@@ -364,6 +364,17 @@ function Shop() {
           
         }
       }, [sortState]);
+
+    function discountedPrice(originalPrice: any, discountPercentage: any) {
+        const original = parseFloat(originalPrice);
+        const discount = parseFloat(discountPercentage);
+        if (isNaN(discount)) {
+            return original; 
+        }
+        const discountAmount = (original * discount) / 100;
+        const discounted = original - discountAmount;
+        return +discounted.toFixed(2); 
+    }
 
     const loginModalClose = () => {
         setOpenLogin(false);
@@ -626,6 +637,9 @@ function Shop() {
                                             {searchedProducts.map((product: any, index: any) => {
                                                 return (
                                                     <div className="col-12 col-sm-6 col-lg-4  mb-4" key={index}>
+                                                    {product.attributes.sale.data && (
+                                                        <span  className="sale-tag position-absolute">{product.attributes.sale.data.attributes.discount} offer</span>
+                                                    )}
                                                         <div className="latest-prods card card-shadows" style={{height: "100%"}}>
                                                         <AppImage 
                                                                 src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
@@ -662,12 +676,17 @@ function Shop() {
                                                                     <span className="rating-count regularfont mini-text-1">675</span>
                                                                 </div> */}
                                                                     <div className="col-12 d-flex justify-content-between">
-                                                                        <span className="product-price">€{product?.attributes?.price}</span>
+                                                                        {
+                                                                            product.attributes.sale.data ?
+                                                                                <span className="product-price"><s>€{product?.attributes?.price}</s> €{discountedPrice(product.attributes.price, product.attributes.sale.data.attributes.discount)}</span>
+                                                                                :
+                                                                                <span className="product-price">€{product?.attributes?.price}</span>
+                                                                        }
                                                                         { product.attributes.stock_count === 0 ? (
                                                                           <AppImage
-                                                                          src="images/cart-svg.svg"
-                                                                          className="pointer add_to_cart"
-                                                                           style={{opacity: "0.5", cursor: "not-allowed"}}  
+                                                                            src="images/cart-svg.svg"
+                                                                            className="pointer add_to_cart"
+                                                                            style={{opacity: "0.5", cursor: "not-allowed"}}  
                                                                         />
                                                                         ) : addToCartCompleted ? (
                                                                           <AppImage

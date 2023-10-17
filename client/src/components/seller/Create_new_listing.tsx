@@ -21,6 +21,8 @@ function Create_new_listing() {
     const [listName, setListName] = useState('');
     const [listPrice, setListPrice] = useState('');
     const [listQuantity, setListQuantity] = useState('');
+    const [listWeight, setListWeight] = useState("")
+    const [listArticle, setListArticle] = useState("")
     const [listBarcode, setListBarcode] = useState("");
     const [listDescription, setListDescription] = useState('');
     const [listLocation, setListLocation] = useState('');
@@ -43,7 +45,7 @@ function Create_new_listing() {
     const [showInvaidLicense, setShowInvaidLicense] = useState(false);
     const [incomplete, setIncomplete] = useState<any>(false);
     const [randomNumber, setRandomNumber] = useState('');
-    const [locationNo, setLocationNo] = useState<any>('')
+    const [locationNo, setLocationNo] = useState<any>('A1')
     const [saleArray, setSaleArray] = useState([])
     const [saleOffer, setSaleOffer] = useState('')
     const [makeName, setMakeName] = useState('')
@@ -122,7 +124,6 @@ function Create_new_listing() {
                         let make = response.data.make.toUpperCase();
                         let model = response.data.model.toUpperCase();
                         let year = response.data.year;
-                        console.log(year)
                         for (let makeObj of makesArray) {
                             if (makeObj.make.toUpperCase() === make) {
                                 setSelectedMake(makeObj.id);
@@ -214,7 +215,6 @@ function Create_new_listing() {
 
     const setModelNameFn = (Id: any, modelArray: any) => {
         const selectedModelName = modelArray.find((model: any) => model.id == Id);
-        console.log(selectedModelName)
 
         if(selectedModelName){
             setModelName(selectedModelName.model)
@@ -327,11 +327,27 @@ function Create_new_listing() {
     };
 
     const handlePriceChange = (event: any) => {
-        setListPrice(event.target.value)
+        const newValue = event.target.value.replace(/[^0-9.]/g, ''); 
+        if (newValue !== event.target.value) {
+            event.target.value = newValue;
+        }
+        setListPrice(newValue)
     }
 
     const handleQuantityChange = (event: any) => {
-        setListQuantity(event.target.value)
+        const newValue = event.target.value.replace(/[^0-9.]/g, ''); 
+        if (newValue !== event.target.value) {
+            event.target.value = newValue;
+        }
+        setListQuantity(newValue)
+    }
+
+    const handleWeightChange = (event: any) =>{
+        const newValue = event.target.value.replace(/[^0-9.]/g, ''); 
+        if (newValue !== event.target.value) {
+            event.target.value = newValue;
+        }
+        setListWeight(newValue) 
     }
 
     const handleLocationNoChange = (event: any) => {
@@ -347,6 +363,10 @@ function Create_new_listing() {
 
     const handleSaleChange = (event : any) =>{
         setSaleOffer(event.target.value)
+    }
+
+    const handleArticleChange = (event: any) => {
+        setListArticle(event.target.value)
     }
 
     const handleDescriptionChange = (event: any) => {
@@ -393,7 +413,7 @@ function Create_new_listing() {
     };
 
     const createNewList = () => {
-        let incomplete = !(!!listName && !! productImage && !!selectedCategoryId  && !!selectedMake  && !!selectedModel  && !!selectedYear  && !!listPrice && !!listQuantity && !!listBarcode && !!listDescription && !!uname && !!uid)
+        let incomplete = !(!!listName && !! productImage && !!selectedCategoryId  && !!selectedMake  && !!selectedModel  && !!selectedYear  && !!listPrice && !!listQuantity && !!locationNo && !!listArticle && !!listBarcode && !!listDescription && !!uname && !!uid)
         setIncomplete(incomplete);
         if (!incomplete) {
             if (!parts.length) {
@@ -414,11 +434,12 @@ function Create_new_listing() {
                     "category": [selectedCategoryId],
                     "price": listPrice,
                     "stock_count": [listQuantity],
+                    "product_weight": listWeight,
                     "product_location_warehouse": listLocation,
-                    "article_number": listBarcode,
+                    "article_number": listArticle,
                     "part_no_barcode_no": listBarcode,
                     "description": listDescription,
-                    // "sale": saleOffer,
+                    "sale": saleOffer,
                     "product_status": "Active",
                     "seller": uname,
                     "seller_id": uid,
@@ -638,6 +659,22 @@ function Create_new_listing() {
                                                     </td>
                                                 </tr>
                                                 <tr className="double">
+                                                    <td className='px-5 pb-2 pt-4'>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Weight in KG <span className="required">*</span></label>
+                                                        <input type="text" onChange={handleWeightChange}
+                                                            className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listWeight ? 'required-field' : 'border-0'}`}
+                                                            placeholder="weight in KG"
+                                                        />
+                                                    </td>
+                                                    <td className='px-5 pb-2 pt-4'>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Article No <span className="required">*</span></label>
+                                                        <input type="text" onChange={handleArticleChange} 
+                                                            className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listArticle ? 'required-field' : 'border-0'}`}
+                                                            placeholder="Article No" 
+                                                        />
+                                                    </td>
+                                                </tr>
+                                                <tr className="double">
                                                     <td className='px-5 pb-2 border-0'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">On Sale</label><br />
                                                         <select className="form-select input-bg-color-2 border-0 products-name custom-color-2"
@@ -653,7 +690,6 @@ function Create_new_listing() {
                                                             <label className="custom-color-2 regularfont products-name pb-2">Location of Part No</label>
                                                             <select className="form-select input-bg-color-2 border-0 products-name custom-color-2"
                                                                 name='locationNo' value={locationNo} onChange={handleLocationNoChange}>
-                                                                <option value="">Select</option>
                                                                 <option value="A1">A1</option>
                                                                 <option value="A2">A2</option>
                                                                 <option value="A3">A3</option>
@@ -666,9 +702,9 @@ function Create_new_listing() {
                                                             </select>
                                                         </div>
                                                         <div style={{width: "60%"}}>
-                                                            <label className="custom-color-2 regularfont products-name pb-2">Location of Part</label>
-                                                            <input disabled={!locationNo} type="text" onChange={handleLocationChange} 
-                                                                className={`form-control input-bg-color-2 border-0 products-name custom-color-2 `} 
+                                                            <label className="custom-color-2 regularfont products-name pb-2">Location of Part  <span className="required">*</span></label>
+                                                            <input type="text" onChange={handleLocationChange} 
+                                                                className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !locationNo ? 'required-field' : 'border-0'}`} 
                                                                 style={{height: "2.3rem"}} placeholder="Location of Part" 
                                                             />
                                                         </div>
@@ -676,8 +712,8 @@ function Create_new_listing() {
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2} className='px-5 pb-4 pt-2 border-0'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Article Number :</label>
-                                                        <div style={{ padding: "20px", background: `#ffcf00`, width: "400px" }} 
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Barcode :</label>
+                                                        {/* <div style={{ padding: "20px", background: `#ffcf00`, width: "400px" }} 
                                                             className='d-flex align-items-center justify-content-center flex-column'>
                                                             <div className="details" style={{ width: "100%", fontWeight: "bold" }}>
                                                                 <div className='d-flex justify-content-between'>
@@ -695,7 +731,28 @@ function Create_new_listing() {
                                                                 </div>
                                                             </div>
                                                             {listBarcode && <Qrgenerator qrValue={listBarcode} />}
-                                                        </div>
+                                                        </div> */}
+                                                        
+                                                            <div style={{ padding: "5px", background: `#ffcf00`, width: "415.7480315px", height: "188.97637795px" }}
+                                                                className='d-flex align-items-center justify-content-center flex-column'>
+                                                                <div className="details d-flex" style={{ width: "100%", fontWeight: "bolder", padding: "0px 10px 0 10px", fontSize: "14px" }}>
+                                                                    <div className='d-flex justify-content-between' style={{ minWidth: "180px" }}>
+                                                                        {listBarcode && <Qrgenerator qrValue={listBarcode} />}
+                                                                    </div>
+                                                                    <div className='d-flex flex-column' style={{width: "100%"}}>
+                                                                        <div>
+                                                                            <div>UBOPARTS</div>
+                                                                            <div>{upperCaseListName}</div>
+                                                                        </div>
+                                                                        <div style={{ minWidth: "110px" }}>
+                                                                            <div>REK NUMMER : {listLocation}</div>
+                                                                            {/* <div> {productData?.attributes?.product_location_warehouse}</div> */}
+                                                                        </div>
+                                                                        <div>Article No : {listArticle}</div>
+                                                                        <div>{makeName} {modelName} {year} </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                     </td>
                                                 </tr>
                                                 <tr className="double">

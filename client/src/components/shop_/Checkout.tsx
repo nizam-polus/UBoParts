@@ -8,6 +8,7 @@ function Checkout() {
     const {user, saveUser} = UserContext(); 
     const [checkoutProducts, setCheckoutProducts]: any = useState([]);
     const [total, setTotal]: any = useState(0);
+    const [totalWeight, setTotalWeight] = useState(0)
     const [shippingCost, setShippingCost] = useState<number>(0);
     const [countries, setCountries] = useState([])
     const [formData, setFormData] = useState({
@@ -36,6 +37,24 @@ function Checkout() {
     const [incomplete, setIncomplete] = useState<any>(false);
     const [shippingIncomplete, setShippingIncomplete] = useState(false);
 
+    // const shippingDetails = {
+    //     "seller" : {
+    //         company: user.company,
+    //         email: user.email,
+    //         streetaddress_housenumber: user.streetaddress_housenumber,
+    //         streetaddress_apartment: user.streetaddress_apartment,
+    //         state: user.state,
+    //         country: user.country,
+    //         postcode: user.postcode
+    //     },
+    //     "buyyer" : {
+    //         shippingaddress_city : user.shippingaddress_city,
+    //         shippingaddress_country : user.shippingaddress_country,
+    //         shippingaddress_postcode : user.shippingaddress_postcode,
+    //         shippingaddress_state : user.shippingaddress_state,
+    //     }
+    // }
+
     useEffect(() => {
         APIs.getCountries()
           .then(response => {
@@ -44,6 +63,8 @@ function Checkout() {
           .catch(error => {
             console.error('Error fetching data:', error);
           });
+        
+
       }, []); 
 
     useEffect(() => {
@@ -70,21 +91,37 @@ function Checkout() {
         shippingData.shippingaddress_streataddress_housenumber = user.shippingaddress_streataddress_housenumber;
         setShippingData({...shippingData});
 
-        // get cart data
-        APIs.getCartData({customerid: user.id}).then(response => {
+        const shippingDataForApi = {
+            "shippingaddress_postcode": shippingData.shippingaddress_postcode,
+            "shippingaddress_country": "BE",
+            "product_weight": 28   
+        }
+        APIs.getShippingCost(shippingDataForApi).then(res => {
+            let shippingCost = Number(res.data[0]?.price)
+            setShippingCost(shippingCost)
+            
+            APIs.getCartData({customerid: user.id}).then(response => {
             let checkoutProducts = response.data.rows;
             setCheckoutProducts(checkoutProducts);
             if (response.data.rows.length) {
                 let total = 0;
+                // let totalWeight = 0;
+                // for(const obj of response.data.dat){
+                //     totalWeight += obj.total_weight
+                // }
+                // setTotalWeight(totalWeight)
                 for (const obj of response.data.rows) {
                     total += obj.total_price;
                 }
                 total = total ? total += shippingCost : total;
                 setTotal(total);
+
             }
-        }).catch(err => {
+            }).catch(err => {
             console.log(err);
+            })
         })
+
     }, []);
 
     const checkFormStatus = () => {
@@ -94,7 +131,6 @@ function Checkout() {
             !!formData.streetaddress_housenumber && !!formData.city && !!formData.state && 
             !!formData.country && !!formData.postcode);
         setIncomplete(incomplete);
-        console.log(incomplete)
         return incomplete;
     }
 
@@ -110,7 +146,6 @@ function Checkout() {
 
     const handleFormChange = (event: any) => {
         const { name, value } = event.target;
-        console.log(name, value)
         setFormData((prevFormData => ({...prevFormData, [name]: value})));
     }
 
