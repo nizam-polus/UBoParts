@@ -61,8 +61,7 @@ function Checkout() {
     // }
 
     const getContryCode = (country: string, countries: any[]) =>{
-       let countryData: any = countries.find((item: any, index) => item.attributes.country == country)
-       console.log(countryData)
+       let countryData: any = countries.find((item: any, index) => item.attributes.country == country);
        return countryData?.attributes?.code;
     }
 
@@ -78,14 +77,14 @@ function Checkout() {
             streetaddress_apartment: user.streetaddress_apartment,
             city: user.city,
             state: user.state,
-            country: user.country,
-            postcode: user.postcode
+            country: prevFormData.country || user.country,
+            postcode: prevFormData.postcode || user.postcode
         }))
 
         shippingData.shippingaddress_city = user.shippingaddress_city;
-        shippingData.shippingaddress_country = user.shippingaddress_country;
+        shippingData.shippingaddress_country = user.shippingaddress_country || formData.country;
         shippingData.shippingaddress_phonenumber = user.shippingaddress_phonenumber;
-        shippingData.shippingaddress_postcode = user.shippingaddress_postcode;
+        shippingData.shippingaddress_postcode = user.shippingaddress_postcode || formData.postcode;
         shippingData.shippingaddress_state = user.shippingaddress_state;
         shippingData.shippingaddress_streataddress_apartment = user.shippingaddress_streataddress_apartment;
         shippingData.shippingaddress_streataddress_housenumber = user.shippingaddress_streataddress_housenumber;
@@ -101,9 +100,8 @@ function Checkout() {
                 setSellerId(response.data.rows[0].seller_id)
                 APIs.getSpecificUser(sellerId).then((res) => {
                     let shippingCountryCode = getContryCode(res.data.shippingaddress_country, countries);
-                    let buyyerShippingCountryCode = getContryCode(user.shippingaddress_country, countries)
+                    let buyyerShippingCountryCode = getContryCode((user.shippingaddress_country || formData.country), countries)
                     let postingCode = res.data.shippingaddress_postcode;
-                    console.log(shippingCountryCode)
                     let total: any = 0, totalDiscount = 0, totalWeight = 0;
                     setSellerShippingCountry(shippingCountryCode)
                     setSellerShippingPostCode(postingCode)
@@ -119,19 +117,26 @@ function Checkout() {
                         setTotalDiscount(totalDiscount)
                     }
                     const shippingDataForApi = {
-                        "shippingaddress_postcode": user.shippingaddress_postcode,
+                        "shippingaddress_postcode": user.shippingaddress_postcode ? user.shippingaddress_postcode : formData.postcode,
                         "shippingaddress_country": buyyerShippingCountryCode,
                         "product_weight": totalWeight,
                         "from_postal_code": postingCode,
                         "from_country": shippingCountryCode    
                     }
-                    APIs.getShippingCost(shippingDataForApi).then(res => {
-                        let shippingCost = Number(res.data[0]?.price)
-                        setShippingCost(shippingCost)
-                        total = total ? total += shippingCost : total;
-                        total -= totalDiscount;
-                        total = total.toFixed(2)
-                        setTotal(Number(total))
+                    shippingDataForApi.shippingaddress_postcode && shippingDataForApi.shippingaddress_country && APIs.getShippingCost(shippingDataForApi).then(res => {
+                        if (!res || (res && !res.data.length)) {
+                            setShippingCost(0);
+                            total -= totalDiscount;
+                            total = total.toFixed(2)
+                            setTotal(Number(total))
+                        } else {
+                            let shippingCost = Number(res.data[0]?.price)
+                            setShippingCost(shippingCost)
+                            total = total ? total += shippingCost : total;
+                            total -= totalDiscount;
+                            total = total.toFixed(2)
+                            setTotal(Number(total))
+                        }
                     })
                 })
             }).catch(err => {
@@ -140,7 +145,7 @@ function Checkout() {
         }).catch(error => {
             console.error('Error fetching data:', error);
         });
-    }, []);
+    }, [formData.country, formData.postcode, shippingData.shippingaddress_country, shippingData.shippingaddress_postcode]);
 
     const checkFormStatus = () => {
         let incomplete = true;
@@ -167,7 +172,7 @@ function Checkout() {
         setFormData((prevFormData => ({...prevFormData, [name]: value})));
     }
 
-    const   handleShippingAddChange = (event: any) => {
+    const handleShippingAddChange = (event: any) => {
         const { name, value } = event.target;
         setShippingData((prevData) => ({...prevData, [name]: value}));
     }
