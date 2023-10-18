@@ -679,10 +679,8 @@ function Create_new_listing() {
                                                         <label className="custom-color-2 regularfont products-name pb-2">On Sale</label><br />
                                                         <select className="form-select input-bg-color-2 border-0 products-name custom-color-2"
                                                             value={saleOffer} onChange={handleSaleChange}>
-                                                            <option value="">Select Sale</option>
-                                                           
                                                                 {saleArray && saleArray.map((sale: any) => (
-                                                                <option key={sale.id} value={sale.id}>{sale.attributes.discount} discount</option>))}
+                                                                <option key={sale.id} value={sale.id}>{sale.attributes.discount}</option>))}
                                                         </select>  
                                                     </td>
                                                     <td className='px-5 pb-2 border-0 d-flex' style={{ gap: "10px" }}>

@@ -134,13 +134,13 @@ function SellerListings() {
                                                             onClick={() => handleProductClick(item)}
                                                         />
                                                         {
-                                                            item.attributes.sale.data != null ? 
+                                                           (item.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && item.attributes.sale.data != null) ? 
                                                                 <div className=' button-bg-color-1 product-price d-flex' >
                                                                     <div >
                                                                         <span className=" text-white regularfont boldfontsize"> <s>€{item.attributes.price} </s> </span>
                                                                     </div>
                                                                     <div>
-                                                                        <span className=" text-white regularfont boldfontsize"> €{discountedPrice(item.attributes.price, item.attributes.sale.data.attributes.discount)}</span>
+                                                                        <span className=" text-white regularfont boldfontsize"> €{discountedPrice(item.attributes.price, item.attributes.sale?.data?.attributes?.discount_percentage_value)}</span>
                                                                     </div>
                                                                 </div>
                                                             :

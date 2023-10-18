@@ -7,7 +7,12 @@ function Checkout() {
 
     const {user, saveUser} = UserContext(); 
     const [checkoutProducts, setCheckoutProducts]: any = useState([]);
+    const [sellerId, setSellerId] = useState<number>()
+    const [sellerShippingPostcode, setSellerShippingPostCode] = useState("")
+    const [sellerShippingCountry, setSellerShippingCountry] = useState("")
+    // const [sellerShippingPostcode, setSellerShippingPostCode] = useState("")
     const [total, setTotal]: any = useState(0);
+    const [totalDiscount, setTotalDiscount]: any = useState(0)
     const [totalWeight, setTotalWeight] = useState(0)
     const [shippingCost, setShippingCost] = useState<number>(0);
     const [countries, setCountries] = useState([])
@@ -65,7 +70,11 @@ function Checkout() {
           });
         
 
-      }, []); 
+    }, []); 
+
+    // useEffect(() =>{
+    //     APIs.getSpecificUser(sellerId)
+    // })
 
     useEffect(() => {
         setFormData((prevFormData) => ({...prevFormData, 
@@ -100,11 +109,22 @@ function Checkout() {
             let shippingCost = Number(res.data[0]?.price)
             setShippingCost(shippingCost)
             
-            APIs.getCartData({customerid: user.id}).then(response => {
+           
+        })
+
+        APIs.getCartData({customerid: user.id}).then(response => {
             let checkoutProducts = response.data.rows;
             setCheckoutProducts(checkoutProducts);
+            let sellerId = response.data.rows[0].seller_id
+            setSellerId(response.data.rows[0].seller_id)
+            APIs.getSpecificUser(sellerId).then((res) =>{
+                console.log(res.data)
+                setSellerShippingCountry(res.data.shippingaddress_country)
+                setSellerShippingPostCode(res.data.shippingaddress_postcode)
+            })
             if (response.data.rows.length) {
                 let total = 0;
+                let totalDiscount = 0
                 // let totalWeight = 0;
                 // for(const obj of response.data.dat){
                 //     totalWeight += obj.total_weight
@@ -112,15 +132,19 @@ function Checkout() {
                 // setTotalWeight(totalWeight)
                 for (const obj of response.data.rows) {
                     total += obj.total_price;
+                    totalDiscount += obj.discount_price
                 }
                 total = total ? total += shippingCost : total;
                 setTotal(total);
+                setTotalDiscount(totalDiscount)
 
             }
+            
+            }).then(() =>{
+                
             }).catch(err => {
             console.log(err);
             })
-        })
 
     }, []);
 
@@ -446,7 +470,7 @@ function Checkout() {
                                                 return (
                                                     <tr>
                                                         <td className="pb-0 pt-3 pl-3 regularfont mini-text-1 border-0">{product?.title}</td>
-                                                        <td className="pb-0 pt-3 pr-4 regularfont mini-text-1 border-0 text-right">€{product?.price * product.quantity}</td>
+                                                        <td className="pb-0 pt-3 pr-4 regularfont mini-text-1 border-0 text-right">€{product?.price * product.quantity - product.discount_price}</td>
                                                         
                                                     </tr>
                                                 )
@@ -465,7 +489,7 @@ function Checkout() {
                                             </tr>
                                             <tr>
                                                 <td className="pb-2 pt-1 px-3 semifont body-sub-titles-1 fw-bold border-0">Total</td>
-                                                <td className="pb-2 pt-1 pr-4 semifont body-sub-titles-1 fw-bold border-0 text-right">€{total}</td>
+                                                <td className="pb-2 pt-1 pr-4 semifont body-sub-titles-1 fw-bold border-0 text-right">€{total  - totalDiscount}</td>
                                             </tr>
                                             <tr  className="single">
                                                 
