@@ -7,7 +7,13 @@ function Checkout() {
 
     const {user, saveUser} = UserContext(); 
     const [checkoutProducts, setCheckoutProducts]: any = useState([]);
+    const [sellerId, setSellerId] = useState<number>()
+    const [sellerShippingPostcode, setSellerShippingPostCode] = useState("")
+    const [sellerShippingCountry, setSellerShippingCountry] = useState("")
+    // const [sellerShippingPostcode, setSellerShippingPostCode] = useState("")
     const [total, setTotal]: any = useState(0);
+    const [totalDiscount, setTotalDiscount]: any = useState(0)
+    const [totalWeight, setTotalWeight] = useState(0)
     const [shippingCost, setShippingCost] = useState<number>(0);
     const [countries, setCountries] = useState([])
     const [formData, setFormData] = useState({
@@ -36,17 +42,32 @@ function Checkout() {
     const [incomplete, setIncomplete] = useState<any>(false);
     const [shippingIncomplete, setShippingIncomplete] = useState(false);
 
-    useEffect(() => {
-        APIs.getCountries()
-          .then(response => {
-            setCountries(response.data.data);
-          })
-          .catch(error => {
-            console.error('Error fetching data:', error);
-          });
-      }, []); 
+    // const shippingDetails = {
+    //     "seller" : {
+    //         company: user.company,
+    //         email: user.email,
+    //         streetaddress_housenumber: user.streetaddress_housenumber,
+    //         streetaddress_apartment: user.streetaddress_apartment,
+    //         state: user.state,
+    //         country: user.country,
+    //         postcode: user.postcode
+    //     },
+    //     "buyyer" : {
+    //         shippingaddress_city : user.shippingaddress_city,
+    //         shippingaddress_country : user.shippingaddress_country,
+    //         shippingaddress_postcode : user.shippingaddress_postcode,
+    //         shippingaddress_state : user.shippingaddress_state,
+    //     }
+    // }
+
+    const getContryCode = (country: string, countries: any[]) =>{
+       let countryData: any = countries.find((item: any, index) => item.attributes.country == country)
+       console.log(countryData)
+       return countryData?.attributes?.code;
+    }
 
     useEffect(() => {
+        
         setFormData((prevFormData) => ({...prevFormData, 
             first_name: user.first_name,
             last_name: user.last_name,
@@ -70,21 +91,55 @@ function Checkout() {
         shippingData.shippingaddress_streataddress_housenumber = user.shippingaddress_streataddress_housenumber;
         setShippingData({...shippingData});
 
-        // get cart data
-        APIs.getCartData({customerid: user.id}).then(response => {
-            let checkoutProducts = response.data.rows;
-            setCheckoutProducts(checkoutProducts);
-            if (response.data.rows.length) {
-                let total = 0;
-                for (const obj of response.data.rows) {
-                    total += obj.total_price;
-                }
-                total = total ? total += shippingCost : total;
-                setTotal(total);
-            }
-        }).catch(err => {
-            console.log(err);
-        })
+        APIs.getCountries().then(response => {
+            let countries: any = response.data.data
+            setCountries(countries);
+            APIs.getCartData({customerid: user.id}).then(response => {
+                let checkoutProducts = response.data.rows;
+                setCheckoutProducts(checkoutProducts);
+                let sellerId = response.data.rows[0].seller_id
+                setSellerId(response.data.rows[0].seller_id)
+                APIs.getSpecificUser(sellerId).then((res) => {
+                    let shippingCountryCode = getContryCode(res.data.shippingaddress_country, countries);
+                    let buyyerShippingCountryCode = getContryCode(user.shippingaddress_country, countries)
+                    let postingCode = res.data.shippingaddress_postcode;
+                    console.log(shippingCountryCode)
+                    let total: any = 0, totalDiscount = 0, totalWeight = 0;
+                    setSellerShippingCountry(shippingCountryCode)
+                    setSellerShippingPostCode(postingCode)
+                    if (checkoutProducts.length) {
+                        for(const obj of checkoutProducts) {
+                            totalWeight += obj.total_weight
+                        }
+                        setTotalWeight(totalWeight)
+                        for (const obj of checkoutProducts) {
+                            total += obj.total_price;
+                            totalDiscount += obj.discount_price
+                        }
+                        setTotalDiscount(totalDiscount)
+                    }
+                    const shippingDataForApi = {
+                        "shippingaddress_postcode": user.shippingaddress_postcode,
+                        "shippingaddress_country": buyyerShippingCountryCode,
+                        "product_weight": totalWeight,
+                        "from_postal_code": postingCode,
+                        "from_country": shippingCountryCode    
+                    }
+                    APIs.getShippingCost(shippingDataForApi).then(res => {
+                        let shippingCost = Number(res.data[0]?.price)
+                        setShippingCost(shippingCost)
+                        total = total ? total += shippingCost : total;
+                        total -= totalDiscount;
+                        total = total.toFixed(2)
+                        setTotal(Number(total))
+                    })
+                })
+            }).catch(err => {
+                console.log(err);
+            })
+        }).catch(error => {
+            console.error('Error fetching data:', error);
+        });
     }, []);
 
     const checkFormStatus = () => {
@@ -94,7 +149,6 @@ function Checkout() {
             !!formData.streetaddress_housenumber && !!formData.city && !!formData.state && 
             !!formData.country && !!formData.postcode);
         setIncomplete(incomplete);
-        console.log(incomplete)
         return incomplete;
     }
 
@@ -110,7 +164,6 @@ function Checkout() {
 
     const handleFormChange = (event: any) => {
         const { name, value } = event.target;
-        console.log(name, value)
         setFormData((prevFormData => ({...prevFormData, [name]: value})));
     }
 
@@ -411,7 +464,7 @@ function Checkout() {
                                                 return (
                                                     <tr>
                                                         <td className="pb-0 pt-3 pl-3 regularfont mini-text-1 border-0">{product?.title}</td>
-                                                        <td className="pb-0 pt-3 pr-4 regularfont mini-text-1 border-0 text-right">€{product?.price * product.quantity}</td>
+                                                        <td className="pb-0 pt-3 pr-4 regularfont mini-text-1 border-0 text-right">€{product?.price * product.quantity - product.discount_price}</td>
                                                         
                                                     </tr>
                                                 )

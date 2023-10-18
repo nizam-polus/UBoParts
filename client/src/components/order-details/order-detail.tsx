@@ -16,6 +16,8 @@ function OrderDetails() {
     const orderId: any = router.query.orderId;
     const pdfRef = useRef(null);
 
+    const [totalDiscount, setTotalDiscount] = useState<any>(0)
+    const [invoiceId, setInvoiceId] = useState()
     const [orderDetails, setOrderDetails] = useState<any>([]);
     const [total, setTotal] = useState<number>(0);
     const [hide, setHide] = useState(true)
@@ -25,12 +27,17 @@ function OrderDetails() {
         APIs.getOrderDetails(orderId).then(response => {
             let orders = response.data.data;
             setOrderDetails(orders);
+            let invoiceID = orders[0]?.attributes?.invoice_id
+            setInvoiceId(invoiceID)
             if (orders.length) {
                 let total = 0;
+                let totalDiscount = 0;
                 for (const obj of orders) {
                     total += obj?.attributes?.total_price;
+                    totalDiscount += obj?.attributes?.discount_price
                 }
                 setTotal(total);
+                setTotalDiscount(totalDiscount)
             }
         })
     },[])
@@ -96,9 +103,9 @@ function OrderDetails() {
                                 <div className="row mt-3">
                                     <div className="col-8">
                                         <div style={{border: '1px solid lightgrey', borderRadius: '10px'}} className="px-4 py-4 ml-3 mr-1">
-                                            <div className="d-flex justify-content-between m-0 pb-4 ml-3">
+                                            {/* <div className="d-flex justify-content-between m-0 pb-4 ml-3">
                                                 <span className="custom-color-2 semifont body-sub-titles-1">Order summary</span><br />
-                                            </div>
+                                            </div> */}
                                             <div className="row m-0 px-0">
                                                 <div className="col-3">
                                                     <table >
@@ -107,10 +114,13 @@ function OrderDetails() {
                                                                 <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Order Date</th>
                                                             </tr>
                                                             <tr>
-                                                                <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Order ID</th>
+                                                                <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Order No</th>
                                                             </tr>
                                                             <tr>
                                                                 <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Order Total</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Invoice No</th>
                                                             </tr>
                                                         </thead>
                                                     </table>
@@ -130,7 +140,19 @@ function OrderDetails() {
                                                             </tr>
                                                             <tr>
                                                                 <td className="custom-color-2 regularfont body-sub-titles-2 my-0">
-                                                                    €{total}
+                                                                    {totalDiscount}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                               
+                                                                 <td className="custom-color-2 regularfont body-sub-titles-2 my-0">
+                                                                    
+                                                                 { total - totalDiscount}
+                                                             </td>  
+                                                            </tr>
+                                                            <tr>
+                                                                <td className="custom-color-2 regularfont body-sub-titles-2 my-0">
+                                                                    {invoiceId}
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -161,7 +183,8 @@ function OrderDetails() {
                                                                             </div>
                                                                         </td>
                                                                         <td className="custom-color-2 regularfont body-sub-titles-2 py-3 border-bottom text-center">{order?.attributes?.quantity}</td>
-                                                                        <td className="custom-color-2 regularfont body-sub-titles-2 py-3 border-bottom text-center">{order?.attributes?.product_price}</td>
+                                                                        
+                                                                        <td className="custom-color-2 regularfont body-sub-titles-2 py-3 border-bottom text-center"> {order?.attributes?.product_price - order?.attributes?.discount_price}</td>
                                                                         <td className="custom-color-2 regularfont body-sub-titles-2 py-3 border-bottom text-center">{order?.attributes?.total_price}</td>
                                                                     </tr>
                                                                 </>

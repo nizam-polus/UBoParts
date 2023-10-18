@@ -45,8 +45,8 @@ function Shop() {
     const [sortState, setSortState] = useState("sort[0]=createdAt:desc")
     
     const router = useRouter();
-    const { HomeMake } : any = router.query;
-
+    const { HomeMakeId } : any = router.query;
+    
     const categoriesArray = (resData: any) => {
         return [...new Set(resData.map((item: any) => ({
                 id: item.id,
@@ -70,6 +70,10 @@ function Shop() {
             makeId && getModel(makeId);
             makeId && modelId && getYear(modelId);
             setSelectedMake(makeId);
+            if(HomeMakeId){
+                setSelectedMake(HomeMakeId)
+                getModel(HomeMakeId)
+            }
             setSelectedModel(modelId);
             setSelectedYear(yearId);
             setSelectedCategory(category);
@@ -242,7 +246,6 @@ function Shop() {
             setPageRange(pageRangeFinder(pagination.pageCount));
             setPagination(pagination);
             setSearchedProducts(response.data.data)
-            console.log(response.data.data)
             setPageCount(response.data.meta.pagination.pageCount)
         }).catch(err => console.log)
     }
@@ -260,7 +263,9 @@ function Shop() {
                 customerid: user.id,
                 productid: productData?.id,
                 quantity: '1',
-                productprice: productData?.attributes?.price
+                productprice: productData?.attributes?.price,
+                "productWeight": productData?.attributes?.product_weight || 0,
+                "discountPrice": discountAmount(productData?.attributes?.price, productData?.attributes?.sale?.data?.attributes?.discount),
             }
             APIs.getCartData({ customerid: user.id }).then(response => {
                 let productCartItems = response.data.rows;
@@ -329,7 +334,6 @@ function Shop() {
               setPageRange(pageRangeFinder(pagination.pageCount));
               setPagination(pagination);
               setSearchedProducts(response.data.data);
-              console.log(response.data.data);
               setPageCount(response.data.meta.pagination.pageCount);
             })
             .catch((err) => console.log(err));
@@ -359,6 +363,28 @@ function Shop() {
           
         }
       }, [sortState]);
+
+    function discountedPrice(originalPrice: any, discountPercentage: any) {
+        const original = parseFloat(originalPrice);
+        const discount = parseFloat(discountPercentage);
+        if (isNaN(discount)) {
+            return original; 
+        }
+        const discountAmount = (original * discount) / 100;
+        const discounted = original - discountAmount;
+        return +discounted.toFixed(2); 
+    }
+
+    function discountAmount(originalPrice: any, discountPercentage: any) {
+        const original = parseFloat(originalPrice);
+        const discount = parseFloat(discountPercentage);
+        if (isNaN(discount)) {
+            return 0; 
+        }
+        const discountAmount = (original * discount) / 100;
+        return +discountAmount.toFixed(2); 
+    }
+
 
     const loginModalClose = () => {
         setOpenLogin(false);
@@ -621,6 +647,9 @@ function Shop() {
                                             {searchedProducts.map((product: any, index: any) => {
                                                 return (
                                                     <div className="col-12 col-sm-6 col-lg-4  mb-4" key={index}>
+                                                    {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null)&& (
+                                                        <span  className="sale-tag position-absolute">{product.attributes?.sale?.data?.attributes?.discount}</span>
+                                                    )}
                                                         <div className="latest-prods card card-shadows" style={{height: "100%"}}>
                                                         <AppImage 
                                                                 src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
@@ -657,12 +686,17 @@ function Shop() {
                                                                     <span className="rating-count regularfont mini-text-1">675</span>
                                                                 </div> */}
                                                                     <div className="col-12 d-flex justify-content-between">
-                                                                        <span className="product-price">€{product?.attributes?.price}</span>
+                                                                        {
+                                                                            (product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null) ?
+                                                                                <span className="product-price"><s>€{product?.attributes?.price}</s> €{discountedPrice(product.attributes.price, product.attributes.sale.data.attributes.discount)}</span>
+                                                                                :
+                                                                                <span className="product-price">€{product?.attributes?.price}</span>
+                                                                        }
                                                                         { product.attributes.stock_count === 0 ? (
                                                                           <AppImage
-                                                                          src="images/cart-svg.svg"
-                                                                          className="pointer add_to_cart"
-                                                                           style={{opacity: "0.5", cursor: "not-allowed"}}  
+                                                                            src="images/cart-svg.svg"
+                                                                            className="pointer add_to_cart"
+                                                                            style={{opacity: "0.5", cursor: "not-allowed"}}  
                                                                         />
                                                                         ) : addToCartCompleted ? (
                                                                           <AppImage

@@ -13,6 +13,7 @@ import APIs from '../services/apiService';
 import { BASE_URL } from 'configuration';
 import { UserContext } from './account_/UserContext';
 import { toast } from 'react-toastify';
+import { FormattedMessage } from 'react-intl';
 
 function Home() {
     const router = useRouter();
@@ -276,7 +277,9 @@ function Home() {
                 customerid: user.id,
                 productid: productData?.id,
                 quantity: '1',
-                productprice: productData?.attributes?.price
+                productprice: productData?.attributes?.price,
+                "productWeight": productData?.attributes?.product_weight,
+                "discountPrice": discountAmount(productData?.attributes?.price, productData?.attributes?.sale?.data?.attributes?.discount),
             }
             APIs.getCartData({ customerid: user.id }).then(response => {
                 let productCartItems = response.data.rows;
@@ -329,11 +332,32 @@ function Home() {
         }
       };
 
-    const handleMakeClick = (HomeMake: any) =>{
+    const handleMakeClick = (HomeMakeId: any) =>{
         router.push({
             pathname: '/shop',
-            query: { 'HomeMake': HomeMake },
+            query: { 'HomeMakeId': HomeMakeId },
         })
+    }
+
+    function discountedPrice(originalPrice: any, discountPercentage:any) {
+        const original = parseFloat(originalPrice);
+        const discount = parseFloat(discountPercentage);
+        if (isNaN(discount)) {
+          return original;
+        }
+        const discountAmount = (original * discount) / 100;
+        const discounted = original - discountAmount;
+        return +discounted.toFixed(2); 
+    }
+
+    function discountAmount(originalPrice: any, discountPercentage: any) {
+        const original = parseFloat(originalPrice);
+        const discount = parseFloat(discountPercentage);
+        if (isNaN(discount)) {
+            return 0; 
+        }
+        const discountAmount = (original * discount) / 100;
+        return +discountAmount.toFixed(2); 
     }
     
     return (
@@ -500,7 +524,11 @@ function Home() {
                     <section className="categories-wrapper">
                         <div className="row mt-5">
                             <div className="col-12 d-flex justify-content-between">
-                                <div><span className="popular_categories body-sub-titles regularfont">Popular Categories</span>
+                                <div>
+                                    <span className="popular_categories body-sub-titles regularfont">
+                                        {/* Popular Categories */}
+                                        <FormattedMessage id="POPULAR"/>
+                                        </span>
                                 </div>
                                 <div>
                                     <button type="button" className="saleoffers regularfont body-sub-titles">Sale Offers</button>
@@ -544,11 +572,12 @@ function Home() {
                 >
                    <div className='p-4 d-flex flex-row align-items-center justify-content-center'>
                         <div style={{ width: "200px" }}>
-                            <h4>Search by Car Brand</h4>
+                            <h4><FormattedMessage id="Search_by_Car_Brand"/></h4>
+                            {/* <h4>Search by Car Brand</h4> */}
                         </div>
                         <div style={{display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", minWidth: "800px"}}>
                         {makeData.slice(startIndex, startIndex + 4).map((item :any, index:any) => (
-                            <div key={index} style={{ width: "200px" }} onClick={() => handleMakeClick(item.attributes.make_name)}>
+                            <div key={index} style={{ width: "200px" }} onClick={() => handleMakeClick(item.id)}>
                                 <img src={item.attributes.make_logo.data ? 
                                         BASE_URL + item.attributes.make_logo.data.attributes.url : ""} 
                                     alt="" width="120px" height="120px"  style={{ cursor: 'pointer' }} 
@@ -613,6 +642,9 @@ function Home() {
                         {latestItems && latestItems .map((product: any, index: any) => {
                             return (
                                 <div className="col-12 col-sm-6 col-lg-3 mb-4" key={index}>
+                                    {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null) && (
+                                        <span  className="sale-tag position-absolute">Sale Live</span>
+                                    )}
                                     <div className="latest-prods card card-shadows " style={{height: "100%"}} >   
                                         <AppImage 
                                             src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
@@ -638,7 +670,14 @@ function Home() {
                                                     >{product?.attributes?.title}</span>
                                                 </div>
                                                 <div className="col-12 d-flex justify-content-between">
+                                                {
+                                                    (product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null) ?
+                                                    <span className="product-price">
+                                                        <s>€{product?.attributes?.price}</s> 
+                                                        €{discountedPrice(product.attributes.price, product.attributes.sale.data.attributes.discount)}
+                                                    </span> :
                                                     <span className="product-price">€{product?.attributes?.price}</span>
+                                                }
                                                     {product.attributes.stock_count === 0 ? 
                                                         (<AppImage
                                                             src="images/cart-svg.svg"

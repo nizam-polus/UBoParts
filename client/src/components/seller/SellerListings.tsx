@@ -16,11 +16,11 @@ function SellerListings() {
 
     const router = useRouter();
     const [uname, setUname] = useState<any>("");
-    const [sellerList, setSellerList] = useState([]);
+    const [sellerList, setSellerList] = useState<any>([]);
     const [isDeleting, setIsDeleting] = useState(false);
     const [itemId, setItemId] = useState<any>('')
     const [pageNumber, setPageNumber] = useState(1)
-
+    const [totalListNumber , setTotalListNumber] = useState("")
     const [pageCount, setPageCount] = useState();
     const [pagination, setPagination] = useState<any>({});
     const [pageRange, setPageRange] = useState<number[]>([]);
@@ -52,12 +52,24 @@ function SellerListings() {
         return range;
     }
 
+    function discountedPrice(originalPrice: any, discountPercentage:any) {
+        const original = parseFloat(originalPrice);
+        const discount = parseFloat(discountPercentage); 
+        if (isNaN(discount)) {
+          return original; 
+        }
+        const discountAmount = (original * discount) / 100;
+        const discounted = original - discountAmount;
+        return +discounted.toFixed(2); 
+    }
+
     useEffect(() => {
         (async () => {
             try {
                 // Make the API call with the username
                 const res = await APIs.getAllSellerProducts(user.username,"1");
                 setSellerList(res.data.data);
+                setTotalListNumber(res.data.meta.pagination.total)
                 let pagination = res.data.meta.pagination;
                 setPageCount(res.data.meta.pagination.pageCount)
                 setPageRange(pageRangeFinder(pagination.pageCount));
@@ -99,7 +111,8 @@ function SellerListings() {
                                             <thead>
                                                 <th className="p-2 pb-3 px-4 pt-4 custom-color-2 mediumfont subtitles border-top-0">
                                                     <span>Listings</span>
-                                                    <span className="lightfont body-sub-titles">(154)</span>
+                                                    {sellerList && sellerList.length > 0 && <span className="lightfont body-sub-titles"> ({totalListNumber})</span>}
+                                                    
                                                     <button type="button" className="minor-button custom-color-7 boldfont mini-text-3 rounded border-0 button-bg-color-1" onClick={() => router.push('/seller/create_new_listing')}>
                                                         Create New Listing</button>
                                                 </th>
@@ -107,9 +120,12 @@ function SellerListings() {
                                         </table>
                                     </div>
                                     <div className="row g-4 p-4 pb-4 pt-2">
-                                        {sellerList && sellerList.map((item: any, index) => {
+                                        {sellerList && sellerList.map((item: any, index: any) => {
                                             return <div className="col-12 col-sm-6 col-lg-4">
                                                 <div className="latest-prods mb-5 card card-shadows seller-listing-products">
+                                                    {(item.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && item.attributes.sale.data != null) && (
+                                                        <span  className="sale-tag position-absolute">{item.attributes.sale.data.attributes.discount}</span>
+                                                    )}
                                                     <div className="position-relative">
                                                         <AppImage
                                                             src={BASE_URL + item?.attributes?.product_image?.data?.attributes?.url}
@@ -117,7 +133,19 @@ function SellerListings() {
                                                             style={{ height: '20rem', objectFit: 'contain' }}
                                                             onClick={() => handleProductClick(item)}
                                                         />
-                                                        <span className="product-price button-bg-color-1 text-white regularfont boldfontsize">€ {item.attributes.price}</span>
+                                                        {
+                                                           (item.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && item.attributes.sale.data != null) ? 
+                                                                <div className=' button-bg-color-1 product-price d-flex' >
+                                                                    <div >
+                                                                        <span className=" text-white regularfont boldfontsize"> <s>€{item.attributes.price} </s> </span>
+                                                                    </div>
+                                                                    <div>
+                                                                        <span className=" text-white regularfont boldfontsize"> €{discountedPrice(item.attributes.price, item.attributes.sale?.data?.attributes?.discount_percentage_value)}</span>
+                                                                    </div>
+                                                                </div>
+                                                            :
+                                                            <span className="product-price button-bg-color-1 text-white regularfont boldfontsize">€ {item.attributes.price}</span>
+                                                        }
                                                     </div>
                                                     <div className="card-body p-4">
                                                         <div className="row g-2">
