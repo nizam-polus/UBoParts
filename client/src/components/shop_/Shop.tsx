@@ -46,7 +46,6 @@ function Shop() {
     
     const router = useRouter();
     const { HomeMakeId } : any = router.query;
-    console.log("Mke", HomeMakeId)
     
     const categoriesArray = (resData: any) => {
         return [...new Set(resData.map((item: any) => ({
