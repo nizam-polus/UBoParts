@@ -648,8 +648,8 @@ function Shop() {
                                             {searchedProducts.map((product: any, index: any) => {
                                                 return (
                                                     <div className="col-12 col-sm-6 col-lg-4  mb-4" key={index}>
-                                                    {product.attributes.sale.data && (
-                                                        <span  className="sale-tag position-absolute">{product.attributes.sale.data.attributes.discount} offer</span>
+                                                    {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null)&& (
+                                                        <span  className="sale-tag position-absolute">{product.attributes?.sale?.data?.attributes?.discount} offer</span>
                                                     )}
                                                         <div className="latest-prods card card-shadows" style={{height: "100%"}}>
                                                         <AppImage 
@@ -688,7 +688,7 @@ function Shop() {
                                                                 </div> */}
                                                                     <div className="col-12 d-flex justify-content-between">
                                                                         {
-                                                                            product.attributes.sale.data ?
+                                                                            (product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null) ?
                                                                                 <span className="product-price"><s>€{product?.attributes?.price}</s> €{discountedPrice(product.attributes.price, product.attributes.sale.data.attributes.discount)}</span>
                                                                                 :
                                                                                 <span className="product-price">€{product?.attributes?.price}</span>

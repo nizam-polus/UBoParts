@@ -572,7 +572,8 @@ function Home() {
                 >
                    <div className='p-4 d-flex flex-row align-items-center justify-content-center'>
                         <div style={{ width: "200px" }}>
-                            <h4>Search by Car Brand</h4>
+                            <h4><FormattedMessage id="Search_by_Car_Brand"/></h4>
+                            {/* <h4>Search by Car Brand</h4> */}
                         </div>
                         <div style={{display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", minWidth: "800px"}}>
                         {makeData.slice(startIndex, startIndex + 4).map((item :any, index:any) => (
@@ -641,7 +642,7 @@ function Home() {
                         {latestItems && latestItems .map((product: any, index: any) => {
                             return (
                                 <div className="col-12 col-sm-6 col-lg-3 mb-4" key={index}>
-                                    {product.attributes.sale.data && (
+                                    {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null) && (
                                         <span  className="sale-tag position-absolute">Sale Live</span>
                                     )}
                                     <div className="latest-prods card card-shadows " style={{height: "100%"}} >   
@@ -670,7 +671,7 @@ function Home() {
                                                 </div>
                                                 <div className="col-12 d-flex justify-content-between">
                                                 {
-                                                    product.attributes.sale.data ?
+                                                    (product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null) ?
                                                     <span className="product-price">
                                                         <s>€{product?.attributes?.price}</s> 
                                                         €{discountedPrice(product.attributes.price, product.attributes.sale.data.attributes.discount)}
