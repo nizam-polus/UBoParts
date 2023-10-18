@@ -47,7 +47,7 @@ function Create_new_listing() {
     const [randomNumber, setRandomNumber] = useState('');
     const [locationNo, setLocationNo] = useState<any>('A1')
     const [saleArray, setSaleArray] = useState([])
-    const [saleOffer, setSaleOffer] = useState('')
+    const [saleOffer, setSaleOffer] = useState(1)
     const [makeName, setMakeName] = useState('')
     const [modelName, setModelName] = useState('')
     const [year, setYear] = useState('')
@@ -315,8 +315,8 @@ function Create_new_listing() {
     }, [inputValue])
 
     const handleListChange = (event: any) => {
-        setInputValue(event.target.value)
-        setListName(event?.target.value)
+        setInputValue(event.target.value.toUpperCase())
+        setListName(event?.target.value.toUpperCase())
     };
 
     const handlePartSelect = (partName: any) => {
@@ -746,7 +746,7 @@ function Create_new_listing() {
                                                                             <div>REK NUMMER : {listLocation}</div>
                                                                             {/* <div> {productData?.attributes?.product_location_warehouse}</div> */}
                                                                         </div>
-                                                                        <div>Article No : {listArticle}</div>
+                                                                        <div>ARTUCLE No : {listArticle}</div>
                                                                         <div>{makeName} {modelName} {year} </div>
                                                                     </div>
                                                                 </div>
