@@ -226,7 +226,7 @@ function Productsingle() {
                                 </p> */}
                                 <p>
                                     {
-                                        productData?.attributes?.sale?.data ?
+                                        (productData.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && productData?.attributes?.sale?.data != null) ?
                                         <span className="product-price custom-color-3 regularfont boldfontsize"><s>€{productData?.attributes?.price}</s> €{discountedPrice(productData.attributes.price, productData.attributes.sale.data.attributes.discount)}</span>
                                         :
                                         <span className="product-price custom-color-3 regularfont boldfontsize">€{productData?.attributes?.price}</span>
@@ -247,7 +247,7 @@ function Productsingle() {
                                     <div className="row d-flex justify-content-between">
                                         <div className="col-auto">
                                             {
-                                                productData?.attributes?.sale?.data ?
+                                                 (productData.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && productData?.attributes?.sale?.data != null) ?
                                                     <span className="product-price"><s>€{quantity * productData?.attributes?.price}</s> €{discountedPrice(quantity *productData.attributes.price, productData.attributes.sale.data.attributes.discount)}</span>
                                                     :
                                                     <span className="product-price custom-color-3 regularfont">€{quantity * productData?.attributes?.price}</span>
