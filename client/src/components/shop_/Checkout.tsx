@@ -60,23 +60,14 @@ function Checkout() {
     //     }
     // }
 
+    const getContryCode = (country: string, countries: any[]) =>{
+       let countryData: any = countries.find((item: any, index) => item.attributes.country == country)
+       console.log(countryData)
+       return countryData?.attributes?.code;
+    }
+
     useEffect(() => {
-        APIs.getCountries()
-          .then(response => {
-            setCountries(response.data.data);
-          })
-          .catch(error => {
-            console.error('Error fetching data:', error);
-          });
         
-
-    }, []); 
-
-    // useEffect(() =>{
-    //     APIs.getSpecificUser(sellerId)
-    // })
-
-    useEffect(() => {
         setFormData((prevFormData) => ({...prevFormData, 
             first_name: user.first_name,
             last_name: user.last_name,
@@ -100,52 +91,55 @@ function Checkout() {
         shippingData.shippingaddress_streataddress_housenumber = user.shippingaddress_streataddress_housenumber;
         setShippingData({...shippingData});
 
-        const shippingDataForApi = {
-            "shippingaddress_postcode": shippingData.shippingaddress_postcode,
-            "shippingaddress_country": "BE",
-            "product_weight": 28   
-        }
-        APIs.getShippingCost(shippingDataForApi).then(res => {
-            let shippingCost = Number(res.data[0]?.price)
-            setShippingCost(shippingCost)
-            
-           
-        })
-
-        APIs.getCartData({customerid: user.id}).then(response => {
-            let checkoutProducts = response.data.rows;
-            setCheckoutProducts(checkoutProducts);
-            let sellerId = response.data.rows[0].seller_id
-            setSellerId(response.data.rows[0].seller_id)
-            APIs.getSpecificUser(sellerId).then((res) =>{
-                console.log(res.data)
-                setSellerShippingCountry(res.data.shippingaddress_country)
-                setSellerShippingPostCode(res.data.shippingaddress_postcode)
-            })
-            if (response.data.rows.length) {
-                let total = 0;
-                let totalDiscount = 0
-                // let totalWeight = 0;
-                // for(const obj of response.data.dat){
-                //     totalWeight += obj.total_weight
-                // }
-                // setTotalWeight(totalWeight)
-                for (const obj of response.data.rows) {
-                    total += obj.total_price;
-                    totalDiscount += obj.discount_price
-                }
-                total = total ? total += shippingCost : total;
-                setTotal(total);
-                setTotalDiscount(totalDiscount)
-
-            }
-            
-            }).then(() =>{
-                
+        APIs.getCountries().then(response => {
+            let countries: any = response.data.data
+            setCountries(countries);
+            APIs.getCartData({customerid: user.id}).then(response => {
+                let checkoutProducts = response.data.rows;
+                setCheckoutProducts(checkoutProducts);
+                let sellerId = response.data.rows[0].seller_id
+                setSellerId(response.data.rows[0].seller_id)
+                APIs.getSpecificUser(sellerId).then((res) => {
+                    let shippingCountryCode = getContryCode(res.data.shippingaddress_country, countries);
+                    let buyyerShippingCountryCode = getContryCode(user.shippingaddress_country, countries)
+                    let postingCode = res.data.shippingaddress_postcode;
+                    console.log(shippingCountryCode)
+                    let total: any = 0, totalDiscount = 0, totalWeight = 0;
+                    setSellerShippingCountry(shippingCountryCode)
+                    setSellerShippingPostCode(postingCode)
+                    if (checkoutProducts.length) {
+                        for(const obj of checkoutProducts) {
+                            totalWeight += obj.total_weight
+                        }
+                        setTotalWeight(totalWeight)
+                        for (const obj of checkoutProducts) {
+                            total += obj.total_price;
+                            totalDiscount += obj.discount_price
+                        }
+                        setTotalDiscount(totalDiscount)
+                    }
+                    const shippingDataForApi = {
+                        "shippingaddress_postcode": user.shippingaddress_postcode,
+                        "shippingaddress_country": buyyerShippingCountryCode,
+                        "product_weight": totalWeight,
+                        "from_postal_code": postingCode,
+                        "from_country": shippingCountryCode    
+                    }
+                    APIs.getShippingCost(shippingDataForApi).then(res => {
+                        let shippingCost = Number(res.data[0]?.price)
+                        setShippingCost(shippingCost)
+                        total = total ? total += shippingCost : total;
+                        total -= totalDiscount;
+                        total = total.toFixed(2)
+                        setTotal(Number(total))
+                    })
+                })
             }).catch(err => {
-            console.log(err);
+                console.log(err);
             })
-
+        }).catch(error => {
+            console.error('Error fetching data:', error);
+        });
     }, []);
 
     const checkFormStatus = () => {
@@ -489,7 +483,7 @@ function Checkout() {
                                             </tr>
                                             <tr>
                                                 <td className="pb-2 pt-1 px-3 semifont body-sub-titles-1 fw-bold border-0">Total</td>
-                                                <td className="pb-2 pt-1 pr-4 semifont body-sub-titles-1 fw-bold border-0 text-right">€{total  - totalDiscount}</td>
+                                                <td className="pb-2 pt-1 pr-4 semifont body-sub-titles-1 fw-bold border-0 text-right">€{total}</td>
                                             </tr>
                                             <tr  className="single">
                                                 

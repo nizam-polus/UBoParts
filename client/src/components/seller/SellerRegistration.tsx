@@ -288,7 +288,7 @@ function SellerRegistration() {
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Bank Name</label>
                                                             <input type="text" value={formData.Bank_name}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.Bank_name ? 'required-field' : 'border-0'}`}
-                                                                name="bank_name" placeholder="bank Name." 
+                                                                name="Bank_name" placeholder="bank Name." 
                                                                 onChange={(e) => handleFormChange(e)}
                                                             />
                                                         </td>

@@ -123,7 +123,7 @@ function SellerListings() {
                                         {sellerList && sellerList.map((item: any, index: any) => {
                                             return <div className="col-12 col-sm-6 col-lg-4">
                                                 <div className="latest-prods mb-5 card card-shadows seller-listing-products">
-                                                    {item.attributes.sale.data && (
+                                                    {(item.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && item.attributes.sale.data != null) && (
                                                         <span  className="sale-tag position-absolute">{item.attributes.sale.data.attributes.discount}</span>
                                                     )}
                                                     <div className="position-relative">
