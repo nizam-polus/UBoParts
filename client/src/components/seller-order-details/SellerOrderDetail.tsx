@@ -120,9 +120,6 @@ function SellerOrderDetails() {
                                                                     <tr>
                                                                         <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Order No</th>
                                                                     </tr>
-                                                                    {/* <tr>
-                                                                        <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">discount</th>
-                                                                    </tr> */}
                                                                     <tr>
                                                                         <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Order Total</th>
                                                                     </tr>
@@ -145,13 +142,7 @@ function SellerOrderDetails() {
                                                                             {orderId}
                                                                         </td>
                                                                     </tr>
-                                                                    {/* <tr>
-                                                                        <td className="custom-color-2 regularfont body-sub-titles-2 my-0">
-                                                                            {totalDiscount}
-                                                                        </td>
-                                                                    </tr> */}
-                                                                    <tr>
-                                                                    
+                                                                    <tr>    
                                                                         <td className="custom-color-2 regularfont body-sub-titles-2 my-0">
 
                                                                              {total - totalDiscount}
@@ -191,7 +182,7 @@ function SellerOrderDetails() {
                                                                             </td>
                                                                             <td className="custom-color-2 regularfont body-sub-titles-2 py-3 border-bottom text-center">{order?.attributes?.quantity}</td>
                                                                            <td className="custom-color-2 regularfont body-sub-titles-2 py-3 border-bottom text-center"> {order?.attributes?.product_price - order?.attributes?.discount_price}</td>
-                                                                            <td className="custom-color-2 regularfont body-sub-titles-2 py-3 border-bottom text-center">{order?.attributes?.total_price}</td>
+                                                                            <td className="custom-color-2 regularfont body-sub-titles-2 py-3 border-bottom text-center">{order?.attributes?.total_price - order?.attributes?.discount_price * order?.attributes.quantity}</td>
                                                                         </tr>
                                                                     </>
                                                                 )
