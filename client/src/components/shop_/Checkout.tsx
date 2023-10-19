@@ -8,6 +8,7 @@ function Checkout() {
     const {user, saveUser} = UserContext(); 
     const [checkoutProducts, setCheckoutProducts]: any = useState([]);
     const [sellerId, setSellerId] = useState<number>()
+    const [sellerIdsArray, setSellerIdsArray] = useState([])
     const [sellerShippingPostcode, setSellerShippingPostCode] = useState("")
     const [sellerShippingCountry, setSellerShippingCountry] = useState("")
     // const [sellerShippingPostcode, setSellerShippingPostCode] = useState("")
@@ -15,6 +16,7 @@ function Checkout() {
     const [totalDiscount, setTotalDiscount]: any = useState(0)
     const [totalWeight, setTotalWeight] = useState(0)
     const [shippingCost, setShippingCost] = useState<number>(0);
+    const [totalShippingCost, setTotalShippingCost] = useState<any>()
     const [countries, setCountries] = useState([])
     const [formData, setFormData] = useState({
         first_name: '',
@@ -41,24 +43,6 @@ function Checkout() {
     });
     const [incomplete, setIncomplete] = useState<any>(false);
     const [shippingIncomplete, setShippingIncomplete] = useState(false);
-
-    // const shippingDetails = {
-    //     "seller" : {
-    //         company: user.company,
-    //         email: user.email,
-    //         streetaddress_housenumber: user.streetaddress_housenumber,
-    //         streetaddress_apartment: user.streetaddress_apartment,
-    //         state: user.state,
-    //         country: user.country,
-    //         postcode: user.postcode
-    //     },
-    //     "buyyer" : {
-    //         shippingaddress_city : user.shippingaddress_city,
-    //         shippingaddress_country : user.shippingaddress_country,
-    //         shippingaddress_postcode : user.shippingaddress_postcode,
-    //         shippingaddress_state : user.shippingaddress_state,
-    //     }
-    // }
 
     const getContryCode = (country: string, countries: any[]) =>{
        let countryData: any = countries.find((item: any, index) => item.attributes.country == country);
@@ -96,49 +80,65 @@ function Checkout() {
             APIs.getCartData({customerid: user.id}).then(response => {
                 let checkoutProducts = response.data.rows;
                 setCheckoutProducts(checkoutProducts);
-                let sellerId = response.data.rows[0].seller_id
-                setSellerId(response.data.rows[0].seller_id)
-                APIs.getSpecificUser(sellerId).then((res) => {
-                    let shippingCountryCode = getContryCode(res.data.shippingaddress_country, countries);
-                    let buyyerShippingCountryCode = getContryCode((user.shippingaddress_country || formData.country), countries)
-                    let postingCode = res.data.shippingaddress_postcode;
-                    let total: any = 0, totalDiscount = 0, totalWeight = 0;
-                    setSellerShippingCountry(shippingCountryCode)
-                    setSellerShippingPostCode(postingCode)
-                    if (checkoutProducts.length) {
-                        for(const obj of checkoutProducts) {
-                            totalWeight += obj.total_weight
-                        }
-                        setTotalWeight(totalWeight)
-                        for (const obj of checkoutProducts) {
-                            total += obj.total_price;
-                            totalDiscount += obj.discount_price
-                        }
-                        setTotalDiscount(totalDiscount)
+                let sellerIdsArray: any = [];
+                checkoutProducts.forEach((product: any) => {
+                    let sellerId = product.seller_id;
+                    if (!sellerIdsArray.includes(sellerId)) {
+                      sellerIdsArray.push(sellerId);
                     }
-                    const shippingDataForApi = {
-                        "shippingaddress_postcode": user.shippingaddress_postcode ? user.shippingaddress_postcode : formData.postcode,
-                        "shippingaddress_country": buyyerShippingCountryCode,
-                        "product_weight": totalWeight,
-                        "from_postal_code": postingCode,
-                        "from_country": shippingCountryCode    
-                    }
-                    shippingDataForApi.shippingaddress_postcode && shippingDataForApi.shippingaddress_country && APIs.getShippingCost(shippingDataForApi).then(res => {
-                        if (!res || (res && !res.data.length)) {
-                            setShippingCost(0);
-                            total -= totalDiscount;
-                            total = total.toFixed(2)
-                            setTotal(Number(total))
-                        } else {
-                            let shippingCost = Number(res.data[0]?.price)
-                            setShippingCost(shippingCost)
-                            total = total ? total += shippingCost : total;
-                            total -= totalDiscount;
-                            total = total.toFixed(2)
-                            setTotal(Number(total))
+                  });
+                  console.log("array",sellerIdsArray)
+                  setSellerIdsArray(sellerIdsArray)
+                let totalShippingCost = 0
+                for(let i = 0; i < sellerIdsArray.length; i++){
+                    APIs.getSpecificUser(sellerIdsArray[i]).then((res) => {
+                        let shippingCountryCode = getContryCode(res.data.shippingaddress_country, countries);
+                        let buyyerShippingCountryCode = getContryCode((user.shippingaddress_country || formData.country), countries)
+                        let postingCode = res.data.shippingaddress_postcode;
+                        console.log(shippingCountryCode)
+                        let total: any = 0, totalDiscount = 0, totalWeight = 0;
+                        setSellerShippingCountry(shippingCountryCode)
+                        setSellerShippingPostCode(postingCode)
+                        if (checkoutProducts.length) {
+                            checkoutProducts.forEach((product: any) => {
+                                if (product.seller_id === sellerIdsArray[i]) {
+                                  totalWeight += product.total_weight;
+                                }
+                            });
+                            setTotalWeight(totalWeight)
+                            for (const obj of checkoutProducts) {
+                                total += obj.total_price;
+                                totalDiscount += obj.discount_price
+                            }
+                            setTotalDiscount(totalDiscount)
                         }
-                    })
-                })
+                        const shippingDataForApi = {
+                            "shippingaddress_postcode": user.shippingaddress_postcode ? user.shippingaddress_postcode : formData.postcode,
+                            "shippingaddress_country": buyyerShippingCountryCode,
+                            "product_weight": totalWeight,
+                            "from_postal_code": postingCode,
+                            "from_country": shippingCountryCode  
+                        }
+                        shippingDataForApi.shippingaddress_postcode && shippingDataForApi.shippingaddress_country && APIs.getShippingCost(shippingDataForApi).then(res => {
+                            if (!res || (res && !res.data.length)) {
+                                setShippingCost(0);
+                                total -= totalDiscount;
+                                total = total.toFixed(2)
+                                setTotal(Number(total))
+                            } else {
+                                let shippingCost = Number(res.data[0]?.price)
+                                setShippingCost(shippingCost)
+                                totalShippingCost += shippingCost
+                                setTotalShippingCost(totalShippingCost)
+                                total = total ? total += totalShippingCost : total;
+                                total -= totalDiscount;
+                                total = total.toFixed(2)
+                                setTotal(Number(total))
+                                console.log("totalShippingCost",totalShippingCost)
+                            } 
+                        })
+                    })   
+                }
             }).catch(err => {
                 console.log(err);
             })
@@ -156,7 +156,6 @@ function Checkout() {
         setIncomplete(incomplete);
         return incomplete;
     }
-
     const checkShippingDataStatus = () => {
         let shippingincomplete = true;
         shippingincomplete = differentAdd && !(!!shippingData.shippingaddress_city && 
@@ -203,12 +202,12 @@ function Checkout() {
                         quantity: ''
                     };
                     product.name = element.title;
-                    product.price = typeof (element.price) == 'string' ? Number(element.price) * 100 : element.price * 100;
+                    product.price = typeof (element.price) == 'string' ? (Number(element.price) - Number(element.discount_price)) * 100 : ((element.price ) - Number(element.discount_price)) * 100;
                     product.quantity = element.quantity;
                     cartData.push(product);
                 });
                 let totalPrice = typeof (total) == 'string' ? Number(total) * 100 : total * 100;
-                APIs.cartPayment({products: cartData, total_price: totalPrice, customerid: user.id, shipping_cost: shippingCost}).then(response => {
+                APIs.cartPayment({products: cartData, total_price: totalPrice, customerid: user.id, shipping_cost: totalShippingCost}).then(response => {
                     let redirectUrl = response.data.redirect_url
                     let transactionId = response.data.uid
                     localStorage.setItem('uid', transactionId);
@@ -217,7 +216,6 @@ function Checkout() {
             })
         }
     }
-
     return (
         <>
             <div className="main-body pb-5 mb-5">
@@ -480,7 +478,7 @@ function Checkout() {
                                             </tr>
                                             <tr>
                                                 <td className="pb-1 pt-0 pl-3 regularfont mini-text-2 border-0"><span>Shipping Cost</span></td>
-                                                <td className="pb-1 pt-0 pr-4 regularfont mini-text-2 border-0 text-right"><span>€{shippingCost}</span></td>
+                                                <td className="pb-1 pt-0 pr-4 regularfont mini-text-2 border-0 text-right"><span>€{totalShippingCost}</span></td>
                                             </tr>
                                             <tr>
                                                 <td className="pb-1 pt-2 pr-0 pl-3 semifont boldfontsize border-top-0"> <hr className="p-0 m-0 " /></td>

@@ -139,11 +139,6 @@ function OrderDetails() {
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td className="custom-color-2 regularfont body-sub-titles-2 my-0">
-                                                                    {totalDiscount}
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
                                                                
                                                                  <td className="custom-color-2 regularfont body-sub-titles-2 my-0">
                                                                     
@@ -185,7 +180,7 @@ function OrderDetails() {
                                                                         <td className="custom-color-2 regularfont body-sub-titles-2 py-3 border-bottom text-center">{order?.attributes?.quantity}</td>
                                                                         
                                                                         <td className="custom-color-2 regularfont body-sub-titles-2 py-3 border-bottom text-center"> {order?.attributes?.product_price - order?.attributes?.discount_price}</td>
-                                                                        <td className="custom-color-2 regularfont body-sub-titles-2 py-3 border-bottom text-center">{order?.attributes?.total_price}</td>
+                                                                        <td className="custom-color-2 regularfont body-sub-titles-2 py-3 border-bottom text-center">{order?.attributes?.total_price - order?.attributes?.discount_price * order?.attributes.quantity}</td>
                                                                     </tr>
                                                                 </>
                                                             )
