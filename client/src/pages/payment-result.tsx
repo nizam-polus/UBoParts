@@ -12,6 +12,7 @@ function PaymentResult() {
     const [path, setPath] = useState('');
     const [products, setProducts] = useState<any>([]);
     const [total, setTotal] = useState<number>(0);
+    const [totalDiscount, setTotalDiscount] = useState<number>(0);
     const [shippingCost, setShippingCost] = useState<number>(0);
 
     let interavls: any = [];
@@ -54,13 +55,17 @@ function PaymentResult() {
         }
         transactionId && APIs.getOrderWithTransactionid(transactionId).then((response: any) => {
             let OrderProducts = response.data.data;
+            setShippingCost(OrderProducts[0].attributes.shipping_cost)
             setProducts(OrderProducts);
             if (OrderProducts.length) {
                 let total = 0;
+                let totalDiscount = 0;
                 for (const obj of OrderProducts) {
                     total += obj.attributes.total_price;
+                    totalDiscount += obj.attributes.discount_price
                 }
                 setTotal(total);
+                setTotalDiscount(totalDiscount)
             }
         })
         status !== 'completed' && setTimeout(() => {
@@ -115,7 +120,7 @@ function PaymentResult() {
                                                                                         <Link href={'/products_/' + product?.attributes?.product_id}>{product?.attributes?.product_name}</Link><br />
                                                                                         <span className="lightfont body-sub-titles-2">Quantity: {product?.attributes?.quantity}</span>
                                                                                     </td>
-                                                                                    <td className="w-25">€{product?.attributes?.total_price}</td>
+                                                                                    <td className="w-25">€{product?.attributes?.total_price - product.attributes.discount_price * product.attributes.quantity}</td>
                                                                                 </tr>
                                                                             </>
                                                                         )
@@ -130,7 +135,7 @@ function PaymentResult() {
                                                     <table className="w-100">
                                                         <tbody>
                                                             <tr>
-                                                                <td className="w-75 pl-4">Shipping</td>
+                                                                <td className="w-75 pl-4">Shipping Cost</td>
                                                                 <td className="w-25">€{shippingCost}</td>
                                                             </tr>
                                                         </tbody>
@@ -142,7 +147,7 @@ function PaymentResult() {
                                                         <tbody>
                                                             <tr>
                                                                 <td className="w-75 pl-4 boldfont">Total</td>
-                                                                <td className="w-25 boldfont">€{total + shippingCost}</td>
+                                                                <td className="w-25 boldfont">€{total + shippingCost - totalDiscount}</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
