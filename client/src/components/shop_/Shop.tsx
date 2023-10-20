@@ -60,13 +60,14 @@ function Shop() {
     }
 
     useEffect(() => {
-        let makeId, modelId, yearId, category;
+        let makeId, modelId, yearId, category, articleNumber;
         APIs.getCarMake().then((response: any) => {
             setMakesArray(response.data.rows);
             makeId = localStorage.getItem('makeId') || '';
             modelId = localStorage.getItem('modelId') || '';
             yearId = localStorage.getItem('yearId') || '';
             category = localStorage.getItem('category') || '';
+            articleNumber = localStorage.getItem('article') || '';
             makeId && getModel(makeId);
             makeId && modelId && getYear(modelId);
             setSelectedMake(makeId);
@@ -77,7 +78,11 @@ function Shop() {
             setSelectedModel(modelId);
             setSelectedYear(yearId);
             setSelectedCategory(category);
-            if (makeId && modelId && yearId) {
+            if (articleNumber) {
+                APIs.getProductUsingArticleNumber(articleNumber).then(response => {
+                    setSearchedProducts(response.data.data)
+                })
+            } else if (makeId && modelId && yearId) {
                 searchProducts(makeId, modelId, yearId, category)
             } else {
                 getAllProducts();
@@ -152,13 +157,17 @@ function Shop() {
         let makeId = event.target.value
         getModel(makeId);
         setSelectedMake(event.target.value);
-        setFilterCategory([])
+        setSelectedModel('');
+        setSelectedYear('');
+        setFilterCategory([]);
+        localStorage.removeItem('article');
     };
 
     const handleModelChange = (event: any) => {
         let modelId = event.target.value;
         getYear(modelId);
         setSelectedModel(modelId);
+        setSelectedYear('');
         searchProducts(selectedMake, modelId, '', '');
     };
 
@@ -186,6 +195,7 @@ function Shop() {
         localStorage.removeItem('model');
         localStorage.removeItem('year');
         localStorage.removeItem('category');
+        localStorage.removeItem('article')
         getAllProducts();
     }
 
@@ -227,10 +237,6 @@ function Shop() {
             filteredSubcategories = filteredSubcategories.filter((item: any) => item !== subcategory);
         }
         setFilterSubcategory(filteredSubcategories);
-    }
-
-    const handlePriceChange = (value: any) => {
-        console.log(value[0], value[1]);
     }
 
     const handleApplyFilter = (event: any) => {
@@ -321,8 +327,6 @@ function Shop() {
           setSortState('&sort[0]=price:asc');
           sort = '&sort[0]=price:asc';
         }
-        
-        // The API calls will be made inside the useEffect hook
       };
 
     useEffect(() => {
@@ -436,7 +440,7 @@ function Shop() {
                                             <select disabled={!selectedMake} className="form-select semifont placeholderfontsize" name="model" id="modelOption"
                                                 value={selectedModel} onChange={handleModelChange}
                                             >
-                                                <option value="" disabled={!selectedMake}>Select Model</option>
+                                                <option value="" disabled={true}>Select Model</option>
                                                 {modelArray.map((model: any, index: any) => (
                                                     <option key={index} value={model.id}>{model.model}</option>
                                                 ))}
@@ -449,7 +453,7 @@ function Shop() {
                                                 className="form-select semifont placeholderfontsize" name="year" id="yearOption"
                                                 value={selectedYear} onChange={handleYearChange}
                                             >
-                                                <option value="" disabled={!selectedModel}>Select Year</option>
+                                                <option value="" disabled={true}>Select Year</option>
                                                 {yearArray.map((year: any, index: any) => (
                                                     <option key={index} value={year.id}>{year.year}</option>
                                                 ))}
