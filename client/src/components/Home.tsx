@@ -46,8 +46,8 @@ function Home() {
     const [startIndex, setStartIndex] = useState(0)
     const [makeData, setMakeData] = useState<any>([]);
     const [makePageNum, setMakePageNum] = useState(1);
-    const [makeItemCount, setMakeItemCount] = useState(4)
-    // const [windowWdth, setWindowWidth] = useState(0)
+    const [makeItemCount, setMakeItemCount] = useState(4);
+    const [articleNumber, setArticleNumber] = useState<any>('');
 
     useEffect(() => {
         if (licenseplate && licenseplate.length > 5) {
@@ -214,6 +214,7 @@ function Home() {
         localStorage.setItem('modelId', selectedModel);
         localStorage.setItem('yearId', selectedYear);
         localStorage.setItem('category', selectedCategory);
+        localStorage.setItem('article', articleNumber);
         router.push('/shop')
     }
 
@@ -246,11 +247,13 @@ function Home() {
         setSelectedMake(event.target.value);
         setSelectedModel('');
         setSelectedYear('');
+        setArticleNumber('');
     };
 
     const handleLicenseplateChange = (event: any) => {
         setSearched(false);
         setLicenseplate(event.target.value.toUpperCase());
+        setArticleNumber('');
     };
 
     const handleModelChange = (event: any) => {
@@ -284,7 +287,6 @@ function Home() {
         if (!user || user && !user.id) {
             setOpenLogin(true);
         } else {
-
             setOpenLogin(false);
             setAddToCartCompleted(false)
             setItemId(productData?.id)
@@ -348,11 +350,25 @@ function Home() {
         }
       };      
 
-    const handleMakeClick = (HomeMakeId: any) =>{
+    const handleMakeClick = (HomeMakeId: any) => {
+        setArticleNumber('');
         router.push({
             pathname: '/shop',
             query: { 'HomeMakeId': HomeMakeId },
         })
+    }
+
+    const handleArticleChange = (event: any) => {
+        const newValue = event.target.value.replace(/[^0-9.]/g, '');
+        if (newValue !== event.target.value) {
+            event.target.value = newValue;
+        }
+        setSelectedMake('');
+        setSelectedModel('');
+        setSelectedYear('');
+        setSelectedCategory('');
+        setLicenseplate('');
+        setArticleNumber(newValue);
     }
 
     function discountedPrice(originalPrice: any, discountPercentage:any) {
@@ -395,7 +411,7 @@ function Home() {
                                     <div className="row g-2 flex-column flex-lg-row">
                                         <div className="col">
                                             <div className="form-group">
-                                                <input type="form-control" 
+                                                <input type="form-control" value={licenseplate}
                                                     onChange={handleLicenseplateChange} name="plate_number" 
                                                     className="semifont placeholderfontsize" 
                                                     placeholder="Search with Car's Plate Number" 
@@ -415,8 +431,9 @@ function Home() {
                                         </div>
                                         <div className="col">
                                             <div className="form-group">
-                                                <input type="form-control" name="article_number"
-                                                 className="semifont placeholderfontsize" placeholder="Search with product Article" 
+                                                <input type="form-control" name="article_number" value={articleNumber}
+                                                    className="semifont placeholderfontsize" placeholder="Search with product Article"
+                                                    onChange={handleArticleChange}
                                                 />
                                             </div>
                                         </div>
@@ -525,12 +542,12 @@ function Home() {
                         <div className="row mt-3 g-4">
                             { !user?.role || user.role.name !== "seller" ? (
                                 <>
-                                    <div className="col" onClick={() => router.push('/request')}>
+                                    <div className="col-12 col-sm-6" onClick={() => router.push('/request')}>
                                         <div className="specific_part">
                                             <h3 className="text-white bg-image-text semifont m-0 selling-text">Need A <br />Specific Part?</h3>
                                         </div>
                                     </div>
-                                    <div className="col" onClick={() => router.push('/seller-registration')}>
+                                    <div className="col-12 col-sm-6 my-3 my-md-0" onClick={() => router.push('/seller-registration')}>
                                         <div className="start_selling">
                                             <h3 className="text-white bg-image-text semifont m-0 selling-text">Start Selling <br />With Us</h3>
                                         </div>
@@ -567,7 +584,7 @@ function Home() {
                         <div className="row mt-5 mt-lg-4 mt-xxl-5 g-4">
                             {categoriesDetail.length > 0 ? categoriesDetail.slice(0, 4).map((item:any, index:any) => {
                                 return (
-                                <div key={index} className="col-6 col-md-3">
+                                <div key={index} className="col-12 col-sm-6 col-md-3 my-3 my-md-0">
                                     <div className="prod-cats card">
                                     {item.attributes.category_image.data ? (
                                             <AppImage style={{height: "270px", objectFit: "contain"}} 
@@ -585,27 +602,24 @@ function Home() {
                             }) : ""}
                         </div>
                     </section>
-                <section className='d-flex align-items-center justify-content-center' 
-                    style={{ height: "200px", margin: "50px 0", background: "white" }}
-                >
-                   <div className='p-4 d-flex flex-row align-items-center justify-content-center'>
-                        <div style={{ width: "200px" }}>
+                <section className='d-flex align-items-center justify-content-center ubo-brands-slider-wrapper'>
+                   <div className='p-4 d-flex flex-column flex-sm-row align-items-center justify-content-center'>
+                        <div className='ubo-brands-slider-title'>
                             <h4><FormattedMessage id="SEARCH_BY_CAR_BRAND"/></h4>
                             {/* <h4>Search by Car Brand</h4> */}
                         </div>
-                        <div style={{display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", minWidth: "800px"}}>
-                        {makeData.slice(startIndex, startIndex + 4).map((item :any, index:any) => (
-                            <div key={index} style={{ width: "200px" }} onClick={() => handleMakeClick(item.id)}>
+                        <div className='d-flex align-items-center'>
+                        <div className='ubo-brands-slider'>
+                        {makeData.map((item :any, index:any) => (
+                            <div key={index} onClick={() => handleMakeClick(item.id)}>
                                 <img src={item.attributes.make_logo.data ? 
                                         BASE_URL + item.attributes.make_logo.data.attributes.url : ""} 
-                                    alt="" width="120px" height="120px"  style={{ cursor: 'pointer' }} 
+                                    alt="" style={{ cursor: 'pointer' }} 
                                 />
                             </div>
                         ))}
                         </div>
-                        <button onClick={handleLeftArrowClick} 
-                            style={{ height: "75px", width: "75px", borderRadius: "50%", border: "3px solid green" }}
-                        >
+                        <button className='ubo-brands-slider-nav' onClick={handleLeftArrowClick}>
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     width="20" height="20" fill="currentColor"
                                     className="bi bi-arrow-left" viewBox="0 0 16 16"
@@ -617,9 +631,7 @@ function Home() {
                                 </svg>
                         </button>
                       
-                        <button onClick={handleArrowClick} 
-                            style={{ height: "75px", width: "75px", borderRadius: "50%", border: "3px solid green" }}
-                        >
+                        <button className='ubo-brands-slider-nav ml-2' onClick={handleArrowClick}>
                             <svg xmlns="http://www.w3.org/2000/svg" 
                                 width="20" height="20" fill="currentColor" 
                                 className="bi bi-arrow-right" viewBox="0 0 16 16"
@@ -629,6 +641,7 @@ function Home() {
                                 />
                             </svg>
                         </button>
+                        </div>
                    </div>
                 </section>
                 <section className="latest-products-wrapper">

@@ -81,6 +81,11 @@ span.count, span.home_count {
     right: 10px;
     color: #fff;
 }
+span.home_count {
+	position: absolute;
+	top: -15px;
+    right: -10px;
+}
 .home-header {
 	background-image: url('./../../images/young-man-mechanic-repairing-car-parts-on-worktabl-2023-05-12-20-24-56-utc 1.png');
 	background-size: cover;
