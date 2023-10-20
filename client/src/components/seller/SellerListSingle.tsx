@@ -196,7 +196,7 @@ const SellerListSingle = () => {
                                                                 <div>REK NUMMER : {productData?.attributes?.product_location_warehouse}</div>
                                                                 {/* <div> {productData?.attributes?.product_location_warehouse}</div> */}
                                                             </div>
-                                                            <div className='text-right'>Article No {productData?.attributes?.article_number}</div>
+                                                            <div className='text-right'>ARTICLE NO {productData?.attributes?.article_number}</div>
                                                             <div className='text-right'>{productData?.attributes?.make?.data?.attributes?.make_name} {productData?.attributes?.model?.data?.attributes?.model_name} {productData?.attributes?.year?.data?.attributes?.year}</div>
                                                         </div>
                                                     </div>

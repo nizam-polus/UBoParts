@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import AppImage from '../shared/AppImage';
 import APIs from '~/services/apiService';
 import { UserContext } from '../account_/UserContext';
 
@@ -7,15 +6,7 @@ function Checkout() {
 
     const {user, saveUser} = UserContext(); 
     const [checkoutProducts, setCheckoutProducts]: any = useState([]);
-    const [sellerId, setSellerId] = useState<number>()
-    const [sellerIdsArray, setSellerIdsArray] = useState([])
-    const [sellerShippingPostcode, setSellerShippingPostCode] = useState("")
-    const [sellerShippingCountry, setSellerShippingCountry] = useState("")
-    // const [sellerShippingPostcode, setSellerShippingPostCode] = useState("")
     const [total, setTotal]: any = useState(0);
-    const [totalDiscount, setTotalDiscount]: any = useState(0)
-    const [totalWeight, setTotalWeight] = useState(0)
-    const [shippingCost, setShippingCost] = useState<number>(0);
     const [totalShippingCost, setTotalShippingCost] = useState<any>()
     const [countries, setCountries] = useState([])
     const [formData, setFormData] = useState({
@@ -43,6 +34,7 @@ function Checkout() {
     });
     const [incomplete, setIncomplete] = useState<any>(false);
     const [shippingIncomplete, setShippingIncomplete] = useState(false);
+    const [shippingCostGetApiData, setShippingCostGetApiData] = useState<any>([])
 
     const getContryCode = (country: string, countries: any[]) =>{
        let countryData: any = countries.find((item: any, index) => item.attributes.country == country);
@@ -73,79 +65,98 @@ function Checkout() {
         shippingData.shippingaddress_streataddress_apartment = user.shippingaddress_streataddress_apartment;
         shippingData.shippingaddress_streataddress_housenumber = user.shippingaddress_streataddress_housenumber;
         setShippingData({...shippingData});
+    }, []);
 
+    useEffect(() =>{
         APIs.getCountries().then(response => {
-            let countries: any = response.data.data
+            let countries: any = response.data.data;
             setCountries(countries);
-            APIs.getCartData({customerid: user.id}).then(response => {
+            APIs.getCartData({ customerid: user.id }).then(response => {
                 let checkoutProducts = response.data.rows;
                 setCheckoutProducts(checkoutProducts);
                 let sellerIdsArray: any = [];
                 checkoutProducts.forEach((product: any) => {
                     let sellerId = product.seller_id;
                     if (!sellerIdsArray.includes(sellerId)) {
-                      sellerIdsArray.push(sellerId);
+                        sellerIdsArray.push(sellerId);
                     }
-                  });
-                  console.log("array",sellerIdsArray)
-                  setSellerIdsArray(sellerIdsArray)
-                let totalShippingCost = 0
-                for(let i = 0; i < sellerIdsArray.length; i++){
-                    APIs.getSpecificUser(sellerIdsArray[i]).then((res) => {
+                });
+                console.log("array", sellerIdsArray);
+                let totalShippingCost = 0;
+                let shippingcostapidataArray: any = [];
+        
+                // Create an array of promises for each seller's shipping data
+                const shippingDataPromises = sellerIdsArray.map((sellerId: any) => {
+                    return APIs.getSpecificUser(sellerId).then((res) => {
                         let shippingCountryCode = getContryCode(res.data.shippingaddress_country, countries);
                         let buyyerShippingCountryCode = getContryCode((user.shippingaddress_country || formData.country), countries)
                         let postingCode = res.data.shippingaddress_postcode;
                         console.log(shippingCountryCode)
                         let total: any = 0, totalDiscount = 0, totalWeight = 0;
-                        setSellerShippingCountry(shippingCountryCode)
-                        setSellerShippingPostCode(postingCode)
                         if (checkoutProducts.length) {
                             checkoutProducts.forEach((product: any) => {
-                                if (product.seller_id === sellerIdsArray[i]) {
+                                if (product.seller_id === sellerId) {
                                   totalWeight += product.total_weight;
                                 }
                             });
-                            setTotalWeight(totalWeight)
                             for (const obj of checkoutProducts) {
                                 total += obj.total_price;
                                 totalDiscount += obj.discount_price
                             }
-                            setTotalDiscount(totalDiscount)
+
+                            setTotal(total - totalDiscount);
                         }
                         const shippingDataForApi = {
+                            "seller_id": sellerId,
                             "shippingaddress_postcode": user.shippingaddress_postcode ? user.shippingaddress_postcode : formData.postcode,
                             "shippingaddress_country": buyyerShippingCountryCode,
                             "product_weight": totalWeight,
                             "from_postal_code": postingCode,
                             "from_country": shippingCountryCode  
                         }
-                        shippingDataForApi.shippingaddress_postcode && shippingDataForApi.shippingaddress_country && APIs.getShippingCost(shippingDataForApi).then(res => {
-                            if (!res || (res && !res.data.length)) {
-                                setShippingCost(0);
-                                total -= totalDiscount;
-                                total = total.toFixed(2)
-                                setTotal(Number(total))
-                            } else {
-                                let shippingCost = Number(res.data[0]?.price)
-                                setShippingCost(shippingCost)
-                                totalShippingCost += shippingCost
-                                setTotalShippingCost(totalShippingCost)
-                                total = total ? total += totalShippingCost : total;
-                                total -= totalDiscount;
-                                total = total.toFixed(2)
-                                setTotal(Number(total))
-                                console.log("totalShippingCost",totalShippingCost)
-                            } 
-                        })
-                    })   
-                }
+                        shippingcostapidataArray.push(shippingDataForApi)
+
+                        return shippingcostapidataArray
+                        
+                    });
+                });
+        
+                // Wait for all promises to resolve
+                Promise.all(shippingDataPromises).then((shippingDataArray) => {
+                    // All data has been collected, and the array is complete
+                    shippingcostapidataArray = shippingDataArray;
+        
+                    console.log("shippingData", shippingcostapidataArray);
+
+                    // Now, you can call the getShippingCost API with the complete data
+                    APIs.getShippingCost({ "shipping_data": shippingcostapidataArray[0] }).then((res: any) => {
+                        if (!res || (res && !res.data.length) ) {
+                            setTotal(Number(total));
+                        } else {
+                            // Calculate the total shipping cost
+                            const shippingCostArray = res.data; // Assuming res.data is your array
+                    
+                            // Use reduce to sum up the shipping costs
+                            const totalShippingCost = shippingCostArray.reduce((total: any, item: any) => {
+                                return total + parseFloat(item.price_details);
+                            }, 0);
+                    
+                            console.log("Total Shipping Cost: " + totalShippingCost);
+                    
+                            // Now, you can update your state with the total shipping cost
+                            setTotalShippingCost(totalShippingCost)
+                            console.log("shippingside",total)
+                            // setTotal(total + shippingCost);
+                        }
+                        console.log("shipping response",res);
+                    });
+                });
             }).catch(err => {
                 console.log(err);
-            })
-        }).catch(error => {
-            console.error('Error fetching data:', error);
+            });
         });
-    }, [formData.country, formData.postcode, shippingData.shippingaddress_country, shippingData.shippingaddress_postcode]);
+        
+    },[formData.country, formData.postcode, shippingData.shippingaddress_country, shippingData.shippingaddress_postcode])
 
     const checkFormStatus = () => {
         let incomplete = true;
@@ -486,7 +497,7 @@ function Checkout() {
                                             </tr>
                                             <tr>
                                                 <td className="pb-2 pt-1 px-3 semifont body-sub-titles-1 fw-bold border-0">Total</td>
-                                                <td className="pb-2 pt-1 pr-4 semifont body-sub-titles-1 fw-bold border-0 text-right">€{total}</td>
+                                                <td className="pb-2 pt-1 pr-4 semifont body-sub-titles-1 fw-bold border-0 text-right">€{(total + totalShippingCost).toFixed(2)}</td>
                                             </tr>
                                             <tr  className="single">
                                                 

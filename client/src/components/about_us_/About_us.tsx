@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import AppLink from '~/components/shared/AppLink';
 import AppImage from '../shared/AppImage';
+import { FormattedMessage } from 'react-intl';
 function About_us() {
     return (
         <> 
@@ -9,15 +10,15 @@ function About_us() {
                     <section className="about-content-wrapper">
                         <div className="row ps-5 pe-5 pt-4 pb-4">
                             <div className="col-12">
-                                <p className="semifont heading_text custom-color-1">About Us</p>
-                                <p className="body-sub-titles-1 lightfont custom-color-1">UBO Parts Inc is a Netherlands-based online third-party platform specializing in automotive technology. Our mission is to empower all participants in the Dutch automotive ecosystem, particularly car dismantlers, by enhancing the management of their spare parts operations. We commit to providing top-quality spare parts, thereby efficiently streamlining operations and promoting excellence throughout the industry.</p>
+                                <p className="semifont heading_text custom-color-1"><FormattedMessage id="ABOUT_US"/></p>
+                                <p className="body-sub-titles-1 lightfont custom-color-1"><FormattedMessage id="ABOUT_US_DISCRIPTION"/></p>
                             </div>
                         </div>
                     </section>
                     <section className="about-proffessionals-wrapper mt-4 pt-1">
                         <div className="row mt-3 mt-md-3 mt-xl-5">
                             <div className="col-12">
-                                <p className="semifont text-size-3 custom-color-1 text-center pb-3 pt-3">Meet Our Professional Team</p>
+                                <p className="semifont text-size-3 custom-color-1 text-center pb-3 pt-3"><FormattedMessage id="MEET_OUR_TEAM"/></p>
                             </div>
                         </div>
                         <div className="row mt-2 g-3">
@@ -69,7 +70,7 @@ function About_us() {
                         <div className="container">
                             <div className="row p-5">
                             <div className="col text-center p-xl-5 p-md-5">
-                                    <a href="" className=" custom-color-11 button-bg-color-1 lightfont body-sub-titles px-5 pt-4 pb-4 ps-3 pe-3 rounded button-color">Contact Us</a>
+                                    <a href="" className=" custom-color-11 button-bg-color-1 lightfont body-sub-titles px-5 pt-4 pb-4 ps-3 pe-3 rounded button-color"><FormattedMessage id="CONTACT_US" /></a>
                             </div>
                             </div>
                         </div>

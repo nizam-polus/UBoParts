@@ -406,11 +406,13 @@
   "MEET_OUR_TEAM": "Meet Our Professional Team",
   "CONTACT_US": "Contact Us",
 
-  "REQUST_PARTS": "Request Parts With Us",
+  "REQUEST_PARTS": "Request Parts With Us",
+  "REQUEST_DISCRIPTION" : "Browse our expansive selection featuring hundreds of brands and tens of thousands of quality parts.",
   "PLATE_NO": "Plate Number",
   "AUTO_MODEL": "Auto Model",
   "YEAR": "Year",
   "MARK": "Mark",
+  "USER_NAME": "Username",
   "FIRST_NAME": "First Name",
   "LAST_NAME": "Last Name",
   "EMAIL_ADDRESS": "Email Address",
@@ -427,19 +429,32 @@
 
 
   "DISMANTLE_CAR": "Dismantle your car with us",
+  "DRIVING_CONDITION": "Driving Condition",
 
   "LOGIN": "Login",
   "lOGIN_DETAILS": "Welcome back! Please enter your details",
+  "PASSWORD": "Password",
+  "CONFIRM_PASSWORD": "Confirm password",
   "REGISTER_DETAILS": "Let’s get you all setup so you can verify your personal account and begin setting up your profile",
   "REMEMBER_ME": "Remember me",
   "FORGOT_PASSWORD": "Forgot Password",
   "DONT_HAVE_AN_ACCOUNT": "Don't have an account?",
   "REGISTER": "Register",
+  "AGREE_TO_THE": "I agree to the",
+  "TERMS_AND_CONDITION": "terms and conditions",
   "AGREE_CONDITION": "I agree to the terms and conditions",
   "ALREADY_REGISTERD": "Already registered?",
+  "REGISTRATION_COMPLETED": "Registration Completed!",
 
   "IN_STOCK": "In Stock",
-  "ADD_TO_CART": "Add to Cart"
+  "ADD_TO_CART": "Add to Cart",
+
+
+  "LISTINGS": "Listings",
+  "CREATE_NEW_LISTING": "Create New Listing",
+  "DELETE" : "Delete",
+  "DELETING" : "Deleting...",
+  "EDIT": ""
 
 
 
