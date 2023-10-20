@@ -10,7 +10,7 @@ const getToken = () => {
     }
 }
 
-const token = '16a1c655799a2c5d2dc3a390d2ee7b0cc86d38c8f3facdb8a42e76332906d3f52fd2288f9675f996b17efbb264e72e4479237f7e34abb6221017c5acfa53569cb6e24bcdb0b434d27a2383625734321b2e58ba29e75ba437b97430c7af9fcb70962ce73eef1b4a31add2910407a4c9b80df6dc741c2e2be049c3628dbeba1f92';
+const token = 'f514abac9b5d891002239c6ff2069908f06f868662d9f36d7b7e25e650cb007419f890453d4f63de9b023a6c72b1946f4a05070ef5d1a601732f304a4bf4b106b091f059cce346e0eb008e11c743600cdaf04c3ae74ae195841b957b98b36935473ea98219d1d7d2a0378982ff22b69fd4a918142b3c7b3f6314bb32fb8eba36';
 
 const headers = {
     Authorization: `Bearer ${token}`,
@@ -111,6 +111,8 @@ const APIs = {
     },
     
     getProduct: (id: any) => axios.get(BACKEND_URL + 'products/' + id + '?populate=*', {headers}),
+
+    getProductUsingArticleNumber: (articleNumber: any) => axios.get(BACKEND_URL + 'products?populate=*&filters[$and][0][article_number][$eq]=' + articleNumber, {headers}),
        
     getCountries: () => axios.get(BACKEND_URL + 'countries/', {headers}),
 
@@ -119,6 +121,15 @@ const APIs = {
     paymentUpdate: () => axios.post(BACKEND_URL + 'payment-status-update', {headers}),
 
     getLicenseplate: (data: any) => axios.get(BACKEND_URL + `cardetails?populate=*&filters[licenseplate][$contains]=${data}`, {headers}),    
+
+    requestPart: (formData: any) => axios.post(BACKEND_URL + 'request-parts', {data: formData}, {headers}),
+
+    dismantleCar: (formData: any) => axios.post(BACKEND_URL + 'dismantles', {data: formData}, {headers}),
+
+    uploadImageForDismantle: (picData: any) => axios.post(BACKEND_URL + 'upload', picData, {headers: {
+        Authorization: headers.Authorization,
+        'content-type': 'multipart/form-data'
+    }}),
 
 
         /* ---------------- jwt token based apis ----------------- */
@@ -150,13 +161,15 @@ const APIs = {
         'content-type': 'multipart/form-data'
     }}),
 
-    getCustomerOrder: (username: string) => ds.post(BACKEND_URL + 'order-distinct-user?populate=*', {user_name: username}),
+    getCustomerOrder: (username: string) => ds.post(BACKEND_URL + 'order-distinct-user?populate=*&sort[0]=createdAt:desc', {user_name: username}),
 
     getOrderDetails: (orderId: string) => ds.get(BACKEND_URL + 'order-details?populate=*&filters[$and][0][orderid][$eq]=' + orderId),
 
     getOrderWithTransactionid: (transactionId: string) => ds.get(BACKEND_URL + 'order-details?populate=*&filters[$and][0][transaction_id][$eq]=' + transactionId),
 
-    getSellerOrder: (sellerUsername: string) => ds.post(BACKEND_URL + 'order-distinct-seller?populate=*', {seller_name: sellerUsername}),
+    getSellerOrder: (sellerUsername: string) => ds.post(BACKEND_URL + 'order-distinct-seller?populate=*&sort[0]=id:desc', {seller_name: sellerUsername}),
+
+    getAllSellerOrders: (sellerUsername: string) => ds.get(BACKEND_URL + 'order-details?populate=*&filters[$and][][seller][$eq]=' + sellerUsername),
 
     setParts: (data: any) => ds.post(BACKEND_URL + 'parts',  {...data}),
 

@@ -56,9 +56,9 @@ function Request() {
                 console.log(response);
                 const refId = response.data.data.id
                 const picData = {
-                    ref: 'api::dismantle.dismantle',
+                    ref: 'api::request-part.request-part',
                     refId: refId,
-                    field: 'car_image',
+                    field: 'part_image',
                     files: imageData
                 }
                 APIs.uploadImageForDismantle(picData).then(response => {
