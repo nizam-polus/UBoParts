@@ -22,6 +22,12 @@ const dataShopLanguages: ILanguage[] = [
         name: 'RTL',
         icon: '/images/languages/language-3.png',
         direction: 'rtl',
+    },{
+        locale: 'nl',
+        code: 'nl',
+        name: 'Dutch',
+        icon: '/images/languages/language-3.png',
+        direction: 'ltr',
     },
 ];
 

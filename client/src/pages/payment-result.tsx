@@ -147,7 +147,7 @@ function PaymentResult() {
                                                         <tbody>
                                                             <tr>
                                                                 <td className="w-75 pl-4 boldfont">Total</td>
-                                                                <td className="w-25 boldfont">€{total + shippingCost - totalDiscount}</td>
+                                                                <td className="w-25 boldfont">€{(total + shippingCost - totalDiscount).toFixed(2)}</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
