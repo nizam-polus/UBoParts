@@ -48,11 +48,11 @@ function Footer() {
                                 <p className="regularfont short-labels-1 label-color-1 mb-2">Enter your email address to subscribe to our newsletter and keep up to date with discounts and special offers.</p>
                                 <form className="newsletter-signup">
                                     <div className="row g-2 mb-2">
-                                        <div className="col">
+                                        <div className="col-12 col-sm-6">
                                             <input type="email" className=" lightfont form-control h-auto input-bg-color-1 text-white footer-placeholder-font-size rounded-lg border-0" placeholder="Email Address..." name="email"/>
                                         </div>
-                                        <div className="col">
-                                            <button type="submit" className="btn regularfont h-auto button-bg-color-1 text-white border-0 rounded-lg">Subscribe</button>
+                                        <div className="col-12 col-sm-6 pl-sm-0">
+                                            <button type="submit" className="btn regularfont button-bg-color-1 text-white border-0 rounded-lg ubo-btn-subscribe">Subscribe</button>
                                         </div>
                                     </div>
                                     <div className="row">
