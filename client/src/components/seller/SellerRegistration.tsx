@@ -90,7 +90,6 @@ function SellerRegistration() {
     }
 
     const handleFormChange = (event: any) => {
-        // checkFormStatus();
         const { name, value } = event.target;
         setFormData((prevFormData => ({...prevFormData, [name]: value})));
     }
@@ -100,7 +99,7 @@ function SellerRegistration() {
         let incomplete = checkFormStatus();
         setIncomplete(incomplete);
         let reqElement = document.getElementById('required');
-        if (reqElement) reqElement.scrollIntoView({behavior: 'smooth'})
+        if (reqElement && incomplete) reqElement.scrollIntoView({behavior: 'smooth'})
         let sellerData: any = {
             first_name: formData.first_name,
             last_name: formData.last_name,
