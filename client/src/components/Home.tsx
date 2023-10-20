@@ -46,8 +46,8 @@ function Home() {
     const [startIndex, setStartIndex] = useState(0)
     const [makeData, setMakeData] = useState<any>([]);
     const [makePageNum, setMakePageNum] = useState(1);
-    const [makeItemCount, setMakeItemCount] = useState(4)
-    // const [windowWdth, setWindowWidth] = useState(0)
+    const [makeItemCount, setMakeItemCount] = useState(4);
+    const [articleNumber, setArticleNumber] = useState<any>('');
 
     useEffect(() => {
         if (licenseplate && licenseplate.length > 5) {
@@ -214,6 +214,7 @@ function Home() {
         localStorage.setItem('modelId', selectedModel);
         localStorage.setItem('yearId', selectedYear);
         localStorage.setItem('category', selectedCategory);
+        localStorage.setItem('article', articleNumber);
         router.push('/shop')
     }
 
@@ -246,11 +247,13 @@ function Home() {
         setSelectedMake(event.target.value);
         setSelectedModel('');
         setSelectedYear('');
+        setArticleNumber('');
     };
 
     const handleLicenseplateChange = (event: any) => {
         setSearched(false);
         setLicenseplate(event.target.value.toUpperCase());
+        setArticleNumber('');
     };
 
     const handleModelChange = (event: any) => {
@@ -284,7 +287,6 @@ function Home() {
         if (!user || user && !user.id) {
             setOpenLogin(true);
         } else {
-
             setOpenLogin(false);
             setAddToCartCompleted(false)
             setItemId(productData?.id)
@@ -348,11 +350,25 @@ function Home() {
         }
       };      
 
-    const handleMakeClick = (HomeMakeId: any) =>{
+    const handleMakeClick = (HomeMakeId: any) => {
+        setArticleNumber('');
         router.push({
             pathname: '/shop',
             query: { 'HomeMakeId': HomeMakeId },
         })
+    }
+
+    const handleArticleChange = (event: any) => {
+        const newValue = event.target.value.replace(/[^0-9.]/g, '');
+        if (newValue !== event.target.value) {
+            event.target.value = newValue;
+        }
+        setSelectedMake('');
+        setSelectedModel('');
+        setSelectedYear('');
+        setSelectedCategory('');
+        setLicenseplate('');
+        setArticleNumber(newValue);
     }
 
     function discountedPrice(originalPrice: any, discountPercentage:any) {
@@ -395,7 +411,7 @@ function Home() {
                                     <div className="row g-2 flex-column flex-lg-row">
                                         <div className="col">
                                             <div className="form-group">
-                                                <input type="form-control" 
+                                                <input type="form-control" value={licenseplate}
                                                     onChange={handleLicenseplateChange} name="plate_number" 
                                                     className="semifont placeholderfontsize" 
                                                     placeholder="Search with Car's Plate Number" 
@@ -415,8 +431,9 @@ function Home() {
                                         </div>
                                         <div className="col">
                                             <div className="form-group">
-                                                <input type="form-control" name="article_number"
-                                                 className="semifont placeholderfontsize" placeholder="Search with product Article" 
+                                                <input type="form-control" name="article_number" value={articleNumber}
+                                                    className="semifont placeholderfontsize" placeholder="Search with product Article"
+                                                    onChange={handleArticleChange}
                                                 />
                                             </div>
                                         </div>
