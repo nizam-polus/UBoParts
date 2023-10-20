@@ -14,7 +14,7 @@ import { BASE_URL } from 'configuration';
 function Header_home(props: any) {
   
     const router = useRouter();
-    const {user, saveUser, cartCount} = UserContext();
+    const {user, saveUser, cartCount, setCartCount} = UserContext();
     const [userToken, setUserToken] = useState<any>();
 
     useEffect(() => {
@@ -26,6 +26,9 @@ function Header_home(props: any) {
         setLoginModalIsOpen(false);
         const tokendata: any = localStorage.getItem('usertoken');
         setUserToken(tokendata);
+        user?.id && APIs.getCartData({customerid: user.id}).then(response => {
+            setCartCount(response.data.rows.length);
+        })
     }, [user]);
     
     const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
