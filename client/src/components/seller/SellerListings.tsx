@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import APIs from '~/services/apiService';
 import WidgetSearch from '../widgets/WidgetSearch';
 import { UserContext } from '../account_/UserContext';
+import { FormattedMessage } from 'react-intl';
 
 
 function SellerListings() {
@@ -110,11 +111,12 @@ function SellerListings() {
                                         <table className="table quote-table seller-table">
                                             <thead>
                                                 <th className="p-2 pb-3 px-4 pt-4 custom-color-2 mediumfont subtitles border-top-0">
-                                                    <span>Listings</span>
+                                                    <span><FormattedMessage id="LISTINGS"/></span>
                                                     {sellerList && sellerList.length > 0 && <span className="lightfont body-sub-titles"> ({totalListNumber})</span>}
                                                     
                                                     <button type="button" className="minor-button custom-color-7 boldfont mini-text-3 rounded border-0 button-bg-color-1" onClick={() => router.push('/seller/create_new_listing')}>
-                                                        Create New Listing</button>
+                                                        <FormattedMessage id="CREATE_NEW_LISTING" />
+                                                    </button>
                                                 </th>
                                             </thead>
                                         </table>
@@ -157,7 +159,7 @@ function SellerListings() {
                                                                 </span>
                                                                 :          
                                                                  <span className='' style={{  color: 'red', padding: '5px 10px', }}>
-                                                          {/* {item.attributes.stock_count} */} Out of Stock
+                                                                 <FormattedMessage id="OUT_OF_STOCK" />
                                                       </span>
                                                              }
                                                                
@@ -175,7 +177,7 @@ function SellerListings() {
                                                                style={{ width: "100%", cursor: "not-allowed", opacity: "0.5"}}
                                                                disabled={isDeleting}
                                                            >
-                                                                Deleting...
+                                                                <FormattedMessage id="DELETING"/>
                                                            </button>
                                                            :
                                                            <button
@@ -185,7 +187,7 @@ function SellerListings() {
                                                            style={{ width: "100%"}}
                                                            
                                                        >
-                                                          Delete
+                                                          <FormattedMessage id="DELETE" />
                                                        </button>} 
                                                             </div>
                                                         </div>
@@ -207,14 +209,14 @@ function SellerListings() {
                                                                 className="page-link border-0 regularfont mini-text-1"
                                                                 href="#"
                                                             >
-                                                                <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> Previous
+                                                                <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> <FormattedMessage id="PREVIOUS"/>
                                                             </a>
                                                         ) : (
                                                             <a
                                                                 className="page-link border-0 regularfont mini-text-1 disabled custom-color-4"
                                                                 style={{ cursor: "not-allowed" }}
                                                             >
-                                                                <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> Previous
+                                                                <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> <FormattedMessage id="PREVIOUS"/>
                                                             </a>
                                                         )}
                                                     </li>
@@ -232,12 +234,16 @@ function SellerListings() {
 
                                                         <a className="page-link border-0 custom-color-4 regularfont mini-text-1 disabled"
                                                         style={{ cursor: "not-allowed" }} 
-                                                        >Next <i className="fa fa-angle-right custom-color-4 mini-text-1 m-1  ">
+                                                        >
+                                                            <FormattedMessage id="NEXT"/>
+                                                        <i className="fa fa-angle-right custom-color-4 mini-text-1 m-1  ">
                                                             </i></a>
                                                           :
                                                           <a onClick={() => handlePageChange(pageNumber+ 1)} className="page-link border-0 custom-color-3 regularfont mini-text-1"
                                                           href="#"
-                                                      >Next <i className="fa fa-angle-right custom-color-3 mini-text-1 m-1"></i></a>
+                                                        >
+                                                        <FormattedMessage id="NEXT"/>
+                                                        <i className="fa fa-angle-right custom-color-3 mini-text-1 m-1"></i></a>
                                                     }
                                                         
                                                     </li>

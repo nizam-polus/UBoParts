@@ -9,6 +9,7 @@ import Link from 'next/dist/client/link';
 import { UserContext } from '../account_/UserContext';
 import Login from '../account_/Login';
 import 'react-toastify/dist/ReactToastify.css';
+import { FormattedMessage } from 'react-intl';
 
 function Shop() {
     
@@ -416,8 +417,8 @@ function Shop() {
                     <section className="coulmn-bg-color-1 search-wrapper mt-5 mb-5">
                         <div className="row p-4 pt-2 text-center">
                             <div className="col">
-                                <p className="semifont inner-page-main-headings custom-color-1 mb-2">Find Parts for Your Vehicle</p>
-                                <p className="semifont custom-color-1 boldfontsize">Over hundreds of brands and tens of hundreds of parts</p>
+                                <p className="semifont inner-page-main-headings custom-color-1 mb-2"><FormattedMessage id="FIND_PARTS"/></p>
+                                <p className="semifont custom-color-1 boldfontsize"><FormattedMessage id="TENS_OF_PARTS"/></p>
                             </div>
                         </div>
                         <div className="row">
@@ -476,7 +477,9 @@ function Shop() {
                                             <button className='regularfont' 
                                                 style={{background: '#587E50', padding: '0.2rem 1.1rem', color: 'white', border: 'none', borderRadius: '5px'}}
                                                 onClick={(e) => clearSearch(e)}
-                                            >Clear</button>
+                                            >
+                                                <FormattedMessage id="CLEAR"/>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -497,7 +500,9 @@ function Shop() {
                                             <button type="button" 
                                                 className="boldfont boldfontsize button-bg-color-1 border-0 text-white p-2 rounded" 
                                                 data-bs-toggle="modal" data-bs-target="#view-filters"
-                                            >View Filter</button>
+                                            >
+                                                <FormattedMessage id="VIEW_FILTER"/>
+                                            </button>
                                         </div>
                                         <div className="desktop-filter">
                                             <div className="row mb-2 flex-column">
@@ -506,7 +511,7 @@ function Shop() {
                                                                 d-flex align-items-center regularfont mini-text-2"
                                                     onClick={() => {setFiltertoggle((prevValue: any) => ({...prevValue, categories: !filterToggle.categories}))}}
                                                 >
-                                                    <span>Categories</span><i className={`${filterToggle.categories ? 'fa fa-angle-up' : 'fa fa-angle-down'}`}></i>
+                                                    <span><FormattedMessage id="CATEGORIES"/></span><i className={`${filterToggle.categories ? 'fa fa-angle-up' : 'fa fa-angle-down'}`}></i>
                                                 </button>
                                                 {filterToggle.categories && <div className=" p-3">
                                                     {categories.map((category: any, idx: any) => 
@@ -542,13 +547,13 @@ function Shop() {
                                                setFiltertoggle((prevValue) => ({ ...prevValue, price: !filterToggle.price }));
                                              }}
                                            >
-                                             <span>Price</span>
+                                             <span><FormattedMessage id="PRICE"/></span>
                                              <i className={`${filterToggle.price ? 'fa fa-angle-up' : 'fa fa-angle-down'}`}></i>
                                            </button>
                                            {filterToggle.price && (
                                              <div className="group-check p-4 " style={{display: "grid", gridTemplateColumns: "1fr 1fr" , gap: "20px"}}>
                                                <div className="form-group d-flex flex-column align-items-center justify-content-center ">
-                                                 <label htmlFor="minPrice">Min Price:</label>
+                                                 <label htmlFor="minPrice"><FormattedMessage id="MIN_PRICE"/>:</label>
                                                  <input
                                                    type="number"
                                                    id="minPrice"
@@ -561,7 +566,7 @@ function Shop() {
                                                  />
                                                </div>
                                                <div className="form-group  d-flex flex-column align-items-center justify-content-center">
-                                                 <label htmlFor="maxPrice">Max Price:</label>
+                                                 <label htmlFor="maxPrice"><FormattedMessage id="MAX_PRICE"/>:</label>
                                                  <input
                                                    type="number"
                                                    id="maxPrice"
@@ -623,7 +628,9 @@ function Shop() {
                                             <div className='text-center mt-4 mini-text-2'>
                                                 <button style={{background: '#2a2a2a', color:'white', border: 'none', padding: '0.4rem 1.5rem'}}
                                                     onClick={(e) => handleApplyFilter(e)}
-                                                >Apply Filter</button>
+                                                >
+                                                    <FormattedMessage id="APPLY_FILTER"/>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -633,7 +640,7 @@ function Shop() {
                                                 <label htmlFor="filterDropdown" 
                                                     className="form-label me-2 d-flex align-items-center justify-content-center mb-2" 
                                                     style={{minWidth: "100px"}}
-                                                >Sort by:</label>
+                                                ><FormattedMessage id="SORT_BY"/>:</label>
                                                 <select
                                                     id="filterDropdown"
                                                     className="form-select mb-2 border-0"
@@ -664,7 +671,7 @@ function Shop() {
                                                             {
                                                             product.attributes.stock_count == 0 &&  
                                                                 <div  onClick={() => handleProductClick(product)} className='out-of-stock d-flex position-absolute justify-content-center align-items-center' >
-                                                                   <p className='text-out-of-stock mb-0'>OUT OF STOCK</p>
+                                                                   <p className='text-out-of-stock mb-0'><FormattedMessage id="OUT_OF_STOCK"/></p>
                                                                 </div>
                                                       
                                                              }
@@ -672,7 +679,7 @@ function Shop() {
                                                             <div className="card-body">
                                                                 <div className="row g-1">
                                                                     <div className="col-12">
-                                                                        <span className="article-number regularfont mini-text">Article #{product?.attributes?.article_number}</span>
+                                                                        <span className="article-number regularfont mini-text"><FormattedMessage id="ARTICLE"/> #{product?.attributes?.article_number}</span>
                                                                     </div>
                                                                     <div className="col-12">
                                                                         <span className="product-name regularfont"
@@ -744,14 +751,14 @@ function Shop() {
                                                                 className="page-link border-0 regularfont mini-text-1"
                                                                 href="#"
                                                             >
-                                                                <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> Previous
+                                                                <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> <FormattedMessage id="PREVIOUS"/>
                                                             </a>
                                                         ) : (
                                                             <a
                                                                 className="page-link border-0 regularfont mini-text-1 disabled custom-color-4"
                                                                 style={{ cursor: "not-allowed" }}
                                                             >
-                                                                <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> Previous
+                                                                <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> <FormattedMessage id="PREVIOUS"/>
                                                             </a>
                                                         )}
                                                     </li>
@@ -769,12 +776,15 @@ function Shop() {
 
                                                         <a className="page-link border-0 custom-color-4 regularfont mini-text-1 disabled"
                                                         style={{ cursor: "not-allowed" }} 
-                                                        >Next <i className="fa fa-angle-right custom-color-4 mini-text-1 m-1  ">
-                                                            </i></a>
+                                                        >
+                                                            <FormattedMessage id="NEXT"/>
+                                                             <i className="fa fa-angle-right custom-color-4 mini-text-1 m-1  ">
+                                                            </i>
+                                                        </a>
                                                           :
                                                           <a onClick={() => handlePageChange(pageNumber+ 1)} className="page-link border-0 custom-color-3 regularfont mini-text-1"
                                                           href="#"
-                                                      >Next <i className="fa fa-angle-right custom-color-3 mini-text-1 m-1"></i></a>
+                                                      ><FormattedMessage id="NEXT"/> <i className="fa fa-angle-right custom-color-3 mini-text-1 m-1"></i></a>
                                                     }
                                                         
                                                     </li>
