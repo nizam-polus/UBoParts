@@ -14,7 +14,7 @@ import { BASE_URL } from 'configuration';
 function Header_home(props: any) {
   
     const router = useRouter();
-    const {user, saveUser, cartCount} = UserContext();
+    const {user, saveUser, cartCount, setCartCount} = UserContext();
     const [userToken, setUserToken] = useState<any>();
 
     useEffect(() => {
@@ -26,6 +26,9 @@ function Header_home(props: any) {
         setLoginModalIsOpen(false);
         const tokendata: any = localStorage.getItem('usertoken');
         setUserToken(tokendata);
+        user?.id && APIs.getCartData({customerid: user.id}).then(response => {
+            setCartCount(response.data.rows.length);
+        })
     }, [user]);
     
     const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
@@ -55,7 +58,7 @@ function Header_home(props: any) {
         <>
             <header className="home">
                 <div className="container">
-                    <div className="container-wrapper">
+                    <div className="container-wrapper ubo-menu-container">
                         <div className="logo">
                             <AppImage src="/images/svg/LOGO.svg" />
                         </div>
@@ -73,7 +76,7 @@ function Header_home(props: any) {
                             </ul>
                         </div>
                         {userToken && 
-                            <div className="bar w-27 d-flex flex-row">
+                            <div className="bar w-27 d-flex flex-row ubo-menu-wrapper">
                                 <div>
                                     <button className="btn border-0 menu_font_size regularfont menu-color" onClick={() => setIsOpen(!isOpen)}>My Account</button>
                                     {isOpen && (
@@ -109,16 +112,18 @@ function Header_home(props: any) {
                                         style={{height: '2.4rem', width: '2.4rem', objectFit: 'cover', borderRadius: '100%'}}
                                     />
                                 </span>
+                                <ul className="pl-4">
                                 <li className='mt-1 pointer' 
                                     onClick={() =>setIsOpen(false)}
                                 >
                                     <Link href="/cartpage">
-                                        <span>
+                                        <span className="position-relative">
                                             <AppImage src="/images/cart-white.svg"/>
                                             <span className="home_count">{cartCount}</span>
                                         </span>
                                     </Link>
                                 </li>
+                                </ul>
                             </div>   
                         }  
                     </div>

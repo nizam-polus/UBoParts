@@ -101,7 +101,7 @@ function OrderDetails() {
                                     <br />
                                 </div>
                                 <div className="row mt-3">
-                                    <div className="col-8">
+                                    <div className="col-12 col-sm-8">
                                         <div style={{border: '1px solid lightgrey', borderRadius: '10px'}} className="px-4 py-4 ml-3 mr-1">
                                             {/* <div className="d-flex justify-content-between m-0 pb-4 ml-3">
                                                 <span className="custom-color-2 semifont body-sub-titles-1">Order summary</span><br />
@@ -157,7 +157,8 @@ function OrderDetails() {
                                         </div>
                                         <div className="coulmn-bg-color-1 rounded mt-4 mb-3">
                                             <div style={{border: '1px solid lightgrey', borderRadius: '10px'}} className="px-4 py-4 mr-1 ml-3">
-                                                <table className="order-table2">
+                                                <div className="table-responsive">
+                                                <table className="table order-table2">
                                                     <thead>
                                                         <tr>
                                                             <td className="custom-color-2 boldfont body-sub-titles-2 pb-2 border-bottom">Item Summary</td>
@@ -187,11 +188,12 @@ function OrderDetails() {
                                                         })}
                                                     </tbody>
                                                 </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-4 pl-2 pr-1">
-                                        <div style={{border: '1px solid lightgrey', borderRadius: '10px'}} className="px-3 py-3 mr-4">
+                                    <div className="col-12 col-sm-4 pl-sm-2 pr-sm-1">
+                                        <div style={{border: '1px solid lightgrey', borderRadius: '10px'}} className="px-4 py-4 ml-3 mr-1 px-sm-3 py-sm-3 mr-sm-4">
                                             <div className="row">
                                                 <div className="col-12">
                                                     <div className="col-auto">

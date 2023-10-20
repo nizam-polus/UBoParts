@@ -746,7 +746,7 @@ function Create_new_listing() {
                                                                             <div>REK NUMMER : {listLocation}</div>
                                                                             {/* <div> {productData?.attributes?.product_location_warehouse}</div> */}
                                                                         </div>
-                                                                        <div>ARTUCLE No : {listArticle}</div>
+                                                                        <div>ARTUCLE NO : {listArticle}</div>
                                                                         <div>{makeName} {modelName} {year} </div>
                                                                     </div>
                                                                 </div>

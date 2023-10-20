@@ -5,7 +5,7 @@ module.exports = {
     },
     basePath: process.env.BASE_PATH || '',
     i18n: {
-        locales: ['en', 'ru', 'ar'],
+        locales: ['en', 'ru', 'ar', 'nl'],
         defaultLocale: 'en',
     },
     eslint: {

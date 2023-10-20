@@ -45,6 +45,9 @@ function Home() {
     const [forgotPasswordPickerIsOpen, setforgotPasswordPickerIsOpen] = useState(false);
     const [startIndex, setStartIndex] = useState(0)
     const [makeData, setMakeData] = useState<any>([]);
+    const [makePageNum, setMakePageNum] = useState(1);
+    const [makeItemCount, setMakeItemCount] = useState(4);
+    const [articleNumber, setArticleNumber] = useState<any>('');
 
     useEffect(() => {
         if (licenseplate && licenseplate.length > 5) {
@@ -111,7 +114,6 @@ function Home() {
             return () => clearTimeout(getData);
         }
     }, [licenseplate]);
-
     useEffect(() => {
         APIs.getCarDetails().then((response: any) => {
             setData(response.data.data);
@@ -136,18 +138,32 @@ function Home() {
         }).catch((error) => {
             setError(error);
             setLoading(false);
-        });
-
-        APIs.getMakes().then(response => {
-            setMakeData(response.data.data);
-        }).catch(error => {
-            console.error('Error fetching data:', error);
-        });
-
+        });     
         APIs.getAllProducts('&sort[0]=createdAt:desc').then((response: any) =>{
             setProducts(response.data.data)
         })
     }, []);
+
+    useEffect(() =>{
+        if(window.innerWidth < 768){
+            console.log("called")
+            let makeItemCount = 2
+            setMakeItemCount(2)
+            APIs.getMakes(makePageNum, makeItemCount).then(response => {
+                setMakeData(response.data.data);
+            }).catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        }else{
+            setMakeItemCount(4)
+            APIs.getMakes(makePageNum, makeItemCount).then(response => {
+                setMakeData(response.data.data);
+            }).catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        }
+         
+    },[makePageNum])
    
     useEffect(() => {
         // Function to filter and get the latest 4 items based on category
@@ -198,6 +214,7 @@ function Home() {
         localStorage.setItem('modelId', selectedModel);
         localStorage.setItem('yearId', selectedYear);
         localStorage.setItem('category', selectedCategory);
+        localStorage.setItem('article', articleNumber);
         router.push('/shop')
     }
 
@@ -230,11 +247,13 @@ function Home() {
         setSelectedMake(event.target.value);
         setSelectedModel('');
         setSelectedYear('');
+        setArticleNumber('');
     };
 
     const handleLicenseplateChange = (event: any) => {
         setSearched(false);
         setLicenseplate(event.target.value.toUpperCase());
+        setArticleNumber('');
     };
 
     const handleModelChange = (event: any) => {
@@ -268,7 +287,6 @@ function Home() {
         if (!user || user && !user.id) {
             setOpenLogin(true);
         } else {
-
             setOpenLogin(false);
             setAddToCartCompleted(false)
             setItemId(productData?.id)
@@ -321,22 +339,36 @@ function Home() {
         }
     }
     const handleArrowClick = () => {
-        // Calculate the next start index by adding 4
-        const nextIndex = startIndex + 4;
-        // Ensure that the next index doesn't exceed the length of makesData
-        if (nextIndex < makeData.length) {
-          setStartIndex(nextIndex);
+        setMakePageNum(makePageNum + 1)
+    };
+    const handleLeftArrowClick = () => {
+      
+        if (makePageNum == 1) {
+          setMakePageNum(makePageNum)
         } else {
-          // If it exceeds, wrap around to the beginning
-          setStartIndex(0);
+          setMakePageNum(makePageNum - 1)
         }
-      };
+      };      
 
-    const handleMakeClick = (HomeMakeId: any) =>{
+    const handleMakeClick = (HomeMakeId: any) => {
+        setArticleNumber('');
         router.push({
             pathname: '/shop',
             query: { 'HomeMakeId': HomeMakeId },
         })
+    }
+
+    const handleArticleChange = (event: any) => {
+        const newValue = event.target.value.replace(/[^0-9.]/g, '');
+        if (newValue !== event.target.value) {
+            event.target.value = newValue;
+        }
+        setSelectedMake('');
+        setSelectedModel('');
+        setSelectedYear('');
+        setSelectedCategory('');
+        setLicenseplate('');
+        setArticleNumber(newValue);
     }
 
     function discountedPrice(originalPrice: any, discountPercentage:any) {
@@ -379,7 +411,7 @@ function Home() {
                                     <div className="row g-2 flex-column flex-lg-row">
                                         <div className="col">
                                             <div className="form-group">
-                                                <input type="form-control" 
+                                                <input type="form-control" value={licenseplate}
                                                     onChange={handleLicenseplateChange} name="plate_number" 
                                                     className="semifont placeholderfontsize" 
                                                     placeholder="Search with Car's Plate Number" 
@@ -387,7 +419,9 @@ function Home() {
                                                 {showInvaidLicense &&
                                                     <div className="row mt-2 ml-2" >
                                                         <span className="advanced_search placeholderfontsize regularfont"
-                                                        >No Record Found Against this Plate Number!</span>
+                                                        >
+                                                        <FormattedMessage id="NO_RECORD_FOUND"/>
+                                                        </span>
                                                     </div>
                                                 }
                                             </div>
@@ -397,8 +431,9 @@ function Home() {
                                         </div>
                                         <div className="col">
                                             <div className="form-group">
-                                                <input type="form-control" name="article_number"
-                                                 className="semifont placeholderfontsize" placeholder="Search with product Article" 
+                                                <input type="form-control" name="article_number" value={articleNumber}
+                                                    className="semifont placeholderfontsize" placeholder="Search with product Article"
+                                                    onChange={handleArticleChange}
                                                 />
                                             </div>
                                         </div>
@@ -507,12 +542,12 @@ function Home() {
                         <div className="row mt-3 g-4">
                             { !user?.role || user.role.name !== "seller" ? (
                                 <>
-                                    <div className="col" onClick={() => router.push('/request')}>
+                                    <div className="col-12 col-sm-6" onClick={() => router.push('/request')}>
                                         <div className="specific_part">
                                             <h3 className="text-white bg-image-text semifont m-0 selling-text">Need A <br />Specific Part?</h3>
                                         </div>
                                     </div>
-                                    <div className="col" onClick={() => router.push('/seller-registration')}>
+                                    <div className="col-12 col-sm-6 my-3 my-md-0" onClick={() => router.push('/seller-registration')}>
                                         <div className="start_selling">
                                             <h3 className="text-white bg-image-text semifont m-0 selling-text">Start Selling <br />With Us</h3>
                                         </div>
@@ -549,7 +584,7 @@ function Home() {
                         <div className="row mt-5 mt-lg-4 mt-xxl-5 g-4">
                             {categoriesDetail.length > 0 ? categoriesDetail.slice(0, 4).map((item:any, index:any) => {
                                 return (
-                                <div key={index} className="col-6 col-md-3">
+                                <div key={index} className="col-12 col-sm-6 col-md-3 my-3 my-md-0">
                                     <div className="prod-cats card">
                                     {item.attributes.category_image.data ? (
                                             <AppImage style={{height: "270px", objectFit: "contain"}} 
@@ -567,28 +602,36 @@ function Home() {
                             }) : ""}
                         </div>
                     </section>
-                <section className='d-flex align-items-center justify-content-center' 
-                    style={{ height: "200px", margin: "50px 0", background: "white" }}
-                >
-                   <div className='p-4 d-flex flex-row align-items-center justify-content-center'>
-                        <div style={{ width: "200px" }}>
-                            <h4><FormattedMessage id="Search_by_Car_Brand"/></h4>
+                <section className='d-flex align-items-center justify-content-center ubo-brands-slider-wrapper'>
+                   <div className='p-4 d-flex flex-column flex-sm-row align-items-center justify-content-center'>
+                        <div className='ubo-brands-slider-title'>
+                            <h4><FormattedMessage id="SEARCH_BY_CAR_BRAND"/></h4>
                             {/* <h4>Search by Car Brand</h4> */}
                         </div>
-                        <div style={{display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", minWidth: "800px"}}>
-                        {makeData.slice(startIndex, startIndex + 4).map((item :any, index:any) => (
-                            <div key={index} style={{ width: "200px" }} onClick={() => handleMakeClick(item.id)}>
+                        <div className='d-flex align-items-center'>
+                        <div className='ubo-brands-slider'>
+                        {makeData.map((item :any, index:any) => (
+                            <div key={index} onClick={() => handleMakeClick(item.id)}>
                                 <img src={item.attributes.make_logo.data ? 
                                         BASE_URL + item.attributes.make_logo.data.attributes.url : ""} 
-                                    alt="" width="120px" height="120px"  style={{ cursor: 'pointer' }} 
+                                    alt="" style={{ cursor: 'pointer' }} 
                                 />
                             </div>
                         ))}
                         </div>
+                        <button className='ubo-brands-slider-nav' onClick={handleLeftArrowClick}>
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    width="20" height="20" fill="currentColor"
+                                    className="bi bi-arrow-left" viewBox="0 0 16 16"
+                                >
+                                    <path fillRule="evenodd"
+                                        d="M15 8a.5.5 0 0 1-.5.5H2.207l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 0 1 .708.708L2.207 7.5H14.5A.5.5 0 0 1 15 8z"
+                                        transform="scaleX(-1)"
+                                    />
+                                </svg>
+                        </button>
                       
-                        <button onClick={handleArrowClick} 
-                            style={{ height: "75px", width: "75px", borderRadius: "50%", border: "3px solid green" }}
-                        >
+                        <button className='ubo-brands-slider-nav ml-2' onClick={handleArrowClick}>
                             <svg xmlns="http://www.w3.org/2000/svg" 
                                 width="20" height="20" fill="currentColor" 
                                 className="bi bi-arrow-right" viewBox="0 0 16 16"
@@ -598,34 +641,46 @@ function Home() {
                                 />
                             </svg>
                         </button>
+                        </div>
                    </div>
                 </section>
                 <section className="latest-products-wrapper">
                         <div className="row mt-5">
                             <div className="col-12 d-flex justify-content-between">
-                                <div><span className="popular_categories body-sub-titles regularfont">Latest Products</span>
+                                <div>
+                                    <span className="popular_categories body-sub-titles regularfont">
+                                       <FormattedMessage id="LATEST_PRODUCTS" />
+                                    </span>
                                 </div>
                                   <div>
                                     <button
                                         type="button"
                                         className={`saleoffers regularfont body-sub-titles ${selectedItem === 'All' ? 'active' : ''}`}
                                         onClick={() => handleCategoryClick('All')}
-                                    >All</button>
+                                    >
+                                       <FormattedMessage id="ALL" />
+                                    </button>
                                     <button
                                         type="button"
                                         className={`saleoffers regularfont body-sub-titles ${selectedItem === 'Audio' ? 'active' : ''}`}
                                         onClick={() => handleCategoryClick('Audio')}
-                                    >Audio</button>
+                                    >
+                                        <FormattedMessage id="AUDIO" />
+                                    </button>
                                     <button
                                         type="button"
                                         className={`saleoffers regularfont body-sub-titles ${selectedItem === 'Lights' ? 'active' : ''}`}
                                         onClick={() => handleCategoryClick('Lights')}
-                                    >Lights</button>
+                                    >
+                                        <FormattedMessage id="LIGHTS" />
+                                    </button>
                                    <button
                                         type="button"
                                         className={`saleoffers regularfont body-sub-titles ${selectedItem === 'Body Parts ' ? 'active' : ''}`}
                                         onClick={() => handleCategoryClick('Body Parts ')}
-                                   >Body Parts</button>
+                                   >
+                                    <FormattedMessage id="BODY_PARTS" />
+                                    </button>
                                  </div>
                             </div>
                             <div className="col"></div>
@@ -647,21 +702,25 @@ function Home() {
                                     )}
                                     <div className="latest-prods card card-shadows " style={{height: "100%"}} >   
                                         <AppImage 
-                                            src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
+                                            src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.url} 
                                             className="card-img-top img-prod-height pointer "
                                             style={{height: '20rem', objectFit: 'contain', filter:`${product.attributes.stock_count == 0 ? "blur(3px)" : "none"}`}} 
                                             onClick={() => handleProductClick(product)}    
                                         />
                                         {product.attributes.stock_count == 0 &&  
                                             <div onClick={() => handleProductClick(product)} className='out-of-stock d-flex position-absolute justify-content-center align-items-center' >
-                                                <p className='text-out-of-stock mb-0'>OUT OF STOCK</p>
+                                                <p className='text-out-of-stock mb-0'>
+                                                <FormattedMessage id="OUT_OF_STOCK" />
+                                                </p>
                                             </div>
                                         }
                                         <div className="card-body">
                                             <div className="row g-1">
                                                 <div className="col-12">
                                                     <span className="article-number regularfont mini-text"
-                                                        >Article #{product?.attributes?.article_number}</span>
+                                                    >
+                                                       <FormattedMessage id="ARTICLE" /> #{product?.attributes?.article_number}
+                                                    </span>
                                                 </div>
                                                 <div className="col-12">
                                                     <span className="product-name regularfont"

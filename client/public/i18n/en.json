@@ -363,5 +363,102 @@
   "TEXT_VEHICLE_ENGINE": "Engine {engine}",
   "TEXT_VEHICLE_FILTER_HELP": "Select a vehicle to filter out only exact fit parts.",
   "TEXT_WORKING_HOURS": "Working Hours",
-  "TEXT_YOUR_SHOPPING_CART_IS_EMPTY": "Your shopping cart is empty!"
+  "TEXT_YOUR_SHOPPING_CART_IS_EMPTY": "Your shopping cart is empty!",
+
+
+  "POPULAR":"Popular Categories",
+  "SEARCH_BY_CAR_BRAND": "Search by Car Brand",
+  "SEARCH_WITH_PLATE": "Search with Car's plate number",
+  "NO_RECORD_FOUND": "No Record Found Against this Plate Number!",
+  "NEED_A_PART": "Need a Specific Part",
+  "START_SELLING": "Start Selling With Us",
+  "LATEST_PRODUCTS": "Latest products",
+  "ALL": "All",
+  "AUDIO": "Audio",
+  "LIGHTS": "Lights",
+  "BODY_PARTS": "Body parts",
+  "OUT_OF_STOCK": "OUT OF STOCK",
+  "ARTICLE": "Article",
+
+
+  "FIND_PARTS": "Find Parts for Your Vehicle",
+  "TENS_OF_PARTS": "Over hundreds of brands and tens of hundreds of parts",
+  "SELECT_MAKE": "Select Make",
+  "SELECT_MODEL": "Select Model",
+  "SELECT_YEAR": "Select Year",
+  "SELECT_CATEGORY": "Select Category",
+  "CLEAR": "Clear",
+  "VIEW_FILTER": "View Filter",
+  "CATEGORIES": "Categories",
+  "PRICE": "PRICE",
+  "MIN_PRICE": "Min Price",
+  "MAX_PRICE": "Max Price",
+  "APPLY_FILTER": "Apply Filter",
+  "SORT_BY": "Sort by",
+  "PRICE_HIGH_TO_LOW": "Price: High to Low",
+  "PRICE_LOW_TO_HIGH": "Price: Low to High",
+  "PREVIOUS": "Previous",
+  "NEXT": "Next",
+
+
+  "ABOUT_US": "About Us",
+  "ABOUT_US_DISCRIPTION": "UBO Parts Inc is a Netherlands-based online third-party platform specializing in automotive technology. Our mission is to empower all participants in the Dutch automotive ecosystem, particularly car dismantlers, by enhancing the management of their spare parts operations. We commit to providing top-quality spare parts, thereby efficiently streamlining operations and promoting excellence throughout the industry.",
+  "MEET_OUR_TEAM": "Meet Our Professional Team",
+  "CONTACT_US": "Contact Us",
+
+  "REQUEST_PARTS": "Request Parts With Us",
+  "REQUEST_DISCRIPTION" : "Browse our expansive selection featuring hundreds of brands and tens of thousands of quality parts.",
+  "PLATE_NO": "Plate Number",
+  "AUTO_MODEL": "Auto Model",
+  "YEAR": "Year",
+  "MARK": "Mark",
+  "USER_NAME": "Username",
+  "FIRST_NAME": "First Name",
+  "LAST_NAME": "Last Name",
+  "EMAIL_ADDRESS": "Email Address",
+  "PHONE": "Phone",
+  "DELIVERY_TYPE": "Delivery Type",
+  "DELIVERY": "Delivery",
+  "PICKUP": "Pickup",
+  "BUYING_RANGE": "Buying Price Range (€)",
+  "PART IMAGES": "Part Image(s)",
+  "QUANTITY": "Quantity",
+  "DESCRIPTION_OF_PRODUCT": "Description of Product",
+  "SUBMIT": "Submit",
+
+
+
+  "DISMANTLE_CAR": "Dismantle your car with us",
+  "DRIVING_CONDITION": "Driving Condition",
+
+  "LOGIN": "Login",
+  "lOGIN_DETAILS": "Welcome back! Please enter your details",
+  "PASSWORD": "Password",
+  "CONFIRM_PASSWORD": "Confirm password",
+  "REGISTER_DETAILS": "Let’s get you all setup so you can verify your personal account and begin setting up your profile",
+  "REMEMBER_ME": "Remember me",
+  "FORGOT_PASSWORD": "Forgot Password",
+  "DONT_HAVE_AN_ACCOUNT": "Don't have an account?",
+  "REGISTER": "Register",
+  "AGREE_TO_THE": "I agree to the",
+  "TERMS_AND_CONDITION": "terms and conditions",
+  "AGREE_CONDITION": "I agree to the terms and conditions",
+  "ALREADY_REGISTERD": "Already registered?",
+  "REGISTRATION_COMPLETED": "Registration Completed!",
+
+  "IN_STOCK": "In Stock",
+  "ADD_TO_CART": "Add to Cart",
+
+
+  "LISTINGS": "Listings",
+  "CREATE_NEW_LISTING": "Create New Listing",
+  "DELETE" : "Delete",
+  "DELETING" : "Deleting...",
+  "EDIT": ""
+
+
+
+
+
+  
 }

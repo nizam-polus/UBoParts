@@ -224,7 +224,7 @@ function Profile() {
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2}>
-                                                        <div className="mb-3 px-3 pt-2">
+                                                        <div className="mb-3 px-sm-3 pt-2">
                                                             <label className="custom-color-2 regularfont products-name pb-2">Street Address</label>
                                                             <input type="text" value={address_1}
                                                                 className={`form-control input-bg-color-2 products-name ${incomplete && !address_1 ? ' required-field' : 'border-0' }`} 
@@ -232,7 +232,7 @@ function Profile() {
                                                                 onChange={(e) => setAddress_1(e.target.value)}
                                                             />
                                                         </div>
-                                                        <div className='px-3'>
+                                                        <div className='px-sm-3'>
                                                             <input type="text" value={address_2}
                                                                 className="form-control input-bg-color-2 border-0 products-name" 
                                                                 name="apertment" placeholder="Apartment, suite, unit etc..."
@@ -286,7 +286,7 @@ function Profile() {
                                     <div className="row mt-2 mb-3 mx-2">
                                         <div className="col">
                                             <button type="submit" 
-                                                className="custom-color-7 mediumfont rounded border-0 button-bg-color-1 pb-2 pt-2 px-5 d-flex align-items-center justify-content-center"
+                                                className="custom-color-7 mediumfont rounded border-0 button-bg-color-1 pb-2 pt-2 px-5 d-flex align-items-center justify-content-center ubo-btn-mobile"
                                                 onClick={(e) => handleProfileSubmit(e)}
                                             >Save</button>
                                         </div>
@@ -332,7 +332,7 @@ function Profile() {
                                     <div className="row mt-3 mx-2">
                                         <div className="col">
                                             <button type="submit" 
-                                                className="custom-color-7 mediumfont rounded border-0 button-bg-color-1 pb-2 pt-2 px-5 d-flex align-items-center justify-content-center"
+                                                className="custom-color-7 mediumfont rounded border-0 button-bg-color-1 pb-2 pt-2 px-5 d-flex align-items-center justify-content-center ubo-btn-mobile"
                                             >Change Password</button>
                                         </div>
                                     </div>

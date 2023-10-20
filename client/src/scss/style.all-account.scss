@@ -1676,6 +1676,37 @@ tr {
 }
 /* seller listing page ends */
 
+.ubo-btn-subscribe { height: 100%;}
+.ubo-brands-slider-wrapper {
+    height: 200px;
+    margin: 50px 0;
+    background: #fff;
+}
+.ubo-brands-slider {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    min-width: 800px;
+}
+
+.ubo-brands-slider div {
+    width: 200px;
+}
+
+.ubo-brands-slider-title {
+    width: 200px;
+}
+
+.ubo-brands-slider div img {
+    width: 120px;
+    height: 120px;
+}
+.ubo-brands-slider-nav {
+    height: 75px;
+    width: 75px;
+    border-radius: 50%;
+    border: 3px solid green;
+}
+
 @media screen and (max-width: 768px){
     .heading_text{
         font-size: 35px;  
@@ -1744,6 +1775,57 @@ tr {
     }
     .password-wrapper-field img{
         top:16px;
+    }
+    .newsletter-signup button {
+        width: 100%;
+        margin-top: 15px;
+    }
+    .ubo-menu-container {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .ubo-menu-wrapper {
+        width: auto !important;
+    }
+    .site__footer footer {
+        padding: 1rem !important;
+    }
+    .home-header {
+        height: 164px !important;
+    }
+    .ac-modal .modal-content {
+        min-width: 100% !important;
+        width: 100% !important;
+    }
+    .quote-table tbody td {
+        padding-right: 0 !important;
+    }
+    .table.quote-table input.width-checkout {
+        margin-left: 0;
+    }
+    .ubo-btn-mobile {width: 100%;}
+    .ubo-btn-subscribe { height: auto;}
+    .ubo-brands-slider {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-width: 200px;
+    }
+    .ubo-brands-slider div {
+        width: 80px;
+    }
+    .ubo-brands-slider div img {
+        width: 80px;
+        height: 80px;
+    }
+    .ubo-brands-slider-nav {
+        height: 45px;
+        width: 45px;
+        border-radius: 50%;
+        border: 3px solid green;
+    }
+    .ubo-brands-slider-title {
+        width: auto;
+        margin-bottom: 10px;
     }
 }
 .loader {

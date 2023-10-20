@@ -26,8 +26,7 @@ function PurchaseHistory() {
                 return dateB - dateA;
             });
             setOrderDetails(sortedOrders);
-            setRowCount(response.data.rowCount)
-            console.log(response.data)
+            setRowCount(response.data.rowCount);
             !response.data.rows?.length && setEmptyText('No Data');
         })
     }, []);
