@@ -45,6 +45,9 @@ function Home() {
     const [forgotPasswordPickerIsOpen, setforgotPasswordPickerIsOpen] = useState(false);
     const [startIndex, setStartIndex] = useState(0)
     const [makeData, setMakeData] = useState<any>([]);
+    const [makePageNum, setMakePageNum] = useState(1);
+    const [makeItemCount, setMakeItemCount] = useState(4)
+    // const [windowWdth, setWindowWidth] = useState(0)
 
     useEffect(() => {
         if (licenseplate && licenseplate.length > 5) {
@@ -111,7 +114,6 @@ function Home() {
             return () => clearTimeout(getData);
         }
     }, [licenseplate]);
-
     useEffect(() => {
         APIs.getCarDetails().then((response: any) => {
             setData(response.data.data);
@@ -136,18 +138,32 @@ function Home() {
         }).catch((error) => {
             setError(error);
             setLoading(false);
-        });
-
-        APIs.getMakes().then(response => {
-            setMakeData(response.data.data);
-        }).catch(error => {
-            console.error('Error fetching data:', error);
-        });
-
+        });     
         APIs.getAllProducts('&sort[0]=createdAt:desc').then((response: any) =>{
             setProducts(response.data.data)
         })
     }, []);
+
+    useEffect(() =>{
+        if(window.innerWidth < 768){
+            console.log("called")
+            let makeItemCount = 2
+            setMakeItemCount(2)
+            APIs.getMakes(makePageNum, makeItemCount).then(response => {
+                setMakeData(response.data.data);
+            }).catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        }else{
+            setMakeItemCount(4)
+            APIs.getMakes(makePageNum, makeItemCount).then(response => {
+                setMakeData(response.data.data);
+            }).catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        }
+         
+    },[makePageNum])
    
     useEffect(() => {
         // Function to filter and get the latest 4 items based on category
@@ -321,16 +337,16 @@ function Home() {
         }
     }
     const handleArrowClick = () => {
-        // Calculate the next start index by adding 4
-        const nextIndex = startIndex + 4;
-        // Ensure that the next index doesn't exceed the length of makesData
-        if (nextIndex < makeData.length) {
-          setStartIndex(nextIndex);
+        setMakePageNum(makePageNum + 1)
+    };
+    const handleLeftArrowClick = () => {
+      
+        if (makePageNum == 1) {
+          setMakePageNum(makePageNum)
         } else {
-          // If it exceeds, wrap around to the beginning
-          setStartIndex(0);
+          setMakePageNum(makePageNum - 1)
         }
-      };
+      };      
 
     const handleMakeClick = (HomeMakeId: any) =>{
         router.push({
@@ -387,7 +403,9 @@ function Home() {
                                                 {showInvaidLicense &&
                                                     <div className="row mt-2 ml-2" >
                                                         <span className="advanced_search placeholderfontsize regularfont"
-                                                        >No Record Found Against this Plate Number!</span>
+                                                        >
+                                                        <FormattedMessage id="NO_RECORD_FOUND"/>
+                                                        </span>
                                                     </div>
                                                 }
                                             </div>
@@ -572,7 +590,7 @@ function Home() {
                 >
                    <div className='p-4 d-flex flex-row align-items-center justify-content-center'>
                         <div style={{ width: "200px" }}>
-                            <h4><FormattedMessage id="Search_by_Car_Brand"/></h4>
+                            <h4><FormattedMessage id="SEARCH_BY_CAR_BRAND"/></h4>
                             {/* <h4>Search by Car Brand</h4> */}
                         </div>
                         <div style={{display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", minWidth: "800px"}}>
@@ -585,6 +603,19 @@ function Home() {
                             </div>
                         ))}
                         </div>
+                        <button onClick={handleLeftArrowClick} 
+                            style={{ height: "75px", width: "75px", borderRadius: "50%", border: "3px solid green" }}
+                        >
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    width="20" height="20" fill="currentColor"
+                                    className="bi bi-arrow-left" viewBox="0 0 16 16"
+                                >
+                                    <path fillRule="evenodd"
+                                        d="M15 8a.5.5 0 0 1-.5.5H2.207l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 0 1 .708.708L2.207 7.5H14.5A.5.5 0 0 1 15 8z"
+                                        transform="scaleX(-1)"
+                                    />
+                                </svg>
+                        </button>
                       
                         <button onClick={handleArrowClick} 
                             style={{ height: "75px", width: "75px", borderRadius: "50%", border: "3px solid green" }}
@@ -603,29 +634,40 @@ function Home() {
                 <section className="latest-products-wrapper">
                         <div className="row mt-5">
                             <div className="col-12 d-flex justify-content-between">
-                                <div><span className="popular_categories body-sub-titles regularfont">Latest Products</span>
+                                <div>
+                                    <span className="popular_categories body-sub-titles regularfont">
+                                       <FormattedMessage id="LATEST_PRODUCTS" />
+                                    </span>
                                 </div>
                                   <div>
                                     <button
                                         type="button"
                                         className={`saleoffers regularfont body-sub-titles ${selectedItem === 'All' ? 'active' : ''}`}
                                         onClick={() => handleCategoryClick('All')}
-                                    >All</button>
+                                    >
+                                       <FormattedMessage id="ALL" />
+                                    </button>
                                     <button
                                         type="button"
                                         className={`saleoffers regularfont body-sub-titles ${selectedItem === 'Audio' ? 'active' : ''}`}
                                         onClick={() => handleCategoryClick('Audio')}
-                                    >Audio</button>
+                                    >
+                                        <FormattedMessage id="AUDIO" />
+                                    </button>
                                     <button
                                         type="button"
                                         className={`saleoffers regularfont body-sub-titles ${selectedItem === 'Lights' ? 'active' : ''}`}
                                         onClick={() => handleCategoryClick('Lights')}
-                                    >Lights</button>
+                                    >
+                                        <FormattedMessage id="LIGHTS" />
+                                    </button>
                                    <button
                                         type="button"
                                         className={`saleoffers regularfont body-sub-titles ${selectedItem === 'Body Parts ' ? 'active' : ''}`}
                                         onClick={() => handleCategoryClick('Body Parts ')}
-                                   >Body Parts</button>
+                                   >
+                                    <FormattedMessage id="BODY_PARTS" />
+                                    </button>
                                  </div>
                             </div>
                             <div className="col"></div>
@@ -647,21 +689,25 @@ function Home() {
                                     )}
                                     <div className="latest-prods card card-shadows " style={{height: "100%"}} >   
                                         <AppImage 
-                                            src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
+                                            src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.url} 
                                             className="card-img-top img-prod-height pointer "
                                             style={{height: '20rem', objectFit: 'contain', filter:`${product.attributes.stock_count == 0 ? "blur(3px)" : "none"}`}} 
                                             onClick={() => handleProductClick(product)}    
                                         />
                                         {product.attributes.stock_count == 0 &&  
                                             <div onClick={() => handleProductClick(product)} className='out-of-stock d-flex position-absolute justify-content-center align-items-center' >
-                                                <p className='text-out-of-stock mb-0'>OUT OF STOCK</p>
+                                                <p className='text-out-of-stock mb-0'>
+                                                <FormattedMessage id="OUT_OF_STOCK" />
+                                                </p>
                                             </div>
                                         }
                                         <div className="card-body">
                                             <div className="row g-1">
                                                 <div className="col-12">
                                                     <span className="article-number regularfont mini-text"
-                                                        >Article #{product?.attributes?.article_number}</span>
+                                                    >
+                                                       <FormattedMessage id="ARTICLE" /> #{product?.attributes?.article_number}
+                                                    </span>
                                                 </div>
                                                 <div className="col-12">
                                                     <span className="product-name regularfont"

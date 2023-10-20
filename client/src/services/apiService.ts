@@ -114,7 +114,7 @@ const APIs = {
        
     getCountries: () => axios.get(BACKEND_URL + 'countries/', {headers}),
 
-    getMakes: () => axios.get(BACKEND_URL + 'makes?populate=*&sort[0]=id:asc'),
+    getMakes: (pageNum: any, itemCount: any) => axios.get(BACKEND_URL + `makes?populate=*&sort[0]=id:asc&pagination[page]=${pageNum}&pagination[pageSize]=${itemCount}`),
 
     paymentUpdate: () => axios.post(BACKEND_URL + 'payment-status-update', {headers}),
 
