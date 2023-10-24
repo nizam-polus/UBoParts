@@ -448,7 +448,62 @@
     "LISTINGS": "Advertenties",
     "CREATE_NEW_LISTING": "Nieuwe vermelding maken",
     "DELETE" : "Verwijderen",
-    "DELETING" : "Verwijderen..."
+    "DELETING" : "Verwijderen...",
+    "EDIT": "Bewerking",
+
+  "PLATE_NUMBER": "Plaat nummer",
+  "LIST_NAME": "Lijstnaam",
+  "LISTING_MAKE": "Lijst maken",
+  "LISTING_MODEL": "Lijstmodel",
+  "LISTING_YEAR": "Jaar van vermelding",
+  "LISTING_QUANTITY": "Lijsthoeveelheid",
+  "LISTING_CATEGORY": "Advertentiecategorie",
+  "LISTING_SUBCATEGORY": "Subcategorie weergeven",
+  "LISTING_PRICE": "Aanbiedingsprijs (€)",
+  "WEIGHT_IN_KG": "Gewicht in kg",
+  "ARTICLE_NUMBER": "Artikel nummer",
+  "BAR_CODE": "Streepjescode",
+  "ON_SALE": "Te koop",
+  "LOCATION_OF_PART_NO": "Locatie van onderdeelnr",
+  "LOCATION_OF_PART": "Locatie van onderdeel",
+  "LISTING_FEATURED_IMAGE": "Uitgelichte afbeelding weergeven",
+  "LISTING_IMAGES": "Afbeeldingen weergeven",
+  "LISTING_DESCRIPTION": "Beschrijving van vermelding",
+  "CREATE_LISTING": "Maak een vermelding",
+
+
+  "ORDER_HISTORY": "Bestelgeschiedenis",
+  "PURCHASE_HISTORY": "Aankoop geschiedenis",
+  "ORDERS": "Bestellingen",
+  "ORDER_DATE": "Besteldatum",
+  "STATUS": "Toestand",
+  "COMPLETED": "Voltooid",
+
+  "ORDER_NO": "Bestelnr",
+  "ORDER_TOTAL": "totale bestelling",
+  "INVOICE_NO": "Factuur nr",
+  "ITEM_SUMMARY": "artikel Samenvatting",
+  "TOTAL_PRICE": "Totale prijs",
+  "CUSTOMER_DETAILS": "Klant details",
+  "EMAIL": "E-mail",
+  "COUNTRY": "Land",
+  "DELIVERY_ADDRESS": "Bezorgadres",
+  "STREET_ADDRESS": "Adres",
+  "CITY": "Stad",
+  "STATE": "Staat",
+  "POST_CODE": "Postcode",
+  "DOWNLOAD": "Downloaden",
+
+  "EDIT_SHOP_WITH_US": "Bewerk winkel bij ons",
+  "EDIT_SHOP_INFORMATION": "Bewerk uw winkelinformatie",
+  "ACCOUNT_TYPE": "account type",
+  "COMMISSION_AMOUNT" : "Commissiebedrag",
+  "COMPANY_OR_SHOP_NAME": "Bedrijfs- of winkelnaam",
+  "ACCOUNT_TITLE": "Accounttitel",
+  "BANK_NAME": "Banknaam",
+  "IBAN_NO": "IBAN nummer"
+
+    
   }
   
   

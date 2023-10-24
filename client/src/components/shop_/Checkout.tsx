@@ -7,7 +7,7 @@ function Checkout() {
     const {user, saveUser} = UserContext(); 
     const [checkoutProducts, setCheckoutProducts]: any = useState([]);
     const [total, setTotal]: any = useState(0);
-    const [totalShippingCost, setTotalShippingCost] = useState<any>()
+    const [totalShippingCost, setTotalShippingCost] = useState<any>(0)
     const [countries, setCountries] = useState([])
     const [formData, setFormData] = useState({
         first_name: '',

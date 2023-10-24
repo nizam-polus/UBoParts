@@ -454,10 +454,60 @@
   "CREATE_NEW_LISTING": "Create New Listing",
   "DELETE" : "Delete",
   "DELETING" : "Deleting...",
-  "EDIT": ""
+  "EDIT": "Edit",
+
+  "PLATE_NUMBER": "Plate Number",
+  "LIST_NAME": "List Name",
+  "LISTING_MAKE": "Listing Make",
+  "LISTING_MODEL": "Listing Model",
+  "LISTING_YEAR": "Listing Year",
+  "LISTING_QUANTITY": "Listing Quantity",
+  "LISTING_CATEGORY": "Listing Category",
+  "LISTING_SUBCATEGORY": "Listing Sub Category",
+  "LISTING_PRICE": "Listing Price (€)",
+  "WEIGHT_IN_KG": "Weight in KG",
+  "ARTICLE_NUMBER": "Article Number",
+  "BAR_CODE": "Barcode",
+  "ON_SALE": "On Sale",
+  "LOCATION_OF_PART_NO": "Location of Part No",
+  "LOCATION_OF_PART": "Location of Part",
+  "LISTING_FEATURED_IMAGE": "Listing Featured Image",
+  "LISTING_IMAGES": "Listing Image(s)",
+  "LISTING_DESCRIPTION": "Listing Description",
+  "CREATE_LISTING": "Create Listing",
 
 
+  "ORDER_HISTORY": "Order History",
+  "PURCHASE_HISTORY": "Purchase History",
+  "ORDERS": "Orders",
+  "ORDER_DATE": "Order Date",
+  "STATUS": "Status",
+  "COMPLETED": "Completed",
 
+  "ORDER_NO": "Order No",
+  "ORDER_TOTAL": "Order Total",
+  "INVOICE_NO": "Invoice No",
+  "ITEM_SUMMARY": "Item Summary",
+  "TOTAL_PRICE": "Total Price",
+  "CUSTOMER_DETAILS": "Customer Details",
+  "EMAIL": "Email",
+  "COUNTRY": "Country",
+  "DELIVERY_ADDRESS": "Delivery Address",
+  "STREET_ADDRESS": "Street Address",
+  "CITY": "City",
+  "STATE": "State",
+  "POST_CODE": "Postcode",
+  "DOWNLOAD": "Download",
+
+  "EDIT_SHOP_WITH_US": "Edit shop with us",
+  "EDIT_SHOP_INFORMATION": "Edit your shop information",
+  "ACCOUNT_TYPE": "Account Type",
+  "COMMISSION_AMOUNT" : "Commission Amount",
+  "COMPANY_OR_SHOP_NAME": "Company or Shop name",
+  "ACCOUNT_TITLE": "Account Title",
+  "BANK_NAME": "Bank Name",
+  "IBAN_NO": "Iban Number"
+  
 
 
   

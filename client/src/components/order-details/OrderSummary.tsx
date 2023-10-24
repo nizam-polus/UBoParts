@@ -15,7 +15,9 @@ function OrderSummary() {
             transactionId = localStorage.getItem('uid') || '';
         }
         transactionId && APIs.getOrderWithTransactionid(transactionId).then((response: any) => {
+            console.log(response.data.data)
             let OrderProducts = response.data.data;
+            setShippingCost(OrderProducts[0].attributes.shipping_cost)
             setProducts(OrderProducts);
             if (OrderProducts.length) {
                 let total = 0;

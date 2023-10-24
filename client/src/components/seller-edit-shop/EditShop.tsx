@@ -108,7 +108,7 @@ function EditShop() {
                                                             <tr>
                                                                 <th colSpan={2}
                                                                     className="pt-0 pb-0 px-0 ps-0 custom-color-2 regularfont subtitles fw-normal border-top-0 border-bottom-0"
-                                                                >Edit shop with us <span className="regularfont body-sub-titles ml-3 align-middle font-weight-normal">Edut your shop information</span></th>
+                                                                >Edit shop with us <span className="regularfont body-sub-titles ml-3 align-middle font-weight-normal">Edit your shop information</span></th>
 
                                                             </tr>
                                                             <tr>

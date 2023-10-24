@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import APIs from '~/services/apiService';
 import { UserContext } from './UserContext';
+import { FormattedMessage } from 'react-intl';
 // interface Props {
 //     isOpen?: boolean;
 //     onClose?: () => void;
@@ -128,14 +129,14 @@ function Login(props: any) {
                             <div className="modal-body">
                                 <div className="ac-card login-form">
                                     <div className="ac-card-body">
-                                        <h3 className="ac-card-title text-center bg-image-text semifont">Login</h3>
-                                        <p className="ac-card-sub-title text-center body-sub-titles-1 lightfont">Welcome back! Please enter your details</p>
+                                        <h3 className="ac-card-title text-center bg-image-text semifont"><FormattedMessage id="LOGIN" /></h3>
+                                        <p className="ac-card-sub-title text-center body-sub-titles-1 lightfont"><FormattedMessage id="LOGIN_DETAILS" /></p>
                                         {invalidinput ? <p className='text-center' style={{color: 'rgb(255 102 102)'}}>Please enter your email & password</p> : invalidCred ? 
                                             <p className='text-center' style={{color: 'rgb(255 102 102)'}}>Invalid credentials</p> : undefined}
                                         <div className="ac-card-text">
                                             <form action="/action_page.php">
                                                 <div className="form-group marginb40">
-                                                    <label htmlFor="email" className="body-sub-titles-1 mediumfont">Email address</label>
+                                                    <label htmlFor="email" className="body-sub-titles-1 mediumfont"><FormattedMessage id="EMAIL_ADDRESS" /></label>
                                                     <input type="email" 
                                                         className="form-control body-sub-titles-1 mediumfont inputformtxt" 
                                                         id="email" name="username" 
@@ -145,7 +146,7 @@ function Login(props: any) {
                                                     />
                                                 </div>
                                                 <div className="form-group marginb40">
-                                                    <label htmlFor="password" className="body-sub-titles-1 mediumfont">Password</label>
+                                                    <label htmlFor="password" className="body-sub-titles-1 mediumfont"><FormattedMessage id="Wachtwoord"/></label>
                                                     <input type="password" 
                                                         className="form-control body-sub-titles-1 mediumfont inputformtxt" 
                                                         id="password" name="password" 
@@ -158,22 +159,22 @@ function Login(props: any) {
                                                     <input type="checkbox" name="remember_me" 
                                                         className='rounded' 
                                                     />
-                                                    <span className="remember_me body-sub-titles-1 lightfont inputformtxt">Remember me</span>
+                                                    <span className="remember_me body-sub-titles-1 lightfont inputformtxt"><FormattedMessage id="REMEMBER_ME"/></span>
                                                     <button type="button" id="forgot_password" 
                                                         className="body-sub-titles-1 mediumfont" 
                                                         onClick={showForgotPassword}
-                                                    >Forgot Password?</button>
+                                                    ><FormattedMessage id="FORGOT_PASSWORD"/></button>
                                                 </div>
                                                 <button type="submit" className="btn btn-default body-sub-titles-1 mediumfont" onClick={(e) => onFormSubmit(e)}>Login</button>
                                             </form>
                                         </div>
                                         <div className="ac-card-footer mt-2">
                                             <p className="body-sub-titles-1 mediumfont">
-                                                <span className="lightfont">Don't have an account? </span>
+                                                <span className="lightfont"><FormattedMessage id="DONT_HAVE_AN_ACCOUNT"/> </span>
                                                 <button type="button" id="forgot_password" 
                                                     className="body-sub-titles-1 mediumfont" 
                                                     onClick={showRegister}
-                                                >Register</button>
+                                                ><FormattedMessage id="REGISTER"/></button>
                                             </p>
                                         </div>
                                     </div>
