@@ -6,6 +6,7 @@ import Link from 'next/link';
 import APIs from '~/services/apiService';
 import { BASE_URL } from 'configuration';
 import { UserContext } from '../account_/UserContext';
+import { toast } from 'react-toastify';
 
 function Cart() {
 
@@ -13,11 +14,39 @@ function Cart() {
     const [cartProducts, setCartProducts] = useState<any>([]);
     const [totalCartPrice, setTotal] = useState(0);
     const [totalDiscount, setTotalDiscount] = useState(0)
+    const [total, setTotalAmount]: any = useState(0);
     const [isError, setIsError] = useState<{ [key: string]: string | null }>({});
     const [inputValue, setInputValue] = useState("");
     const [debouncedInputValue, setDebouncedInputValue] = useState("");
     const [changeProduct,setChangeProduct] = useState<any>({})
+    const [valiedCheckout, setValiedCheckout] = useState<any>(1)
+    const [totalShippingCost, setTotalShippingCost] = useState<any>()
+    const [countries, setCountries] = useState([]);
+    const [checkoutProducts, setCheckoutProducts]: any = useState([]);
+    const [formData, setFormData] = useState({
+        first_name: '',
+        last_name: '',
+        company: '',
+        email: '',
+        phone_number: '',
+        streetaddress_housenumber: '',
+        streetaddress_apartment: '',
+        city: '',
+        state: '',
+        country: '',
+        postcode: ''
+    });
+    const [shippingData, setShippingData] = useState({
+        shippingaddress_country: formData.country,
+        shippingaddress_streataddress_housenumber: formData.streetaddress_housenumber,
+        shippingaddress_streataddress_apartment: formData.streetaddress_apartment,
+        shippingaddress_city: formData.city,
+        shippingaddress_state: formData.state,
+        shippingaddress_postcode: formData.postcode,
+        shippingaddress_phonenumber: formData.phone_number
+    });
     const router = useRouter();
+    var value = 1;
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
@@ -216,6 +245,137 @@ function Cart() {
         updateLocalState(product, newQuantity, index); // Update local state immediately
     };
 
+    const CheckoutFunction = () =>{
+        APIs.getCountries().then(response => {
+            let countries: any = response.data.data;
+            setCountries(countries);
+            APIs.getCartData({ customerid: user.id }).then(response => {
+                let checkoutProducts = response.data.rows;
+                setCheckoutProducts(checkoutProducts);
+                let sellerIdsArray: any = [];
+                checkoutProducts.forEach((product: any) => {
+                    let sellerId = product.seller_id;
+                    if (!sellerIdsArray.includes(sellerId)) {
+                        sellerIdsArray.push(sellerId);
+                    }
+                });
+                console.log("array", sellerIdsArray);
+                let totalShippingCost = 0;
+                let shippingcostapidataArray: any = [];
+
+                const getContryCode = (country: string, countries: any[]) =>{
+                    let countryData: any = countries.find((item: any, index) => item.attributes.country == country);
+                    return countryData?.attributes?.code;
+                 }
+        
+                // Create an array of promises for each seller's shipping data
+                const shippingDataPromises = sellerIdsArray.map((sellerId: any) => {
+                    return APIs.getSpecificUser(sellerId).then((res) => {
+                        let shippingCountryCode = getContryCode(res.data.shippingaddress_country, countries);
+                        let buyyerShippingCountryCode = getContryCode((user.shippingaddress_country || formData.country), countries)
+                        let postingCode = res.data.shippingaddress_postcode;
+                        console.log(shippingCountryCode)
+                        let total: any = 0, totalDiscount = 0, totalWeight = 0;
+                        if (checkoutProducts.length) {
+                            checkoutProducts.forEach((product: any) => {
+                                if (product.seller_id === sellerId) {
+                                  totalWeight += product.total_weight;
+                                }
+                            });
+                            // for (const obj of checkoutProducts) {
+                            //     total += obj.total_price;
+                            //     totalDiscount += obj.discount_price
+                            // }
+
+                            // setTotalAmount(total - totalDiscount);
+                        }
+                        const shippingDataForApi = {
+                            "seller_id": sellerId,
+                            "shippingaddress_postcode": user.shippingaddress_postcode ? user.shippingaddress_postcode : formData.postcode,
+                            "shippingaddress_country": buyyerShippingCountryCode,
+                            "product_weight": totalWeight,
+                            "from_postal_code": postingCode,
+                            "from_country": shippingCountryCode  
+                        }
+                        shippingcostapidataArray.push(shippingDataForApi)
+
+                        return shippingcostapidataArray
+                        
+                    });
+                });
+        
+                // Wait for all promises to resolve
+                Promise.all(shippingDataPromises).then((shippingDataArray) => {
+                    // All data has been collected, and the array is complete
+                    shippingcostapidataArray = shippingDataArray;
+        
+                    console.log("shippingData", shippingcostapidataArray);
+
+                    // Now, you can call the getShippingCost API with the complete data
+                    APIs.getShippingCost({ "shipping_data": shippingcostapidataArray[0] }).then((res: any) => {
+                        if (!res || (res && !res.data.length)) {
+                            // setTotal(Number(total));
+                            setValiedCheckout(0)
+                            value = 0
+                           
+                        } else {
+                            // Calculate the total shipping cost
+                            const shippingCostArray = res.data; // Assuming res.data is your array
+                            let totalShippingCost = 0; // Initialize the total shipping cost
+                            // debugger
+                            for (const item of shippingCostArray) {
+                                const price = parseFloat(item.price_details);
+                                if (!isNaN(price)) {
+                                    totalShippingCost += price;
+                                    
+                                } else {
+                                    console.log(price)
+                                    value = 0
+                                    setValiedCheckout(0)
+                                    console.log(valiedCheckout)
+                                    console.log("Error: Invalid price_details for seller_id " + item.seller_id);
+                                    break;
+                                }
+                            }
+
+                            console.log("Total Shipping Cost: " + totalShippingCost);
+                            // Now, you can update your state with the total shipping cost
+                            setTotalShippingCost(totalShippingCost);
+                            console.log("shippingside", total);
+                            // setTotal(total + shippingCost);
+                        }
+                        if(!user.country || !user.postcode){
+                            toast.error("Please fill your user details")
+                            return
+                        }
+                        if(!value){
+                            // router.push('/cartpage')
+                            toast.error("Current shipping methods are not supported")
+                            return
+                        }
+                         if(cartProducts.length){
+                            router.push('/checkoutpage')
+                        }
+                        else{
+                            toast.warning("Your cart is Empty")
+                            router.push("/cartpage")
+                        }
+                        console.log("shipping response", res);
+                    });
+                });
+            }).catch(err => {
+                console.log(err);
+            });
+        });
+
+        
+    }
+
+    // useEffect(() =>{
+        
+        
+    // },[formData.country, formData.postcode, shippingData.shippingaddress_country, shippingData.shippingaddress_postcode])
+
     return (
         <>
             <div className="main-body pb-4 pt-4">
@@ -345,11 +505,12 @@ function Cart() {
                                                 <td className="pb-2 pt-1 pl-0 semifont boldfontsize border-top-0 custom-color-3">€{totalCartPrice - totalDiscount}</td>
                                             </tr>
                                             <tr><td colSpan={2} className="px-3 pt-3 pb-2 w-100">
-                                                <button type="button" className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1">
-                                                    <AppLink href={`${cartProducts?.length ? '/checkoutpage' : '/cartpage'}`} className="custom-color-7">
+                                            {/* href={`${cartProducts?.length ? '/checkoutpage' : '/cartpage'}`} */}
+                                                <button type="button" onClick={CheckoutFunction} className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1">
+                                                
                                                         <button type="button" className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"
                                                         >Proceed to checkout</button>
-                                                    </AppLink>
+                                                
                                                 </button>
                                             </td></tr>
                                             <tr>

@@ -65,7 +65,7 @@ function About_us() {
                         </div>
                     </section>
                 </div>
-                <section className="contact-wrapper coulmn-bg-color-1 mt-5">
+                {/* <section className="contact-wrapper coulmn-bg-color-1 mt-5">
                     <div className="container-fluid">
                         <div className="container">
                             <div className="row p-5">
@@ -75,7 +75,7 @@ function About_us() {
                             </div>
                         </div>
                     </div>
-                </section>
+                </section> */}
             </div>
         </>
     );

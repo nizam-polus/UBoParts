@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { toast } from 'react-toastify';
 import APIs from '~/services/apiService';
 
@@ -52,7 +53,7 @@ function Request() {
         let reqElement = document.getElementById('required');
         if (reqElement && incomplete) reqElement.scrollIntoView({behavior: 'smooth'});
         if (!incomplete) {
-            APIs.dismantleCar(formData).then(response => {
+            APIs.requestPart(formData).then(response => {
                 console.log(response);
                 const refId = response.data.data.id
                 const picData = {
@@ -176,7 +177,7 @@ function Request() {
                                                                 <div className="position-relative d-flex">
                                                                     <span>
                                                                         <input type="radio" 
-                                                                            name="delivery_type" id="driving_type_delivery" value={'Delivery'}
+                                                                            name="delivery_type" id="driving_type_delivery" value={'delivery'}
                                                                             onChange={handleFormChange}
                                                                         />
                                                                         <label htmlFor="driving_type_pickup" className="rounded"></label>
@@ -186,7 +187,7 @@ function Request() {
                                                                 <div className="position-relative d-flex">
                                                                     <span>
                                                                         <input type="radio" 
-                                                                            name="delivery_type" id="driving_type_pickup" value={'Pickup'}
+                                                                            name="delivery_type" id="driving_type_pickup" value={'pickup'}
                                                                             onChange={handleFormChange}
                                                                         />
                                                                         <label htmlFor="driving_type_pickup" className="rounded"></label>
@@ -196,7 +197,7 @@ function Request() {
                                                             </fieldset>
                                                         </td>
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Buying Price Range (€)</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="BUYING_RANGE"/> (€)</label>
                                                             <div className="d-flex">
                                                                 <div className="col pl-0">
                                                                     <input type="number" 

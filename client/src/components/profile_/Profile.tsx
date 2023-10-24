@@ -215,11 +215,11 @@ function Profile() {
                                                 <tr>
                                                     <th colSpan={2} className="px-5 pt-3 pb-3 custom-color-3 regularfont subtitles border-top-0 border-bottom ">
                                                         <div className="float-left pt-2">Address</div>
-                                                        <div className="float-right">
+                                                        {/* <div className="float-right">
                                                             <button type="button" 
                                                                 className="custom-color-7 boldfont mini-text-3 rounded border-0 button-bg-color-1 pb-2 pt-2 px-5"
                                                             >Add New</button>
-                                                        </div>
+                                                        </div> */}
                                                     </th>
                                                 </tr>
                                                 <tr className="single">
