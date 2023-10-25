@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import classNames from 'classnames';
 import { FormattedMessage } from 'react-intl';
+import ReactToPrint from 'react-to-print';
 
 function Create_new_listing() {
     const [error, setError] = useState(null);
@@ -57,6 +58,8 @@ function Create_new_listing() {
     const inputRef: any = useRef()
     const galleryRef: any = useRef()
     const upperCaseListName = listName.toUpperCase();
+    const componentRef:any = useRef();
+
 
     useEffect(() => {
         let userDetails: any = localStorage.getItem("userdetails")
@@ -537,7 +540,7 @@ function Create_new_listing() {
                                                         : 
                                                         'border-0'}`} name="first-name" placeholder="24 Inch Tyre for Mustang" required />
                                                         <ul style={{ display: "contents" }}>
-                                                            {parts.length > 0 && inputValue.length >= 3 && !selectedItem && (
+                                                            {parts.length > 0 && inputValue.length >= 2 && !selectedItem && (
 
                                                                 <div className="options-container  position-absolute" 
                                                                     style={{ backgroundColor: "#ebebeb", boxShadow: "1px 0px 7px 0px grey", zIndex: 3, maxHeight: "200px", overflowY: "scroll", overflowX: "hidden", width: "20rem" }}>
@@ -684,14 +687,18 @@ function Create_new_listing() {
                                                     <td className='px-5 pb-2 pt-4'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">
                                                             <FormattedMessage id="WEIGHT_IN_KG"/> 
-                                                        <span className="required">*</span></label>
+                                                            <span className="required">*</span>
+                                                        </label>
                                                         <input type="text" onChange={handleWeightChange}
                                                             className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listWeight ? 'required-field' : 'border-0'}`}
                                                             placeholder="weight in KG"
                                                         />
                                                     </td>
                                                     <td className='px-5 pb-2 pt-4'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Article No <span className="required">*</span></label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">
+                                                        <FormattedMessage id="ARTICLE_NUMBER"/>
+                                                            <span className="required">*</span>
+                                                        </label>
                                                         <input type="text" onChange={handleArticleChange} 
                                                             className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listArticle ? 'required-field' : 'border-0'}`}
                                                             placeholder="Article No" 
@@ -700,7 +707,9 @@ function Create_new_listing() {
                                                 </tr>
                                                 <tr className="double">
                                                     <td className='px-5 pb-2 border-0'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">On Sale</label><br />
+                                                        <label className="custom-color-2 regularfont products-name pb-2">
+                                                        <FormattedMessage id="ON_SALE"/>
+                                                        </label><br />
                                                         <select className="form-select input-bg-color-2 border-0 products-name custom-color-2"
                                                             value={saleOffer} onChange={handleSaleChange}>
                                                                 {saleArray && saleArray.map((sale: any) => (
@@ -709,7 +718,9 @@ function Create_new_listing() {
                                                     </td>
                                                     <td className='px-5 pb-2 border-0 d-flex' style={{ gap: "10px" }}>
                                                         <div style={{width: "40%"}}>
-                                                            <label className="custom-color-2 regularfont products-name pb-2">Location of Part No</label>
+                                                            <label className="custom-color-2 regularfont products-name pb-2">
+                                                            <FormattedMessage id="LOCATION_OF_PART_NO"/>
+                                                            </label>
                                                             <select className="form-select input-bg-color-2 border-0 products-name custom-color-2"
                                                                 name='locationNo' value={locationNo} onChange={handleLocationNoChange}>
                                                                 <option value="A1">A1</option>
@@ -724,7 +735,10 @@ function Create_new_listing() {
                                                             </select>
                                                         </div>
                                                         <div style={{width: "60%"}}>
-                                                            <label className="custom-color-2 regularfont products-name pb-2">Location of Part  <span className="required">*</span></label>
+                                                            <label className="custom-color-2 regularfont products-name pb-2">
+                                                                <FormattedMessage id="LOCATION_OF_PART"/>
+                                                                <span className="required">*</span>
+                                                            </label>
                                                             <input type="text" onChange={handleLocationChange} 
                                                                 className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !locationNo ? 'required-field' : 'border-0'}`} 
                                                                 style={{height: "2.3rem"}} placeholder="Location of Part" 
@@ -735,28 +749,10 @@ function Create_new_listing() {
                                                 <tr className="single">
                                                     <td colSpan={2} className='px-5 pb-4 pt-2 border-0'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Barcode :</label>
-                                                        {/* <div style={{ padding: "20px", background: `#ffcf00`, width: "400px" }} 
-                                                            className='d-flex align-items-center justify-content-center flex-column'>
-                                                            <div className="details" style={{ width: "100%", fontWeight: "bold" }}>
-                                                                <div className='d-flex justify-content-between'>
-                                                                    <div>UBOPARTS</div>
-                                                                    <div>{upperCaseListName}</div>
-                                                                </div>
-                                                                <div className='d-flex justify-content-between'>
-                                                                    <div style={{minWidth: "120px"}}>
-                                                                        <div>REK NUMMER</div>
-                                                                        <div> {listLocation}</div>
-                                                                    </div>
-                                                                    <div className='text-right'>
-                                                                       {makeName} {modelName} {year}
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            {listBarcode && <Qrgenerator qrValue={listBarcode} />}
-                                                        </div> */}
-                                                        
                                                             <div style={{ padding: "5px", background: `#ffcf00`, width: "415.7480315px", height: "188.97637795px" }}
-                                                                className='d-flex align-items-center justify-content-center flex-column'>
+                                                                className='d-flex align-items-center justify-content-center flex-column'
+                                                                ref={componentRef}
+                                                                >
                                                                 <div className="details d-flex" style={{ width: "100%", fontWeight: "bolder", padding: "0px 10px 0 10px", fontSize: "14px" }}>
                                                                     <div className='d-flex justify-content-between' style={{ minWidth: "180px" }}>
                                                                         {listBarcode && <Qrgenerator qrValue={listBarcode} />}
@@ -770,11 +766,37 @@ function Create_new_listing() {
                                                                             <div>REK NUMMER : {listLocation}</div>
                                                                             {/* <div> {productData?.attributes?.product_location_warehouse}</div> */}
                                                                         </div>
-                                                                        <div>ARTUCLE NO : {listArticle}</div>
+                                                                        <div>ARTICLE NO : {listArticle}</div>
                                                                         <div>{makeName} {modelName} {year} </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                        <div>
+                                                            <ReactToPrint
+                                                                pageStyle={`
+                                                                @page {
+                                                                    size: 11cm 5cm;
+                                                                    margin: 0;
+                                                                }
+                                                                @media print {
+                                                                body {
+                                                                width: 11cm;
+                                                                height: 5cm;
+                                                                    }
+                                                                }
+                                                                `}
+                                                                trigger={() => (
+                                                                    <button
+                                                                        type="button"
+                                                                        className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2 p-2 my-2"
+                                                                        style={{ width: "415.78px" }}
+                                                                    >
+                                                                        Print
+                                                                    </button>
+                                                                )}
+                                                                content={() => componentRef.current}
+                                                            />
+                                                        </div>
                                                     </td>
                                                 </tr>
                                                 <tr className="double">

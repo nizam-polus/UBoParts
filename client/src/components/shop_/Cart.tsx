@@ -19,7 +19,6 @@ function Cart() {
     const [inputValue, setInputValue] = useState("");
     const [debouncedInputValue, setDebouncedInputValue] = useState("");
     const [changeProduct,setChangeProduct] = useState<any>({})
-    const [valiedCheckout, setValiedCheckout] = useState<any>(1)
     const [totalShippingCost, setTotalShippingCost] = useState<any>()
     const [countries, setCountries] = useState([]);
     const [checkoutProducts, setCheckoutProducts]: any = useState([]);
@@ -46,12 +45,10 @@ function Cart() {
         shippingaddress_phonenumber: formData.phone_number
     });
     const router = useRouter();
-    var value = 1;
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
             setDebouncedInputValue(inputValue);
-            console.log('debouncedInputValue', debouncedInputValue)
             debouncedQuantityInputOnChange(changeProduct, inputValue, null)
         }, 500);
         return () => clearTimeout(timeoutId);
@@ -99,7 +96,6 @@ function Cart() {
             console.log(err);
         })
     }
-
     function discountAmount(originalPrice: any, discountPercentage: any) {
         const original = parseFloat(originalPrice);
         const discount = parseFloat(discountPercentage);
@@ -108,8 +104,7 @@ function Cart() {
         }
         const discountAmount = (original * discount) / 100;
         return +discountAmount.toFixed(2); 
-    }
-   
+    }  
     const handleQuantityChange = (product: any, valueChange: string, index: number) => {
         let newQuantity = product.quantity;
     
@@ -118,13 +113,10 @@ function Cart() {
         } else if (valueChange === 'dec' && newQuantity > 1) {
             newQuantity--;
         }
+        const updatedCartProducts = [...cartProducts]; 
+        updatedCartProducts[index].quantity = newQuantity; 
+        setCartProducts(updatedCartProducts); 
     
-        // Update the local product quantity immediately
-        const updatedCartProducts = [...cartProducts]; // Make a copy of the cart products
-        updatedCartProducts[index].quantity = newQuantity; // Update the quantity in the local copy
-        setCartProducts(updatedCartProducts); // Update the state with the new quantity
-    
-        // Make the API call to update the cart data
         APIs.updateCartData({
             customerid: user.id,
             id: product.id,
@@ -134,7 +126,6 @@ function Cart() {
             "discountPrice": discountAmount(product.price,product.discount),
         }).then(response => {
             if (response.data.error) {
-                // Set the error state using the error's id as the key
                 setIsError(prevErrors => ({
                     ...prevErrors,
                     [response.data.error.id]: response.data.error.message
@@ -146,17 +137,12 @@ function Cart() {
                     }));
                 }, 3000);
             } else {
-                // Clear the error state for this product if no error
                 setIsError(prevErrors => ({
                     ...prevErrors,
                     [product.product_id]: null
-                }));
-                
-                 // Update the cart data in case the backend response has any changes (although you've already updated the local state)
-           
+                }));          
             }
-            APIs.getCartData({ customerid: user.id }).then((response: any) => {
-                
+            APIs.getCartData({ customerid: user.id }).then((response: any) => {            
                 setCartProducts(response.data.rows);
                 if (response.data.rows.length) {
                     let total = 0;
@@ -176,13 +162,11 @@ function Cart() {
             console.error(err);
         });
     }
-
     const updateLocalState = (product:any, newQuantity:any, index:any) => {
-        // Update the local product quantity immediately
         product.quantity = newQuantity;
-        const updatedCartProducts = [...cartProducts]; // Make a copy of the cart products
-        updatedCartProducts[index].quantity = newQuantity; // Update the quantity in the local copy
-        setCartProducts(updatedCartProducts); // Update the state with the new quantity
+        const updatedCartProducts = [...cartProducts]; 
+        updatedCartProducts[index].quantity = newQuantity; 
+        setCartProducts(updatedCartProducts); 
     };
     const debouncedQuantityInputOnChange = (product:any, newQuantity:any, index:any) => {
         APIs.updateCartData({
@@ -194,7 +178,6 @@ function Cart() {
             "discountPrice": discountAmount(product.price,product.discount),
         }).then(response => {
             if (response.data.error) {
-                // Set the error state using the error id as the key
                 setIsError(prevErrors => ({
                     ...prevErrors,
                     [response.data.error.id]: response.data.error.message
@@ -206,16 +189,13 @@ function Cart() {
                     }));
                 }, 3000);
             } else {
-                // Clear the error state for this product if no error
                 setIsError(prevErrors => ({
                     ...prevErrors,
                     [product.product_id]: null
                 }));
                
             }
-               // After updating the cart data, fetch the updated cart data
                   APIs.getCartData({ customerid: user.id }).then((response) => {
-                    console.log(response.data.rows)
                     setCartProducts(response.data.rows);
                     if (response.data.rows.length) {
                         let total = 0;
@@ -228,13 +208,9 @@ function Cart() {
                         setTotalDiscount(totalDiscount)
                     }
                 }).catch((error) => {
-                    // Handle any errors that occur during fetching
                     console.error(error);
-                });
-            
-          
+                });  
         }).catch(err => {
-            // Handle any errors that occur during the updateCartData API call
             console.error(err);
         });
     }
@@ -246,6 +222,7 @@ function Cart() {
     };
 
     const CheckoutFunction = () =>{
+        let isValidShipping = true
         APIs.getCountries().then(response => {
             let countries: any = response.data.data;
             setCountries(countries);
@@ -259,7 +236,6 @@ function Cart() {
                         sellerIdsArray.push(sellerId);
                     }
                 });
-                console.log("array", sellerIdsArray);
                 let totalShippingCost = 0;
                 let shippingcostapidataArray: any = [];
 
@@ -274,7 +250,6 @@ function Cart() {
                         let shippingCountryCode = getContryCode(res.data.shippingaddress_country, countries);
                         let buyyerShippingCountryCode = getContryCode((user.shippingaddress_country || formData.country), countries)
                         let postingCode = res.data.shippingaddress_postcode;
-                        console.log(shippingCountryCode)
                         let total: any = 0, totalDiscount = 0, totalWeight = 0;
                         if (checkoutProducts.length) {
                             checkoutProducts.forEach((product: any) => {
@@ -282,12 +257,6 @@ function Cart() {
                                   totalWeight += product.total_weight;
                                 }
                             });
-                            // for (const obj of checkoutProducts) {
-                            //     total += obj.total_price;
-                            //     totalDiscount += obj.discount_price
-                            // }
-
-                            // setTotalAmount(total - totalDiscount);
                         }
                         const shippingDataForApi = {
                             "seller_id": sellerId,
@@ -298,83 +267,48 @@ function Cart() {
                             "from_country": shippingCountryCode  
                         }
                         shippingcostapidataArray.push(shippingDataForApi)
-
-                        return shippingcostapidataArray
-                        
+                        return shippingcostapidataArray   
                     });
                 });
-        
-                // Wait for all promises to resolve
                 Promise.all(shippingDataPromises).then((shippingDataArray) => {
-                    // All data has been collected, and the array is complete
                     shippingcostapidataArray = shippingDataArray;
-        
-                    console.log("shippingData", shippingcostapidataArray);
-
-                    // Now, you can call the getShippingCost API with the complete data
                     APIs.getShippingCost({ "shipping_data": shippingcostapidataArray[0] }).then((res: any) => {
-                        if (!res || (res && !res.data.length)) {
-                            // setTotal(Number(total));
-                            setValiedCheckout(0)
-                            value = 0
-                           
+                        if (!res?.data?.length) {
+                            isValidShipping = false;
                         } else {
-                            // Calculate the total shipping cost
-                            const shippingCostArray = res.data; // Assuming res.data is your array
-                            let totalShippingCost = 0; // Initialize the total shipping cost
-                            // debugger
+                            const shippingCostArray = res.data; 
+                            let totalShippingCost = 0; 
                             for (const item of shippingCostArray) {
                                 const price = parseFloat(item.price_details);
-                                if (!isNaN(price)) {
-                                    totalShippingCost += price;
-                                    
-                                } else {
-                                    console.log(price)
-                                    value = 0
-                                    setValiedCheckout(0)
-                                    console.log(valiedCheckout)
-                                    console.log("Error: Invalid price_details for seller_id " + item.seller_id);
+                                if (isNaN(price)) {
+                                    isValidShipping = false
                                     break;
+                                } else {
+                                    totalShippingCost += price;
                                 }
                             }
-
-                            console.log("Total Shipping Cost: " + totalShippingCost);
-                            // Now, you can update your state with the total shipping cost
                             setTotalShippingCost(totalShippingCost);
-                            console.log("shippingside", total);
-                            // setTotal(total + shippingCost);
                         }
-                        if(!user.country || !user.postcode){
-                            toast.error("Please fill your user details")
-                            return
+                        if (!user.country || !user.postcode){
+                            toast.error("Please fill your user details", {autoClose: 4000});
+                            return;
                         }
-                        if(!value){
-                            // router.push('/cartpage')
-                            toast.error("Current shipping methods are not supported")
-                            return
+                        if (!cartProducts.length){
+                            toast.warning("Your cart is Empty");
+                            router.push("/cartpage");
+                        } else if (!isValidShipping){
+                            toast.error("Current shipping methods are not supported", {autoClose: 4000});
+                            return;
+                        } else {
+                            router.push('/checkoutpage');
                         }
-                         if(cartProducts.length){
-                            router.push('/checkoutpage')
-                        }
-                        else{
-                            toast.warning("Your cart is Empty")
-                            router.push("/cartpage")
-                        }
-                        console.log("shipping response", res);
                     });
                 });
             }).catch(err => {
                 console.log(err);
             });
-        });
-
-        
+        });    
     }
-
-    // useEffect(() =>{
-        
-        
-    // },[formData.country, formData.postcode, shippingData.shippingaddress_country, shippingData.shippingaddress_postcode])
 
     return (
         <>
@@ -486,11 +420,11 @@ function Cart() {
                                                 <>
                                                     <tr className="border-top">
                                                         <td className="pb-1 pt-4 pl-3 regularfont placeholderfontsize border-top-0">Total</td>
-                                                        <td className="pb-1 pt-4 semifont border-top-0 menu_font_size custom-color-3">€{totalCartPrice}</td>
+                                                        <td className="pb-1 pt-4 semifont border-top-0 menu_font_size custom-color-3">€{totalCartPrice.toFixed(2)}</td>
                                                     </tr>
                                                     <tr>
                                                         <td className="pb-1 pt-4 pl-3 regularfont placeholderfontsize border-top-0">Discount</td>
-                                                        <td className="pb-1 pt-4 semifont border-top-0 menu_font_size custom-color-3">- €{totalDiscount}</td>
+                                                        <td className="pb-1 pt-4 semifont border-top-0 menu_font_size custom-color-3">- €{totalDiscount.toFixed(2)}</td>
                                                     </tr>
                                                 </>
                                             :
@@ -502,7 +436,7 @@ function Cart() {
                                             </tr>
                                             <tr>
                                                 <td className="pb-2 pt-1 pr-0 pl-3 semifont boldfontsize border-top-0"> SubTotal</td>
-                                                <td className="pb-2 pt-1 pl-0 semifont boldfontsize border-top-0 custom-color-3">€{totalCartPrice - totalDiscount}</td>
+                                                <td className="pb-2 pt-1 pl-0 semifont boldfontsize border-top-0 custom-color-3">€{(totalCartPrice - totalDiscount).toFixed(2)}</td>
                                             </tr>
                                             <tr><td colSpan={2} className="px-3 pt-3 pb-2 w-100">
                                             {/* href={`${cartProducts?.length ? '/checkoutpage' : '/cartpage'}`} */}
