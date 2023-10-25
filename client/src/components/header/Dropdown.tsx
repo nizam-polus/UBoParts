@@ -55,19 +55,30 @@ function Dropdown<T extends IDropdownItem>(props: Props<T>) {
     }, [setIsOpen, rootRef]);
 
     return (
-        <div className={classes} ref={rootRef}>
+        <div className={classes} ref={rootRef} style={{display: "grid", placeContent: "center"}}>
             <button
-                className="topbar__button topbar__button--has-arrow topbar__menu-button"
+                className="topbar__button topbar__button--has-arrow topbar__menu-button "
+                style={{color: "white", border: "1px solid grey", padding: "0 10px", height: "2.4rem"}}
                 type="button"
                 onClick={handleButtonClick}
             >
-                {hasLabel && <span className="topbar__button-label">{label}</span>}
-                {hasTitle && <span className="topbar__button-title">{title}</span>}
-                <span className="topbar__button-arrow">
-                    {/* <ArrowDownSm7x5Svg /> */}
-                </span>
+                <div style={{display: "flex", gap: "10px"}}>
+                    <div>{hasLabel && <span className="topbar__button-label">{label}</span>}
+                    </div>
+                    <div>{hasTitle && <span className="topbar__button-title">{title}</span>}
+                    </div>
+                    <div>
+                        {/* <span className="topbar__button-arrow"> */}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path d="M12 16l-6-6h12" fill="#FFFFFF" />
+                        </svg>
+                        {/* </span> */}
+                    </div>
+
+                </div>
+                
             </button>
-            <div className="topbar__menu-body">
+            <div className="topbar__menu-body" style={{position: "absolute", top: "2.2rem",left: "1px"}}>
                 {items.map((item, index) => (
                     <button
                         key={index}
@@ -76,7 +87,7 @@ function Dropdown<T extends IDropdownItem>(props: Props<T>) {
                         onClick={() => handleItemClick(item)}
                     >
                         {!!item.image && (
-                            <AppImage src={item.image} alt={item.title} />
+                            <AppImage width={"30px"} height={"20px"} src={item.image} alt={item.title} />
                         )}
                         <span>{item.title}</span>
                     </button>

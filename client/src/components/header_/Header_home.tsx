@@ -1,5 +1,5 @@
 // react
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Image from 'next/image'
 import AppImage from '../shared/AppImage';
 import Forgotpass from '../forgot/Forgotpass';
@@ -9,6 +9,8 @@ import Link from 'next/dist/client/link';
 import APIs from '~/services/apiService';
 import { UserContext } from '../account_/UserContext';
 import { BASE_URL } from 'configuration';
+import Dropdown from '~/components/header/Dropdown';
+import { useSetLocale } from '~/services/i18n/hooks';
 
 
 function Header_home(props: any) {
@@ -16,6 +18,8 @@ function Header_home(props: any) {
     const router = useRouter();
     const {user, saveUser, cartCount, setCartCount} = UserContext();
     const [userToken, setUserToken] = useState<any>();
+    const [selectedLanguage, setSelectedLanguage] = useState<any>("EN")
+    const setLocale = useSetLocale();
 
     useEffect(() => {
         const tokendata = localStorage.getItem('usertoken');
@@ -53,6 +57,36 @@ function Header_home(props: any) {
         setIsOpen(!isOpen);
         saveUser({});
     };
+
+    const handleItemClick = (item : any) => {
+        setLocale(item.value);
+        setSelectedLanguage(item.TitleShort)
+    };
+
+    let languageItems = [
+        {
+            title: "Dutch",
+            value: "nl",
+            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Flag_of_the_Netherlands.svg/800px-Flag_of_the_Netherlands.svg.png",
+            TitleShort: "NL"
+        },
+        {
+            title: "English",
+            value: "en",
+            image: "https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg",
+            TitleShort: "EN"
+        }
+    ]
+
+    const items: any[] = useMemo(() => (
+        languageItems.map(((lan) => ({
+            title: `${lan.title}`,
+            value: `${lan.value}`,
+            image: `${lan.image}`,
+            TitleShort: `${lan.TitleShort}`
+        })))
+    ), []);
+
   
     return (
         <>
@@ -75,6 +109,7 @@ function Header_home(props: any) {
                                 <a href=""><AppImage src="/images/svg/my-account.svg" className="my-account"/></a></li>*/}
                             </ul>
                         </div>
+                       
                         {userToken && 
                             <div className="bar w-27 d-flex flex-row ubo-menu-wrapper">
                                 <div>
@@ -119,13 +154,19 @@ function Header_home(props: any) {
                                     <Link href="/cartpage">
                                         <span className="position-relative">
                                             <AppImage src="/images/cart-white.svg"/>
-                                            <span className="home_count">{cartCount}</span>
+                                            {cartCount != 0 ?  <span className="home_count">{cartCount}</span> :  ""}
+                                           
                                         </span>
                                     </Link>
                                 </li>
                                 </ul>
                             </div>   
                         }  
+                        <Dropdown
+                            title={selectedLanguage}
+                            items={items}
+                            onItemClick={handleItemClick}
+                        />
                     </div>
                 </div>
                 {router.pathname == '/request' && <div className="container">
