@@ -432,7 +432,7 @@
   "DRIVING_CONDITION": "Driving Condition",
 
   "LOGIN": "Login",
-  "lOGIN_DETAILS": "Welcome back! Please enter your details",
+  "LOGIN_DETAILS": "Welcome back! Please enter your details",
   "PASSWORD": "Password",
   "CONFIRM_PASSWORD": "Confirm password",
   "REGISTER_DETAILS": "Let’s get you all setup so you can verify your personal account and begin setting up your profile",
@@ -443,7 +443,7 @@
   "AGREE_TO_THE": "I agree to the",
   "TERMS_AND_CONDITION": "terms and conditions",
   "AGREE_CONDITION": "I agree to the terms and conditions",
-  "ALREADY_REGISTERD": "Already registered?",
+  "ALREADY_REGISTERED": "Already registered?",
   "REGISTRATION_COMPLETED": "Registration Completed!",
 
   "IN_STOCK": "In Stock",
