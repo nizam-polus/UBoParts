@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { toast } from 'react-toastify';
 import APIs from '~/services/apiService';
 
@@ -19,7 +20,7 @@ function Request() {
         quantity: '',
         description: ''
     });
-    const [imageData, setImageData] = useState({});
+    const [imageData, setImageData] = useState('');
     const [incomplete, setIncomplete] = useState(false);
 
     const checkFormStatus = () => {
@@ -42,6 +43,20 @@ function Request() {
         setImageData(file);
     }
 
+    const handleLicenseChange = (event: any) => {
+        let licensePlate = event.target.value;
+        formData.plate_number = licensePlate;
+        setFormData({...formData});
+        setTimeout(() => {
+            APIs.getCarDetailsUsingLicence(licensePlate).then(response => {
+                formData.make = response.data.make;
+                formData.auto_model = response.data.model;
+                formData.year = response.data.year;
+                setFormData({...formData});
+            })
+        }, 1000);
+    }
+
     const handleRequestSubmit = (event: any) => {
         event.preventDefault();
         setFormData((prevData: any) => ({...prevData, minprice: parseFloat(formData.minprice)}));
@@ -52,8 +67,7 @@ function Request() {
         let reqElement = document.getElementById('required');
         if (reqElement && incomplete) reqElement.scrollIntoView({behavior: 'smooth'});
         if (!incomplete) {
-            APIs.dismantleCar(formData).then(response => {
-                console.log(response);
+            APIs.requestPart(formData).then(response => {
                 const refId = response.data.data.id
                 const picData = {
                     ref: 'api::request-part.request-part',
@@ -61,9 +75,7 @@ function Request() {
                     field: 'part_image',
                     files: imageData
                 }
-                APIs.uploadImageForDismantle(picData).then(response => {
-                    console.log(response);
-                })
+                APIs.uploadImageForDismantle(picData).then()
                 toast.success('Form submitted succesfully', {autoClose: 4000})
             }).catch(err => {
                 console.log(err);
@@ -103,14 +115,14 @@ function Request() {
                                                             <input type="text" 
                                                                 className={`w-100 form-control input-bg-color-2 body-sub-titles-1 ${incomplete && !formData.plate_number ? 'required-field' : 'border-0'}`}
                                                                 name="plate_number" placeholder="Plate Number" 
-                                                                onChange={handleFormChange}
+                                                                onChange={handleLicenseChange}
                                                             />
                                                         </td>
                                                         <td>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2 ">Auto Model</label>
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles-1 ${incomplete && !formData.auto_model ? 'required-field' : 'border-0'}`}
-                                                                name="auto_model" placeholder="Auto Model" 
+                                                                name="auto_model" placeholder="Auto Model" value={formData.auto_model}
                                                                 onChange={handleFormChange}
                                                             />
                                                         </td>
@@ -120,7 +132,7 @@ function Request() {
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Year</label>
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles-1 ${incomplete && !formData.year ? 'required-field' : 'border-0'}`} 
-                                                                name="year" placeholder="Year" 
+                                                                name="year" placeholder="Year" value={formData.year}
                                                                 onChange={handleFormChange}
                                                             />
                                                         </td>
@@ -128,7 +140,7 @@ function Request() {
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Make</label>
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles-1 ${incomplete && !formData.make ? 'required-field' : 'border-0'}`}
-                                                                name="make" placeholder="Make" 
+                                                                name="make" placeholder="Make" value={formData.make}
                                                                 onChange={handleFormChange}
                                                             />
                                                         </td>
@@ -176,7 +188,7 @@ function Request() {
                                                                 <div className="position-relative d-flex">
                                                                     <span>
                                                                         <input type="radio" 
-                                                                            name="delivery_type" id="driving_type_delivery" value={'Delivery'}
+                                                                            name="delivery_type" id="driving_type_delivery" value={'delivery'}
                                                                             onChange={handleFormChange}
                                                                         />
                                                                         <label htmlFor="driving_type_pickup" className="rounded"></label>
@@ -186,7 +198,7 @@ function Request() {
                                                                 <div className="position-relative d-flex">
                                                                     <span>
                                                                         <input type="radio" 
-                                                                            name="delivery_type" id="driving_type_pickup" value={'Pickup'}
+                                                                            name="delivery_type" id="driving_type_pickup" value={'pickup'}
                                                                             onChange={handleFormChange}
                                                                         />
                                                                         <label htmlFor="driving_type_pickup" className="rounded"></label>
@@ -196,7 +208,7 @@ function Request() {
                                                             </fieldset>
                                                         </td>
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Buying Price Range (€)</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="BUYING_RANGE"/> (€)</label>
                                                             <div className="d-flex">
                                                                 <div className="col pl-0">
                                                                     <input type="number" 
@@ -219,7 +231,7 @@ function Request() {
                                                     <tr className="double">
                                                         <td>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Part Image(s)</label>
-                                                            <input className={`form-control p-2 choosefile ${incomplete && Object.keys(imageData).length === 0 ? 'required-field' : 'border-0'}`}
+                                                            <input className={`form-control p-2 choosefile ${incomplete && !imageData ? 'required-field' : 'border-0'}`}
                                                                 type="file" id="formFile" 
                                                                 onChange={handleImageUpload}
                                                             />

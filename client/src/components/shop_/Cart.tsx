@@ -6,6 +6,7 @@ import Link from 'next/link';
 import APIs from '~/services/apiService';
 import { BASE_URL } from 'configuration';
 import { UserContext } from '../account_/UserContext';
+import { toast } from 'react-toastify';
 
 function Cart() {
 
@@ -13,16 +14,41 @@ function Cart() {
     const [cartProducts, setCartProducts] = useState<any>([]);
     const [totalCartPrice, setTotal] = useState(0);
     const [totalDiscount, setTotalDiscount] = useState(0)
+    const [total, setTotalAmount]: any = useState(0);
     const [isError, setIsError] = useState<{ [key: string]: string | null }>({});
     const [inputValue, setInputValue] = useState("");
     const [debouncedInputValue, setDebouncedInputValue] = useState("");
     const [changeProduct,setChangeProduct] = useState<any>({})
+    const [totalShippingCost, setTotalShippingCost] = useState<any>()
+    const [countries, setCountries] = useState([]);
+    const [checkoutProducts, setCheckoutProducts]: any = useState([]);
+    const [formData, setFormData] = useState({
+        first_name: '',
+        last_name: '',
+        company: '',
+        email: '',
+        phone_number: '',
+        streetaddress_housenumber: '',
+        streetaddress_apartment: '',
+        city: '',
+        state: '',
+        country: '',
+        postcode: ''
+    });
+    const [shippingData, setShippingData] = useState({
+        shippingaddress_country: formData.country,
+        shippingaddress_streataddress_housenumber: formData.streetaddress_housenumber,
+        shippingaddress_streataddress_apartment: formData.streetaddress_apartment,
+        shippingaddress_city: formData.city,
+        shippingaddress_state: formData.state,
+        shippingaddress_postcode: formData.postcode,
+        shippingaddress_phonenumber: formData.phone_number
+    });
     const router = useRouter();
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
             setDebouncedInputValue(inputValue);
-            console.log('debouncedInputValue', debouncedInputValue)
             debouncedQuantityInputOnChange(changeProduct, inputValue, null)
         }, 500);
         return () => clearTimeout(timeoutId);
@@ -70,7 +96,6 @@ function Cart() {
             console.log(err);
         })
     }
-
     function discountAmount(originalPrice: any, discountPercentage: any) {
         const original = parseFloat(originalPrice);
         const discount = parseFloat(discountPercentage);
@@ -79,8 +104,7 @@ function Cart() {
         }
         const discountAmount = (original * discount) / 100;
         return +discountAmount.toFixed(2); 
-    }
-   
+    }  
     const handleQuantityChange = (product: any, valueChange: string, index: number) => {
         let newQuantity = product.quantity;
     
@@ -89,13 +113,10 @@ function Cart() {
         } else if (valueChange === 'dec' && newQuantity > 1) {
             newQuantity--;
         }
+        const updatedCartProducts = [...cartProducts]; 
+        updatedCartProducts[index].quantity = newQuantity; 
+        setCartProducts(updatedCartProducts); 
     
-        // Update the local product quantity immediately
-        const updatedCartProducts = [...cartProducts]; // Make a copy of the cart products
-        updatedCartProducts[index].quantity = newQuantity; // Update the quantity in the local copy
-        setCartProducts(updatedCartProducts); // Update the state with the new quantity
-    
-        // Make the API call to update the cart data
         APIs.updateCartData({
             customerid: user.id,
             id: product.id,
@@ -105,7 +126,6 @@ function Cart() {
             "discountPrice": discountAmount(product.price,product.discount),
         }).then(response => {
             if (response.data.error) {
-                // Set the error state using the error's id as the key
                 setIsError(prevErrors => ({
                     ...prevErrors,
                     [response.data.error.id]: response.data.error.message
@@ -117,17 +137,12 @@ function Cart() {
                     }));
                 }, 3000);
             } else {
-                // Clear the error state for this product if no error
                 setIsError(prevErrors => ({
                     ...prevErrors,
                     [product.product_id]: null
-                }));
-                
-                 // Update the cart data in case the backend response has any changes (although you've already updated the local state)
-           
+                }));          
             }
-            APIs.getCartData({ customerid: user.id }).then((response: any) => {
-                
+            APIs.getCartData({ customerid: user.id }).then((response: any) => {            
                 setCartProducts(response.data.rows);
                 if (response.data.rows.length) {
                     let total = 0;
@@ -147,13 +162,11 @@ function Cart() {
             console.error(err);
         });
     }
-
     const updateLocalState = (product:any, newQuantity:any, index:any) => {
-        // Update the local product quantity immediately
         product.quantity = newQuantity;
-        const updatedCartProducts = [...cartProducts]; // Make a copy of the cart products
-        updatedCartProducts[index].quantity = newQuantity; // Update the quantity in the local copy
-        setCartProducts(updatedCartProducts); // Update the state with the new quantity
+        const updatedCartProducts = [...cartProducts]; 
+        updatedCartProducts[index].quantity = newQuantity; 
+        setCartProducts(updatedCartProducts); 
     };
     const debouncedQuantityInputOnChange = (product:any, newQuantity:any, index:any) => {
         APIs.updateCartData({
@@ -165,7 +178,6 @@ function Cart() {
             "discountPrice": discountAmount(product.price,product.discount),
         }).then(response => {
             if (response.data.error) {
-                // Set the error state using the error id as the key
                 setIsError(prevErrors => ({
                     ...prevErrors,
                     [response.data.error.id]: response.data.error.message
@@ -177,16 +189,13 @@ function Cart() {
                     }));
                 }, 3000);
             } else {
-                // Clear the error state for this product if no error
                 setIsError(prevErrors => ({
                     ...prevErrors,
                     [product.product_id]: null
                 }));
                
             }
-               // After updating the cart data, fetch the updated cart data
                   APIs.getCartData({ customerid: user.id }).then((response) => {
-                    console.log(response.data.rows)
                     setCartProducts(response.data.rows);
                     if (response.data.rows.length) {
                         let total = 0;
@@ -199,13 +208,9 @@ function Cart() {
                         setTotalDiscount(totalDiscount)
                     }
                 }).catch((error) => {
-                    // Handle any errors that occur during fetching
                     console.error(error);
-                });
-            
-          
+                });  
         }).catch(err => {
-            // Handle any errors that occur during the updateCartData API call
             console.error(err);
         });
     }
@@ -215,6 +220,95 @@ function Cart() {
         setChangeProduct(product);
         updateLocalState(product, newQuantity, index); // Update local state immediately
     };
+
+    const CheckoutFunction = () =>{
+        let isValidShipping = true
+        APIs.getCountries().then(response => {
+            let countries: any = response.data.data;
+            setCountries(countries);
+            APIs.getCartData({ customerid: user.id }).then(response => {
+                let checkoutProducts = response.data.rows;
+                setCheckoutProducts(checkoutProducts);
+                let sellerIdsArray: any = [];
+                checkoutProducts.forEach((product: any) => {
+                    let sellerId = product.seller_id;
+                    if (!sellerIdsArray.includes(sellerId)) {
+                        sellerIdsArray.push(sellerId);
+                    }
+                });
+                let totalShippingCost = 0;
+                let shippingcostapidataArray: any = [];
+
+                const getContryCode = (country: string, countries: any[]) =>{
+                    let countryData: any = countries.find((item: any, index) => item.attributes.country == country);
+                    return countryData?.attributes?.code;
+                 }
+        
+                // Create an array of promises for each seller's shipping data
+                const shippingDataPromises = sellerIdsArray.map((sellerId: any) => {
+                    return APIs.getSpecificUser(sellerId).then((res) => {
+                        let shippingCountryCode = getContryCode(res.data.shippingaddress_country, countries);
+                        let buyyerShippingCountryCode = getContryCode((user.shippingaddress_country || formData.country), countries)
+                        let postingCode = res.data.shippingaddress_postcode;
+                        let total: any = 0, totalDiscount = 0, totalWeight = 0;
+                        if (checkoutProducts.length) {
+                            checkoutProducts.forEach((product: any) => {
+                                if (product.seller_id === sellerId) {
+                                  totalWeight += product.total_weight;
+                                }
+                            });
+                        }
+                        const shippingDataForApi = {
+                            "seller_id": sellerId,
+                            "shippingaddress_postcode": user.shippingaddress_postcode ? user.shippingaddress_postcode : formData.postcode,
+                            "shippingaddress_country": buyyerShippingCountryCode,
+                            "product_weight": totalWeight,
+                            "from_postal_code": postingCode,
+                            "from_country": shippingCountryCode  
+                        }
+                        shippingcostapidataArray.push(shippingDataForApi)
+                        return shippingcostapidataArray   
+                    });
+                });
+                Promise.all(shippingDataPromises).then((shippingDataArray) => {
+                    shippingcostapidataArray = shippingDataArray;
+                    APIs.getShippingCost({ "shipping_data": shippingcostapidataArray[0] }).then((res: any) => {
+                        if (!res?.data?.length) {
+                            isValidShipping = false;
+                        } else {
+                            const shippingCostArray = res.data; 
+                            let totalShippingCost = 0; 
+                            for (const item of shippingCostArray) {
+                                const price = parseFloat(item.price_details);
+                                if (isNaN(price)) {
+                                    isValidShipping = false
+                                    break;
+                                } else {
+                                    totalShippingCost += price;
+                                }
+                            }
+                            setTotalShippingCost(totalShippingCost);
+                        }
+                        if (!user.country || !user.postcode){
+                            toast.error("Please fill your user details", {autoClose: 4000});
+                            return;
+                        }
+                        if (!cartProducts.length){
+                            toast.warning("Your cart is Empty");
+                            router.push("/cartpage");
+                        } else if (!isValidShipping){
+                            toast.error("Current shipping methods are not supported", {autoClose: 4000});
+                            return;
+                        } else {
+                            router.push('/checkoutpage');
+                        }
+                    });
+                });
+            }).catch(err => {
+                console.log(err);
+            });
+        });    
+    }
 
     return (
         <>
@@ -326,11 +420,11 @@ function Cart() {
                                                 <>
                                                     <tr className="border-top">
                                                         <td className="pb-1 pt-4 pl-3 regularfont placeholderfontsize border-top-0">Total</td>
-                                                        <td className="pb-1 pt-4 semifont border-top-0 menu_font_size custom-color-3">€{totalCartPrice}</td>
+                                                        <td className="pb-1 pt-4 semifont border-top-0 menu_font_size custom-color-3">€{totalCartPrice.toFixed(2)}</td>
                                                     </tr>
                                                     <tr>
                                                         <td className="pb-1 pt-4 pl-3 regularfont placeholderfontsize border-top-0">Discount</td>
-                                                        <td className="pb-1 pt-4 semifont border-top-0 menu_font_size custom-color-3">- €{totalDiscount}</td>
+                                                        <td className="pb-1 pt-4 semifont border-top-0 menu_font_size custom-color-3">- €{totalDiscount.toFixed(2)}</td>
                                                     </tr>
                                                 </>
                                             :
@@ -342,14 +436,15 @@ function Cart() {
                                             </tr>
                                             <tr>
                                                 <td className="pb-2 pt-1 pr-0 pl-3 semifont boldfontsize border-top-0"> SubTotal</td>
-                                                <td className="pb-2 pt-1 pl-0 semifont boldfontsize border-top-0 custom-color-3">€{totalCartPrice - totalDiscount}</td>
+                                                <td className="pb-2 pt-1 pl-0 semifont boldfontsize border-top-0 custom-color-3">€{(totalCartPrice - totalDiscount).toFixed(2)}</td>
                                             </tr>
                                             <tr><td colSpan={2} className="px-3 pt-3 pb-2 w-100">
-                                                <button type="button" className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1">
-                                                    <AppLink href={`${cartProducts?.length ? '/checkoutpage' : '/cartpage'}`} className="custom-color-7">
+                                            {/* href={`${cartProducts?.length ? '/checkoutpage' : '/cartpage'}`} */}
+                                                <button type="button" onClick={CheckoutFunction} className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1">
+                                                
                                                         <button type="button" className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"
                                                         >Proceed to checkout</button>
-                                                    </AppLink>
+                                                
                                                 </button>
                                             </td></tr>
                                             <tr>

@@ -78,7 +78,7 @@ function SellerDashboard() {
                     <div className="row mt-3 g-4">
                         <SellerSideBar />
                         <div className="col-12 col-md-9">
-                            <div className="coulmn-bg-color-1 rounded px-5 pt-5 pb-0">
+                            <div className="coulmn-bg-color-1 rounded px-5 pt-5 pb-5">
                                 <div className="row">
                                     <div className="col">
                                         <div className="img-seller-wrapper ps-4 pe-4">

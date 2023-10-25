@@ -30,6 +30,10 @@ const APIs = {
 
     getCategories: () => axios.get(BACKEND_URL + 'categories?populate=*&sort[0]=id:asc', {headers}),
 
+    getSaleOffers: () => axios.get(BACKEND_URL + 'products?populate=*&filters[$and][][sale][discount_percentage_value][$gt]=0&sort[0]=updatedAt:desc', {headers}),
+
+    getTopSelling: () => axios.get(BACKEND_URL + 'top-selling', {headers}),
+
     getSubcategories: (categoryId: number) => axios.post(BACKEND_URL + 'select-subcategory', {categoryid: categoryId}, {headers}),
 
     getCarMake: () => axios.get(BACKEND_URL + 'cardetail-make', {headers}),

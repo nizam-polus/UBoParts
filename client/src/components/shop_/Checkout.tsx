@@ -7,7 +7,7 @@ function Checkout() {
     const {user, saveUser} = UserContext(); 
     const [checkoutProducts, setCheckoutProducts]: any = useState([]);
     const [total, setTotal]: any = useState(0);
-    const [totalShippingCost, setTotalShippingCost] = useState<any>()
+    const [totalShippingCost, setTotalShippingCost] = useState<any>(0)
     const [countries, setCountries] = useState([])
     const [formData, setFormData] = useState({
         first_name: '',
@@ -81,7 +81,6 @@ function Checkout() {
                         sellerIdsArray.push(sellerId);
                     }
                 });
-                console.log("array", sellerIdsArray);
                 let totalShippingCost = 0;
                 let shippingcostapidataArray: any = [];
         
@@ -91,7 +90,6 @@ function Checkout() {
                         let shippingCountryCode = getContryCode(res.data.shippingaddress_country, countries);
                         let buyyerShippingCountryCode = getContryCode((user.shippingaddress_country || formData.country), countries)
                         let postingCode = res.data.shippingaddress_postcode;
-                        console.log(shippingCountryCode)
                         let total: any = 0, totalDiscount = 0, totalWeight = 0;
                         if (checkoutProducts.length) {
                             checkoutProducts.forEach((product: any) => {
@@ -103,7 +101,6 @@ function Checkout() {
                                 total += obj.total_price;
                                 totalDiscount += obj.discount_price
                             }
-
                             setTotal(total - totalDiscount);
                         }
                         const shippingDataForApi = {
@@ -115,20 +112,11 @@ function Checkout() {
                             "from_country": shippingCountryCode  
                         }
                         shippingcostapidataArray.push(shippingDataForApi)
-
                         return shippingcostapidataArray
-                        
                     });
-                });
-        
-                // Wait for all promises to resolve
+                });       
                 Promise.all(shippingDataPromises).then((shippingDataArray) => {
-                    // All data has been collected, and the array is complete
                     shippingcostapidataArray = shippingDataArray;
-        
-                    console.log("shippingData", shippingcostapidataArray);
-
-                    // Now, you can call the getShippingCost API with the complete data
                     APIs.getShippingCost({ "shipping_data": shippingcostapidataArray[0] }).then((res: any) => {
                         if (!res || (res && !res.data.length) ) {
                             setTotal(Number(total));
@@ -139,16 +127,9 @@ function Checkout() {
                             // Use reduce to sum up the shipping costs
                             const totalShippingCost = shippingCostArray.reduce((total: any, item: any) => {
                                 return total + parseFloat(item.price_details);
-                            }, 0);
-                    
-                            console.log("Total Shipping Cost: " + totalShippingCost);
-                    
-                            // Now, you can update your state with the total shipping cost
+                            }, 0);                    
                             setTotalShippingCost(totalShippingCost)
-                            console.log("shippingside",total)
-                            // setTotal(total + shippingCost);
                         }
-                        console.log("shipping response",res);
                     });
                 });
             }).catch(err => {

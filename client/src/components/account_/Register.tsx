@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import APIs from '~/services/apiService';
 import { UserContext } from './UserContext';
+import { FormattedMessage } from 'react-intl';
 // interface Props {  
 //     isOpen?: boolean;
 //     onClose?: () => void;
@@ -160,13 +161,13 @@ function Register(props: any) {
                     <div className="modal-body">
                         <div className="ac-card login-form">
                             <div className="card-body">
-                                <h3 className="ac-card-title text-center bg-image-text semifont">Register</h3>
+                                <h3 className="ac-card-title text-center bg-image-text semifont"><FormattedMessage id="REGISTER"/></h3>
                                 <p className="ac-card-sub-title text-center body-sub-titles-1 lightfont"
-                                    >Let’s get you all setup so you can verify your personal account and begin setting up your profile</p>
+                                    ><FormattedMessage id="REGISTER_DETAILS"/></p>
                                 <div className="acard-text">
                                     <form action="/action_page.php">
                                         <div className="form-group marginb40">
-                                            <label htmlFor="text" className="body-sub-titles-1 mediumfont">Username</label>
+                                            <label htmlFor="text" className="body-sub-titles-1 mediumfont"><FormattedMessage id="USER_NAME"/></label>
                                             <input type="text" 
                                                 className="form-control body-sub-titles-1 mediumfont" 
                                                 id="name" name="username" placeholder="Enter your username" 
@@ -175,7 +176,7 @@ function Register(props: any) {
                                             <p className="form_validerrors">{errors?.username}</p>
                                         </div>
                                         <div className="form-group marginb40">
-                                            <label htmlFor="email" className="body-sub-titles-1 mediumfont">Email address</label>
+                                            <label htmlFor="email" className="body-sub-titles-1 mediumfont"><FormattedMessage id="EMAIL_ADDRESS"/></label>
                                             <input type="email" 
                                                 className="form-control body-sub-titles-1 mediumfont" 
                                                 id="email" name="email" placeholder="Enter your email" 
@@ -184,7 +185,7 @@ function Register(props: any) {
                                             <p className="form_validerrors">{errors?.email}</p>
                                         </div>
                                         <div className="form-group marginb40">
-                                                        <label htmlFor="password" className="body-sub-titles-1 mediumfont">Password</label>
+                                                        <label htmlFor="password" className="body-sub-titles-1 mediumfont"><FormattedMessage id="PASSWORD"/></label>
                                                         <input type="password" 
                                                             className="form-control body-sub-titles-1 mediumfont" 
                                                             id="password" name="password" placeholder="Enter your password" 
@@ -193,7 +194,7 @@ function Register(props: any) {
                                                         <p className="form_validerrors">{errors?.password}</p>
                                                     </div>
                                         <div className="form-group marginb40">
-                                                        <label htmlFor="password" className="body-sub-titles-1 mediumfont">Confirm password</label>
+                                                        <label htmlFor="password" className="body-sub-titles-1 mediumfont"><FormattedMessage id="CONFIRM_PASSWORD"/></label>
                                                         <input type="password" 
                                                             className="form-control body-sub-titles-1 mediumfont" 
                                                             id="confirmpassword" name="confirmpassword" placeholder="Confirm password" 
@@ -206,18 +207,18 @@ function Register(props: any) {
                                                 onClick={(e: any) => setAgreed(e.target.checked)}
                                             />
                                                 <span className="agree body-sub-titles-1 lightfont">
-                                                    <span>I agree to the </span>
-                                                    <a href="" className="mediumfont">terms and conditions</a>
+                                                    <span><FormattedMessage id="AGREE_TO_THE"/></span>
+                                                    <a href="" className="mediumfont"><FormattedMessage id="TERMS_AND_CONDITION"/></a>
                                                 </span>
                                         </div>
                                         {!agreed && <span className="form_validerrors">{errors?.agreement}</span>}
                                         {errors?.status === 400 && <p className='text-center' style={{color: 'rgb(255 102 102)'}}>{errors?.message}</p>}
-                                        {registered && <p className='text-center' style={{color: 'rgb(25, 135, 84)'}}>Registration Completed!</p>}
-                                        <button type="submit" className="btn btn-default body-sub-titles-1 mediumfont" onClick={(e) => onFormSubmit(e)}>Register</button>
+                                        {registered && <p className='text-center' style={{color: 'rgb(25, 135, 84)'}}><FormattedMessage id="REGISTRATION_COMPLETED"/></p>}
+                                        <button type="submit" className="btn btn-default body-sub-titles-1 mediumfont" onClick={(e) => onFormSubmit(e)}><FormattedMessage id="REGISTER"/></button>
                                     </form>
                                 </div>
                                 <div className="card-footer text-center">
-                                    <p className="body-sub-titles-1 mediumfont"><span className="light">Already registered? </span><a className='pointer' onClick={() => onClose()}>Login</a></p>
+                                    <p className="body-sub-titles-1 mediumfont"><span className="light"><FormattedMessage id="ALREADY_REGISTERED"/></span><a className='pointer' onClick={() => onClose()}><FormattedMessage id="LOGIN"/></a></p>
                                 </div>
                             </div>
                         </div>

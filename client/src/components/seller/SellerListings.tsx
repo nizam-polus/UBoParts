@@ -168,7 +168,10 @@ function SellerListings() {
                                                                 <span className="product-name regularfont">{item.attributes.title}</span>
                                                             </div>
                                                             <div className="col-12 d-flex justify-content-between " style={{ gap: "20px" }}>
-                                                                <button type="button" onClick={() => editProduct(item.id)} className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2 p-2" style={{ width: "100%" }}>Edit</button>
+                                                                <button type="button" onClick={() => editProduct(item.id)} className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2 p-2" style={{ width: "100%" }}
+                                                                >
+                                                                    <FormattedMessage id="EDIT"/>
+                                                                </button>
                                                               {isDeleting && item.id == itemId? 
                                                                <button
                                                                type="button"
