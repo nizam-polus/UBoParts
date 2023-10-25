@@ -55,12 +55,25 @@ function Dismantle_car() {
     const handleCountryChange = (event: any) => {
         let countryId = [Number(event.target.value)];
         setFormData((prevData: any) => ({...prevData, country: countryId}));
-        console.log(formData.country.length)
     }
 
     const handleImageUpload = (event: any) => {
         const file = event.target.files[0];
         setImageData(file);
+    }
+
+    const handleLicenseChange = (event: any) => {
+        let licensePlate = event.target.value;
+        formData.plate_number = licensePlate;
+        setFormData({...formData});
+        setTimeout(() => {
+            APIs.getCarDetailsUsingLicence(licensePlate).then(response => {
+                formData.mark = response.data.make;
+                formData.auto_model = response.data.model;
+                formData.year = response.data.year;
+                setFormData({...formData});
+            })
+        }, 1000)
     }
 
     const handleDismantleSubmit = (event: any) => {
@@ -72,7 +85,6 @@ function Dismantle_car() {
         if (reqElement && incomplete) reqElement.scrollIntoView({behavior: 'smooth'});
         if (!incomplete) {
             APIs.dismantleCar(formData).then(response => {
-                console.log(response);
                 const refId = response.data.data.id
                 const picData = {
                     ref: 'api::dismantle.dismantle',
@@ -80,9 +92,7 @@ function Dismantle_car() {
                     field: 'car_image',
                     files: imageData
                 }
-                APIs.uploadImageForDismantle(picData).then(response => {
-                    console.log(response);
-                })
+                APIs.uploadImageForDismantle(picData).then()
                 toast.success('Form submitted succesfully', {autoClose: 4000})
             }).catch(err => {
                 console.log(err);
@@ -122,14 +132,14 @@ function Dismantle_car() {
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.plate_number ? 'required-field' : 'border-0'}`}
                                                                 name="plate_number" placeholder="Plate Number" 
-                                                                onChange={handleFormChange}
+                                                                onChange={handleLicenseChange}
                                                             />
                                                         </td>
                                                         <td>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Auto Model</label>
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.auto_model ? 'required-field' : 'border-0'}`}
-                                                                name="auto_model" placeholder="Auto Model" 
+                                                                name="auto_model" placeholder="Auto Model" value={formData.auto_model}
                                                                 onChange={handleFormChange}
                                                             />
                                                         </td>
@@ -139,7 +149,7 @@ function Dismantle_car() {
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Year</label>
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.year ? 'required-field' : 'border-0'}`}
-                                                                name="year" placeholder="Year" 
+                                                                name="year" placeholder="Year" value={formData.year}
                                                                 onChange={handleFormChange}
                                                             />
                                                         </td>
@@ -147,7 +157,7 @@ function Dismantle_car() {
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Make</label>
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.mark ? 'required-field' : 'border-0'}`} 
-                                                                name="mark" placeholder="Make" 
+                                                                name="mark" placeholder="Make" value={formData.mark}
                                                                 onChange={handleFormChange}
                                                             />
                                                         </td>
