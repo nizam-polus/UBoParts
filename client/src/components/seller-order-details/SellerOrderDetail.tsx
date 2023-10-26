@@ -86,12 +86,12 @@ function SellerOrderDetails() {
                     <section className="quote-wrapper mt-5">
                         <div className="row">
                             <SellerSideBar />
-                            <div className="col-12 col-md-9">
+                            <div className="col-12 col-md-9 p-0 p-sm-3">
                                 <div className="coulmn-bg-color-1 rounded px-3 pb-5 pt-3" ref={pdfRef}>
                                     <header id="header1" className="header-download custom-border-2 rounded mb-5 " style={{display: "none"}} >
                                         <div className="boldfont" style={{ textAlign: "center" }}>Order Invoice</div>
                                     </header>
-                                    <div className="d-flex justify-content-between m-0 pt-3 ml-3">
+                                    <div className="d-flex justify-content-between m-0 pt-3 ml-sm-3">
                                         <div className="col-8 p-0">
                                             <span className="custom-color-2 boldfont body-sub-titles">Order details 
                                                 <span className="pl-1">#</span>
@@ -105,13 +105,13 @@ function SellerOrderDetails() {
                                         <br />
                                     </div>
                                     <div className="row mt-3">
-                                        <div className="col-8">
-                                            <div style={{border: '1px solid lightgrey', borderRadius: '10px'}} className="px-4 py-4 ml-3 mr-1">
+                                        <div className="col-12 col-sm-8">
+                                            <div className="ubo-inner-box ml-sm-3 mr-sm-1 px-sm-4 py-2 py-sm-4">
                                                     {/* <div className="d-flex justify-content-between m-0 pb-4 ml-3">
                                                         <span className="custom-color-2 semifont body-sub-titles-1">Order summary</span><br />
                                                     </div> */}
                                                     <div className="row m-0 px-0">
-                                                        <div className="col-3">
+                                                        <div className="col-6 col-sm-3">
                                                             <table >
                                                                 <thead>
                                                                     <tr>
@@ -129,7 +129,7 @@ function SellerOrderDetails() {
                                                                 </thead>
                                                             </table>
                                                         </div>
-                                                        <div className="col-9">
+                                                        <div className="col-6 col-sm-9">
                                                             <table className="order-table">
                                                                 <tbody>
                                                                     <tr>
@@ -159,8 +159,9 @@ function SellerOrderDetails() {
                                                     </div>
                                                 </div>
                                                 <div className="coulmn-bg-color-1 rounded mt-4 mb-3">
-                                                <div style={{border: '1px solid lightgrey', borderRadius: '10px'}} className="px-4 py-4 mr-1 ml-3">
-                                                    <table className="order-table2">
+                                                <div className="ubo-inner-box px-sm-4 py-4 mr-1 ml-sm-3">
+                                                    <div className="table-responsive">
+                                                    <table className="table order-table2">
                                                         <thead>
                                                             <tr>
                                                                 <td className="custom-color-2 boldfont body-sub-titles-2 pb-2 border-bottom">Item Summary</td>
@@ -189,11 +190,12 @@ function SellerOrderDetails() {
                                                             })}
                                                         </tbody>
                                                     </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-4 pl-2 pr-1">
-                                            <div style={{border: '1px solid lightgrey', borderRadius: '10px'}} className="px-3 py-4 mr-4 mb-4">
+                                        <div className="col-12 col-sm-4 pl-sm-2 pr-sm-1">
+                                            <div className="ubo-inner-box px-sm-3 py-4 mr-sm-4 mb-4">
                                                 <div className="row">
                                                     <div className="col-12">
                                                         <div className="col-auto">
@@ -213,7 +215,7 @@ function SellerOrderDetails() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div style={{border: '1px solid lightgrey', borderRadius: '10px'}} className="px-3 py-4 mr-4">
+                                            <div className="ubo-inner-box px-sm-3 py-4 mr-sm-4">
                                                 <div className="row">
                                                     <div className="col-12">
                                                         <div className="col-auto">
