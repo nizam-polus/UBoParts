@@ -558,15 +558,15 @@ function Home() {
                     </section>
                     <section className="categories-wrapper">
                         <div className="row mt-5">
-                            <div className="col-12 d-flex justify-content-between">
-                                <div>
+                            <div className="col-12 d-sm-flex justify-content-sm-between ubo-nav-tab">
+                                <div className='col-12 col-sm-auto mb-3 mb-sm-0 text-center text-sm-left'>
                                     <span className="popular_categories body-sub-titles regularfont">
                                         {/* Popular Categories */}
                                         <FormattedMessage id="POPULAR"/>
                                         </span>
                                 </div>
-                                <div>
-                                    <button type="button" className="saleoffers regularfont body-sub-titles">Sale Offers</button>
+                                <div className='d-flex justify-content-between d-sm-block'>
+                                    <button type="button" className="saleoffers regularfont body-sub-titles active">Sale Offers</button>
                                     <button type="button" className="saleoffers regularfont body-sub-titles">Top Sellers</button>
                                 </div>
                             </div>
@@ -646,13 +646,13 @@ function Home() {
                 </section>
                 <section className="latest-products-wrapper">
                         <div className="row mt-5">
-                            <div className="col-12 d-flex justify-content-between">
-                                <div>
+                            <div className="col-12 d-sm-flex justify-content-sm-between ubo-nav-tab">
+                                <div className='col-12 col-sm-auto mb-3 mb-sm-0 text-center text-sm-left'>
                                     <span className="popular_categories body-sub-titles regularfont">
                                        <FormattedMessage id="LATEST_PRODUCTS" />
                                     </span>
                                 </div>
-                                  <div>
+                                  <div className='d-flex justify-content-between d-sm-block'>
                                     <button
                                         type="button"
                                         className={`saleoffers regularfont body-sub-titles ${selectedItem === 'All' ? 'active' : ''}`}

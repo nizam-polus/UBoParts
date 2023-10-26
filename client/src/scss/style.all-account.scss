@@ -1706,6 +1706,15 @@ tr {
     border-radius: 50%;
     border: 3px solid green;
 }
+.ubo-nav-tab button {background: transparent;}
+.ubo-dropdown-lang {
+    position: absolute;
+    top: 42px;
+}
+.ubo-inner-box {
+    border: 1px solid #d3d3d3;
+    border-radius: 10px;
+}
 
 @media screen and (max-width: 768px){
     .heading_text{
@@ -1826,6 +1835,18 @@ tr {
     .ubo-brands-slider-title {
         width: auto;
         margin-bottom: 10px;
+    }
+    .ubo-nav-tab {
+        padding: 0;
+    }
+    .ubo-nav-tab button {
+        background: #fff;
+        margin: 0;
+        border-radius: 6px;
+    }
+    .ubo-dropdown-lang {
+        position: absolute;
+        top: 38px;
     }
 }
 .loader {
