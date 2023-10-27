@@ -6,6 +6,7 @@ import APIs from '~/services/apiService';
 import { BASE_URL } from 'configuration';
 import Link from 'next/dist/client/link';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 function Profile() {
 
@@ -28,13 +29,14 @@ function Profile() {
     const [state, setState] = useState<string>('');
     const [country, setCountry] = useState<string>('');
     const [postcode, setPostcode] = useState<string>('');
-    const [oldpwd, setOldpwd] = useState<string>('');
     const [newpwd, setNewpwd] = useState<string>('');
     const [confrmpwd, setConfrmpwd] = useState('');
     const [incomplete, setIncomplete] = useState<any>(false);
+    const [incompletePwd, setIncompletePwd] = useState<any>(false);
     const [profilePic, setProfilePic] = useState<any>(null);
     const [profilePicURL, setProfilePicURL] = useState<string>('');
     const [countries, setCountries] = useState<any>([]);
+    const [pwdmismatch, setPwdMisMatch] = useState<boolean>(false);
 
     useEffect(() => {
         let userId = !user.id ? userdetails?.id : user.id;
@@ -125,7 +127,30 @@ function Profile() {
             })
             .catch((err) => console.log(err));
         }
-      };
+    };
+
+    const handlePwdChange = (event: any) => {
+        event.preventDefault();
+        let incompletePswrd = !(!!newpwd && !!confrmpwd);
+        setIncompletePwd(incompletePswrd);
+        if (newpwd !== confrmpwd) {
+            setPwdMisMatch(true);
+        } else {
+            setPwdMisMatch(false);
+            !incompletePswrd && APIs.updateSpecificUser(user.id, {password: confrmpwd}).then(response => {
+                let user = response.data;
+                user && toast.success('Password updated successfully. Please login with the new password', {autoClose: 5000});
+                setNewpwd('');
+                setConfrmpwd('');
+                setTimeout(() => {
+                    localStorage.removeItem('usertoken');
+                    router.push('/homepage');
+                    localStorage.removeItem('userdetails');
+                    saveUser({});
+                }, 500);
+            })
+        }
+    }
 
     return (
         <> 
@@ -295,24 +320,20 @@ function Profile() {
                                         <table className="table profile-table-1 password-wrapper coulmn-bg-color-1 rounded mt-2 rounded-2">
                                             <tbody>
                                                 <tr>
-                                                    <th className="px-5 pt-3 pb-3 custom-color-3 regularfont subtitles border-top-0 border-bottom">Password</th>
+                                                    <th className="px-5 pt-3 pb-3 custom-color-3 regularfont subtitles border-top-0 border-bottom">Change Password</th>
                                                 </tr>
-                                            
-                                                <tr className="single">
-                                                    <td className="px-5">
-                                                        <label className="custom-color-2 regularfont products-name pb-2 pt-2">Old Password</label>
-                                                        <span className="password-wrapper-field">
-                                                            <input type="password" className="form-control input-bg-color-2 border-0 products-name" name="old-password" placeholder="Enter Old Password"/>
-                                                            <AppImage className="icon-size" src="images/svg/eye-closed.svg"/>
-                                                        </span>
-                                                    </td>
-                                                </tr>
+                                                <div className='ml-4 mb-0 mt-4'>
+                                                    {pwdmismatch && <p className='required-text' id='required'>* Password does not match</p>}
+                                                </div>
                                                 <tr className="single">
                                                     <td className="px-5">
                                                         <label className="custom-color-2 regularfont products-name pb-2">New Password</label>
                                                         <span className="password-wrapper-field">
-                                                            <input type="password" className="form-control input-bg-color-2 border-0 products-name" name="new-password" placeholder="Enter New Password"/>
-                                                            <AppImage className="icon-size" src="images/svg/eye-open.svg"/>
+                                                            <input type="password" value={newpwd}
+                                                                className={`form-control input-bg-color-2 products-name ${incompletePwd && !newpwd ? ' required-field' : 'border-0' }`} 
+                                                                name="new-password" placeholder="Enter New Password"
+                                                                onChange={(e) => setNewpwd(e.target.value)}
+                                                            />
                                                         </span>
                                                         
                                                     </td>
@@ -321,8 +342,11 @@ function Profile() {
                                                     <td className="px-5 pb-5">
                                                         <label className="custom-color-2 regularfont products-name pb-2">Confirm Password</label>
                                                         <span className="password-wrapper-field">
-                                                            <input type="password" className="form-control input-bg-color-2 border-0 products-name" name="confirm-password" placeholder="Confirm New Password"/>
-                                                            <AppImage className="icon-size" src="images/svg/eye-closed.svg"/>
+                                                            <input type="password" value={confrmpwd}
+                                                                className={`form-control input-bg-color-2 products-name ${incompletePwd && !confrmpwd ? ' required-field' : 'border-0' }`}
+                                                                name="confirm-password" placeholder="Confirm New Password"
+                                                                onChange={(e) => setConfrmpwd(e.target.value)}
+                                                            />
                                                         </span>
                                                     </td>
                                                 </tr>
@@ -333,6 +357,7 @@ function Profile() {
                                         <div className="col">
                                             <button type="submit" 
                                                 className="custom-color-7 mediumfont rounded border-0 button-bg-color-1 pb-2 pt-2 px-5 d-flex align-items-center justify-content-center ubo-btn-mobile"
+                                                onClick={(e) => handlePwdChange(e)}
                                             >Change Password</button>
                                         </div>
                                     </div>

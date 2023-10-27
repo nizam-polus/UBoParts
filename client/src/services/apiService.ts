@@ -148,7 +148,7 @@ const APIs = {
     
     cartPayment: (productsData: {}) => ds.post(BACKEND_URL + 'Payment-opp', productsData),
 
-    paymentStatus: (transactionId: string) => ds.post(BACKEND_URL + 'payment-status-get', {transactionid: transactionId}),
+    paymentStatus: (transactionId: string, customerId: number) => ds.post(BACKEND_URL + 'payment-status-get', {transactionid: transactionId, customerid: customerId}),
 
     getSpecificUser: (id: number) => ds.get(BACKEND_URL + `users/${id}?populate=*`),
 
