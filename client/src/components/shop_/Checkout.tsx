@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import APIs from '~/services/apiService';
 import { UserContext } from '../account_/UserContext';
+import { toast } from 'react-toastify';
 
 function Checkout() {
 
-    const {user, saveUser} = UserContext(); 
+    const {user, saveUser, language, setPaymentStatus} = UserContext(); 
     const [checkoutProducts, setCheckoutProducts]: any = useState([]);
     const [total, setTotal]: any = useState(0);
     const [totalShippingCost, setTotalShippingCost] = useState<any>(0)
@@ -22,7 +23,7 @@ function Checkout() {
         country: '',
         postcode: ''
     });
-    const [differentAdd, setDifferentAdd] = useState(false);
+    const [differentAddr, setDifferentAddr] = useState(false);
     const [shippingData, setShippingData] = useState({
         shippingaddress_country: formData.country,
         shippingaddress_streataddress_housenumber: formData.streetaddress_housenumber,
@@ -34,7 +35,6 @@ function Checkout() {
     });
     const [incomplete, setIncomplete] = useState<any>(false);
     const [shippingIncomplete, setShippingIncomplete] = useState(false);
-    const [shippingCostGetApiData, setShippingCostGetApiData] = useState<any>([])
 
     const getContryCode = (country: string, countries: any[]) =>{
        let countryData: any = countries.find((item: any, index) => item.attributes.country == country);
@@ -42,7 +42,19 @@ function Checkout() {
     }
 
     useEffect(() => {
-        
+        let redirectUrl: any = localStorage.getItem('redirect');
+        let transactionId: any = localStorage.getItem('uid');
+        APIs.paymentStatus(transactionId, user.id).then(response => {
+            let status = response?.data?.rows && response?.data?.rows[0]?.status;
+            setPaymentStatus(status);
+            if (status !== 'created' || status !== 'pending') {
+                localStorage.removeItem('redirect');
+            } else {
+                if (redirectUrl && redirectUrl !== "undefined") {
+                    window.location.assign(redirectUrl);
+                }
+            }
+        })
         setFormData((prevFormData) => ({...prevFormData, 
             first_name: user.first_name,
             last_name: user.last_name,
@@ -150,7 +162,7 @@ function Checkout() {
     }
     const checkShippingDataStatus = () => {
         let shippingincomplete = true;
-        shippingincomplete = differentAdd && !(!!shippingData.shippingaddress_city && 
+        shippingincomplete = differentAddr && !(!!shippingData.shippingaddress_city && 
             !!shippingData.shippingaddress_country && !!shippingData.shippingaddress_phonenumber &&
             !!shippingData.shippingaddress_postcode && !!shippingData.shippingaddress_state && 
             !!shippingData.shippingaddress_streataddress_housenumber);
@@ -168,7 +180,7 @@ function Checkout() {
         setShippingData((prevData) => ({...prevData, [name]: value}));
     }
 
-    const handlepayment = () => {     
+    const handlepayment = () => {
         let incomplete = checkFormStatus();
         let shippingincomplete = checkShippingDataStatus();
         let reqElement = document.getElementById('required');
@@ -185,7 +197,7 @@ function Checkout() {
             let formdata: any = {...formData, ...shippingData};
             APIs.updateSpecificUser(user.id, formdata).then(response => {
                 saveUser(response.data);
-                localStorage.setItem('userdetails', JSON.stringify(response.data))
+                localStorage.setItem('userdetails', JSON.stringify(response.data));
                 let cartData: any = [];
                 checkoutProducts.forEach((element: any) => {
                     let product = {
@@ -199,15 +211,33 @@ function Checkout() {
                     cartData.push(product);
                 });
                 let totalPrice = typeof (total) == 'string' ? Number(total) * 100 : total * 100;
-                APIs.cartPayment({products: cartData, total_price: totalPrice, customerid: user.id, shipping_cost: totalShippingCost}).then(response => {
-                    let redirectUrl = response.data.redirect_url
-                    let transactionId = response.data.uid
-                    localStorage.setItem('uid', transactionId);
-                    window.location.assign(redirectUrl);
-                }).catch(err => console.log(err));
+                let checkoutData = {
+                    products: cartData, 
+                    total_price: totalPrice, 
+                    customerid: user.id, 
+                    shipping_cost: totalShippingCost,
+                    lang: language.value
+                }
+                APIs.getCartData({ customerid: user.id }).then(response => {
+                    let cartData = response.data.rows;
+                    if (cartData[0].payment_process === 'true') {
+                        toast.warning("Payment has already been initiated, please complete the payment.");
+                    } else {
+                        APIs.cartPayment(checkoutData).then(response => {
+                            if (response.data.redirect_url) {
+                                let redirectUrl = response.data.redirect_url
+                                let transactionId = response.data.uid
+                                localStorage.setItem('uid', transactionId);
+                                localStorage.setItem('redirect', redirectUrl);
+                                window.location.assign(redirectUrl);
+                            }
+                        }).catch(err => console.log(err));
+                    }
+                })
             })
         }
     }
+
     return (
         <>
             <div className="main-body pb-5 mb-5">
@@ -353,15 +383,15 @@ function Checkout() {
                                                         <label className="ms-3 create-label">
                                                                 <input type="checkbox" name="agreement" className="width-checkout"
                                                                     onClick={(e: any) => {
-                                                                        setDifferentAdd(!differentAdd);
-                                                                        setShippingIncomplete(!differentAdd)
+                                                                        setDifferentAddr(!differentAddr);
+                                                                        setShippingIncomplete(!differentAddr)
                                                                     }}
                                                                 /> 
                                                                 Ship to a different address?
                                                             </label>
                                                     </td>
                                                 </tr>
-                                                {differentAdd && <>
+                                                {differentAddr && <>
                                                     <tr className="single">
                                                         <td colSpan={2}>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Country</label>

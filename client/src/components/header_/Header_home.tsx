@@ -16,7 +16,7 @@ import { useSetLocale } from '~/services/i18n/hooks';
 function Header_home(props: any) {
   
     const router = useRouter();
-    const {user, saveUser, cartCount, setCartCount} = UserContext();
+    const {user, saveUser, cartCount, setCartCount, setLanguage} = UserContext();
     const [userToken, setUserToken] = useState<any>();
     const [selectedLanguage, setSelectedLanguage] = useState<any>("EN")
     const setLocale = useSetLocale();
@@ -60,7 +60,8 @@ function Header_home(props: any) {
 
     const handleItemClick = (item : any) => {
         setLocale(item.value);
-        setSelectedLanguage(item.TitleShort)
+        setSelectedLanguage(item.TitleShort);
+        setLanguage(item);
     };
 
     let languageItems = [
