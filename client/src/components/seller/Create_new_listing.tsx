@@ -516,7 +516,7 @@ function Create_new_listing() {
                     <section className="quote-wrapper mt-5">
                         <div className="row mt-3 g-4">
                             <SellerSideBar />
-                            <div className="col-12 col-md-9">
+                            <div className="col-12 col-md-9 p-0 p-sm-3">
                                 <div className="coulmn-bg-color-1 rounded">
                                     <div className="table-responsive pt-3 pb-3 overflow-hidden">
                                         <table className="table profile-table-1 coulmn-bg-color-1 rounded">
@@ -749,15 +749,14 @@ function Create_new_listing() {
                                                 <tr className="single">
                                                     <td colSpan={2} className='px-5 pb-4 pt-2 border-0'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Barcode :</label>
-                                                            <div style={{ padding: "5px", background: `#ffcf00`, width: "415.7480315px", height: "188.97637795px" }}
-                                                                className='d-flex align-items-center justify-content-center flex-column'
+                                                            <div className='d-flex align-items-center justify-content-center flex-column ubo-barcode-container'
                                                                 ref={componentRef}
                                                                 >
-                                                                <div className="details d-flex" style={{ width: "100%", fontWeight: "bolder", padding: "0px 10px 0 10px", fontSize: "14px" }}>
+                                                                <div className="details d-flex flex-column flex-sm-row" style={{ width: "100%", fontWeight: "bolder", padding: "0px 10px 0 10px", fontSize: "14px" }}>
                                                                     <div className='d-flex justify-content-between' style={{ minWidth: "180px" }}>
                                                                         {listBarcode && <Qrgenerator qrValue={listBarcode} />}
                                                                     </div>
-                                                                    <div className='d-flex flex-column' style={{width: "100%"}}>
+                                                                    <div className='d-flex flex-column w-100'>
                                                                         <div>
                                                                             <div>UBOPARTS</div>
                                                                             <div>{upperCaseListName}</div>
@@ -788,9 +787,8 @@ function Create_new_listing() {
                                                                 trigger={() => (
                                                                     <button
                                                                         type="button"
-                                                                        className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2 p-2 my-2"
-                                                                        style={{ width: "415.78px" }}
-                                                                    >
+                                                                        className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2 p-2 my-2 ubo-btn-custom"
+                                                                        >
                                                                         Print
                                                                     </button>
                                                                 )}
@@ -850,7 +848,7 @@ function Create_new_listing() {
                                                 <tr className="single">
                                                     <td colSpan={2} className="border-0 px-5">
                                                         <button type="submit" onClick={createNewList} 
-                                                        className="place-quote text-white mediumfont products-name rounded border-0 button-bg-color-1">Create Listing</button>
+                                                        className="place-quote text-white mediumfont products-name rounded border-0 button-bg-color-1 ubo-btn-custom">Create Listing</button>
                                                     </td>
                                                 </tr>
                                             </tbody>

@@ -464,7 +464,7 @@ const handleYearChange = (event: any) => {
                     <section className="quote-wrapper mt-5">
                         <div className="row mt-3 g-4">
                             <SellerSideBar />
-                            <div className="col-12 col-md-9">
+                            <div className="col-12 col-md-9 p-0 p-sm-3">
                                 <div className="coulmn-bg-color-1 rounded">
                                     <div className="table-responsive pt-3 pb-3 overflow-hidden">
                                         <table className="table profile-table-1 coulmn-bg-color-1 rounded">
@@ -659,7 +659,7 @@ const handleYearChange = (event: any) => {
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2} className="border-0 px-5">
-                                                        <button type="submit" onClick={createNewList} className="place-quote text-white mediumfont products-name rounded border-0 button-bg-color-1">Edit Listing</button>
+                                                        <button type="submit" onClick={createNewList} className="place-quote text-white mediumfont products-name rounded border-0 button-bg-color-1 ubo-btn-custom">Edit Listing</button>
                                                     </td>
                                                 </tr>
                                             </tbody>

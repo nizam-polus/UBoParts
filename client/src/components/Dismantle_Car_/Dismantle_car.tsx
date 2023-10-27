@@ -111,7 +111,7 @@ function Dismantle_car() {
                         </div>
                         <div className="row mt-3">
                             <div className="col-12">
-                                <div className="quote-inner-wrapper coulmn-bg-color-1 rounded p-5 ps-5 pe-5">
+                                <div className="quote-inner-wrapper coulmn-bg-color-1 rounded px-3 pt-3 p-sm-5 ps-5 pe-5">
                                     <form>
                                         <div className="table-responsive">
                                             <table className="table quote-table">
@@ -375,7 +375,7 @@ function Dismantle_car() {
                                                     <tr className="single">
                                                         <td colSpan={2} className="">
                                                             <button type="submit" 
-                                                                className="place-quote text-white mediumfont body-sub-titles-1 rounded-lg border-0 button-bg-color-1 h-auto p-2"
+                                                                className="place-quote text-white mediumfont body-sub-titles-1 rounded-lg border-0 button-bg-color-1 h-auto p-2 ubo-btn-custom"
                                                                 onClick={handleDismantleSubmit}
                                                             >Submit</button>
                                                         </td>
