@@ -94,13 +94,13 @@ function EditShop() {
                     <section className="quote-wrapper mt-5">
                         <div className="row mt-3 g-4">
                             <SellerSideBar />
-                            <div className="col-12 col-md-9">
+                            <div className="col-12 col-md-9 p-0 p-sm-3">
                                 <div>
                                     {incomplete && <p className='required-text text-danger' id='required'>* Please fill the required fields</p>}
                                 </div>
                                 <div className="row">
                                     <div className="col-12">
-                                        <div className="quote-inner-wrapper coulmn-bg-color-1 rounded p-5 ps-5 pe-5">
+                                        <div className="quote-inner-wrapper coulmn-bg-color-1 rounded p-3 p-sm-5 ps-5 pe-5">
                                             <form onSubmit={(e) => handleSubmit(e)}>
                                                 <div className="table-responsive">
                                                     <table className="table quote-table">
@@ -108,7 +108,7 @@ function EditShop() {
                                                             <tr>
                                                                 <th colSpan={2}
                                                                     className="pt-0 pb-0 px-0 ps-0 custom-color-2 regularfont subtitles fw-normal border-top-0 border-bottom-0"
-                                                                >Edit shop with us <span className="regularfont body-sub-titles ml-3 align-middle font-weight-normal">Edit your shop information</span></th>
+                                                                >Edit shop with us <span className="regularfont body-sub-titles ml-sm-3 align-middle font-weight-normal d-inline-block d-sm-inline">Edit your shop information</span></th>
 
                                                             </tr>
                                                             <tr>
@@ -219,7 +219,7 @@ function EditShop() {
                                                             <tr className="single">
                                                                 <td colSpan={2} className="">
                                                                     <button type="submit"
-                                                                        className="place-quote text-white mediumfont body-sub-titles-1 rounded-lg border-0 button-bg-color-1 h-auto p-2"
+                                                                        className="place-quote text-white mediumfont body-sub-titles-1 rounded-lg border-0 button-bg-color-1 h-auto p-2 ubo-btn-custom"
                                                                     >Submit</button>
                                                                 </td>
                                                             </tr>

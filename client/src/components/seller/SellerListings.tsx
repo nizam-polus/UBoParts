@@ -105,7 +105,7 @@ function SellerListings() {
                     <section className="quote-wrapper mt-5">
                         <div className="row mt-3 g-4">
                             <SellerSideBar />
-                            <div className="col-12 col-md-9">
+                            <div className="col-12 col-md-9 p-0 p-sm-3">
                                 <div className="coulmn-bg-color-1 rounded">
                                     <div className="table-responsive">
                                         <table className="table quote-table seller-table">

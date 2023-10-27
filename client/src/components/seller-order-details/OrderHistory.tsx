@@ -43,7 +43,7 @@ function OrderHistory() {
                 <section className="quote-wrapper mt-5">
                     <div className="row mt-3 g-4">
                         <SellerSideBar />
-                        <div className="col-12 col-md-9">
+                        <div className="col-12 col-md-9 p-0 p-sm-3">
                             <div className="coulmn-bg-color-1 rounded">
                                 <div className="row d-flex justify-content-between  m-0 p-2 pb-1 pt-3">
                                     <div className="col-auto"><span className="custom-color-2 boldfont body-sub-titles">Order History</span></div>

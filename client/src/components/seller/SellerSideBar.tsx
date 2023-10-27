@@ -9,7 +9,7 @@ function SellerSideBar() {
     
     return (
     <div className="col-12 col-md-3 p-0 p-sm-3">
-        <div className="quote-inner-wrapper coulmn-bg-color-1 rounded  md-5 pb-5 pt-0 px-3 ps-4 pe-4">
+        <div className="quote-inner-wrapper coulmn-bg-color-1 rounded  md-5 pb-3 pb-sm-5 pt-0 px-3 ps-4 pe-4">
             <div className="table-responsive">
                 <table className="table quote-table seller-table">
                     <thead>
