@@ -290,7 +290,7 @@ function Cart() {
                             setTotalShippingCost(totalShippingCost);
                         }
                         if (!user.country || !user.postcode){
-                            toast.error("Please fill your user details", {autoClose: 4000});
+                            toast.error(() => <div>Please complete your profile to proceed. <Link href={'/profile_'}>Profile</Link></div>, {autoClose: 4000});
                             return;
                         }
                         if (!cartProducts.length){
