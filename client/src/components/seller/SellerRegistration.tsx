@@ -40,9 +40,9 @@ function SellerRegistration() {
     const [countries, setCountries] = useState<any>([]);
 
     useEffect(() => {
-        window.onbeforeunload = function() {
-            return "Changes may not be saved!";
-        }
+        // window.onbeforeunload = function() {
+        //     return "Changes may not be saved!";
+        // }
         if (user && user.id) {
             formData.first_name = user.first_name;
             formData.last_name = user.last_name;

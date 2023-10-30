@@ -389,7 +389,7 @@
     "CLEAR": "Duidelijk",
     "VIEW_FILTER": "Bekijk Filter",
     "CATEGORIES": "Categorieën",
-    "PRICE": "PRIJS",
+    "PRICE": "Prijs",
     "MIN_PRICE": "Minimale Prijs",
     "MAX_PRICE": "Maximale Prijs",
     "APPLY_FILTER": "Filter Toepassen",
@@ -445,6 +445,9 @@
     "IN_STOCK": "Op Voorraad",
     "ADD_TO_CART": "Voeg toe aan winkelkar",
 
+    "DASHBOARD" : "Dashboard",
+    "EDIT_SHOP" : "Winkel bewerken",
+
     "LISTINGS": "Advertenties",
     "CREATE_NEW_LISTING": "Nieuwe vermelding maken",
     "DELETE" : "Verwijderen",
@@ -470,6 +473,7 @@
   "LISTING_IMAGES": "Afbeeldingen weergeven",
   "LISTING_DESCRIPTION": "Beschrijving van vermelding",
   "CREATE_LISTING": "Maak een vermelding",
+  "PRINT": "Afdrukken",
 
 
   "ORDER_HISTORY": "Bestelgeschiedenis",
@@ -501,9 +505,13 @@
   "COMPANY_OR_SHOP_NAME": "Bedrijfs- of winkelnaam",
   "ACCOUNT_TITLE": "Accounttitel",
   "BANK_NAME": "Banknaam",
-  "IBAN_NO": "IBAN nummer"
+  "IBAN_NO": "IBAN nummer",
+  "COOKIE_STATEMENT": "Cookieverklaring",
 
-    
+  "HOME": "Thuis",
+  "SHOP": "Winkel",
+  "REQUEST": "Verzoek",
+  "MY_ACCOUNT": "Mijn rekening"
   }
   
   

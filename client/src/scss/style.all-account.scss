@@ -1194,6 +1194,56 @@ tr {
 		}
 	}
 }
+.hamburger{
+    display: none;
+}
+.mobile_menu{
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    z-index: 99;
+    background: #f1f1f1;
+    margin-top: 4rem;
+    right: 0;
+    opacity: 0.8;
+}
+.mobile_menu ul{
+    list-style: none;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    li{
+        font-size: 1.3rem;
+        font-weight: bold;
+        a{
+            color: #262626;
+        }
+    }
+}
+.footer-link-section{
+    p{
+        a{
+            color: white;
+        }
+    }
+}
+
+.contact-details-section{
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    padding: 30px;
+    p{
+        font-size: 20px;
+    }
+}
+.myaccount-mobile{
+    color: #262626;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
 /*order end here */
 @media screen and (max-width: 1024px){	
     .request-header,.about-header,.dismantle-header,.seller-reg-header {	
@@ -1210,6 +1260,35 @@ tr {
         padding: 15px 20px !important;	
     }	
 }	
+
+// .hamburger-menu {
+//     display: none;
+//     /* Add your styling for the hidden menu */
+//   }
+  
+//   .hamburger-menu.open {
+//     display: block;
+//     /* Add your styling for the visible menu */
+//   }
+  
+//   .menu-icon {
+//     cursor: pointer;
+//     /* Styling for the hamburger icon */
+//   }
+  
+//   .bar {
+//     height: 3px;
+//     width: 25px;
+//     background: #333;
+//     margin: 5px 0;
+//   }
+  
+//   .menu-items {
+//     list-style: none;
+//     padding: 0;
+//     /* Styling for the menu items */
+//   }
+  
 @media screen and (max-width: 768px){	
     input[type=text], input[type=email], input[type=password] {	
         height: 60px;	
@@ -1256,6 +1335,13 @@ tr {
     .desktop-filter{	
         display: none;	
     }	
+    .hamburger{
+        display: flex;
+        align-items: center;
+    }
+    .bar-mobile-myaccount{
+        display: none;
+    }
     .responsive-filter{	
         display: block;	
     }	
@@ -1856,7 +1942,12 @@ tr {
     .profile-table-1 tbody tr.double td:last-child {padding-bottom: 1rem !important;}
     .seller-table .arrow-right {top: 4px;}
     .ubo-barcode-container{width: 100%;}     
+
+    .contact-details-section{
+        grid-template-columns: 1fr;
+    }
 }
+
 .loader {
     width: 48px;
     height: 48px;

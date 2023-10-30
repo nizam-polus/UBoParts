@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import AppLink from '~/components/shared/AppLink';
 import AppImage from '../shared/AppImage';
 import { FormattedMessage } from 'react-intl';
+import Link from 'next/link';
+import router from 'next/router';
 function About_us() {
     return (
         <> 
@@ -69,8 +71,10 @@ function About_us() {
                     <div className="container-fluid">
                         <div className="container">
                             <div className="row p-5">
-                            <div className="col text-center p-xl-5 p-md-5">
-                                    <a href="" className=" custom-color-11 button-bg-color-1 lightfont body-sub-titles px-5 pt-4 pb-4 ps-3 pe-3 rounded button-color"><FormattedMessage id="CONTACT_US" /></a>
+                            <div className="col text-center p-xl-5 p-md-5 d-flex align-items-center justify-content-center">
+                                <div onClick={() => router.push("/contact_us")} className=" custom-color-11 button-bg-color-1 lightfont body-sub-titles px-5 pt-4 pb-4 ps-3 pe-3 rounded button-color">
+                                    <Link href="/contact_us" ><FormattedMessage id="CONTACT_US" /></Link>
+                                </div>
                             </div>
                             </div>
                         </div>

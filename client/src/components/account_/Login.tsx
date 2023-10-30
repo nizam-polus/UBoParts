@@ -58,6 +58,7 @@ function Login(props: any) {
                     if (response.data.error && response.data.error.status >= 400 && response.data.error.status <= 403) {
                         setInvalidCred(true);
                     } else {
+                        
                         let userdetails = response.data.user
                         localStorage.setItem('usertoken', JSON.stringify(response.data.jwt));
                         APIs.getSpecificUser(userdetails.id).then((response: any) => {
@@ -65,11 +66,15 @@ function Login(props: any) {
                                 login_date: loginDate,
                                 expiry_date: expiryDate
                             }
-                            APIs.updateSpecificUser(userdetails.id, loginData).then(userres => {
-                                let userData = userres.data;
+                            APIs.updateSpecificUser(userdetails.id, loginData).then((userRes: any) => {
+                                let userData = userRes.data;
                                 localStorage.setItem('userdetails', JSON.stringify(userData));
                                 saveUser(userData);
-                                router.push('/homepage');
+                                if(userRes.data.role.type == "admin"){
+                                    router.push('/admin_create')
+                                }else{
+                                    router.push('/homepage');
+                                }
                                 const isEmpty = { username: "", password: ""};
                                 setLoginFormData(isEmpty);
                             })
@@ -162,7 +167,7 @@ function Login(props: any) {
                                                     />
                                                 </div>
                                                 <div className="form-group marginb40">
-                                                    <label htmlFor="password" className="body-sub-titles-1 mediumfont"><FormattedMessage id="Wachtwoord"/></label>
+                                                    <label htmlFor="password" className="body-sub-titles-1 mediumfont"><FormattedMessage id="PASSWORD"/></label>
                                                     <input type="password" 
                                                         className="form-control body-sub-titles-1 mediumfont inputformtxt" 
                                                         id="password" name="password" 

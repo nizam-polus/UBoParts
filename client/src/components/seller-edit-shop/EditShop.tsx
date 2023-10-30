@@ -27,9 +27,9 @@ function EditShop() {
     const [incomplete, setIncomplete] = useState(false);
 
     useEffect(() => {
-        window.onbeforeunload = function () {
-            return "Changes may not be saved!";
-        }
+        // window.onbeforeunload = function () {
+        //     return "Changes may not be saved!";
+        // }
         if (user && user.id) {
             formData.company_name = user.company_name;
             formData.Account_type = user.Account_type
