@@ -27,16 +27,16 @@ function Contact_us() {
                     <section className="contact-wrapper coulmn-bg-color-1 mt-5 contact-details-section">
                        <div className='custom-color-2 '>
                             <div>
-                                <h2 className='font-weight-bold semifont'>Our Address</h2>
-                                <p className='regularfont pb-5' style={{maxWidth: "350px"}}>
+                                <h2 className='font-weight-bold semifont' style={{fontSize: "1.5rem"}}>Our Address</h2>
+                                <p className='regularfont pb-5' style={{maxWidth: "350px", fontSize: "18px"}}>
                                     UboParts, Zomerdijk 11, 1505HW Zaandam, The Netherlands <br></br>
                                     Email: Info@uboparts.com <br></br>
                                     Phone Number: +316 334-907-82
                                 </p>
                             </div>
                             <div>
-                                <h3 className='font-weight-bold semifont'>Opening Hours</h3>
-                                <p className='regularfont' style={{maxWidth: "350px"}}>
+                                <h3 className='font-weight-bold semifont' style={{fontSize: "1.5rem"}}>Opening Hours</h3>
+                                <p className='regularfont' style={{maxWidth: "350px", fontSize: "18px"}}>
                                     Monday to Friday: 8h00-17h00
                                     Saturday: Closed <br></br>
                                     Sunday: Closed
@@ -65,7 +65,7 @@ function Contact_us() {
                                             </td>
                                         </tr>
                                         <tr className="single">
-                                            <td className="px-5 pb-3" colSpan={2}>
+                                            <td className="px-5 pb-3" colSpan={2} style={{borderTop: "none"}}>
                                                 <label className="custom-color-2 regularfont products-name pb-2">Subject</label>
                                                 <span className="">
                                                     <input type="text" onChange={(e) => setSubject(e.target.value)} className="form-control input-bg-color-2 border-0 products-name" name="subject" placeholder="subject.." />
@@ -73,7 +73,7 @@ function Contact_us() {
                                             </td>
                                         </tr>
                                         <tr className="single">
-                                            <td className="px-5 pb-5" colSpan={2}>
+                                            <td className="px-5 pb-5" colSpan={2} style={{borderTop: "none"}}>
                                                 <label className="custom-color-2 regularfont products-name pb-2">Message</label>
                                                 <span className="">
                                                     <textarea onChange={(e) => setMessage(e.target.value)} className="form-control input-bg-color-2 border-0 products-name" name="message" placeholder="Message..." />

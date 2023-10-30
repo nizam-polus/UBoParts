@@ -489,7 +489,7 @@ function Checkout() {
                                                 return (
                                                     <tr>
                                                         <td className="pb-0 pt-3 pl-3 regularfont mini-text-1 border-0">{product?.title}</td>
-                                                        <td className="pb-0 pt-3 pr-4 regularfont mini-text-1 border-0 text-right">€{product?.price * product.quantity - product.discount_price}</td>
+                                                        <td className="pb-0 pt-3 pr-4 regularfont mini-text-1 border-0 text-right">€{(product?.price * product.quantity - product.discount_price).toFixed(2)}</td>
                                                         
                                                     </tr>
                                                 )

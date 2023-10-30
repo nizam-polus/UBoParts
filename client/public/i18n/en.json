@@ -411,6 +411,7 @@
   "PLATE_NO": "Plate Number",
   "AUTO_MODEL": "Auto Model",
   "YEAR": "Year",
+  "MAKE": "Make",
   "MARK": "Mark",
   "USER_NAME": "Username",
   "FIRST_NAME": "First Name",
@@ -421,7 +422,7 @@
   "DELIVERY": "Delivery",
   "PICKUP": "Pickup",
   "BUYING_RANGE": "Buying Price Range (€)",
-  "PART IMAGES": "Part Image(s)",
+  "PART_IMAGES": "Part Image(s)",
   "QUANTITY": "Quantity",
   "DESCRIPTION_OF_PRODUCT": "Description of Product",
   "SUBMIT": "Submit",
@@ -430,6 +431,17 @@
 
   "DISMANTLE_CAR": "Dismantle your car with us",
   "DRIVING_CONDITION": "Driving Condition",
+  "DRIVABLE": "Drivable",
+  "NOT_DRIVABLE": "Not Drivable",
+  "TYPE": "Type",
+  "CATALYSER": "Catalyser",
+  "IMITATION": "Imitation",
+  "ORIGINAL": "Original",
+  "ASKING_PRICE": "Asking Price (€)",
+  "CAR_IMAGE": "Car Image(s)",
+  "SELECT_COUNTRY": "Select Country",
+  "NOTE": "Note",
+
 
   "LOGIN": "Login",
   "LOGIN_DETAILS": "Welcome back! Please enter your details",
@@ -516,7 +528,10 @@
   "HOME": "Home",
   "SHOP": "",
   "REQUEST": "",
-  "MY_ACCOUNT": ""
+  "MY_ACCOUNT": "",
+
+  "SALE_OFFERS": "Sale Offers",
+  "TOP_SELLING": "Top Selling"
 
   
 }
