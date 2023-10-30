@@ -297,7 +297,7 @@ function Cart() {
                             toast.warning("Your cart is Empty");
                             router.push("/cartpage");
                         } else if (!isValidShipping){
-                            toast.error("Current shipping methods are not supported", {autoClose: 4000});
+                            toast.error("Product weight or Delivery region is not eligible for shipping.", {autoClose: 4000});
                             return;
                         } else {
                             router.push('/checkoutpage');

@@ -390,7 +390,7 @@
   "CLEAR": "Clear",
   "VIEW_FILTER": "View Filter",
   "CATEGORIES": "Categories",
-  "PRICE": "PRICE",
+  "PRICE": "Price",
   "MIN_PRICE": "Min Price",
   "MAX_PRICE": "Max Price",
   "APPLY_FILTER": "Apply Filter",
@@ -450,6 +450,9 @@
   "ADD_TO_CART": "Add to Cart",
 
 
+  "DASHBOARD" : "Dashboard",
+  "EDIT_SHOP" : "Edit Shop",
+
   "LISTINGS": "Listings",
   "CREATE_NEW_LISTING": "Create New Listing",
   "DELETE" : "Delete",
@@ -475,6 +478,7 @@
   "LISTING_IMAGES": "Listing Image(s)",
   "LISTING_DESCRIPTION": "Listing Description",
   "CREATE_LISTING": "Create Listing",
+  "PRINT": "Print",
 
 
   "ORDER_HISTORY": "Order History",
@@ -506,9 +510,13 @@
   "COMPANY_OR_SHOP_NAME": "Company or Shop name",
   "ACCOUNT_TITLE": "Account Title",
   "BANK_NAME": "Bank Name",
-  "IBAN_NO": "Iban Number"
+  "IBAN_NO": "Iban Number",
+  "COOKIE_STATEMENT": "Cookie Statement",
   
-
+  "HOME": "Home",
+  "SHOP": "",
+  "REQUEST": "",
+  "MY_ACCOUNT": ""
 
   
 }

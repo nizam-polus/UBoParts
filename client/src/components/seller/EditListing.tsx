@@ -7,14 +7,15 @@ import APIs from '~/services/apiService';
 import { useRouter } from 'next/router';
 import { BASE_URL } from 'configuration';
 import { toast } from 'react-toastify';
-
+import Qrgenerator from './Qrgenerator';
+import ReactToPrint from 'react-to-print';
+import { FormattedMessage } from 'react-intl';
 
 function EditListing() {
     const [error, setError] = useState(null);
     const [makesArray, setMakesArray] = useState<any>([]);
     const [modelArray, setModelArray] = useState<any>([]);
     const [yearArray, setYearArray] = useState<any>([]);
-    const [categories, setCategories] = useState<any>([]);
     const [selectedMake, setSelectedMake] = useState('');
     const [selectedModel, setSelectedModel] = useState('');
     const [selectedYear, setSelectedYear] = useState('');
@@ -22,13 +23,12 @@ function EditListing() {
     const [listName, setListName] = useState('');
     const [listPrice, setListPrice] = useState('');
     const [listQuantity, setListQuantity] = useState('');
-    const [listArticle, setListArticle] = useState('');
+    const [listArticle, setListArticle] = useState("")
     const [listBarcode, setListBarcode] = useState("");
     const [listDescription, setListDescription] = useState('');
     const [listLocation, setListLocation] = useState('');
     const [productImage, setProductImage] = useState<File | null>(null);
     const [productGalleryImages, setProductGalleryImages] = useState<any>([]);
-    const [tempProductGalleryImages, setTempProductGalleryImages] = useState<any>([]);
     const [categoriesDetails, setCategoriesDetails] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedCategoryId, setSelectedCategoryId] = useState(0); // Store the selected category ID
@@ -43,20 +43,21 @@ function EditListing() {
     const [carDetailId, setCarDetailId] = useState()
     const [selectedItem, setSelectedItem] = useState(null);
     const [showInvaidLicense, setShowInvaidLicense] = useState(false);
+    const [saleArray, setSaleArray] = useState([])
+    const [saleOffer, setSaleOffer] = useState('')
     const [incomplete, setIncomplete] = useState<any>(false);
-    const [partsInput, setPartsInput] = useState()
     const [makeName, setMakeName] = useState('')
     const [modelName, setModelName] = useState('')
     const [year, setYear] = useState('')
+    const [locationNo, setLocationNo] = useState<any>('A2')
+    const [locationText, setLocationText] = useState<any>("")
 
     const router = useRouter()
     const id = router.query.id;
     const [productData, setProductData] = useState<any>({})
-    const [productGallery, setProductGallery] = useState([])
-    const [quantity, setQuantity] = useState(1);
-
     const inputRef: any = useRef()
     const galleryRef: any = useRef()
+    const componentRef:any = useRef();
  
     useEffect(() => {
       let userDetails: any = localStorage.getItem("userdetails")
@@ -66,14 +67,12 @@ function EditListing() {
       setUname(username)
       setUid(userid)
       
-      // Fetch categories data
       APIs.getCategories()
       .then((response) => {
-        const categoriesData = response.data.data; // Access the "data" property
-        // Extract category names
+        const categoriesData = response.data.data; 
         const categoryNames = categoriesData.map((category: any) => category.attributes.category_name);
         setCategoriesDetails(categoryNames);
-        setCategoriesData(categoriesData); // Set categoriesData state here
+        setCategoriesData(categoriesData); 
       }).catch((error) => {
                   setError(error);
               });
@@ -86,57 +85,71 @@ function EditListing() {
         });
     }, []);
 
-    const getCardetails = () => {
-        APIs.getProduct(id).then(response => {
-            let product = response.data.data;
-            if(response.data.data.attributes?.product_gallary_image?.data.length >0 && response.data.data.attributes?.product_image.data == null){
-              let productImage = response.data.data.attributes?.product_gallary_image?.data[0]?.attributes?.url;
-              setProductImage(productImage);
-            }else{
-              let productImage =response.data.data.attributes?.product_image?.data.attributes.url
-              setProductImage(productImage);
-            }
-            let productGallery = response.data.data.attributes?.product_gallary_image?.data;
-            let make = response.data.data.attributes?.make?.data?.id 
-            let model = response.data.data.attributes?.model?.data?.attributes?.model_name
-            let year = response.data.data.attributes?.year?.data?.attributes?.year  
-            let licenseplate = response.data.data?.attributes?.cardetail?.data?.attributes?.licenseplate
-            setProductData(product);
-            setProductGalleryImages(productGallery);
-            setTempProductGalleryImages(productGallery)
-            setListName(response.data.data.attributes.title)
-            console.log(response.data.data.attributes.title)
-            setListPrice(response.data.data.attributes.price)
-            setListQuantity(response.data.data.attributes.stock_count)
-            setListLocation(response.data.data.attributes.product_location_warehouse)
-            setListBarcode(response.data.data.attributes.article_number)
-            setListDescription(response.data.data.attributes.description)
-            setSelectedCategory(response.data.data.attributes.category.data.attributes.category_name)
-            setSelectedCategoryId(response.data.data.attributes.category.data.id)
-            setSelectedSubcategoryId(response.data.data.attributes.sub_category.data.id)
-            setSelectedSubcategory(response.data.data.attributes.sub_category.data.attributes.name)
-            setCarDetailId(response.data.data?.attributes?.cardetail?.data.id)
-            
-            APIs.getSubcategories(response.data.data.attributes.category.data.id)
-                .then((response) => {
-                    // Extract subcategory data
-                    const subcategoryData = response.data.rows;
-                    setSubcategories(subcategoryData);
-                    const initialSubcategory: any = subcategories.find(
-                        (subcategory: any) => subcategory.category_id === selectedSubcategoryId
-                    );
-                    if (initialSubcategory) {
-                        setSelectedSubcategoryId(initialSubcategory.id);
-                    }
-                    setSelectedMake(make)
-                    setSelectedModel(model)
-                    setSelectedYear(year)
-                    setLicenseplate(licenseplate)
-                })
-        }).catch(err => console.log(err))
-    }
+    useEffect(() => {
+      APIs.getSale()
+        .then(response => {
+          setSaleArray(response.data.data)
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    }, []); 
 
-    
+  const getCardetails = () => {
+    APIs.getProduct(id).then(response => {
+      let product = response.data.data;
+      if (response.data.data.attributes?.product_gallary_image?.data?.length > 0 && response.data.data.attributes?.product_image.data == null) {
+        let productImage = response.data.data.attributes?.product_gallary_image?.data[0]?.attributes?.url;
+        setProductImage(productImage);
+      } else {
+        let productImage = response.data.data.attributes?.product_image?.data.attributes.url
+        setProductImage(productImage);
+      }
+      let productGallery = response.data.data.attributes?.product_gallary_image?.data;
+      let make = response.data.data.attributes?.make?.data?.id
+      setMakeName(response.data.data.attributes.make?.data?.attributes.make_name)
+      let model = response.data.data.attributes?.model?.data?.id
+      setModelName(response.data.data.attributes.model?.data?.attributes.model_name)
+      let year = response.data.data.attributes?.year?.data?.id
+      setYear(response.data.data.attributes.year?.data?.attributes.year)
+      let licenseplate = response.data.data?.attributes?.cardetail?.data?.attributes?.licenseplate
+      setProductData(product);
+      setProductGalleryImages(productGallery);
+      setListName(response.data.data.attributes.title)
+      setListPrice(response.data.data.attributes.price)
+      setListQuantity(response.data.data.attributes.stock_count)
+      setListLocation(response.data.data.attributes.product_location_warehouse)
+      setListArticle(response.data.data.attributes.article_number)
+      setListBarcode(response.data.data.attributes.part_no_barcode_no)
+      setListDescription(response.data.data.attributes.description)
+      setSelectedCategory(response.data.data.attributes.category.data.attributes.category_name)
+      setSelectedCategoryId(response.data.data.attributes.category.data.id)
+      setSelectedSubcategoryId(response.data.data.attributes.sub_category.data.id)
+      setSelectedSubcategory(response.data.data.attributes.sub_category.data.attributes.name)
+      setSaleOffer(response.data.data.attributes.sale.data.id)
+      setLocationNo(response.data.data.attributes.product_location_warehouse.slice(0,2))
+      setLocationText(response.data.data.attributes.product_location_warehouse.slice(3))
+      APIs.getSubcategories(response.data.data.attributes.category.data.id)
+        .then((response) => {
+          // Extract subcategory data
+          const subcategoryData = response.data.rows;
+          setSubcategories(subcategoryData);
+          const initialSubcategory: any = subcategories.find(
+            (subcategory: any) => subcategory.category_id === selectedSubcategoryId
+          );
+          if (initialSubcategory) {
+            setSelectedSubcategoryId(initialSubcategory.id);
+          }
+
+          setSelectedMake(make)
+          getModel(make)
+          setSelectedModel(model)
+          getYear(model)
+          setSelectedYear(year)
+          setLicenseplate(licenseplate)
+        })
+    }).catch(err => console.log(err))
+  }
 
     useEffect(() => {
       if (licenseplate && licenseplate.length > 5) {
@@ -149,6 +162,7 @@ function EditListing() {
                       for (let makeObj of makesArray) {
                           if (makeObj.make.toUpperCase() === make) {
                               setSelectedMake(makeObj.id);
+                              setMakeNameFn(makeObj.id)
                               setSelectedModel('');
                               setSelectedYear('');
                               APIs.getCarModel(makeObj.id).then(response => {
@@ -158,12 +172,14 @@ function EditListing() {
                                   for (let modelObj of modelArray) {
                                       if (modelObj.model.toUpperCase() === model) {
                                           setSelectedModel(modelObj.id);
+                                          setModelNameFn(modelObj.id, modelArray)
                                           APIs.getCarYear(modelObj.id).then(response => {
                                               let yearArray = response.data.rows;
                                               setYearArray(yearArray);
                                               for (let yearObj of yearArray) {
                                                   if (yearObj.year === year) {
                                                       setSelectedYear(yearObj.id);
+                                                      setYearChangeFn(yearObj.id, yearArray)
                                                   }
                                               }
                                           })
@@ -173,12 +189,14 @@ function EditListing() {
                                               similarModels.push(modelObj);
                                               if (i === 1) {
                                                   setSelectedModel(modelObj.id);
+                                                  setModelNameFn(modelObj.id, modelArray)
                                                   APIs.getCarYear(modelObj.id).then(response => {
                                                       let yearArray = response.data.rows;
                                                       setYearArray(yearArray);
                                                       for (let yearObj of yearArray) {
                                                           if (yearObj.year === year) {
                                                               setSelectedYear(yearObj.id);
+                                                              setYearChangeFn(yearObj.id, yearArray)
                                                           }
                                                       }
                                                   })
@@ -223,18 +241,35 @@ function EditListing() {
             });
     };
 
+    const setMakeNameFn = (Id: any) => {
+      const selectedMake = makesArray.find((make: any) => make.id == Id);
+      if (selectedMake) {
+          setMakeName(selectedMake.make);
+      }
+  }
+
+  const setModelNameFn = (Id: any, modelArray: any) => {
+      const selectedModelName = modelArray.find((model: any) => model.id == Id);
+      if(selectedModelName){
+          setModelName(selectedModelName.model)
+      }
+  }
+
+  const setYearChangeFn = (Id: any, yearArray: any) => {
+      const selectedYearName = yearArray.find((year: any) => year.id == Id);
+      if(selectedYearName){
+          setYear(selectedYearName.year)
+      }
+  }
+
     const handleMakeChange = (event: any) => {
       const selectedValue = event.target.value;
       setSelectedMake(selectedValue);
       getModel(selectedValue)
-      const selectedMake = makesArray.find((make: any) => make.id == selectedValue);
-      if (selectedMake) {
-          setMakeName(selectedMake.make);
-      }
+      setMakeNameFn(selectedValue)
     };
 
     const getModel = (makeId: any) => {
-      // const setData : any = { 'param_make': make }
       Number(makeId)
       APIs.getCarModel(makeId).then((response: any) => {
           setModelArray(response.data.rows);
@@ -242,63 +277,49 @@ function EditListing() {
           .catch((error) => {
               setError(error);
           });
-  }
+    }
 
-  const getYear = (make: string, modelId: any) => {
-    const setData : any = { 'param_make': make, 'param_model': modelId }
+    const getYear = ( modelId: any) => {
+    
     APIs.getCarYear(Number(modelId)).then((response: any) => {
         setYearArray(response.data.rows);
     })
         .catch((error) => {
             setError(error);
         });
-}
+    }
 
-const handleModelChange = (event: any) => {
-  const selectedValue = event.target.value;
-  setSelectedModel(event.target.value);
-  setSelectedYear('');
-  setSelectedCategory('');
-  getYear(selectedModel, event.target.value);
- 
-  const selectedModelName : any = modelArray.find((model: any) => model.id == selectedValue);
-  if(selectedModelName){
-      setModelName(selectedModelName.model)
-  }
-};
+    const handleModelChange = (event: any) => {
+      const selectedValue = event.target.value;
+      setSelectedModel(event.target.value);
+      setSelectedYear('');
+      setSelectedCategory('');
+      getYear(event.target.value);
+      setModelNameFn(selectedValue, modelArray)
+    };
 
-const handleYearChange = (event: any) => {
-  const selectedValue = event.target.value;
-  setSelectedYear(event.target.value);
-  setSelectedCategory('');
-
-  const selectedYearName = yearArray.find((year: any) => year.id == selectedValue);
-  if(selectedYearName){
-      setYear(selectedYearName.year)
-  }
-};
+    const handleYearChange = (event: any) => {
+      const selectedValue = event.target.value;
+      setSelectedYear(event.target.value);
+      setSelectedCategory('');
+      setYearChangeFn(selectedValue, yearArray)
+    };
 
     const handleCategoryChange = (event: any) => {
-        const selectedCategory = event.target.value;
-        setSelectedCategory(selectedCategory);
+      const selectedCategory = event.target.value;
+      setSelectedCategory(selectedCategory);
+      const selectedCategoryData = categoriesData.find(
+        (category: any) => category.attributes.category_name === selectedCategory
+      );
       
-        // Find the selected category's ID based on its name
-        const selectedCategoryData = categoriesData.find(
-          (category: any) => category.attributes.category_name === selectedCategory
-        );
-      
-        if (selectedCategoryData) {
+      if (selectedCategoryData) {
           const selectedCategoryId = selectedCategoryData.id;
           setSelectedCategoryId(selectedCategoryId);
-          // Fetch subcategories based on the selected category's ID
           APIs.getSubcategories(selectedCategoryId)
             .then((response) => {
-              // Extract subcategory data
               const subcategoryData = response.data.rows;
               setSubcategories(subcategoryData);
-              // Reset the selected subcategory ID to an empty string when the category changes
-              setSelectedSubcategoryId(""); // This line resets the selected subcategory ID
-              // You can optionally select the first subcategory by default if needed
+              setSelectedSubcategoryId(""); 
               if (subcategoryData.length > 0) {
                 setSelectedSubcategoryId(subcategoryData[0].id);
               }
@@ -306,17 +327,13 @@ const handleYearChange = (event: any) => {
             .catch((error) => {
               console.error('Error fetching subcategories:', error);
             });
-        }
-      };
+      }
+    };
       
       useEffect(() => {
-        const delayDebounceFn = setTimeout(() => {
-          console.log(inputValue)
-                  
+        const delayDebounceFn = setTimeout(() => {     
           APIs.getParts(inputValue).then((res) => {
             setParts(res.data.data);
-            
-            // setSelectedItem(null)
           });
         }, 500)
     
@@ -324,30 +341,51 @@ const handleYearChange = (event: any) => {
       }, [inputValue])
       
     const handleListChange = (event: any) => {
-         setInputValue(event.target.value)
-         setListName(event?.target.value)
+         setInputValue(event.target.value.toUpperCase())
+         setListName(event?.target.value.toUpperCase())
     };
 
     const handlePartSelect = (partName: any) => {
-     // Update the listName state with the selected part
      setSelectedItem(partName);
      setListName(partName);
      setInputValue(partName);
       };
 
     const handlePriceChange = (event: any) => {
-        setListPrice(event.target.value)
+      const newValue = event.target.value.replace(/[^0-9.]/g, ''); 
+      if (newValue !== event.target.value) {
+          event.target.value = newValue;
+      }
+      setListPrice(newValue)
     }
     
     const handleQuantityChange = (event: any) => {
-        setListQuantity(event.target.value)
+      const newValue = event.target.value.replace(/[^0-9.]/g, ''); 
+      if (newValue !== event.target.value) {
+          event.target.value = newValue;
+      }
+      setListQuantity(newValue)
     }
-    const handleLocationChange = (event: any) => {
-        setListLocation(event.target.value)
+
+    const handleLocationNoChange = (event: any) => {
+      setLocationNo(event.target.value)
+      setListLocation( event.target.value + '.' + locationText);
+  }
+  const handleLocationChange = (event: any) => {
+      const newValue = event.target.value.replace(/[^0-9.]/g, ''); 
+      setLocationText(newValue)
+      if (newValue !== event.target.value) {
+          event.target.value = newValue;
+      }
+      setListLocation( locationNo + '.' + newValue);
+  }
+    const handleArticleChange = (event: any) => {
+      setListArticle(event.target.value)
     }
-    const handleBarcodeChange = (event: any) => {
-        setListBarcode(event.target.value)
-    }
+
+    const handleSaleChange = (event : any) =>{
+      setSaleOffer(event.target.value)
+  }
 
     const handleDescriptionChange = (event: any) => {
         setListDescription(event.target.value)
@@ -355,133 +393,142 @@ const handleYearChange = (event: any) => {
 
     const handleFeaturedImageChange = (event: any) => {
       const file = event.target.files[0];
-          // setProductGalleryImages([...productGalleryImages, file]);
-          setProductImage(file);
-          setTempProductGalleryImages([file,...productGalleryImages])
-  }; 
+        setProductImage(file);
+        // setTempProductGalleryImages([file])
+    }; 
 
-  const handleGalleryImagesChange = (event: any) => {
+    const handleGalleryImagesChange = (event: any) => {
       const files = event.target.files;
-      const selectedImages = [...productGalleryImages]; // Copy existing items
-      for (let i = 0; i < files?.length; i++) {
-          selectedImages.push(files[i]); // Add new items
+      let selectedImages: any = []
+      if(productGalleryImages){
+
+         selectedImages = [...productGalleryImages];
       }
-      setProductGalleryImages(selectedImages); // Update the state with the combined array
-      setTempProductGalleryImages([productImage, ...selectedImages])
-  };
+      for (let i = 0; i < files?.length; i++) {
+        APIs.uploadImage({
+          ref: "api::product.product",
+          refId: id,
+          field: "product_gallary_image",
+          files: files[i],
+      }).then((res: any) => {
+        let newImage = { attributes: { url: res.data[0].url } };
+        selectedImages.push(newImage)
+      }).then(() =>{
+        setProductGalleryImages(selectedImages)
+      }).catch((galleryImageUploadError) => {
+          console.error(`Gallery image  upload error:`, galleryImageUploadError);
+      })
+      }  
+    }
 
-  const handleDeleteFeaturedImage = () => {
-      // Remove the featured image by setting it to null
-      tempProductGalleryImages.shift()
-      setProductImage(null);
-      inputRef.current.value = ''
-  };
+    const handleDeleteFeaturedImage = () => {
+        setProductImage(null);
+        inputRef.current.value = ''
+    };
 
-  const handleDeleteGalleryImage = (index: any) => {
-      // Create a copy of the gallery images array
+    const handleDeleteGalleryImage = (idofImage: any, index: any) => {
+      APIs.deleteImage(idofImage).then((res: any) => {
       const updatedGalleryImages = [...productGalleryImages];
-      const updatedTempGalleryImages = [...tempProductGalleryImages]
-      // Remove the image at the specified index
       updatedGalleryImages.splice(index, 1);
       setProductGalleryImages(updatedGalleryImages);
-      updatedTempGalleryImages.splice(index, 1);
-      setTempProductGalleryImages(updatedTempGalleryImages);
-     
-      if(index == 0){
-          setProductImage(null)
-          inputRef.current.value = ''
-          galleryRef.current.value = ''
-          setTempProductGalleryImages([])
-      }
-  };
+    }).catch((galleryImageUploadError) => {
+        console.error(`Gallery image  upload error:`, galleryImageUploadError);
+    })
+    };
     const createNewList = () => {
-
-      let incomplete = !(!!listName && !!carDetailId && selectedCategoryId && !!selectedSubcategoryId && !!listPrice && !!listQuantity && !!listLocation && !!listBarcode && !!listDescription && !!uname && !!uid)
-    setIncomplete(incomplete);
-      if(!incomplete){
-        APIs.updateList(id,{
+      let incomplete = !(!!listName  && !!productImage && !!selectedMake  && !!selectedModel  && !!selectedYear && !!selectedCategoryId  && !!listPrice && !!listQuantity && !!listArticle &&listLocation && !!listBarcode && !!listDescription && !!uname && !!uid)
+      setIncomplete(incomplete);
+        if(!incomplete){
+          if (!parts.length) {
+            APIs.setParts({
+                "data": {
+                    "part": listName,
+                    "lang": "EN"
+                }
+            }).then((res) => console.log(res))
+          }
+        const requestData: any = {
           "data": {
-            "title": listName,
-            "cardetail": [carDetailId],
-            "category": [selectedCategoryId],
-            "sub_category": [parseInt(selectedSubcategoryId)],
-            "price": listPrice,
-            "stock_count": [listQuantity],
-            "product_location_warehouse": listLocation,
-            // "part_no_barcode_no": listBarcode,
-            "description": listDescription,
-            "product_status": "Active",
-            "seller": uname,
-            "seller_id" : uid,
+              "title": listName,
+              "cardetail": [],
+              "make": [Number(selectedMake)],
+              "model": [Number(selectedModel)],
+              "year": [Number(selectedYear)],
+              "category": [selectedCategoryId],
+              "price": listPrice,
+              "stock_count": [listQuantity],
+              "product_location_warehouse": listLocation,
+              "article_number": listArticle,
+              "part_no_barcode_no": listBarcode,
+              "description": listDescription,
+              "sale": saleOffer,
+              "product_status": "Active",
+              "seller": uname,
+              "seller_id": uid,
           }
-        }).then((response: any) => {
-          const resId = response.data.data.id;
-          if (productImage && productImage instanceof File) {
-            // Make the API call to upload the featured image
-            APIs.uploadImage({
-              ref: "api::product.product",
-              refId: resId,
-              field: "product_image",
-              files: productImage,
-            })
-            for (let i = 0; i < productGalleryImages.length; i++) {
-              const galleryImage = productGalleryImages[i];
-              // Use a closure to capture the current value of 'i'
-              (function (index) {
-                APIs.uploadImage({
-                  ref: "api::product.product",
-                  refId: resId,
-                  field: "product_gallary_image",
-                  files: galleryImage,
-                })
-                  .then((galleryImageUploadResponse) => {
-                  })
-                  .catch((galleryImageUploadError) => {
-                    console.error(`Gallery image ${index + 1} upload error:`, galleryImageUploadError);
-                  });
-              })(i);
-            }
-
-          } else {
-            // Handle the case where productImage is not defined
-            console.error("No product image selected.");
-          }
-        }).then(() => router.push('/seller/listings'))
-        .catch((error) => {
-          console.log(error);
-          setError(error);
-        });
-      }else{
-        toast.error("Fill all fields for Edt list")
+      };
+      if (selectedSubcategoryId) {
+        requestData.data.sub_category = [parseInt(selectedSubcategoryId)];
       }
-        
-        }
-    return (
+          APIs.updateList(id, requestData).then((response: any) => {
+            const resId = response.data.data.id;
+            const uploadPromises = [];
 
-        <>
-            <div className="main-body pb-2 mb-5">
+            if (productImage && productImage instanceof File) {
+                uploadPromises.push(
+                    APIs.uploadImage({
+                        ref: "api::product.product",
+                        refId: resId,
+                        field: "product_image",
+                        files: productImage,
+                    })
+                );    
+            } else {
+                console.error("No product image selected.");
+            }
+            return Promise.all(uploadPromises);
+
+          }).then(() => router.push('/seller/listings'))
+          .catch((error) => {
+            console.log(error);
+            setError(error);
+          });
+        }else{
+          toast.error("Fill all fields for Edit list")
+        }
+    }
+  return (
+      <>
+        <div className="main-body pb-2 mb-5">
                 <div className="container">
                     <section className="quote-wrapper mt-5">
                         <div className="row mt-3 g-4">
                             <SellerSideBar />
-                            <div className="col-12 col-md-9">
+                            <div className="col-12 col-md-9 p-0 p-sm-3">
                                 <div className="coulmn-bg-color-1 rounded">
                                     <div className="table-responsive pt-3 pb-3 overflow-hidden">
                                         <table className="table profile-table-1 coulmn-bg-color-1 rounded">
                                             <tbody className="double">
                                                 <tr>
-                                                    <th colSpan={2} className="px-5 pb-1 ps-0 custom-color-3  regularfont body-sub-titles border-bottom border-top-0">Edit List</th>
+                                                    <th colSpan={2} 
+                                                    className="px-5 pb-1 ps-0 custom-color-3  regularfont body-sub-titles border-bottom border-top-0"
+                                                    >
+                                                      Edit List
+                                                    </th>
                                                 </tr>
 
                                                 <tr className="double">
                                                 <td className='px-5 pt-4 pb-4'>
                                                     <label className="custom-color-2 regularfont products-name pb-2">List Name <span className="required">*</span></label>
-                                                    <input type="text" value={listName} onChange={handleListChange} className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listName ? 'required-field' : 'border-0' }`} name="first-name" placeholder="24 Inch Tyre for Mustang" required/>
+                                                    <input type="text" value={listName} onChange={handleListChange} 
+                                                      className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listName ? 'required-field' : 'border-0' }`}
+                                                      name="first-name" placeholder="24 Inch Tyre for Mustang" required/>
                                                     
                                                     <ul style={{display: "contents"}}>
-                                                            {parts.length > 0 && inputValue.length >= 3 && !selectedItem && (
+                                                            {parts.length > 0 && inputValue.length >= 2 && !selectedItem && (
                                                                 <ul style={{ display: "contents" }}>
-                                                                    <div className="options-container  position-absolute" style={{ backgroundColor: "#ebebeb", boxShadow: "1px 0px 7px 0px grey", zIndex: 3, maxHeight: "200px", overflowY: "scroll", overflowX: "hidden", width: "22rem" }}>
+                                                                    <div className="options-container  position-absolute" 
+                                                                      style={{ backgroundColor: "#ebebeb", boxShadow: "1px 0px 7px 0px grey", zIndex: 3, maxHeight: "200px", overflowY: "scroll", overflowX: "hidden", width: "22rem" }}>
                                                                         {parts
                                                                             .filter((part: any) => part.attributes.parts.toLowerCase().includes(inputValue.toLowerCase()))
                                                                             .map((part: any) => (
@@ -501,8 +548,11 @@ const handleYearChange = (event: any) => {
                                                     </ul>
                                                   </td>
                                                     <td className='px-5 pt-4 pb-4'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Plate Number <span className="required">*</span></label>
-                                                        <input type="text" value={licenseplate} onChange={handleLicenseplateChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" name="last-name" placeholder="Enter Plate Number to Auto Fill form" required/>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Plate Number</label>
+                                                        <input type="text" value={licenseplate} 
+                                                          onChange={handleLicenseplateChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" 
+                                                          name="last-name" placeholder="Enter Plate Number to Auto Fill form" required
+                                                        />
                                                         {showInvaidLicense &&
                                                     <div className="row mt-2 ml-2" >
                                                         <span className="advanced_search placeholderfontsize regularfont">No Record Found Against this Plate Number!</span>
@@ -512,7 +562,7 @@ const handleYearChange = (event: any) => {
                                                 </tr>
                                                 <tr className="double">
                                                     <td className='px-5 pt-4 pb-2'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Make</label><br />
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Make <span className="required">*</span></label><br />
                                                         <select className="form-select input-bg-color-2 border-0 products-name custom-color-2" name="make" id="makeOption"
                                                             value={selectedMake} onChange={handleMakeChange}>
                                                             <option value="" disabled={true}>Select Make</option>
@@ -522,35 +572,41 @@ const handleYearChange = (event: any) => {
                                                         </select>
                                                     </td>
                                                     <td className='px-5 pt-4 pb-2'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Model</label><br />
-                                                        <select disabled={!selectedMake} className="form-select input-bg-color-2 border-0 products-name custom-color-2" name="model" id="modelOption"
-                                                            value={selectedModel} onChange={handleModelChange}>
-                                                            <option value="" disabled={true}>Select Model</option>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Model <span className="required">*</span></label><br />
+                                                        <select disabled={!selectedMake} 
+                                                          className="form-select input-bg-color-2 border-0 products-name custom-color-2" 
+                                                          name="model" id="modelOption"
+                                                          value={selectedModel} onChange={handleModelChange}
+                                                        >
+                                                          <option value="" disabled={true}>Select Model</option>
                                                             {modelArray && modelArray.map((model: any, index: any) => (
-                                                                <option key={index} value={model.id}>{model.model}</option>
+                                                                <option key={index} value={model.id}>{model.model}
+                                                          </option>
                                                             ))}
                                                         </select>
                                                     </td>
                                                 </tr>
                                                 <tr className="double">
                                                     <td className='px-5 pb-2 border-0'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Year</label><br />
-                                                        <select disabled={!selectedModel || (yearArray && yearArray.length && !yearArray[0].year)} className="form-select input-bg-color-2 border-0 products-name custom-color-2" name="year" id="yearOption"
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Year <span className="required">*</span></label><br/>
+                                                        <select disabled={!selectedModel || (yearArray && yearArray.length && !yearArray[0].year)} 
+                                                            className="form-select input-bg-color-2 border-0 products-name custom-color-2" name="year" id="yearOption"
                                                             value={selectedYear} onChange={handleYearChange}>
                                                             <option value="" disabled={true}>Select Year</option>
                                                             {yearArray && yearArray.map((year: any, index: any) => (
-                                                                <option key={index} value={year.id}>{year.year}</option>
+                                                            <option key={index} value={year.id}>{year.year}</option>
                                                             ))}
                                                         </select>
                                                     </td>
                                                 </tr>
                                                 <tr className="single">
                                                     <td className='px-5 pb-2 border-0'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Category</label><br />
-                                                        <select className="form-select input-bg-color-2 border-0 products-name custom-color-2"  value={selectedCategory} onChange={handleCategoryChange}>
-                                                            <option>Choose Category</option>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Category <span className="required">*</span></label><br />
+                                                        <select className="form-select input-bg-color-2 border-0 products-name custom-color-2"  
+                                                          value={selectedCategory} onChange={handleCategoryChange}>
+                                                            <option value="" disabled={!!categoriesDetails}>Choose Category</option>
                                                             {categoriesDetails && categoriesDetails.map((category: any, index: any) => (
-                                                                <option key={index} value={category}>{category}</option>
+                                                            <option key={index} value={category}>{category}</option>
                                                             ))}
                                                         </select>
                                                     </td>
@@ -562,7 +618,7 @@ const handleYearChange = (event: any) => {
                                                    onChange={(e) => setSelectedSubcategoryId(e.target.value)} // Update the selected subcategory ID
                                                    disabled={!subcategories || subcategories.length === 0}
                                                  >
-                                                 <option >Choose Sub Category</option>
+                                                 <option>Choose Sub Category</option>
                                                  {subcategories &&
                                                    subcategories.map((subcategory: any, index: any) => (
                                                      <option key={index} value={subcategory.id}>
@@ -570,100 +626,191 @@ const handleYearChange = (event: any) => {
                                                      </option>
                                                    ))}
                                                </select>
-
-
                                                     </td>
                                                 </tr>
                                                 <tr className="double">
                                                     <td className='px-5 pb-2 pt-4'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Price (€)</label>
-                                                        <input type="text" onChange={handlePriceChange} value={listPrice} className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Listing Price (€)" />
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Price (€) <span className="required">*</span></label>
+                                                        <input type="text" onChange={handlePriceChange} value={listPrice} 
+                                                          className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Listing Price (€)" />
                                                     </td>
                                                     <td className='px-5 pb-2 pt-4'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Quantity</label>
-                                                        <input type="text" value={listQuantity} onChange={handleQuantityChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Listing Quantity" />
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Quantity <span className="required">*</span></label>
+                                                        <input type="text" value={listQuantity} onChange={handleQuantityChange}
+                                                          className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Listing Quantity"
+                                                          onKeyPress={(e: any) => {
+                                                            if (e.key === '0' && e.target.value === '') {
+                                                                e.preventDefault();
+                                                            }
+                                                        }}   
+                                                        />
                                                     </td>
                                                 </tr>
                                                 <tr className="double">
                                                     <td className='px-5 pb-2 border-0'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">On Sale</label><br />
-                                                        <select className="form-select input-bg-color-2 border-0 products-name custom-color-2">
-                                                            <option>Select</option>
-                                                        </select>
+                                                        <select className="form-select input-bg-color-2 border-0 products-name custom-color-2"
+                                                            value={saleOffer} onChange={handleSaleChange}>
+                                                                {saleArray && saleArray.map((sale: any) => (
+                                                                <option key={sale.id} value={sale.id}>{sale.attributes.discount} </option>))}
+                                                        </select>  
                                                     </td>
-                                                    <td className='px-5 pb-2 border-0'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Location of Part</label>
-                                                        <input type="text" value={listLocation} onChange={handleLocationChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Location of Part" />
+                                                    {/* <td className='px-5 pb-2 border-0'>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Location of Part <span className="required">*</span></label>
+                                                        <input type="text" value={listLocation} onChange={handleLocationChange} 
+                                                          className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Location of Part" />
+                                                    </td> */}
+                                                     <td className='px-5 pb-2 border-0 d-flex' style={{ gap: "10px" }}>
+                                                        <div style={{width: "40%"}}>
+                                                            <label className="custom-color-2 regularfont products-name pb-2">
+                                                            <FormattedMessage id="LOCATION_OF_PART_NO"/>
+                                                            </label>
+                                                            <select className="form-select input-bg-color-2 border-0 products-name custom-color-2"
+                                                                name='locationNo' value={locationNo} onChange={handleLocationNoChange}>
+                                                                <option value="A1">A1</option>
+                                                                <option value="A2">A2</option>
+                                                                <option value="A3">A3</option>
+                                                                <option value="A4">A4</option>
+                                                                <option value="A5">A5</option>
+                                                                <option value="A6">A6</option>
+                                                                <option value="A7">A7</option>
+                                                                <option value="A8">A8</option>
+                                                                <option value="A9">A9</option>
+                                                            </select>
+                                                        </div>
+                                                        <div style={{width: "60%"}}>
+                                                            <label className="custom-color-2 regularfont products-name pb-2">
+                                                                <FormattedMessage id="LOCATION_OF_PART"/>
+                                                                <span className="required">*</span>
+                                                            </label>
+                                                            <input type="text" onChange={handleLocationChange} 
+                                                                value={locationText}
+                                                                className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !locationNo ? 'required-field' : 'border-0'}`} 
+                                                                style={{height: "2.3rem"}} placeholder="Location of Part" 
+                                                            />
+                                                        </div>
                                                     </td>
                                                 </tr>
-                                                {/* <tr className="single">
-                                                    <td colSpan={2} className='px-5 pb-2 border-0'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Article No</label>
-                                                        <input type="text" onChange={handleArticleChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Article No" />
-                                                    </td>
-                                                </tr> */}
-                                                {/* <tr className="single">
-                                                    <td colSpan={2} className='px-5 pb-4 pt-2 border-0'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Article No</label>
-                                                        <input type="text" value={listBarcode} onChange={handleBarcodeChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Listing Part No/Barcode No" />
-                                                        {listBarcode && <Qrgenerator qrValue={listBarcode}/>}
-                                                    </td>
-                                                </tr> */}
-                                               <tr className="double">
-                                                <td className='px-5 pt-4 pb-2'>
-                              <label className="custom-color-2 regularfont products-name pb-2">Listing Featured Image <span className="required">*</span></label>
-                              <input className="form-control pt-2 pb-1 choosefile" type="file" id="featuredImages" onChange={handleFeaturedImageChange} ref={inputRef} required />
-
-                              {productImage ? (
-                                <div className="selected-featured-image" style={{ padding: "10px 0" }}>
-                                  <button style={{ position: 'absolute', top: '10px', right: '15px', border: "none", color: "white", backgroundColor: "transparent", padding: "5px", borderRadius: "50%", cursor: "pointer" }} onClick={() => handleDeleteFeaturedImage()}>
-                                                                    <i className='fa fa-trash'></i>
-                                  </button>
-                                  {typeof productImage === 'string' ? (
-                                    <img src={BASE_URL + productImage} alt="Selected Featured" width={200} height={200} style={{ borderRadius: "20px" }} />
-                                  ) : (
-                                    <img src={URL.createObjectURL(productImage)} alt="Selected Featured" width={200} height={200} style={{ borderRadius: "20px" }} />
-                                  )}
-                                  {/* Add delete button if needed */}
-                                </div>
-                              ) : null}
-                            </td>
-                            <td className='px-5 pt-4 pb-2'>
-                              <label className="custom-color-2 regularfont products-name pb-2">Listing Image(s) <span className="required">*</span></label>
-                              <input className="form-control pt-2 pb-1 choosefile" type="file" id="galleryImages" onChange={handleGalleryImagesChange} multiple ref={galleryRef} />
-
-                              {tempProductGalleryImages.length > 0 && (
-                                <div className="selected-gallery-images" style={{ padding: "10px 0", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-                                  {tempProductGalleryImages.map((image: any, index: any) => (
-                                    <div key={index} style={{ position: 'relative' }}>
-                                      {typeof image?.attributes?.url === 'string' ? (
-                                        <img src={BASE_URL + image?.attributes.url} alt={`Selected ${index + 1}`} height={200} style={{ width: "100%", borderRadius: "20px", maxWidth: "210px" }} />
-                                      ) : (
-                                        <img src={URL.createObjectURL(image)} alt={`Selected ${index + 1}`} height={200} style={{ width: "100%", borderRadius: "20px", maxWidth: "210px" }} />
-                                      )}
-                                      <button  style={{ position: 'absolute', top: '5px', right: '10px', border: "none", color: "white", background: "none" }} onClick={() => handleDeleteGalleryImage(index)}>
-                                                            <i className='fa fa-trash mr-3'></i>
-                                                          </button>
-                                      {/* Add delete button if needed */}
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
-                            </td>
-                          </tr>
                                                 <tr className="single">
                                                     <td colSpan={2} className='px-5 pb-2 border-0'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Description</label>
-                                                        <textarea value={listDescription} onChange={handleDescriptionChange} className="form-control input-bg-color-2 border-0 products-name rounded" rows={4}></textarea>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Article No <span className="required">*</span></label>
+                                                        <input type="text" onChange={handleArticleChange} 
+                                                        value={listArticle}
+                                                        className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Article No" />
+                                                    </td>
+                                                </tr>
+                                                <tr className="single">
+                                                    <td colSpan={2} className='px-5 pb-4 pt-2 border-0'>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Barcode :</label>
+                                                            <div style={{ padding: "5px", background: `#ffcf00`, width: "415.7480315px", height: "188.97637795px" }}
+                                                                className='d-flex align-items-center justify-content-center flex-column'
+                                                                ref={componentRef}
+                                                                >
+                                                                <div className="details d-flex" style={{ width: "100%", fontWeight: "bolder", padding: "0px 10px 0 10px", fontSize: "14px" }}>
+                                                                    <div className='d-flex justify-content-between' style={{ minWidth: "180px" }}>
+                                                                        {listBarcode && <Qrgenerator qrValue={listBarcode} />}
+                                                                    </div>
+                                                                    <div className='d-flex flex-column' style={{width: "100%"}}>
+                                                                        <div>
+                                                                            <div>UBOPARTS</div>
+                                                                            <div>{listName.toUpperCase()}</div>
+                                                                        </div>
+                                                                        <div style={{ minWidth: "110px" }}>
+                                                                            <div>REK NUMMER : {listLocation}</div>
+                                                                            {/* <div> {productData?.attributes?.product_location_warehouse}</div> */}
+                                                                        </div>
+                                                                        <div>ARTICLE NO : {listArticle}</div>
+                                                                        <div>{makeName} {modelName} {year} </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        <div>
+                                                            <ReactToPrint
+                                                                pageStyle={`
+                                                                @page {
+                                                                    size: 11cm 5cm;
+                                                                    margin: 0;
+                                                                }
+                                                                @media print {
+                                                                body {
+                                                                width: 11cm;
+                                                                height: 5cm;
+                                                                    }
+                                                                }
+                                                                `}
+                                                                trigger={() => (
+                                                                    <button
+                                                                        type="button"
+                                                                        className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2 p-2 my-2"
+                                                                        style={{ width: "415.78px" }}
+                                                                    >
+                                                                        Print
+                                                                    </button>
+                                                                )}
+                                                                content={() => componentRef.current}
+                                                            />
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr className="double">
+                                                  <td className='px-5 pt-4 pb-2'>
+                                                    <label className="custom-color-2 regularfont products-name pb-2">Listing Featured Image <span className="required">*</span></label>
+                                                    <input className="form-control pt-2 pb-1 choosefile" type="file" id="featuredImages" 
+                                                      onChange={handleFeaturedImageChange} ref={inputRef} required 
+                                                    />
+                                                      {productImage ? (
+                                                        <div className="selected-featured-image" style={{ position: "relative", width: "200px", padding: "10px 0" }}>
+                                                          <button style={{ position: 'absolute', top: '10px', right: '15px', border: "none", color: "white", backgroundColor: "transparent", padding: "5px", borderRadius: "50%", cursor: "pointer" }}
+                                                            onClick={() => handleDeleteFeaturedImage()}>
+                                                            <i className='fa fa-trash'></i>
+                                                          </button>
+                                                          {typeof productImage === 'string' ? (
+                                                            <img src={BASE_URL + productImage} alt="Selected Featured" width={200} height={200} style={{ borderRadius: "20px" }} />
+                                                          ) : (
+                                                            <img src={URL.createObjectURL(productImage)} alt="Selected Featured" width={200} height={200} style={{ borderRadius: "20px" }} />
+                                                          )}
+                                                        </div>
+                                                      ) : null}
+                                                  </td>
+                                                  <td className='px-5 pt-4 pb-2'>
+                                                    <label className="custom-color-2 regularfont products-name pb-2">Listing Image(s) </label>
+                                                    <input className="form-control pt-2 pb-1 choosefile" type="file" id="galleryImages"
+                                                      onChange={handleGalleryImagesChange} multiple disabled={!productImage}  ref={galleryRef} />
+                                                    {productGalleryImages && (
+                                                      <div className="selected-gallery-images" style={{ padding: "10px 0", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+                                                        {productGalleryImages.map((image: any, index: any) => (
+                                                          <div key={index} style={{ position: 'relative' }}>
+                                                            {typeof image?.attributes?.url === 'string' ? (
+                                                              <img src={BASE_URL + image?.attributes.url} alt={`Selected ${index + 1}`} height={200} style={{ width: "100%", borderRadius: "20px", maxWidth: "210px" }} />
+                                                            ) : (
+                                                              <img src={URL.createObjectURL(image)} alt={`Selected ${index + 1}`} height={200} style={{ width: "100%", borderRadius: "20px", maxWidth: "210px" }} />
+                                                            )}
+                                                            <button style={{ position: 'absolute', top: '5px', right: '10px', border: "none", color: "white", background: "none" }} onClick={() => handleDeleteGalleryImage(image.id, index)}>
+                                                              <i className='fa fa-trash mr-3'></i>
+                                                            </button>
+                                                            {/* Add delete button if needed */}
+                                                          </div>
+                                                        ))}
+                                                      </div>
+                                                    )}
+                                                  </td>
+                                                </tr>
+                                                <tr className="single">
+                                                    <td colSpan={2} className='px-5 pb-2 border-0'>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Description <span className="required">*</span></label>
+                                                        <textarea value={listDescription} onChange={handleDescriptionChange}
+                                                          className={`form-control input-bg-color-2 border-0 products-name rounded 
+                                                            ${incomplete && !listDescription ? 'required-field' : 'border-0'}`} rows={4}
+                                                            required>
+                                                        </textarea>
                                                     </td>
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2} className="border-0 px-5">
-                                                        <button type="submit" onClick={createNewList} className="place-quote text-white mediumfont products-name rounded border-0 button-bg-color-1">Edit Listing</button>
+                                                        <button type="submit" onClick={createNewList} className="place-quote text-white mediumfont products-name rounded border-0 button-bg-color-1 ubo-btn-custom">Save</button>
                                                     </td>
                                                 </tr>
                                             </tbody>
-
                                         </table>
                                     </div>
                                 </div>
@@ -671,8 +818,8 @@ const handleYearChange = (event: any) => {
                         </div>
                     </section>
                 </div>
-            </div>
-        </>
+        </div>
+      </>
     );
 }
 export default EditListing;

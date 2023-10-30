@@ -25,6 +25,8 @@ function Home() {
     const [modelArray, setModelArray] = useState<any>([]);
     const [yearArray, setYearArray] = useState<any>([]);
     const [categories, setCategories] = useState<any>([]);
+    const [saleOffers, setSaleOffers] = useState<any>([]);
+    const [topSellings, setTopSellings] = useState<any>([]);
     const [selectedMake, setSelectedMake] = useState('');
     const [selectedModel, setSelectedModel] = useState('');
     const [selectedYear, setSelectedYear] = useState('');
@@ -48,6 +50,7 @@ function Home() {
     const [makePageNum, setMakePageNum] = useState(1);
     const [makeItemCount, setMakeItemCount] = useState(4);
     const [articleNumber, setArticleNumber] = useState<any>('');
+    const [selectedHomeContent, setSelectedHomecontent] = useState('category')
 
     useEffect(() => {
         if (licenseplate && licenseplate.length > 5) {
@@ -114,6 +117,7 @@ function Home() {
             return () => clearTimeout(getData);
         }
     }, [licenseplate]);
+
     useEffect(() => {
         APIs.getCarDetails().then((response: any) => {
             setData(response.data.data);
@@ -127,6 +131,22 @@ function Home() {
             setCategories(categoriesArray(response.data.data));
             setLoading(false);
             setCategoriesDetail(response.data.data)
+        }).catch((error) => {
+            setError(error);
+            setLoading(false);
+        });
+
+        APIs.getSaleOffers().then((response: any) => {
+            setSaleOffers(response.data.data);
+            setLoading(false);
+        }).catch((error) => {
+            setError(error);
+            setLoading(false);
+        });
+
+        APIs.getTopSelling().then((response: any) => {
+            setTopSellings(response.data.rows);
+            setLoading(false);
         }).catch((error) => {
             setError(error);
             setLoading(false);
@@ -146,7 +166,6 @@ function Home() {
 
     useEffect(() =>{
         if(window.innerWidth < 768){
-            console.log("called")
             let makeItemCount = 2
             setMakeItemCount(2)
             APIs.getMakes(makePageNum, makeItemCount).then(response => {
@@ -166,16 +185,13 @@ function Home() {
     },[makePageNum])
    
     useEffect(() => {
-        // Function to filter and get the latest 4 items based on category
         const getLatestItemsByCategory = (categoryName: any) => {
-            
             if (!products || products.length === 0) {
-              return []; // Handle the case when products array is empty
+              return [];
             }
             if (categoryName === 'All') {
                 return products.slice(0, 4);
             } else {
-                // Check if the category exists in the data before filtering
                 const filteredProducts = products.filter(
                   (product: any) => (
                     product.attributes.category.data.attributes.category_name === categoryName
@@ -184,8 +200,6 @@ function Home() {
                 return  filteredProducts.slice(0, 4);
             }
         };
-    
-        // Call the function and set the latest items whenever products or selectedCategory changes
         setLatestItems(getLatestItemsByCategory(selectedItem));
       }, [products, selectedItem]);
 
@@ -243,6 +257,7 @@ function Home() {
     }
 
     const handleMakeChange = (event: any) => {
+        setShowInvaidLicense(false)
         getModel(event.target.value);
         setSelectedMake(event.target.value);
         setSelectedModel('');
@@ -283,7 +298,6 @@ function Home() {
     }
 
     const handleAddToCart = (productData: any) => {
-       
         if (!user || user && !user.id) {
             setOpenLogin(true);
         } else {
@@ -303,6 +317,62 @@ function Home() {
                 let productCartItems = response.data.rows;
                 for (const cartItem of productCartItems) {
                     if (cartItem.product_id === productData?.id) {
+                        productQuantityInCart = cartItem.quantity + 1;
+                        break; 
+                    }
+                }
+                APIs.getProduct(cartData.productid).then(response => {
+                    let productStock = response.data.data.attributes.stock_count;
+        
+                    // Check if the quantity exceeds the stock count
+                    if (productQuantityInCart <= productStock && productStock !== 0) {
+                        // Quantity is within stock limit, add to cart
+                        APIs.addToCart(cartData).then(response => {
+                            toast.success(() => (
+                                <>
+                                    Item successfully added to <Link href={"/cartpage"}>cart</Link>
+                                </>
+                            ));
+                            APIs.getCartData({ customerid: user.id }).then(response => {
+                                setCartCount(response.data.rows.length);
+                            }).then(()=> setAddToCartCompleted(true));
+                        }).catch(err => {
+                            toast.error('Something went wrong while adding to cart!');
+                            setAddToCartCompleted(true)
+                        });
+                    } else {
+                        setAddToCartCompleted(true)
+                        // Quantity exceeds stock limit, display a toast message
+                        toast.error('Stock exceeded. Cannot add this item to the cart.');
+                    }
+                }).catch(err => {
+                    toast.error('Something went wrong while fetching product information.');
+                    setAddToCartCompleted(true)
+                });
+            })
+        }
+    }
+
+    const handleAddToCartTopSelling = (productData: any) => {
+        if (!user || user && !user.id) {
+            setOpenLogin(true);
+        } else {
+            setOpenLogin(false);
+            setAddToCartCompleted(false)
+            setItemId(productData?.product_id)
+            let productQuantityInCart = 0;
+            let cartData = {
+                customerid: user.id,
+                productid: productData?.product_id,
+                quantity: '1',
+                productprice: productData?.product_price,
+                "productWeight": productData?.product_weight,
+                "discountPrice": productData?.discount_price,
+            }
+            APIs.getCartData({ customerid: user.id }).then(response => {
+                let productCartItems = response.data.rows;
+                for (const cartItem of productCartItems) {
+                    if (cartItem.product_id === productData?.product_id) {
                         productQuantityInCart = cartItem.quantity + 1;
                         break; 
                     }
@@ -359,10 +429,7 @@ function Home() {
     }
 
     const handleArticleChange = (event: any) => {
-        const newValue = event.target.value.replace(/[^0-9.]/g, '');
-        if (newValue !== event.target.value) {
-            event.target.value = newValue;
-        }
+        const newValue = event.target.value;
         setSelectedMake('');
         setSelectedModel('');
         setSelectedYear('');
@@ -558,16 +625,17 @@ function Home() {
                     </section>
                     <section className="categories-wrapper">
                         <div className="row mt-5">
-                            <div className="col-12 d-flex justify-content-between">
-                                <div>
-                                    <span className="popular_categories body-sub-titles regularfont">
+                            <div className="col-12 d-sm-flex justify-content-sm-between ubo-nav-tab">
+                                <div className='col-12 col-sm-auto mb-3 mb-sm-0 text-center text-sm-left'>
+                                    <span onClick={() => setSelectedHomecontent("category")} 
+                                     className={`popular_categories body-sub-titles regularfont  ${selectedHomeContent == "category" ? 'active' : ''}`}>
                                         {/* Popular Categories */}
                                         <FormattedMessage id="POPULAR"/>
                                         </span>
                                 </div>
-                                <div>
-                                    <button type="button" className="saleoffers regularfont body-sub-titles">Sale Offers</button>
-                                    <button type="button" className="saleoffers regularfont body-sub-titles">Top Sellers</button>
+                                <div className='d-flex justify-content-between d-sm-block'>
+                                    <button type="button" onClick={() => setSelectedHomecontent("saleOffers")}  className={`saleoffers regularfont body-sub-titles ${selectedHomeContent == "saleOffers" ? 'active' : ''}`}>Sale Offers</button>
+                                    <button type="button" onClick={() => setSelectedHomecontent("topSellings")} className={`saleoffers regularfont body-sub-titles ${selectedHomeContent == "topSellings" ? 'active' : ''}`}>Top Selling</button>
                                 </div>
                             </div>
                             <div className="col"></div>
@@ -579,10 +647,12 @@ function Home() {
                             </div>
                         </div>
                     </section>
-                    
                     <section className="categories-products-wrapper">
                         <div className="row mt-5 mt-lg-4 mt-xxl-5 g-4">
-                            {categoriesDetail.length > 0 ? categoriesDetail.slice(0, 4).map((item:any, index:any) => {
+                        {
+                        selectedHomeContent == "category" ? 
+                             (
+                                 categoriesDetail.length > 0 ? categoriesDetail.slice(0, 4).map((item:any, index:any) => {
                                 return (
                                 <div key={index} className="col-12 col-sm-6 col-md-3 my-3 my-md-0">
                                     <div className="prod-cats card">
@@ -599,7 +669,145 @@ function Home() {
                                         </div>
                                 </div>
                                 )
-                            }) : ""}
+                            }) : "" 
+                        ) : selectedHomeContent == "saleOffers" ? 
+                            (
+                                saleOffers && saleOffers.slice(0,4).map((product: any, index: any) => {
+                                    return (
+                                        <div className="col-12 col-sm-6 col-lg-3 mb-4" key={index}>
+                                            {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null) && (
+                                                <span  className="sale-tag position-absolute">Sale Live</span>
+                                            )}
+                                            <div className="latest-prods card card-shadows " style={{height: "100%"}} >   
+                                                <AppImage 
+                                                    src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.url} 
+                                                    className="card-img-top img-prod-height pointer "
+                                                    style={{height: '20rem', objectFit: 'contain', filter:`${product.attributes.stock_count == 0 ? "blur(3px)" : "none"}`}} 
+                                                    onClick={() => handleProductClick(product)}    
+                                                />
+                                                {product.attributes.stock_count == 0 &&  
+                                                    <div onClick={() => handleProductClick(product)} className='out-of-stock d-flex position-absolute justify-content-center align-items-center' >
+                                                        <p className='text-out-of-stock mb-0'>
+                                                        <FormattedMessage id="OUT_OF_STOCK" />
+                                                        </p>
+                                                    </div>
+                                                }
+                                                <div className="card-body">
+                                                    <div className="row g-1">
+                                                        <div className="col-12">
+                                                            <span className="article-number regularfont mini-text"
+                                                            >
+                                                               <FormattedMessage id="ARTICLE" /> #{product?.attributes?.article_number}
+                                                            </span>
+                                                        </div>
+                                                        <div className="col-12">
+                                                            <span className="product-name regularfont"
+                                                                style={{"cursor": "pointer"}} 
+                                                                onClick={() => handleProductClick(product)}
+                                                            >{product?.attributes?.title}</span>
+                                                        </div>
+                                                        <div className="col-12 d-flex justify-content-between">
+                                                        {
+                                                            (product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null) ?
+                                                            <span className="product-price">
+                                                                <s>€{product?.attributes?.price}</s> 
+                                                                €{discountedPrice(product.attributes.price, product.attributes.sale.data.attributes.discount)}
+                                                            </span> :
+                                                            <span className="product-price">€{product?.attributes?.price}</span>
+                                                        }
+                                                            {product.attributes.stock_count === 0 ? 
+                                                                (<AppImage
+                                                                    src="images/cart-svg.svg"
+                                                                    className="pointer add_to_cart"
+                                                                    style={{opacity: "0.5", cursor: "not-allowed"}}  
+                                                                />) : addToCartCompleted ? 
+                                                                (<AppImage
+                                                                    src="images/cart-svg.svg"
+                                                                    className="pointer add_to_cart"
+                                                                    onClick={() => handleAddToCart(product)}
+                                                                />) : product.id === itemId ? ("Adding..") : 
+                                                                (<AppImage
+                                                                    src="images/cart-svg.svg"
+                                                                    className="pointer add_to_cart"                      
+                                                                />)
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        )
+                                    })
+                            ) : selectedHomeContent == "topSellings" ? 
+                            (
+                                topSellings && topSellings.map((product: any, index: any) => {
+                                    return (
+                                        <div className="col-12 col-sm-6 col-lg-3 mb-4" key={index}>
+                                            {/* {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null) && (
+                                                <span  className="sale-tag position-absolute">Sale Live</span>
+                                            )} */}
+                                            <div className="latest-prods card card-shadows " style={{height: "100%"}} >   
+                                                <AppImage 
+                                                    src={BASE_URL + product?.product_image} 
+                                                    className="card-img-top img-prod-height pointer "
+                                                    style={{height: '20rem', objectFit: 'contain'}} 
+                                                    onClick={() => handleProductClick(product)}    
+                                                />
+                                                {product.stock_count == 0 &&  
+                                                    <div onClick={() => handleProductClick(product)} className='out-of-stock d-flex position-absolute justify-content-center align-items-center' >
+                                                        <p className='text-out-of-stock mb-0'>
+                                                        <FormattedMessage id="OUT_OF_STOCK" />
+                                                        </p>
+                                                    </div>
+                                                }
+                                                <div className="card-body">
+                                                    <div className="row g-1">
+                                                        <div className="col-12">
+                                                            <span className="article-number regularfont mini-text"
+                                                            >
+                                                               <FormattedMessage id="ARTICLE" /> #{product?.article_number}
+                                                            </span>
+                                                        </div>
+                                                        <div className="col-12">
+                                                            <span className="product-name regularfont"
+                                                                style={{"cursor": "pointer"}} 
+                                                                onClick={() => handleProductClick(product)}
+                                                            >{product?.product_name}</span>
+                                                        </div>
+                                                        <div className="col-12 d-flex justify-content-between">
+                                                        {
+                                                            (product?.discount_price != 0 ) ?
+                                                            <span className="product-price">
+                                                                <s>€{product?.product_price}</s> 
+                                                                €{product?.product_price - product.discount_price}
+                                                            </span> :
+                                                            <span className="product-price">€{product?.product_price}</span>
+                                                        }
+                                                            {product?.stock_count === 0 ? 
+                                                                (<AppImage
+                                                                    src="images/cart-svg.svg"
+                                                                    className="pointer add_to_cart"
+                                                                    style={{opacity: "0.5", cursor: "not-allowed"}}  
+                                                                />) : addToCartCompleted ? 
+                                                                (<AppImage
+                                                                    src="images/cart-svg.svg"
+                                                                    className="pointer add_to_cart"
+                                                                    onClick={() => handleAddToCartTopSelling(product)}
+                                                                />) : product.product_id === itemId ? ("Adding..") : 
+                                                                (<AppImage
+                                                                    src="images/cart-svg.svg"
+                                                                    className="pointer add_to_cart"                      
+                                                                />)
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        )
+                                    })
+                            ) : ""
+                    }            
                         </div>
                     </section>
                 <section className='d-flex align-items-center justify-content-center ubo-brands-slider-wrapper'>
@@ -646,13 +854,13 @@ function Home() {
                 </section>
                 <section className="latest-products-wrapper">
                         <div className="row mt-5">
-                            <div className="col-12 d-flex justify-content-between">
-                                <div>
+                            <div className="col-12 d-sm-flex justify-content-sm-between ubo-nav-tab">
+                                <div className='col-12 col-sm-auto mb-3 mb-sm-0 text-center text-sm-left'>
                                     <span className="popular_categories body-sub-titles regularfont">
                                        <FormattedMessage id="LATEST_PRODUCTS" />
                                     </span>
                                 </div>
-                                  <div>
+                                  <div className='d-flex justify-content-between d-sm-block'>
                                     <button
                                         type="button"
                                         className={`saleoffers regularfont body-sub-titles ${selectedItem === 'All' ? 'active' : ''}`}
@@ -694,7 +902,7 @@ function Home() {
                     </section>
                     <section className="latest-products-second-wrapper">
                         <div className="row mt-5 mt-lg-4 mt-xxl-5 g-4">
-                        {latestItems && latestItems .map((product: any, index: any) => {
+                        {latestItems && latestItems.map((product: any, index: any) => {
                             return (
                                 <div className="col-12 col-sm-6 col-lg-3 mb-4" key={index}>
                                     {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null) && (

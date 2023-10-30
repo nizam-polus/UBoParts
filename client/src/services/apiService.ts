@@ -148,7 +148,7 @@ const APIs = {
     
     cartPayment: (productsData: {}) => ds.post(BACKEND_URL + 'Payment-opp', productsData),
 
-    paymentStatus: (transactionId: string) => ds.post(BACKEND_URL + 'payment-status-get', {transactionid: transactionId}),
+    paymentStatus: (transactionId: string, customerId: number) => ds.post(BACKEND_URL + 'payment-status-get', {transactionid: transactionId, customerid: customerId}),
 
     getSpecificUser: (id: number) => ds.get(BACKEND_URL + `users/${id}?populate=*`),
 
@@ -161,6 +161,11 @@ const APIs = {
     deleteProduct: (id: any) => ds.delete(BACKEND_URL + 'products/'+ id, {headers}),
 
     uploadImage: (picData: any) => axios.post(BACKEND_URL + 'upload', picData, {headers: {
+        Authorization: `Bearer ${getToken()}`,
+        'content-type': 'multipart/form-data'
+    }}),
+
+    deleteImage: ( id: any) => axios.delete(BACKEND_URL + `upload/files/${id}`,  {headers: {
         Authorization: `Bearer ${getToken()}`,
         'content-type': 'multipart/form-data'
     }}),
@@ -179,6 +184,7 @@ const APIs = {
 
     getShippingCost: (data: any) => ds.post(BACKEND_URL + 'shipping-cost', data),
 
+    getAdminStatus: () => axios.get(BACKEND_URL + 'merchant-profile-data')
 }
 
 export default APIs

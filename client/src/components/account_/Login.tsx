@@ -20,7 +20,7 @@ function Login(props: any) {
     const {user, saveUser} = UserContext();
     
     const [loginformData, setLoginFormData] = useState({
-        username: '',
+        username: props.username || '',
         password: ''
     });
     const [loginmodal, setLoginModal] = useState<boolean>(true);
@@ -28,6 +28,7 @@ function Login(props: any) {
     const [registerIsOpen, setRegisterIsOpen] = useState<boolean>(false);
     const [invalidinput, setInvalidInput] = useState<boolean>(false);
     const [invalidCred, setInvalidCred] = useState<boolean>(false);
+    const [rememberMe, setRememberMe] = useState<boolean>(false);
 
     const onLoginFormDataChange = (event: any) => {
         event.preventDefault();
@@ -39,6 +40,15 @@ function Login(props: any) {
 
     const onFormSubmit = async (event: any) => {
         event.preventDefault();
+        let loginDate = new Date().toISOString().split('T').join(' ').split('.')[0];
+        let expiryDate: any;
+        if (rememberMe) {
+            expiryDate = new Date().setDate(new Date().getDate() + 7);
+            expiryDate = new Date(expiryDate).toISOString().split('T').join(' ').split('.')[0];
+        } else {
+            expiryDate = new Date().setDate(new Date().getDate() + 1);
+            expiryDate = new Date(expiryDate).toISOString().split('T').join(' ').split('.')[0];
+        }
         try {
             if (loginformData.username && loginformData.password) {
                 setInvalidCred(false);
@@ -48,15 +58,26 @@ function Login(props: any) {
                     if (response.data.error && response.data.error.status >= 400 && response.data.error.status <= 403) {
                         setInvalidCred(true);
                     } else {
+                        
                         let userdetails = response.data.user
                         localStorage.setItem('usertoken', JSON.stringify(response.data.jwt));
                         APIs.getSpecificUser(userdetails.id).then((response: any) => {
-                            userdetails = response.data
-                            localStorage.setItem('userdetails', JSON.stringify(userdetails));
-                            saveUser(userdetails);
-                            router.push('/homepage');
-                            const isEmpty = { username: "", password: ""};
-                            setLoginFormData(isEmpty);
+                            let loginData = {
+                                login_date: loginDate,
+                                expiry_date: expiryDate
+                            }
+                            APIs.updateSpecificUser(userdetails.id, loginData).then((userRes: any) => {
+                                let userData = userRes.data;
+                                localStorage.setItem('userdetails', JSON.stringify(userData));
+                                saveUser(userData);
+                                if(userRes.data.role.type == "admin"){
+                                    router.push('/admin_create')
+                                }else{
+                                    router.push('/homepage');
+                                }
+                                const isEmpty = { username: "", password: ""};
+                                setLoginFormData(isEmpty);
+                            })
                         })
                     }
                 })
@@ -146,7 +167,7 @@ function Login(props: any) {
                                                     />
                                                 </div>
                                                 <div className="form-group marginb40">
-                                                    <label htmlFor="password" className="body-sub-titles-1 mediumfont"><FormattedMessage id="Wachtwoord"/></label>
+                                                    <label htmlFor="password" className="body-sub-titles-1 mediumfont"><FormattedMessage id="PASSWORD"/></label>
                                                     <input type="password" 
                                                         className="form-control body-sub-titles-1 mediumfont inputformtxt" 
                                                         id="password" name="password" 
@@ -157,7 +178,7 @@ function Login(props: any) {
                                                 </div>
                                                 <div className="form-group">
                                                     <input type="checkbox" name="remember_me" 
-                                                        className='rounded' 
+                                                        className='rounded' onClick={() => setRememberMe(!rememberMe)}
                                                     />
                                                     <span className="remember_me body-sub-titles-1 lightfont inputformtxt"><FormattedMessage id="REMEMBER_ME"/></span>
                                                     <button type="button" id="forgot_password" 
