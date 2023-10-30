@@ -371,11 +371,11 @@ function Cart() {
                                                                    min="1"
                                                                    max="10"
                                                                    onChange={(e) => {
-                                                                     const newValue = e.target.value;
-                                                                     if (newValue === '0') {
+                                                                     const newValue = e.target.value.replace(/[^0-9.]/g, '');
+                                                                     if (newValue === '0' || newValue == "") {
                                                                        // Treat '0' as an empty input
                                                                        e.target.value = '';
-                                                                       alert("Quantity cannot be zero(0)")
+                                                                    //    alert("Quantity cannot be zero(0) / empty")
                                                                      }
                                                                      else{
                                                                          quantityInputOnChange(product, newValue, index);
@@ -420,11 +420,11 @@ function Cart() {
                                                 <>
                                                     <tr className="border-top">
                                                         <td className="pb-1 pt-4 pl-3 regularfont placeholderfontsize border-top-0">Price</td>
-                                                        <td className="pb-1 pt-4 semifont border-top-0 menu_font_size custom-color-3">€{totalCartPrice.toFixed(2)}</td>
+                                                        <td className="pb-1 pt-4  border-top-0 menu_font_size custom-color-3">€{totalCartPrice.toFixed(2)}</td>
                                                     </tr>
                                                     <tr>
                                                         <td className="pb-1 pt-4 pl-3 regularfont placeholderfontsize border-top-0">Discount</td>
-                                                        <td className="pb-1 pt-4 semifont border-top-0 menu_font_size custom-color-3">- €{totalDiscount.toFixed(2)}</td>
+                                                        <td className="pb-1 pt-4 border-top-0 menu_font_size custom-color-3">- €{totalDiscount.toFixed(2)}</td>
                                                     </tr>
                                                 </>
                                             :

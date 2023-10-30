@@ -274,14 +274,11 @@ function Productsingle() {
                                                 <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">{productData?.attributes?.article_number}</span></div>
                                             </div>
                                             <div className="row pt-1 pb-1 border-bottom-row">
-                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Country:</span></div>
+                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Weight:</span></div>
                                                 <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">
-                                                    {productData?.attributes?.countries?.data.map((country: any, i: any) => 
-                                                        { return (
-                                                            <span>{country?.attributes.country}{productData?.attributes?.countries?.data.length !== i+1 ? ", " : ""}</span>
-                                                        )})
-                                                    }
-                                                </span></div>
+                                                {productData?.attributes?.product_weight} KG
+                                                </span>
+                                                </div>
                                             </div>
                                             <div className="row pt-1 pb-1 d-flex justify-content-center align-items-center">
                                                 <div className="col-4 col-md-4 col-lg-12 col-xl-5">
@@ -297,10 +294,10 @@ function Productsingle() {
                                                             className="form-control input-number text-center rounded border-0 semifont pb-2 pt-2 mini-text-3 h-auto"
                                                             value={quantity} min="1" max="10"
                                                             onChange={(e) => {
-                                                                const newValue = e.target.value;
-                                                                if(newValue === "0"){
+                                                                const newValue = e.target.value.replace(/[^0-9.]/g, '');
+                                                                if (newValue === '0' || newValue == ""){
                                                                     e.target.value = '';
-                                                                    toast.error("Quantity cannot be zero(0)");
+                                                                    // toast.error("Quantity cannot be zero(0) ");
                                                                 }
                                                                 else{
                                                                     handleQuantityChange(newValue);
