@@ -409,6 +409,7 @@
     "PLATE_NO": "Plaat nummer",
     "AUTO_MODEL": "Automodel",
     "YEAR": "Jaar",
+    "MAKE": "Maken",
     "MARK": "Merk",
     "USER_NAME": "Gebruikersnaam",
     "FIRST_NAME": "Voornaam",
@@ -426,6 +427,16 @@
     
     "DISMANTLE_CAR": "Demonteer bij ons uw auto",
     "DRIVING_CONDITION": "Rijconditie",
+    "DRIVABLE": "Rijdbaar",
+    "NOT_DRIVABLE": "Niet rijdbaar",
+    "TYPE": "Type",
+    "CATALYSER": "Katalyseren",
+    "IMITATION": "Imitatie",
+    "ORIGINAL": "Origineel",
+    "ASKING_PRICE": "Vraagprijs (€)",
+    "CAR_IMAGE": "Auto afbeeldingen",
+    "SELECT_COUNTRY": "Select Country",
+    "NOTE": "Opmerking",
     
     "LOGIN": "Log in",
     "LOGIN_DETAILS": "Welkom terug! Voer uw gegevens in",
@@ -511,7 +522,10 @@
   "HOME": "Thuis",
   "SHOP": "Winkel",
   "REQUEST": "Verzoek",
-  "MY_ACCOUNT": "Mijn rekening"
+  "MY_ACCOUNT": "Mijn rekening",
+
+  "SALE_OFFERS": "Verkoopaanbiedingen",
+  "TOP_SELLING": "Best verkopende"
   }
   
   

@@ -128,13 +128,20 @@ function SellerListings() {
                                                     {(item.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && item.attributes.sale.data != null) && (
                                                         <span  className="sale-tag position-absolute">{item.attributes.sale.data.attributes.discount}</span>
                                                     )}
-                                                    <div className="position-relative">
+                                                    <div className="position-relative d-flex align-items-center">
                                                         <AppImage
                                                             src={BASE_URL + item?.attributes?.product_image?.data?.attributes?.url}
                                                             className="card-img-top img-prod-height pointer"
-                                                            style={{ height: '20rem', objectFit: 'contain' }}
+                                                            style={{ height: '20rem', objectFit: 'contain', opacity: `${item.attributes.stock_count == 0 ? "0.6" : "1"}` }}
                                                             onClick={() => handleProductClick(item)}
                                                         />
+                                                         {
+                                                            item.attributes.stock_count == 0 &&  
+                                                               
+                                                                   <p className='text-out-of-stock mb-0 position-absolute'><FormattedMessage id="OUT_OF_STOCK"/></p>
+                                                                
+                                                      
+                                                             }
                                                         {
                                                            (item.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && item.attributes.sale.data != null) ? 
                                                                 <div className=' button-bg-color-1 product-price d-flex' >
@@ -158,9 +165,10 @@ function SellerListings() {
                                                                  {item.attributes.stock_count}          
                                                                 </span>
                                                                 :          
-                                                                 <span className='' style={{  color: 'red', padding: '5px 10px', }}>
-                                                                 <FormattedMessage id="OUT_OF_STOCK" />
-                                                      </span>
+                                                                <span className='button-bg-color-1' style={{  color: 'white', padding: '5px 12px', borderRadius: '20px' }}>
+                                                                {item.attributes.stock_count}          
+                                                               </span>
+                                                                
                                                              }
                                                                
                                                             </div>

@@ -419,7 +419,7 @@ function Cart() {
                                             ?
                                                 <>
                                                     <tr className="border-top">
-                                                        <td className="pb-1 pt-4 pl-3 regularfont placeholderfontsize border-top-0">Total</td>
+                                                        <td className="pb-1 pt-4 pl-3 regularfont placeholderfontsize border-top-0">Price</td>
                                                         <td className="pb-1 pt-4 semifont border-top-0 menu_font_size custom-color-3">€{totalCartPrice.toFixed(2)}</td>
                                                     </tr>
                                                     <tr>
@@ -435,7 +435,7 @@ function Cart() {
                                                 <td className="pb-0 pt-0 pl-0 pr-4 regularfont boldfontsize border-top-0"> <hr className="p-0 m-0" /></td>
                                             </tr>
                                             <tr>
-                                                <td className="pb-2 pt-1 pr-0 pl-3 semifont boldfontsize border-top-0"> SubTotal</td>
+                                                <td className="pb-2 pt-1 pr-0 pl-3 semifont boldfontsize border-top-0"> Subtotal</td>
                                                 <td className="pb-2 pt-1 pl-0 semifont boldfontsize border-top-0 custom-color-3">€{(totalCartPrice - totalDiscount).toFixed(2)}</td>
                                             </tr>
                                             <tr><td colSpan={2} className="px-3 pt-3 pb-2 w-100">

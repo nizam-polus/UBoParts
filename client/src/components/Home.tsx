@@ -634,8 +634,8 @@ function Home() {
                                         </span>
                                 </div>
                                 <div className='d-flex justify-content-between d-sm-block'>
-                                    <button type="button" onClick={() => setSelectedHomecontent("saleOffers")}  className={`saleoffers regularfont body-sub-titles ${selectedHomeContent == "saleOffers" ? 'active' : ''}`}>Sale Offers</button>
-                                    <button type="button" onClick={() => setSelectedHomecontent("topSellings")} className={`saleoffers regularfont body-sub-titles ${selectedHomeContent == "topSellings" ? 'active' : ''}`}>Top Selling</button>
+                                    <button type="button" onClick={() => setSelectedHomecontent("saleOffers")}  className={`saleoffers regularfont body-sub-titles ${selectedHomeContent == "saleOffers" ? 'active' : ''}`}><FormattedMessage id="SALE_OFFERS" /></button>
+                                    <button type="button" onClick={() => setSelectedHomecontent("topSellings")} className={`saleoffers regularfont body-sub-titles ${selectedHomeContent == "topSellings" ? 'active' : ''}`}><FormattedMessage id="TOP_SELLING" /></button>
                                 </div>
                             </div>
                             <div className="col"></div>
@@ -715,7 +715,7 @@ function Home() {
                                                             </span> :
                                                             <span className="product-price">€{product?.attributes?.price}</span>
                                                         }
-                                                            {product.attributes.stock_count === 0 ? 
+                                                            {/* {product.attributes.stock_count === 0 ? 
                                                                 (<AppImage
                                                                     src="images/cart-svg.svg"
                                                                     className="pointer add_to_cart"
@@ -730,7 +730,7 @@ function Home() {
                                                                     src="images/cart-svg.svg"
                                                                     className="pointer add_to_cart"                      
                                                                 />)
-                                                            }
+                                                            } */}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -783,7 +783,7 @@ function Home() {
                                                             </span> :
                                                             <span className="product-price">€{product?.product_price}</span>
                                                         }
-                                                            {product?.stock_count === 0 ? 
+                                                            {/* {product?.stock_count === 0 ? 
                                                                 (<AppImage
                                                                     src="images/cart-svg.svg"
                                                                     className="pointer add_to_cart"
@@ -798,7 +798,7 @@ function Home() {
                                                                     src="images/cart-svg.svg"
                                                                     className="pointer add_to_cart"                      
                                                                 />)
-                                                            }
+                                                            } */}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -945,7 +945,7 @@ function Home() {
                                                     </span> :
                                                     <span className="product-price">€{product?.attributes?.price}</span>
                                                 }
-                                                    {product.attributes.stock_count === 0 ? 
+                                                    {/* {product.attributes.stock_count === 0 ? 
                                                         (<AppImage
                                                             src="images/cart-svg.svg"
                                                             className="pointer add_to_cart"
@@ -960,7 +960,7 @@ function Home() {
                                                             src="images/cart-svg.svg"
                                                             className="pointer add_to_cart"                      
                                                         />)
-                                                    }
+                                                    } */}
                                                 </div>
                                             </div>
                                         </div>
