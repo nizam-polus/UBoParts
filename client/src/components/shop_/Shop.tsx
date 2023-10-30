@@ -44,6 +44,7 @@ function Shop() {
     const [pageNumber, setPageNumber] = useState(1)
     const [pageCount, setPageCount] = useState();
     const [sortState, setSortState] = useState("sort[0]=createdAt:desc")
+    const [viewFilter, setViewFilter] = useState(true)
     
     const router = useRouter();
     const { HomeMakeId } : any = router.query;
@@ -498,13 +499,17 @@ function Shop() {
                                     <div className="col-12 col-sm-3 pb-4 pb-xl-0">
                                         <div className="responsive-filter">
                                             <button type="button" 
+                                                onClick={() => setViewFilter(!viewFilter)}
                                                 className="boldfont boldfontsize button-bg-color-1 border-0 text-white p-2 rounded" 
                                                 data-bs-toggle="modal" data-bs-target="#view-filters"
                                             >
-                                                <FormattedMessage id="VIEW_FILTER"/>
+                                                {
+                                                    viewFilter ? "Hide Filter" :  <FormattedMessage id="VIEW_FILTER"/>
+                                                }
+                                               
                                             </button>
                                         </div>
-                                        <div className="desktop-filter">
+                                        <div className="desktop-filter" style={{display: `${viewFilter ? "block" : "none"}`}}>
                                             <div className="row mb-2 flex-column">
                                                 <button 
                                                     className="btn coulmn-bg-color-1 border-0 text-start justify-content-between 
@@ -655,7 +660,7 @@ function Shop() {
                                             </div>
                                         </div>
                                         <div className="row g-4 pt-3">
-                                            {searchedProducts.map((product: any, index: any) => {
+                                            {searchedProducts.filter((item: any, index: any) => item.attributes.seller_id !== user.id).map((product: any, index: any) => {
                                                 return (
                                                     <div className="col-12 col-sm-6 col-lg-4  mb-4" key={index}>
                                                     {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null)&& (

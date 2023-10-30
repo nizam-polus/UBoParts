@@ -290,7 +290,7 @@ function Cart() {
                             setTotalShippingCost(totalShippingCost);
                         }
                         if (!user.country || !user.postcode){
-                            toast.error("Please fill your user details", {autoClose: 4000});
+                            toast.error(() => <div>Please complete your profile to proceed. <Link href={'/profile_'}>Profile</Link></div>, {autoClose: 4000});
                             return;
                         }
                         if (!cartProducts.length){
@@ -371,11 +371,11 @@ function Cart() {
                                                                    min="1"
                                                                    max="10"
                                                                    onChange={(e) => {
-                                                                     const newValue = e.target.value;
-                                                                     if (newValue === '0') {
+                                                                     const newValue = e.target.value.replace(/[^0-9.]/g, '');
+                                                                     if (newValue === '0' || newValue == "") {
                                                                        // Treat '0' as an empty input
                                                                        e.target.value = '';
-                                                                       alert("Quantity cannot be zero(0)")
+                                                                    //    alert("Quantity cannot be zero(0) / empty")
                                                                      }
                                                                      else{
                                                                          quantityInputOnChange(product, newValue, index);
@@ -419,12 +419,12 @@ function Cart() {
                                             ?
                                                 <>
                                                     <tr className="border-top">
-                                                        <td className="pb-1 pt-4 pl-3 regularfont placeholderfontsize border-top-0">Total</td>
-                                                        <td className="pb-1 pt-4 semifont border-top-0 menu_font_size custom-color-3">€{totalCartPrice.toFixed(2)}</td>
+                                                        <td className="pb-1 pt-4 pl-3 regularfont placeholderfontsize border-top-0">Price</td>
+                                                        <td className="pb-1 pt-4  border-top-0 menu_font_size custom-color-3">€{totalCartPrice.toFixed(2)}</td>
                                                     </tr>
                                                     <tr>
                                                         <td className="pb-1 pt-4 pl-3 regularfont placeholderfontsize border-top-0">Discount</td>
-                                                        <td className="pb-1 pt-4 semifont border-top-0 menu_font_size custom-color-3">- €{totalDiscount.toFixed(2)}</td>
+                                                        <td className="pb-1 pt-4 border-top-0 menu_font_size custom-color-3">- €{totalDiscount.toFixed(2)}</td>
                                                     </tr>
                                                 </>
                                             :
@@ -435,7 +435,7 @@ function Cart() {
                                                 <td className="pb-0 pt-0 pl-0 pr-4 regularfont boldfontsize border-top-0"> <hr className="p-0 m-0" /></td>
                                             </tr>
                                             <tr>
-                                                <td className="pb-2 pt-1 pr-0 pl-3 semifont boldfontsize border-top-0"> SubTotal</td>
+                                                <td className="pb-2 pt-1 pr-0 pl-3 semifont boldfontsize border-top-0"> Subtotal</td>
                                                 <td className="pb-2 pt-1 pl-0 semifont boldfontsize border-top-0 custom-color-3">€{(totalCartPrice - totalDiscount).toFixed(2)}</td>
                                             </tr>
                                             <tr><td colSpan={2} className="px-3 pt-3 pb-2 w-100">

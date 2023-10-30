@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { toast } from 'react-toastify';
 import APIs from '~/services/apiService';
 
@@ -119,7 +120,9 @@ function Dismantle_car() {
                                                     <tr>
                                                         <th colSpan={2} 
                                                             className="pt-0 pb-0 px-0 ps-0 custom-color-2 regularfont subtitles fw-normal border-top-0 border-bottom-0"
-                                                        >Dismantle Your Car With Us</th>
+                                                        >
+                                                            <FormattedMessage id="DISMANTLE_CAR"/>
+                                                        </th>
                                                     </tr>
                                                     <tr>
                                                         <td colSpan={2} className="pb-4 pt-4 pl-0 semifont boldfontsize border-top-0"> 
@@ -128,7 +131,7 @@ function Dismantle_car() {
                                                     </tr>
                                                     <tr className="double">
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Plate Number</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="PLATE_NO"/></label>
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.plate_number ? 'required-field' : 'border-0'}`}
                                                                 name="plate_number" placeholder="Plate Number" 
@@ -136,7 +139,7 @@ function Dismantle_car() {
                                                             />
                                                         </td>
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Auto Model</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="AUTO_MODEL"/></label>
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.auto_model ? 'required-field' : 'border-0'}`}
                                                                 name="auto_model" placeholder="Auto Model" value={formData.auto_model}
@@ -146,7 +149,7 @@ function Dismantle_car() {
                                                     </tr>
                                                     <tr className="double">
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Year</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="YEAR"/></label>
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.year ? 'required-field' : 'border-0'}`}
                                                                 name="year" placeholder="Year" value={formData.year}
@@ -154,7 +157,7 @@ function Dismantle_car() {
                                                             />
                                                         </td>
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Make</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="MAKE"/></label>
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.mark ? 'required-field' : 'border-0'}`} 
                                                                 name="mark" placeholder="Make" value={formData.mark}
@@ -164,7 +167,7 @@ function Dismantle_car() {
                                                     </tr>
                                                     <tr className="double">
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">First Name</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="FIRST_NAME"/></label>
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.first_name ? 'required-field' : 'border-0'}`} 
                                                                 name="first_name" placeholder="First Name" 
@@ -172,7 +175,7 @@ function Dismantle_car() {
                                                             />
                                                         </td>
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Last Name</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="LAST_NAME"/></label>
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.last_name ? 'required-field' : 'border-0'}`}
                                                                 name="last_name" placeholder="Last Name"
@@ -182,7 +185,7 @@ function Dismantle_car() {
                                                     </tr>
                                                     <tr className="double">
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Email Address</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="EMAIL_ADDRESS"/></label>
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.email ? 'required-field' : 'border-0'}`}
                                                                 name="email" placeholder="Email Address" 
@@ -190,7 +193,7 @@ function Dismantle_car() {
                                                             />
                                                         </td>
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Phone</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="PHONE"/></label>
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.phone ? 'required-field' : 'border-0'}`}
                                                                 name="phone" placeholder="(XXX) XXX-XXXX" 
@@ -200,7 +203,7 @@ function Dismantle_car() {
                                                     </tr>
                                                     <tr className="double">
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Delivery Type <span className="required">*</span></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="DELIVERY_TYPE"/> <span className="required">*</span></label>
                                                             <fieldset>
                                                                 <div className="position-relative d-flex">
                                                                     <span>
@@ -210,7 +213,7 @@ function Dismantle_car() {
                                                                         />
                                                                         <label htmlFor="driving_type_pickup" className="rounded"></label>
                                                                     </span>
-                                                                    <span className="regularfont pl-2">Delivery</span>
+                                                                    <span className="regularfont pl-2"><FormattedMessage id="DELIVERY"/></span>
                                                                 </div>
                                                                 <div className="position-relative d-flex">
                                                                     <span>
@@ -220,12 +223,12 @@ function Dismantle_car() {
                                                                         />
                                                                         <label htmlFor="driving_type_pickup" className="rounded"></label>
                                                                     </span>
-                                                                    <span className="regularfont pl-2">Pickup</span>
+                                                                    <span className="regularfont pl-2"><FormattedMessage id="PICKUP"/></span>
                                                                 </div>
                                                             </fieldset>
                                                         </td>
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Driving Condition <span className="required">*</span></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="DRIVING_CONDITION"/> <span className="required">*</span></label>
                                                             <fieldset>
                                                                 <div className="position-relative d-flex">
                                                                     <span>
@@ -235,7 +238,7 @@ function Dismantle_car() {
                                                                         />
                                                                         <label htmlFor="driving_type_pickup" className="rounded"></label>
                                                                     </span>
-                                                                    <span className="regularfont pl-2">Drivable</span>
+                                                                    <span className="regularfont pl-2"><FormattedMessage id="DRIVABLE"/></span>
                                                                 </div>
                                                                 <div className="position-relative d-flex">
                                                                     <span>
@@ -245,7 +248,7 @@ function Dismantle_car() {
                                                                         />
                                                                         <label htmlFor="driving_type_pickup" className="rounded"></label>
                                                                     </span>
-                                                                    <span className="regularfont pl-2">Not Drivable</span>
+                                                                    <span className="regularfont pl-2"><FormattedMessage id="NOT_DRIVABLE"/></span>
                                                                 </div>
                                                             </fieldset>
                                                         </td>

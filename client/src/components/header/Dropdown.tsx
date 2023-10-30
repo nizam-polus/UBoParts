@@ -58,7 +58,7 @@ function Dropdown<T extends IDropdownItem>(props: Props<T>) {
         <div className={classes} ref={rootRef} style={{display: "grid", placeContent: "center"}}>
             <button
                 className="topbar__button topbar__button--has-arrow topbar__menu-button "
-                style={{color: "white", border: "1px solid grey", padding: "0 10px", height: "2.4rem"}}
+                style={{color: "white", border: "1px solid grey", padding: "0 10px", height: "2.4rem", borderRadius:"5px"}}
                 type="button"
                 onClick={handleButtonClick}
             >
@@ -78,7 +78,7 @@ function Dropdown<T extends IDropdownItem>(props: Props<T>) {
                 </div>
                 
             </button>
-            <div className="topbar__menu-body ubo-dropdown-lang">
+            <div className="topbar__menu-body ubo-dropdown-lang" style={{left: "1px"}}>
                 {items.map((item, index) => (
                     <button
                         key={index}
