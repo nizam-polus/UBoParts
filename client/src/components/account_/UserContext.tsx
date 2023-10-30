@@ -49,19 +49,21 @@ export function UserProvider(props: providerProps) {
             userdata = {};
             logout();
         } else if (userdata && userdata.id) {
-            APIs.getSpecificUser(userdata.id).then(response => {
+            APIs.getSpecificUser(userdata.id).then((response: any) => {
                 let user = response.data;
                 saveUser(user);
                 localStorage.setItem('userdetails', JSON.stringify(user));
             });
-            APIs.getCartData({customerid: userdata.id}).then(response => {
-                if (!response.data.error) {
-                    let totalCartItem = response.data.rows.length;
-                    setCartCount(totalCartItem);
-                }
-            }).catch((error) => console.log(error));
+            if(user.role.type !== "admin"){
+                APIs.getCartData({customerid: userdata.id}).then((response: any) => {
+                    if (!response.data.error) {
+                        let totalCartItem = response.data.rows.length;
+                        setCartCount(totalCartItem);
+                    }
+                }).catch((error) => console.log(error));
+            }   
         }
-        transactionId && APIs.paymentStatus(transactionId, user.id).then(response => {
+        transactionId && APIs.paymentStatus(transactionId, user.id).then((response: any) => {
             let status = response?.data?.rows?.length ? response.data.rows[0].status : 'failed';
             setPaymentStatus(status);
         })

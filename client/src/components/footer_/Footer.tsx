@@ -57,7 +57,7 @@ function Footer() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-auto">
+                            <div className="col-auto footer-link-section">
                                 <p className="boldfontsize regularfont text-white">Information</p>
                                 <p className="regularfont short-labels-1 label-color-1 mb-2">
                                     <Link  href="/about_us_">
@@ -65,17 +65,17 @@ function Footer() {
                                     </Link>
                                 </p>
                                 <p className="regularfont short-labels-1 label-color-1 mb-2">
-                                    <Link href="/terms-and-conditions">
+                                    <Link href="/cookie">
                                         Terms & Conditions
                                     </Link>
                                 </p>
                                 <p className="regularfont short-labels-1 label-color-1 mb-2">
-                                    <Link href="/privacy-policy">
+                                    <Link href="/cookie">
                                         Privacy Policy
                                     </Link>
                                 </p>
                                 <p className="regularfont short-labels-1 label-color-1 mb-2">
-                                    <Link href="https://uboparts.com/home/contactus">
+                                    <Link href="/contact_us">
                                         Contact Us
                                     </Link>
                                 </p>
@@ -90,7 +90,7 @@ function Footer() {
                                     </Link>
                                 </p>
                             </div>
-                            <div className="col-auto">
+                            <div className="col-auto footer-link-section">
                                 <p className="boldfontsize regularfont text-white">Useful Links</p>
                                 <p className="regularfont short-labels-1 label-color-1 mb-2">
                                     <Link href="/seller-registration">

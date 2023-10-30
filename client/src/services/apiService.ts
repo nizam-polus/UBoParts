@@ -165,6 +165,11 @@ const APIs = {
         'content-type': 'multipart/form-data'
     }}),
 
+    deleteImage: ( id: any) => axios.delete(BACKEND_URL + `upload/files/${id}`,  {headers: {
+        Authorization: `Bearer ${getToken()}`,
+        'content-type': 'multipart/form-data'
+    }}),
+
     getCustomerOrder: (username: string) => ds.post(BACKEND_URL + 'order-distinct-user?populate=*&sort[0]=createdAt:desc', {user_name: username}),
 
     getOrderDetails: (orderId: string) => ds.get(BACKEND_URL + 'order-details?populate=*&filters[$and][0][orderid][$eq]=' + orderId),
@@ -179,6 +184,7 @@ const APIs = {
 
     getShippingCost: (data: any) => ds.post(BACKEND_URL + 'shipping-cost', data),
 
+    getAdminStatus: () => axios.get(BACKEND_URL + 'merchant-profile-data')
 }
 
 export default APIs
