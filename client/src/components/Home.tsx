@@ -16,8 +16,14 @@ import { toast } from 'react-toastify';
 import { FormattedMessage } from 'react-intl';
 
 function Home() {
-    const router = useRouter();
-    const {user, saveUser, setCartCount} = UserContext();
+
+    const router: any = useRouter();
+    const username = router.query.username;
+    const verified = router.query.emailVerified;
+    const pwd_reset_id = router.query.password_reset_email;
+    const key = router.query.key;
+
+    const {user, setCartCount, language} = UserContext();
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -51,6 +57,10 @@ function Home() {
     const [makeItemCount, setMakeItemCount] = useState(4);
     const [articleNumber, setArticleNumber] = useState<any>('');
     const [selectedHomeContent, setSelectedHomecontent] = useState('category')
+    const [openReset, setOpenReset] = useState<boolean>(false);
+    const [newpwd, setNewpwd] = useState<string>('');
+    const [confrmpwd, setConfrmpwd] = useState<string>('');
+    const [mismatch, setMismatch] = useState<boolean>(false);
 
     useEffect(() => {
         if (licenseplate && licenseplate.length > 5) {
@@ -119,6 +129,12 @@ function Home() {
     }, [licenseplate]);
 
     useEffect(() => {
+        if (username && verified === 'true') {
+            setOpenLogin(true);
+        }
+        if (pwd_reset_id && key) {
+            setOpenReset(true);
+        }
         APIs.getCarDetails().then((response: any) => {
             setData(response.data.data);
             setLoading(false);
@@ -181,7 +197,6 @@ function Home() {
                 console.error('Error fetching data:', error);
             });
         }
-         
     },[makePageNum])
    
     useEffect(() => {
@@ -458,6 +473,21 @@ function Home() {
         const discountAmount = (original * discount) / 100;
         return +discountAmount.toFixed(2); 
     }
+
+    const handleChangePwd = (event: any) => {
+        event.preventDefault();
+        if (confrmpwd && (newpwd === confrmpwd)) {
+            setMismatch(false);
+            APIs.resetPassword({user_email_id: pwd_reset_id, password: confrmpwd, forgetkey: key, lang: language.value}).then(response => {
+                console.log(response);
+                toast.success(response.data.message);
+                setOpenReset(false);
+                setOpenLogin(true);
+            }).catch(err => toast.error('Something went wrong.'));
+        } else {
+            setMismatch(true);
+        }
+    }
     
     return (
         <>
@@ -466,9 +496,47 @@ function Home() {
                 onClose={onForgotPasswordClose}
             />
             <Login
+                username={username}
                 isOpen={openLogin}
                 onClose={onLoginModalClose}
             />
+            {/* New password modal */}
+            <Modal isOpen={openReset} centered className="ac-modal">
+                <div id="forgotmodal">
+                    <div className="ac-modal-content">
+                        <div className="ac-modal-body">
+                            <div className="ac-card login-form">
+                                <div className="ac-card-body">
+                                    <h3 className="ac-card-title text-center">Reset Password</h3>
+                                    <p className="ac-card-sub-title text-center">Enter your new password</p>
+                                    {mismatch && <p className='text-center' style={{color: 'rgb(255 102 102)'}}>Password does not match</p>}
+                                    <div className="ac-card-text">
+                                        <form action="/action_page.php">
+                                            <div className="form-group">
+                                                {/* <label htmlFor="newpwd">Email address</label> */}
+                                                <input type="password" 
+                                                    className="form-control mb-4" id="newpwd" 
+                                                    placeholder="New password" value={newpwd}
+                                                    onChange={(e: any) => setNewpwd(e.target.value)}
+                                                />
+                                                 {/* <label htmlFor="confrmpwd">Email address</label> */}
+                                                <input type="password" 
+                                                    className="form-control" id="confrmpwd" 
+                                                    placeholder="Confirm password" value={confrmpwd}
+                                                    onChange={(e: any) => setConfrmpwd(e.target.value)}
+                                                />
+                                            </div>
+                                            <button type="submit" className="btn btn-default mt-1 mb-4"
+                                                onClick={handleChangePwd}
+                                            >Change Password</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Modal>
             <div className="main-body pb-5 mb-5">
                 <div className="container">
                     <section className="section-search-wrapper">

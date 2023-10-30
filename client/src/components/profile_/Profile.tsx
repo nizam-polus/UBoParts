@@ -101,7 +101,8 @@ function Profile() {
                 let user = response.data;
                 localStorage.setItem('userdetails', JSON.stringify(user));
                 saveUser(user);
-            })
+                toast.success('Profile updated successfully.')
+            }).catch(() => toast.error('Error updating profle. Please try again after sometimes.'))
         }
     };
 

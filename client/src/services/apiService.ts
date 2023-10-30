@@ -135,6 +135,12 @@ const APIs = {
         'content-type': 'multipart/form-data'
     }}),
 
+    verifyUser: (userData: any) => axios.post(BACKEND_URL + 'user-verify', userData, {headers}),
+
+    forgotPassword: (data: any) => axios.post(BACKEND_URL + 'forget-password-mail', data, {headers}),
+
+    resetPassword: (resetData: any) => axios.post(BACKEND_URL + 'forget-password-reset', resetData, {headers}),
+
 
         /* ---------------- jwt token based apis ----------------- */
 

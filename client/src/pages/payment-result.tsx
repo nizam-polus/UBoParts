@@ -8,7 +8,7 @@ import APIs from "~/services/apiService";
 function PaymentResult() {
 
     const router = useRouter();
-    const { user, setPaymentStatus } = UserContext();
+    const { user, setPaymentStatus, setCartCount } = UserContext();
 
     const [status, setStatus] = useState('');
     const [path, setPath] = useState('');
@@ -16,7 +16,7 @@ function PaymentResult() {
     const [total, setTotal] = useState<number>(0);
     const [totalDiscount, setTotalDiscount] = useState<number>(0);
     const [shippingCost, setShippingCost] = useState<number>(0);
-    const [time, setTime] = useState<any>(300);
+    const [time, setTime] = useState<any>(900);
 
     let interavls: any = [];
 
@@ -32,6 +32,7 @@ function PaymentResult() {
                     clearInterval(checkPaymentStatus);
                     switch(status) {
                         case 'completed':
+                            getOrderDetails();
                             setStatus('completed');
                             setPaymentStatus('completed');
                             break;
@@ -68,27 +69,8 @@ function PaymentResult() {
     }, [])
 
     useEffect(() => {
-        let transactionId;
-        let timeout = 1000 * 60 * 5;
-        if (status !== 'created' && status !== 'pending') timeout = 5000;
-        if (typeof window !== 'undefined') {
-            transactionId = localStorage.getItem('uid') || '';
-        }
-        transactionId && APIs.getOrderWithTransactionid(transactionId).then((response: any) => {
-            let OrderProducts = response.data.data;
-            OrderProducts.length && setShippingCost(OrderProducts[0].attributes.shipping_cost)
-            setProducts(OrderProducts);
-            if (OrderProducts.length) {
-                let total = 0;
-                let totalDiscount = 0;
-                for (const obj of OrderProducts) {
-                    total += obj.attributes.total_price;
-                    totalDiscount += obj.attributes.discount_price
-                }
-                setTotal(total);
-                setTotalDiscount(totalDiscount)
-            }
-        })
+        let timeout = 1000 * 60 * 15;
+        if (status !== 'created' && status !== 'pending') timeout = 5000;        
         status !== 'completed' && setTimeout(() => {
             router.push(path);
         }, timeout);
@@ -96,6 +78,31 @@ function PaymentResult() {
             interavls.forEach((interval: any) => clearInterval(interval))
         }, 1000 * 60 * 15);
     }, [status])
+
+    const getOrderDetails = () => {
+        let transactionId;
+        if (typeof window !== 'undefined') {
+            transactionId = localStorage.getItem('uid') || '';
+        }
+        APIs.getCartData({ customerid: user.id }).then(response => {
+            setCartCount(response.data.rows.length);
+        })
+        transactionId && APIs.getOrderWithTransactionid(transactionId).then((response: any) => {
+            let OrderProducts = response.data.data;
+            OrderProducts.length && setShippingCost(OrderProducts[0]?.attributes?.shipping_cost)
+            setProducts(OrderProducts);
+            if (OrderProducts.length) {
+                let total = 0;
+                let totalDiscount = 0;
+                for (const obj of OrderProducts) {
+                    total += obj?.attributes?.total_price;
+                    totalDiscount += obj?.attributes?.discount_price
+                }
+                setTotal(total);
+                setTotalDiscount(totalDiscount)
+            }
+        });
+    }
 
     return (
         <>
@@ -125,7 +132,7 @@ function PaymentResult() {
                                                 <div className="row">
                                                     <div className="col-12">
                                                         <span className="custom-color-2 boldfont body-sub-titles">Order Summary</span>
-                                                        <p className="custom-color-2 regularfont body-sub-titles-2">Order Id: {products[0].attributes.orderid}</p>
+                                                        <p className="custom-color-2 regularfont body-sub-titles-2">Order Id: {products[0]?.attributes?.orderid}</p>
                                                         <hr />
                                                     </div>
                                                 </div>

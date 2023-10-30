@@ -28,6 +28,7 @@ function Login(props: any) {
     const [registerIsOpen, setRegisterIsOpen] = useState<boolean>(false);
     const [invalidinput, setInvalidInput] = useState<boolean>(false);
     const [invalidCred, setInvalidCred] = useState<boolean>(false);
+    const [unverified, setUnverified] = useState<boolean>(false);
     const [rememberMe, setRememberMe] = useState<boolean>(false);
 
     const onLoginFormDataChange = (event: any) => {
@@ -57,9 +58,11 @@ function Login(props: any) {
                 APIs.auth(userdata).then((response: any) => {
                     if (response.data.error && response.data.error.status >= 400 && response.data.error.status <= 403) {
                         setInvalidCred(true);
+                    } else if (response.data.user.verification !== 'true') {
+                        setUnverified(true);
                     } else {
-                        
-                        let userdetails = response.data.user
+                        let userdetails = response.data.user;
+                        setUnverified(false);
                         localStorage.setItem('usertoken', JSON.stringify(response.data.jwt));
                         APIs.getSpecificUser(userdetails.id).then((response: any) => {
                             let loginData = {
@@ -72,9 +75,12 @@ function Login(props: any) {
                                 saveUser(userData);
                                 if(userRes.data.role.type == "admin"){
                                     router.push('/admin_create')
-                                }else{
+                                } else if (props.username) {
+                                    router.push('/profile_');
+                                } else {
                                     router.push('/homepage');
                                 }
+                                onClose();
                                 const isEmpty = { username: "", password: ""};
                                 setLoginFormData(isEmpty);
                             })
@@ -106,20 +112,14 @@ function Login(props: any) {
         }
     }, [isOpen, onClose]);
 
-    useEffect(() => {
-        if (isOpen) {
-           
-        }
-    }, [isOpen]);
-
     const showForgotPassword = () => {
         setForgotPasswordIsOpen(true);
-
+        setLoginModal(false);
     };
 
     const onForgotPasswordClose = () => {
         setForgotPasswordIsOpen(false);
-        
+        setLoginModal(true);
     };
 
     const showRegister = () => {
@@ -153,7 +153,8 @@ function Login(props: any) {
                                         <h3 className="ac-card-title text-center bg-image-text semifont"><FormattedMessage id="LOGIN" /></h3>
                                         <p className="ac-card-sub-title text-center body-sub-titles-1 lightfont"><FormattedMessage id="LOGIN_DETAILS" /></p>
                                         {invalidinput ? <p className='text-center' style={{color: 'rgb(255 102 102)'}}>Please enter your email & password</p> : invalidCred ? 
-                                            <p className='text-center' style={{color: 'rgb(255 102 102)'}}>Invalid credentials</p> : undefined}
+                                            <p className='text-center' style={{color: 'rgb(255 102 102)'}}>Invalid credentials</p> :  unverified ?
+                                            <p className='text-center' style={{color: 'rgb(255 102 102)'}}>User not verified. Please verify the user.</p> : undefined}
                                         <div className="ac-card-text">
                                             <form action="/action_page.php">
                                                 <div className="form-group marginb40">

@@ -47,7 +47,7 @@ function Checkout() {
         APIs.paymentStatus(transactionId, user.id).then(response => {
             let status = response?.data?.rows && response?.data?.rows[0]?.status;
             setPaymentStatus(status);
-            if (status !== 'created' || status !== 'pending') {
+            if (status !== 'created' && status !== 'pending') {
                 localStorage.removeItem('redirect');
             } else {
                 if (redirectUrl && redirectUrl !== "undefined") {

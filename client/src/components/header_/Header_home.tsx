@@ -24,6 +24,15 @@ function Header_home(props: any) {
     const setLocale = useSetLocale();
 
     useEffect(() => {
+        setLanguage({
+            title: "English",
+            value: "en",
+            image: "https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg",
+            TitleShort: "EN"
+        })
+    }, []);
+
+    useEffect(() => {
         const tokendata = localStorage.getItem('usertoken');
         setUserToken(tokendata);  
         // if(user?.role?.type == "admin"){
