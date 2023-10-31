@@ -45,8 +45,8 @@ function Header_home(props: any) {
         const tokendata: any = localStorage.getItem('usertoken');
         setUserToken(tokendata);
         user?.id && APIs.getCartData({customerid: user.id}).then(response => {
-            setCartCount(response.data.rows.length);
-        })
+            setCartCount(response?.data?.rows?.length);
+        }).catch(err => console.log(err))
     }, [user]);
     
     const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
