@@ -143,6 +143,8 @@ const APIs = {
 
     userToSeller: (data: any) => axios.post(BACKEND_URL + 'user-to-seller', data, {headers}),
 
+    contactUs: (contactData: any) => axios.post(BACKEND_URL + 'contact-us', contactData, {headers}),
+
 
         /* ---------------- jwt token based apis ----------------- */
 

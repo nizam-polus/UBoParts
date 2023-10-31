@@ -513,8 +513,12 @@ function Checkout() {
                                                 <td className="pb-2 pt-1 px-3 semifont body-sub-titles-1 fw-bold border-0">Total</td>
                                                 <td className="pb-2 pt-1 pr-4 semifont body-sub-titles-1 fw-bold border-0 text-right">€{(total + totalShippingCost).toFixed(2)}</td>
                                             </tr>
-                                            <tr  className="single">
-                                                
+                                            <tr className='w-100'>
+                                                <td colSpan={2}>
+                                                    <div className="form-group regularfont body-sub-titles-2 mb-0" style={{color: 'black', fontSize: '0.9rem'}}>
+                                                        By proceeding you are agreeing to the <a href="https://onlinepaymentplatform.com/terms-policies" target='_blank'>Terms and conditions</a>
+                                                    </div>
+                                                </td>
                                             </tr>
                                             <tr><td colSpan={2} className="p-3">
                                             {
