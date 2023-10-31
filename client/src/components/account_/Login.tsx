@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import APIs from '~/services/apiService';
 import { UserContext } from './UserContext';
 import { FormattedMessage } from 'react-intl';
+import { toast } from 'react-toastify';
 // interface Props {
 //     isOpen?: boolean;
 //     onClose?: () => void;
@@ -77,6 +78,7 @@ function Login(props: any) {
                                     router.push('/admin_create')
                                 } else if (props.username) {
                                     router.push('/profile_');
+                                    toast.info('Please complete your profile. Ignore if done already.');
                                 } else {
                                     router.push('/homepage');
                                 }
@@ -158,7 +160,7 @@ function Login(props: any) {
                                         <div className="ac-card-text">
                                             <form action="/action_page.php">
                                                 <div className="form-group marginb40">
-                                                    <label htmlFor="email" className="body-sub-titles-1 mediumfont"><FormattedMessage id="EMAIL_ADDRESS" /></label>
+                                                    <label htmlFor="email" className="body-sub-titles-1 mediumfont"><FormattedMessage id="USERNAME_OR_EMAIL" /></label>
                                                     <input type="email" 
                                                         className="form-control body-sub-titles-1 mediumfont inputformtxt" 
                                                         id="email" name="username" 

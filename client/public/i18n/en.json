@@ -417,6 +417,7 @@
   "FIRST_NAME": "First Name",
   "LAST_NAME": "Last Name",
   "EMAIL_ADDRESS": "Email Address",
+  "USERNAME_OR_EMAIL": "Username / Email Address",
   "PHONE": "Phone",
   "DELIVERY_TYPE": "Delivery Type",
   "DELIVERY": "Delivery",

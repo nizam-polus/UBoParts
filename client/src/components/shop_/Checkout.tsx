@@ -24,6 +24,7 @@ function Checkout() {
         postcode: ''
     });
     const [differentAddr, setDifferentAddr] = useState(false);
+    const [clicked, setClicked] = useState<boolean>(false)
     const [shippingData, setShippingData] = useState({
         shippingaddress_country: formData.country,
         shippingaddress_streataddress_housenumber: formData.streetaddress_housenumber,
@@ -181,6 +182,7 @@ function Checkout() {
     }
 
     const handlepayment = () => {
+        setClicked(true)
         let incomplete = checkFormStatus();
         let shippingincomplete = checkShippingDataStatus();
         let reqElement = document.getElementById('required');
@@ -222,6 +224,7 @@ function Checkout() {
                     let cartData = response.data.rows;
                     if (cartData[0].payment_process === 'true') {
                         toast.warning("Payment has already been initiated, please complete the payment.");
+                        setClicked(false)
                     } else {
                         APIs.cartPayment(checkoutData).then(response => {
                             if (response.data.redirect_url) {
@@ -514,10 +517,20 @@ function Checkout() {
                                                 
                                             </tr>
                                             <tr><td colSpan={2} className="p-3">
-                                                <button type="button" disabled={!checkoutProducts?.length}
+                                            {
+                                                clicked ? 
+                                                    <button type="button" 
+                                                    disabled
+                                                    className="proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"
+                                                    >Proceeding
+                                                    </button>
+                                                :
+                                                    <button type="button" disabled={!checkoutProducts?.length}
                                                     className="proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"
                                                     onClick={handlepayment}
-                                                >Proceed to payment</button>
+                                                    >Proceed to payment
+                                                    </button>
+                                                }
                                             </td></tr>
                                         </tbody>
                                     </table>

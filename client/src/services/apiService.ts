@@ -141,6 +141,8 @@ const APIs = {
 
     resetPassword: (resetData: any) => axios.post(BACKEND_URL + 'forget-password-reset', resetData, {headers}),
 
+    userToSeller: (data: any) => axios.post(BACKEND_URL + 'user-to-seller', data, {headers}),
+
 
         /* ---------------- jwt token based apis ----------------- */
 

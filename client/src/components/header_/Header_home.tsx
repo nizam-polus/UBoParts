@@ -20,7 +20,7 @@ function Header_home(props: any) {
     const [userToken, setUserToken] = useState<any>();
     const [selectedLanguage, setSelectedLanguage] = useState<any>("EN")
     const [showMenu, setShowMenu] = useState(false)
-    // const [isAdmin, setIsAdmin] = useState(false)
+    const [isAdmin, setIsAdmin] = useState(false)
     const setLocale = useSetLocale();
 
     useEffect(() => {
@@ -35,9 +35,9 @@ function Header_home(props: any) {
     useEffect(() => {
         const tokendata = localStorage.getItem('usertoken');
         setUserToken(tokendata);  
-        // if(user?.role?.type == "admin"){
-        //     setIsAdmin(true)
-        // }
+        if(user?.role?.type == "admin"){
+            setIsAdmin(true)
+        }
     },[userToken]);
 
     useEffect(() => {
@@ -45,8 +45,8 @@ function Header_home(props: any) {
         const tokendata: any = localStorage.getItem('usertoken');
         setUserToken(tokendata);
         user?.id && APIs.getCartData({customerid: user.id}).then(response => {
-            setCartCount(response.data.rows.length);
-        })
+            setCartCount(response?.data?.rows?.length);
+        }).catch(err => console.log(err))
     }, [user]);
     
     const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
@@ -70,6 +70,7 @@ function Header_home(props: any) {
         setIsLoggedin(false);
         setIsOpen(!isOpen);
         saveUser({});
+        setIsAdmin(false)
     };
 
     const handleItemClick = (item : any) => {
@@ -115,7 +116,7 @@ function Header_home(props: any) {
                             <AppImage src="/images/svg/LOGO.svg" />
                         </div>
                         <div className="bar w-100 bar-mobile">
-                            <ul >
+                            <ul style={{display: `${isAdmin? "none" : ""}`}}>
                                 <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/homepage">Home</Link></li>
                                 <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/shop">Shop</Link></li>
                                 <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/about_us_">About us</Link></li>
@@ -181,7 +182,7 @@ function Header_home(props: any) {
                                     <button className="btn border-0 menu_font_size regularfont menu-color" onClick={() => setIsOpen(!isOpen)}>My Account</button>
                                     {isOpen && (
                                         <div className='position-absolute menu-dropdown account-dropdown'>
-                                            <div className='dropdownitem'>
+                                            <div style={{display: `${isAdmin? "none" : "block"}`}} className='dropdownitem'>
                                                 <span className='menu_font_size regularfont pointer' 
                                                     onClick={() => {
                                                         let route = (user.isApproved === 'Active' && user.role.type === 'seller') ? '/seller/dashboard' : '/purchase-history';
@@ -190,7 +191,7 @@ function Header_home(props: any) {
                                                     }}
                                                 >Dashboard</span>
                                             </div>
-                                            <div className='dropdownitem'>
+                                            <div style={{display: `${isAdmin? "none" : "block"}`}} className='dropdownitem'>
                                                 <span className='menu_font_size regularfont pointer' 
                                                     onClick={() => {
                                                         router.push('/profile_');
@@ -217,19 +218,25 @@ function Header_home(props: any) {
 
                                     }
                                 </span>
-                                <ul className="pl-4">
-                                <li className='mt-1 pointer' 
-                                    onClick={() =>setIsOpen(false)}
-                                >
-                                    <Link href="/cartpage">
-                                        <span className="position-relative">
-                                            <AppImage src="/images/cart-white.svg"/>
-                                            {cartCount != 0 ?  <span className="home_count">{cartCount}</span> :  ""}
-                                           
-                                        </span>
-                                    </Link>
-                                </li>
-                                </ul>
+                                {
+                                    isAdmin ? 
+                                        ""
+                                    :
+                                        <ul className="pl-4">
+                                            <li className='mt-1 pointer'
+                                                onClick={() => setIsOpen(false)}
+                                            >
+                                                <Link href="/cartpage">
+                                                    <span className="position-relative">
+                                                        <AppImage src="/images/cart-white.svg" />
+                                                        {cartCount != 0 ? <span className="home_count">{cartCount}</span> : ""}
+
+                                                    </span>
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                }
+                                
                             </div>   
                         }  
                         <Dropdown
@@ -262,7 +269,7 @@ function Header_home(props: any) {
                 {router.pathname == '/dismantle_car' && <div className="container">
                     <div className="row d-flex align-items-center header-middle-text pl-5 ml-5">
                         <div className="col box w-100">
-                            <p className="semifont heading_text text-white">Dismantle your<br /> car with us</p>
+                            <p className="semifont heading_text text-white">Dismantle your<br /> car ith us</p>
                             <p className="lightfont sub-text-1 text-white">Browse our expansive selection<br /> featuring hundreds of brands and<br /> tens of thousands of quality parts.</p>
                         </div>
                     </div>
@@ -270,7 +277,7 @@ function Header_home(props: any) {
                 {router.pathname == '/seller-registration' && <div className="container">
                     <div className="row d-flex align-items-center header-middle-text pl-5 ml-5">
                         <div className="col box w-100">
-                            <p className="semifont heading_text text-white">Dismantle your<br /> car with us</p>
+                            <p className="semifont heading_text text-white">Sell Matching Parts<br /> For You</p>
                             <p className="lightfont sub-text-1 text-white">Browse our expansive selection<br /> featuring hundreds of brands and<br /> tens of thousands of quality parts.</p>
                         </div>
                     </div>

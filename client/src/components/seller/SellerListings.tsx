@@ -132,7 +132,7 @@ function SellerListings() {
                                                         <AppImage
                                                             src={BASE_URL + item?.attributes?.product_image?.data?.attributes?.url}
                                                             className="card-img-top img-prod-height pointer"
-                                                            style={{ height: '20rem', objectFit: 'contain', opacity: `${item.attributes.stock_count == 0 ? "0.6" : "1"}` }}
+                                                            style={{ height: '20rem', objectFit: 'contain', borderTopLeftRadius: "30px", borderTopRightRadius: "30px", opacity: `${item.attributes.stock_count == 0 ? "0.6" : "1"}` }}
                                                             onClick={() => handleProductClick(item)}
                                                         />
                                                          {
@@ -146,14 +146,14 @@ function SellerListings() {
                                                            (item.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && item.attributes.sale.data != null) ? 
                                                                 <div className=' button-bg-color-1 product-price d-flex' >
                                                                     <div >
-                                                                        <span className=" text-white regularfont boldfontsize"> <s>€{item.attributes.price} </s> </span>
+                                                                        <span className=" text-white regularfont boldfontsize mr-1 fs-16"> <s>€{item.attributes.price} </s> </span>
                                                                     </div>
                                                                     <div>
-                                                                        <span className=" text-white regularfont boldfontsize"> €{discountedPrice(item.attributes.price, item.attributes.sale?.data?.attributes?.discount_percentage_value)}</span>
+                                                                        <span className=" text-white regularfont boldfontsize fs-20"> €{(discountedPrice(item.attributes.price, item.attributes.sale?.data?.attributes?.discount_percentage_value)).toFixed(2)}</span>
                                                                     </div>
                                                                 </div>
                                                             :
-                                                            <span className="product-price button-bg-color-1 text-white regularfont boldfontsize">€ {item.attributes.price}</span>
+                                                            <span className="product-price button-bg-color-1 text-white regularfont boldfontsize fs-20">€ {item.attributes.price}</span>
                                                         }
                                                     </div>
                                                     <div className="card-body p-4">
@@ -196,7 +196,6 @@ function SellerListings() {
                                                            onClick={() => handleDelete(item.id)}
                                                            className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2"
                                                            style={{ width: "100%"}}
-                                                           
                                                        >
                                                           <FormattedMessage id="DELETE" />
                                                        </button>} 

@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { UserContext } from "../account_/UserContext";
 import APIs from '../../services/apiService';
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 
 function SellerRegistration() {
 
-    const {user, saveUser} = UserContext();
+    const {user, saveUser, language} = UserContext();
     const router = useRouter();
 
     const [formData, setFormData] = useState({
@@ -128,7 +129,8 @@ function SellerRegistration() {
             shippingaddress_postcode: formData.postcode,
             shippingaddress_phonenumber: formData.phone_number,
             kvk_number: formData.kvk_number,
-            company_btw: formData.company_btw
+            company_btw: formData.company_btw,
+            lang: language.value
         };
         if (!incomplete) {
             if (!user || (user && !user.id)) {
@@ -136,11 +138,23 @@ function SellerRegistration() {
                 APIs.register(sellerData).then(response => {
                     localStorage.setItem('usertoken', response.data.jwt);
                     getAndSaveUser(response.data.user.id);
-                }).catch(err => console.log(err))
+                    toast.success('Seller registration is successful. Verification email has been sent.')
+                }).catch(err => {
+                    let errMessage = err?.response?.data?.error?.message || 'Something went wrong!';
+                    toast.error(errMessage);
+                    console.log(err.response.data.error);
+                })
             } else {
                 APIs.updateSpecificUser(user.id, sellerData).then(response => {
                     getAndSaveUser(response.data.id);
-                }).catch((err) => console.log(err));
+                    APIs.userToSeller({user_email_id: sellerData.email, lang: language.value})
+                    .then()
+                    .catch(err => console.log(err))
+                }).catch((err) => {
+                    let errMessage = err?.response?.data?.error?.message || 'Something went wrong!';
+                    toast.error(errMessage);
+                    console.log(err.response.data.error);
+                });
             }
         }
     }
@@ -304,7 +318,7 @@ function SellerRegistration() {
                                                                 placeholder="Iban Number."
                                                                 onChange={(e) => {
                                                                     // Use a regular expression to allow only numeric characters
-                                                                    const numericValue = e.target.value.replace(/\D/g, '');
+                                                                    const numericValue = e.target.value
                                                                     handleFormChange({ target: { name: 'iban_number', value: numericValue } });
                                                                 }}
                                                             />

@@ -37,7 +37,7 @@ function Register(props: any) {
         const isContainsLowercase = /^(?=.*[a-z])/;
         const isContainsNumber = /^(?=.*[0-9])/;
         const isContainsSymbol = /^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹])/;
-        const isValidLength = /^.{10,16}$/;
+        const isValidLength = /^.{8,16}$/;
 
         if (inputValues.username.length === 0) {
             hasError.username = "username required";
@@ -64,7 +64,7 @@ function Register(props: any) {
             hasError.password = "Password must contain at least one Special Symbol.";
         } 
         if (!isValidLength.test(inputValues.password)) {
-            hasError.password = "Password must be 10-16 Characters Long.";
+            hasError.password = "Password must be 8-16 Characters Long.";
         } 
         if (inputValues.password !== inputValues.confirmpassword) {
             hasError.confirmpassword = "Passwords do not match";
@@ -208,30 +208,27 @@ function Register(props: any) {
                                         <div className="form-group">
                                             <input type="checkbox" name="agree" 
                                                 onClick={(e: any) => {
-                                                    console.log(agreed)
                                                     setAgreed(!agreed);
-                                                    console.log(agreed)
                                                 }}
                                             />
                                                 <span className="agree body-sub-titles-1 lightfont">
-                                                    <span><FormattedMessage id="AGREE_TO_THE"/></span>
-                                                    <a href="" className="mediumfont"><FormattedMessage id="TERMS_AND_CONDITION"/></a>
+                                                    <span><FormattedMessage id="AGREE_TO_THE"/> </span>
+                                                    <a href="" className="mediumfont"> <FormattedMessage id="TERMS_AND_CONDITION"/></a>
                                                 </span>
                                         </div>
                                         {!agreed && <span className="form_validerrors">{errors?.agreement}</span>}
                                         {errors?.status === 400 && <p className='text-center' style={{color: 'rgb(255 102 102)'}}>{errors?.message}</p>}
-                                        {/* {registered && <p className='text-center' style={{color: 'rgb(25, 135, 84)'}}>Registration Completed!</p>} */}
                                         {registered && 
                                             <>
-                                                <p className='text-center' style={{color: 'rgb(25, 135, 84)'}}>Verification mail has been sent to your email.</p>
-                                                <p className='text-center' style={{color: 'rgb(25, 135, 84)'}}>Please Verify your Email!</p>
+                                                <p className='text-center mb-0' style={{color: 'rgb(25, 135, 84)'}}>Verification mail has been sent to your email.</p>
+                                                <p className='text-center' style={{color: 'rgb(25, 135, 84)'}}>Please verify your email!</p>
                                             </>
                                         }
                                         <button type="submit" className="btn btn-default body-sub-titles-1 mediumfont" onClick={(e) => onFormSubmit(e)}><FormattedMessage id="REGISTER"/></button>
                                     </form>
                                 </div>
                                 <div className="card-footer text-center">
-                                    <p className="body-sub-titles-1 mediumfont"><span className="light"><FormattedMessage id="ALREADY_REGISTERED"/></span><a className='pointer' onClick={() => onClose()}><FormattedMessage id="LOGIN"/></a></p>
+                                    <p className="body-sub-titles-1 mediumfont"><span className="light"><FormattedMessage id="ALREADY_REGISTERED"/> </span><a className='pointer' onClick={() => onClose()}> <FormattedMessage id="LOGIN"/></a></p>
                                 </div>
                             </div>
                         </div>
