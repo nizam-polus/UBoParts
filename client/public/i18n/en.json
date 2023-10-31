@@ -419,6 +419,7 @@
   "EMAIL_ADDRESS": "Email Address",
   "USERNAME_OR_EMAIL": "Username / Email Address",
   "PHONE": "Phone",
+  "PHONE_NO": "Phone Number",
   "DELIVERY_TYPE": "Delivery Type",
   "DELIVERY": "Delivery",
   "PICKUP": "Pickup",
@@ -442,6 +443,8 @@
   "CAR_IMAGE": "Car Image(s)",
   "SELECT_COUNTRY": "Select Country",
   "NOTE": "Note",
+
+  "FILL_YOUR_ACCOUNT_INFO": "Fill your account information",
 
 
   "LOGIN": "Login",
@@ -532,7 +535,10 @@
   "MY_ACCOUNT": "",
 
   "SALE_OFFERS": "Sale Offers",
-  "TOP_SELLING": "Top Selling"
+  "TOP_SELLING": "Top Selling",
+
+
+  "WORKING_HOURS": "Working Hours"
 
   
 }

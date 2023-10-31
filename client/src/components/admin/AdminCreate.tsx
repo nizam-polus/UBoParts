@@ -6,6 +6,7 @@ import APIs from '~/services/apiService';
 import { BASE_URL } from 'configuration';
 import Link from 'next/dist/client/link';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 function AdminCreate() {
     let userdetails: any;
@@ -24,7 +25,8 @@ function AdminCreate() {
     const [adminDetails, setAdminDetails] = useState<any>([])
     const [adminRequirements, setAdminRequirements] = useState<any>([])
     const [verificationURL, setVerificationURL] = useState("")
-
+    const [uid, setUid] = useState()
+   
     useEffect(() => {
         APIs.getCountries().then(response => {
             setCountries(response.data.data);
@@ -41,8 +43,23 @@ function AdminCreate() {
             setAccountNumber(res?.data?.new_accounts[0]?.account.account_iban)
             setAccountName(res?.data?.new_accounts[0]?.account.account_name)
             setVerificationURL(res.data.new_accounts[0]?.verification_url)
+            setUid(res?.data?.new_accounts[0]?.uid)
+            localStorage.setItem('admin_uid', res?.data?.new_accounts[0]?.uid);
+            console.log(res?.data?.new_accounts[0]?.uid)
         })
     }, [])
+
+    // const VarifyAccount = () =>{
+    //     if(uid){
+    //         console.log(verificationURL)
+    //         debugger
+    //         localStorage.setItem('admin_uid', uid);
+    //         location.href = verificationURL
+    //         return
+    //     }else{
+    //         toast.error("no uid")
+    //     }
+    // }
 
     return (
         <>
@@ -202,13 +219,12 @@ function AdminCreate() {
                                                 <div className="row mt-3 mx-2 mb-2 ml-5">
                                                     {verificationURL && 
                                                     <div className="col">
-                                                        <button type="submit"
-                                                            className="custom-color-7 mediumfont rounded border-0 button-bg-color-1 pb-2 pt-2 px-5 d-flex align-items-center justify-content-center ubo-btn-mobile"
-                                                        >
-                                                            <Link href={verificationURL}>
-                                                                Change Account details
-                                                            </Link>
-                                                        </button>
+                                                            <div className="custom-color-7 mediumfont rounded border-0 button-bg-color-1 pb-2 pt-2 px-5 d-flex align-items-center justify-content-center ubo-btn-mobile">
+                                                                <Link href={verificationURL}
+                                                                >
+                                                                    Change Account details
+                                                                </Link>
+                                                            </div>
                                                     </div>
                                                     } 
                                                 </div>

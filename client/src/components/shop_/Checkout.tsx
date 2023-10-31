@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import APIs from '~/services/apiService';
 import { UserContext } from '../account_/UserContext';
 import { toast } from 'react-toastify';
+import Link from 'next/link';
 
 function Checkout() {
 

@@ -3,6 +3,7 @@ import { UserContext } from "../account_/UserContext";
 import APIs from '../../services/apiService';
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+import { FormattedMessage } from "react-intl";
 
 
 function SellerRegistration() {
@@ -187,7 +188,7 @@ function SellerRegistration() {
                                                     <tr>
                                                         <th colSpan={2} 
                                                             className="pt-0 pb-0 px-0 ps-0 custom-color-2 regularfont subtitles fw-normal border-top-0 border-bottom-0"
-                                                        >Start selling with us <span className="regularfont body-sub-titles ml-3 align-middle font-weight-normal">Fill your account information</span></th>
+                                                        ><FormattedMessage id="START_SELLING" />  <span className="regularfont body-sub-titles ml-3 align-middle font-weight-normal"><FormattedMessage id="FILL_YOUR_ACCOUNT_INFO"/></span></th>
                                                         
                                                     </tr>
                                                     <tr>
@@ -198,7 +199,7 @@ function SellerRegistration() {
                                                     </tr>
                                                     <tr className="double">
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">First Name</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="FIRST_NAME"/>  <span className="required">*</span></label>
                                                             <input type="text" value={formData.first_name} disabled={user.first_name}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.first_name ? 'required-field' : 'border-0'}`}
                                                                 name="first_name" placeholder="Mark"
@@ -206,7 +207,7 @@ function SellerRegistration() {
                                                             />
                                                         </td>
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Last Name</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="LAST_NAME"/>  <span className="required">*</span></label>
                                                             <input type="text" value={formData.last_name} disabled={user.last_name}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.last_name ? 'required-field' : 'border-0'}`}
                                                                 name="last_name" placeholder="Twain" 
@@ -216,7 +217,7 @@ function SellerRegistration() {
                                                     </tr>
                                                     <tr className="double">
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Email Address</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="EMAIL_ADDRESS"/>  <span className="required">*</span></label>
                                                             <input type="text" value={formData.email} disabled={user.email}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.email ? 'required-field' : 'border-0'}`}
                                                                 name="email" placeholder="user@example.com"
@@ -224,7 +225,7 @@ function SellerRegistration() {
                                                             />
                                                         </td>
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Username</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="USER_NAME"/>  <span className="required">*</span></label>
                                                             <input type="text" value={formData.username} disabled={user.username}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.username ? 'required-field' : 'border-0'}`}
                                                                 name="username" placeholder="username" 
@@ -234,7 +235,7 @@ function SellerRegistration() {
                                                     </tr>
                                                     <tr className="double">
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Create Password</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Create Password  <span className="required">*</span></label>
                                                             <input type="password" value={password} disabled={user.id}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !password ? 'required-field' : 'border-0'}`}
                                                                 name="password" placeholder="Create Password" 
@@ -246,7 +247,7 @@ function SellerRegistration() {
                                                             {(password.length < 6 && incomplete && !user.id) && <span className="required-text">Password must be at least 6 characters </span>}
                                                         </td>
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Confirm Password</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Confirm Password  <span className="required">*</span></label>
                                                             <input type="password" value={cnfrmPassword} disabled={user.id}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !cnfrmPassword ? 'required-field' : 'border-0'}`}
                                                                 name="c_password" placeholder="Confirm Password" 
@@ -257,7 +258,7 @@ function SellerRegistration() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Phone Number</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Phone Number  <span className="required">*</span></label>
                                                             <input
                                                                 type="tel" 
                                                                 value={formData.phone_number}
@@ -275,7 +276,7 @@ function SellerRegistration() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Account Type</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Account Type  <span className="required">*</span></label>
                                                             <select className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.Account_type ? 'required-field' : 'border-0'}`}
                                                                 style={{height: '3.5rem'}} name="Account_type" value={formData.Account_type}
                                                                 onChange={(e) => handleFormChange(e)}
@@ -288,7 +289,7 @@ function SellerRegistration() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Account Title</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Account Title  <span className="required">*</span></label>
                                                             <input type="text" value={formData.Account_title}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.Account_title ? 'required-field' : 'border-0'}`}
                                                                 name="Account_title" placeholder="Account Title." 
@@ -298,7 +299,7 @@ function SellerRegistration() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Bank Name</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Bank Name  <span className="required">*</span></label>
                                                             <input type="text" value={formData.Bank_name}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.Bank_name ? 'required-field' : 'border-0'}`}
                                                                 name="Bank_name" placeholder="bank Name." 
@@ -308,7 +309,7 @@ function SellerRegistration() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Iban Number</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Iban Number  <span className="required">*</span></label>
                                                             <input
                                                                 type="text"
                                                                 value={formData.iban_number}
@@ -326,7 +327,7 @@ function SellerRegistration() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Company or Shop name</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Company or Shop name  <span className="required">*</span></label>
                                                             <input type="text" value={formData.company_name}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.company_name ? 'required-field' : 'border-0'}`}
                                                                 name="company_name" placeholder="shop Name." 
@@ -348,7 +349,7 @@ function SellerRegistration() {
                                                             </tr>
                                                             <tr className="single">
                                                                 <td colSpan={2}>
-                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">KVK Chamber of Commerce Number</label>
+                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">KVK Chamber of Commerce Number  <span className="required">*</span></label>
                                                                     <input type="text" value={formData.kvk_number}
                                                                         className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.kvk_number ? 'required-field' : 'border-0'}`}
                                                                         name="kvk_number" placeholder="KVK Number" 
@@ -360,7 +361,7 @@ function SellerRegistration() {
                                                     }
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Country</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Country  <span className="required">*</span></label>
                                                             <select className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.country ? 'required-field' : 'border-0'}`}
                                                                 style={{height: '3.5rem'}} name="country" value={formData.country}
                                                                 onChange={(e) => handleFormChange(e)} disabled={user.country}
@@ -374,7 +375,7 @@ function SellerRegistration() {
                                                     <tr className="single">
                                                         <td colSpan={2}>
                                                             <div className="mb-3">
-                                                                <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Street Address</label>
+                                                                <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Street Address  <span className="required">*</span></label>
                                                                 <input type="text" value={formData.streetaddress_housenumber} disabled={user.streetaddress_housenumber}
                                                                     className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.streetaddress_housenumber ? 'required-field' : 'border-0'}`} 
                                                                     name="streetaddress_housenumber" placeholder="House number and street name" 
@@ -392,7 +393,7 @@ function SellerRegistration() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">City</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">City  <span className="required">*</span></label>
                                                             <input type="text" value={formData.city} disabled={user.city}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.city ? 'required-field' : 'border-0'}`}
                                                                 name="city" placeholder="City" 
@@ -402,7 +403,7 @@ function SellerRegistration() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">State</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">State  <span className="required">*</span></label>
                                                             <input type="text" value={formData.state} disabled={user.state}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.state ? 'required-field' : 'border-0'}`}
                                                                 name="state" placeholder="State" 
@@ -412,7 +413,7 @@ function SellerRegistration() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Postcode</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Postcode  <span className="required">*</span></label>
                                                             <input type="text" value={formData.postcode} disabled={user.postcode}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.postcode ? 'required-field' : 'border-0'}`}
                                                                 name="postcode" placeholder="Postcode" 

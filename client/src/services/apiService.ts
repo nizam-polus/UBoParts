@@ -116,7 +116,7 @@ const APIs = {
     
     getProduct: (id: any) => axios.get(BACKEND_URL + 'products/' + id + '?populate=*', {headers}),
 
-    getProductUsingArticleNumber: (articleNumber: any) => axios.get(BACKEND_URL + 'products?populate=*&filters[$and][0][article_number][$eq]=' + articleNumber, {headers}),
+    getProductUsingArticleNumber: (articleNumber: any) => axios.get(BACKEND_URL + 'products?populate=*&filters[$and][0][article_number][$contains]=' + articleNumber, {headers}),
        
     getCountries: () => axios.get(BACKEND_URL + 'countries/', {headers}),
 
@@ -194,7 +194,9 @@ const APIs = {
 
     getShippingCost: (data: any) => ds.post(BACKEND_URL + 'shipping-cost', data),
 
-    getAdminStatus: () => axios.get(BACKEND_URL + 'merchant-profile-data')
+    getAdminStatus: () => axios.get(BACKEND_URL + 'merchant-profile-data'),
+
+    getAccountStatus: (data: any) => ds.post(BACKEND_URL + "merchant-specific-bank-details", data)
 }
 
 export default APIs
