@@ -74,7 +74,7 @@ function Login(props: any) {
                                 let userData = userRes.data;
                                 localStorage.setItem('userdetails', JSON.stringify(userData));
                                 saveUser(userData);
-                                if(userRes.data.role.type == "admin"){
+                                if(userRes.data.role.type == "admin" && userRes.data.user_type == "admin" ){
                                     router.push('/admin_create')
                                 } else if (props.username) {
                                     router.push('/profile_');
