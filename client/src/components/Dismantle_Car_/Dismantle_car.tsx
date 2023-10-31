@@ -255,7 +255,7 @@ function Dismantle_car() {
                                                     </tr>
                                                     <tr className="double">
                                                         <td>
-                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Type <span className="required">*</span></label>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="TYPE" /> <span className="required">*</span></label>
                                                             <fieldset>
                                                                 <div className="position-relative d-flex" >
                                                                     <span>
@@ -265,7 +265,7 @@ function Dismantle_car() {
                                                                         />
                                                                         <label htmlFor="driving_type_pickup" className="rounded"></label>
                                                                     </span>
-                                                                    <span className="regularfont pl-2">Catalyser</span>
+                                                                    <span className="regularfont pl-2"><FormattedMessage id="CATALYSER" /></span>
                                                                 </div>
                                                                 <div className="position-relative d-flex" >
                                                                     <span>
@@ -275,7 +275,7 @@ function Dismantle_car() {
                                                                         />
                                                                         <label htmlFor="driving_type_pickup" className="rounded"></label>
                                                                     </span>
-                                                                    <span className="regularfont pl-2">Imitation</span>
+                                                                    <span className="regularfont pl-2"><FormattedMessage id="IMITATION"/></span>
                                                                 </div>
                                                                 <div className="position-relative d-flex">
                                                                     <span>
@@ -285,12 +285,12 @@ function Dismantle_car() {
                                                                         />
                                                                         <label htmlFor="driving_type_pickup" className="rounded"></label>
                                                                     </span>
-                                                                    <span className="regularfont pl-2">Original</span>
+                                                                    <span className="regularfont pl-2"><FormattedMessage id="ORIGINAL" /></span>
                                                                 </div>
                                                             </fieldset>
                                                         </td>
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2 ">Asking Price (€)</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2 "><FormattedMessage id="ASKING_PRICE"/></label>
                                                             <input type="number" className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.asking_price ? 'required-field' : 'border-0'}`} 
                                                                 name="asking_price" placeholder="Asking Price (€)" 
                                                                 onChange={handleFormChange}
@@ -300,7 +300,7 @@ function Dismantle_car() {
                                                     <tr className="double">
                                                         <td>
                                                             <label className={`body-sub-titles`}
-                                                            >Car Image(s)</label>
+                                                            ><FormattedMessage id="CAR_IMAGE"/></label>
                                                             <input className={`form-control p-2 choosefile ${incomplete && !imageData ? 'required-field' : 'border-0'}`} 
                                                                 type="file" id="formFile" name='car_image'
                                                                 onChange={handleImageUpload} 
@@ -310,7 +310,7 @@ function Dismantle_car() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Country</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="COUNTRY" /></label>
                                                             <select className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.country.length ? 'required-field' : 'border-0'}`}
                                                                 style={{height: '3.5rem'}} name="country" value={formData.country}
                                                                 onChange={(e) => handleCountryChange(e)}
@@ -324,7 +324,7 @@ function Dismantle_car() {
                                                     <tr className="single">
                                                         <td colSpan={2}>
                                                             <div className="mb-3">
-                                                                <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Street Address</label>
+                                                                <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="STREET_ADDRESS"/></label>
                                                                 <input type="text" className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.streetaddress_housenumber ? 'required-field' : 'border-0'}`}
                                                                     name="streetaddress_housenumber" placeholder="House number and street name" 
                                                                     onChange={handleFormChange}
@@ -340,7 +340,7 @@ function Dismantle_car() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">City</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="CITY"/></label>
                                                             <input type="text" className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.city ? 'required-field' : 'border-0'}`} 
                                                                 name="city" placeholder="City" 
                                                                 onChange={handleFormChange}
@@ -349,7 +349,7 @@ function Dismantle_car() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">State</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="STATE" /></label>
                                                             <input type="text" className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.state ? 'required-field' : 'border-0'}`}
                                                                 name="state" placeholder="State" 
                                                                 onChange={handleFormChange}
@@ -358,7 +358,7 @@ function Dismantle_car() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Postcode</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="POST_CODE" /></label>
                                                             <input type="text" className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.postcode ? 'required-field' : 'border-0'}`}
                                                                 name="postcode" placeholder="Postcode" 
                                                                 onChange={handleFormChange}
@@ -367,7 +367,7 @@ function Dismantle_car() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Note</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="NOTE"/></label>
                                                             <textarea placeholder="Type here..." name='note'
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.note ? 'required-field' : 'border-0'}`} 
                                                                 rows={4}
@@ -380,7 +380,7 @@ function Dismantle_car() {
                                                             <button type="submit" 
                                                                 className="place-quote text-white mediumfont body-sub-titles-1 rounded-lg border-0 button-bg-color-1 h-auto p-2 ubo-btn-custom"
                                                                 onClick={handleDismantleSubmit}
-                                                            >Submit</button>
+                                                            ><FormattedMessage id="SUBMIT"/></button>
                                                         </td>
                                                     </tr>
                                                 </tbody>

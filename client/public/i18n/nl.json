@@ -417,6 +417,7 @@
     "EMAIL_ADDRESS": "E-mailadres",
     "USERNAME_OR_EMAIL": "Gebruikersnaam / email adres",
     "PHONE": "Telefoon",
+    "PHONE_NO": "Telefoonnummer",
     "DELIVERY_TYPE": "Leveringstype",
     "DELIVERY": "Levering",
     "PICKUP": "Ophalen",
@@ -526,7 +527,10 @@
   "MY_ACCOUNT": "Mijn rekening",
 
   "SALE_OFFERS": "Verkoopaanbiedingen",
-  "TOP_SELLING": "Best verkopende"
+  "TOP_SELLING": "Best verkopende",
+
+
+  "WORKING_HOURS": ""
   }
   
   

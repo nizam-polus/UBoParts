@@ -489,7 +489,6 @@ function Home() {
             setMismatch(true);
         }
     }
-    
     return (
         <>
             <Forgotpass
@@ -891,7 +890,7 @@ function Home() {
                             <div key={index} onClick={() => handleMakeClick(item.id)}>
                                 <img src={item.attributes.make_logo.data ? 
                                         BASE_URL + item.attributes.make_logo.data.attributes.url : ""} 
-                                    alt="" style={{ cursor: 'pointer' }} 
+                                    alt="" style={{ cursor: 'pointer', objectFit: "contain" }} 
                                 />
                             </div>
                         ))}
