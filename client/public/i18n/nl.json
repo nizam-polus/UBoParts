@@ -415,6 +415,7 @@
     "FIRST_NAME": "Voornaam",
     "LAST_NAME": "Achternaam",
     "EMAIL_ADDRESS": "E-mailadres",
+    "USERNAME_OR_EMAIL": "Gebruikersnaam / email adres",
     "PHONE": "Telefoon",
     "DELIVERY_TYPE": "Leveringstype",
     "DELIVERY": "Levering",

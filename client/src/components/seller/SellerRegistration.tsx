@@ -304,7 +304,7 @@ function SellerRegistration() {
                                                                 placeholder="Iban Number."
                                                                 onChange={(e) => {
                                                                     // Use a regular expression to allow only numeric characters
-                                                                    const numericValue = e.target.value.replace(/\D/g, '');
+                                                                    const numericValue = e.target.value
                                                                     handleFormChange({ target: { name: 'iban_number', value: numericValue } });
                                                                 }}
                                                             />

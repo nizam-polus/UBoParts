@@ -1054,7 +1054,7 @@ button.search {
 /*dismantlepage ends*/
 /*seller reg page starts*/	
 .seller-reg-header{	
-	background-image: url('/images/img/dismantle-img.png');	
+	background-image: url('/images/img/registerImg.png');	
 	background-size: cover;	
     height: 80vh;	
     background-blend-mode: overlay;	
@@ -1648,13 +1648,6 @@ tr {
     .quanitity-box input {
         padding: 7px 20px!important;
     }
-    .required-field {
-        border: solid 1px red;
-    }
-    .required-text {
-        color: rgb(255 102 102);
-        text-align: 'left';
-    }
     .profile-pic {
         width: 12rem;
         height: 12rem;
@@ -1712,7 +1705,7 @@ tr {
 }
 .latest-prods {
 	border: 0;
-	background-color: transparent;
+	background-color: white;
 	border-radius: 30px;
 	.card-body {
 		background-color: #fff;
@@ -1960,6 +1953,18 @@ tr {
     box-sizing: border-box;
     animation: rotation 1s linear infinite;
 }
-
+.required-field {
+    border: solid 1px red;
+}
+.required-text {
+    color: rgb(255 102 102);
+    text-align: 'left';
+}
+.fs-16{
+    font-size: 16px;
+}
+.fs-20{
+    font-size: 20px;
+}
 
 

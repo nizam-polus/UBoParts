@@ -8,7 +8,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import APIs from '~/services/apiService';
 import { BASE_URL } from 'configuration';
 import Qrgenerator from './Qrgenerator';
-import ReactToPrint from 'react-to-print';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 const SellerListSingle = () => {
 
@@ -56,21 +57,40 @@ const SellerListSingle = () => {
 
     const handleDownload = () => {
         const qrCodeElement = componentRef.current;
-    
         if (qrCodeElement) {
           const qrCodeSVG = new XMLSerializer().serializeToString(qrCodeElement);
           const blob = new Blob([qrCodeSVG], { type: 'image/svg+xml' });
-    
           const a = document.createElement('a');
           a.href = window.URL.createObjectURL(blob);
           a.download = 'qrcode.svg'; // Specify the desired filename with an SVG extension
           a.style.display = 'none';
-    
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);
         }
       };
+
+      const printBarcode = () =>{
+        const input = componentRef.current;
+        if (input) {
+          const mainPdf = new jsPDF('landscape', 'in', [4, 2], true);
+          html2canvas(input, { logging: true, allowTaint: false, useCORS: true, onclone: function (clonedDoc: any) {
+           } }).then((canvas) => {
+            const imgData = canvas.toDataURL('image/png');
+            const pdfWidth = 2; // 11cm in mm
+            const pdfHeight = 4; // 5cm in mm
+            mainPdf.addImage(imgData, 'PNG', 0, 0, 4 , 2 );
+            // mainPdf.save('invoice.pdf');
+            const pdfBlob = mainPdf.output('blob');
+            const pdfUrl = URL.createObjectURL(pdfBlob);
+            const newWindow : any= window.open(pdfUrl, '_blank', 'width=600,height=800');
+            newWindow.print();
+            newWindow.onafterprint = function () {
+              newWindow.close();
+            };
+          });
+        }
+    }
       
     return (
         <>
@@ -208,7 +228,7 @@ const SellerListSingle = () => {
                                     </div>
                                     <div style={{display: "grid", gridTemplateColumns: "1fr 1fr", placeContent: "center", width: "100%", gap: "20px"}}>
                                         <div>
-                                        <ReactToPrint
+                                        {/* <ReactToPrint
                                              pageStyle={`
                                              @page {
                                                  size: 11cm 5cm;
@@ -231,7 +251,16 @@ const SellerListSingle = () => {
                                                 </button>
                                             )}
                                             content={() => componentRef.current}
-                                        />
+                                        /> */}
+
+                                            <button
+                                                type="button"
+                                                className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2 p-2 my-2"
+                                                style={{ width: "100%" }}
+                                                onClick={printBarcode}
+                                            >
+                                                Print
+                                            </button>
                                         </div>
                                         <div>
                                             <button type="button"
