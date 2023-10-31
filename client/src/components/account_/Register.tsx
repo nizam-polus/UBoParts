@@ -208,9 +208,7 @@ function Register(props: any) {
                                         <div className="form-group">
                                             <input type="checkbox" name="agree" 
                                                 onClick={(e: any) => {
-                                                    console.log(agreed)
                                                     setAgreed(!agreed);
-                                                    console.log(agreed)
                                                 }}
                                             />
                                                 <span className="agree body-sub-titles-1 lightfont">
@@ -220,11 +218,10 @@ function Register(props: any) {
                                         </div>
                                         {!agreed && <span className="form_validerrors">{errors?.agreement}</span>}
                                         {errors?.status === 400 && <p className='text-center' style={{color: 'rgb(255 102 102)'}}>{errors?.message}</p>}
-                                        {/* {registered && <p className='text-center' style={{color: 'rgb(25, 135, 84)'}}>Registration Completed!</p>} */}
                                         {registered && 
                                             <>
-                                                <p className='text-center' style={{color: 'rgb(25, 135, 84)'}}>Verification mail has been sent to your email.</p>
-                                                <p className='text-center' style={{color: 'rgb(25, 135, 84)'}}>Please Verify your Email!</p>
+                                                <p className='text-center mb-0' style={{color: 'rgb(25, 135, 84)'}}>Verification mail has been sent to your email.</p>
+                                                <p className='text-center' style={{color: 'rgb(25, 135, 84)'}}>Please verify your email!</p>
                                             </>
                                         }
                                         <button type="submit" className="btn btn-default body-sub-titles-1 mediumfont" onClick={(e) => onFormSubmit(e)}><FormattedMessage id="REGISTER"/></button>
