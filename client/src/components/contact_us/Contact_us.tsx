@@ -2,11 +2,39 @@ import React, { useCallback, useEffect, useState } from 'react';
 import AppLink from '~/components/shared/AppLink';
 import AppImage from '../shared/AppImage';
 import { FormattedMessage } from 'react-intl';
+import { UserContext } from '../account_/UserContext';
+import APIs from '~/services/apiService';
+import { toast } from 'react-toastify';
+
 function Contact_us() {
+
+    const { language } = UserContext();
+
     const [name, setName] = useState<any>("");
     const [email, setEmail] = useState<any>("");
     const [subject, setSubject] = useState<any>("");
     const [message, setMessage] = useState<any>("");
+
+    const handleFormSubmit = () => {
+        let contactData = {
+            contactus: [
+                {
+                    name,
+                    email,
+                    subject,
+                    message
+                }
+            ],
+            lang: language.value
+        };
+        APIs.contactUs(contactData)
+        .then(() => toast.success('Form submitted.'))
+        .catch(err => {
+            console.log(err);
+            let errorMsg = err?.response?.data?.error?.message || 'Something went wrong!';
+            toast.error(errorMsg);
+        })
+    }
 
     return (
         <> 
@@ -54,13 +82,19 @@ function Contact_us() {
                                             <td className="px-5">
                                                 <label className="custom-color-2 regularfont products-name pb-2">Your Name</label>
                                                 <span className="">
-                                                    <input type="text" onChange={(e) => setName(e.target.value)} className="form-control input-bg-color-2 border-0 products-name" name="name" placeholder="Jhon cina" />
+                                                    <input type="text" onChange={(e) => setName(e.target.value)} 
+                                                        className="form-control input-bg-color-2 border-0 products-name" 
+                                                        name="name" placeholder="Jhon cina" 
+                                                    />
                                                 </span>
                                             </td>
                                             <td className="px-5">
                                                 <label className="custom-color-2 regularfont products-name pb-2">Email</label>
                                                 <span className="">
-                                                    <input type="text" onChange={(e) => { setEmail(e.target.value) }} className="form-control input-bg-color-2 border-0 products-name" name="email" placeholder="jhon@gmail.com" />
+                                                    <input type="text" onChange={(e) => { setEmail(e.target.value) }} 
+                                                        className="form-control input-bg-color-2 border-0 products-name" 
+                                                        name="email" placeholder="jhon@gmail.com" 
+                                                    />
                                                 </span>
                                             </td>
                                         </tr>
@@ -68,7 +102,10 @@ function Contact_us() {
                                             <td className="px-5 pb-3" colSpan={2} style={{borderTop: "none"}}>
                                                 <label className="custom-color-2 regularfont products-name pb-2">Subject</label>
                                                 <span className="">
-                                                    <input type="text" onChange={(e) => setSubject(e.target.value)} className="form-control input-bg-color-2 border-0 products-name" name="subject" placeholder="subject.." />
+                                                    <input type="text" onChange={(e) => setSubject(e.target.value)} 
+                                                        className="form-control input-bg-color-2 border-0 products-name" 
+                                                        name="subject" placeholder="subject.." 
+                                                    />
                                                 </span>
                                             </td>
                                         </tr>
@@ -76,14 +113,20 @@ function Contact_us() {
                                             <td className="px-5 pb-5" colSpan={2} style={{borderTop: "none"}}>
                                                 <label className="custom-color-2 regularfont products-name pb-2">Message</label>
                                                 <span className="">
-                                                    <textarea onChange={(e) => setMessage(e.target.value)} className="form-control input-bg-color-2 border-0 products-name" name="message" placeholder="Message..." />
+                                                    <textarea onChange={(e) => setMessage(e.target.value)} 
+                                                        className="form-control input-bg-color-2 border-0 products-name" 
+                                                        name="message" placeholder="Message..." 
+                                                    />
                                                 </span>
                                             </td>
                                         </tr>
                                         <div className="container">
                                             <div className="">
                                                 <div className="col">
-                                                    <a href="" style={{ marginLeft: "2rem" }} className="custom-color-11 button-bg-color-1 lightfont body-sub-titles px-5 pt-3 pb-3  rounded button-color"><FormattedMessage id="SEND" /></a>
+                                                    <a style={{ marginLeft: "2rem" }} 
+                                                        className="custom-color-11 button-bg-color-1 lightfont body-sub-titles px-5 pt-3 pb-3  rounded button-color"
+                                                        onClick={handleFormSubmit}
+                                                    ><FormattedMessage id="SEND" /></a>
                                                 </div>
                                             </div>
                                         </div>

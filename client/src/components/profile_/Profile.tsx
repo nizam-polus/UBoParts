@@ -108,26 +108,22 @@ function Profile() {
 
     const handlePicUpload = (event: any) => {
         const file = event.target.files[0];
-        // Update the state with the selected file
-        setProfilePic(file);
-      
-        // Create the picData object with the selected file
-        let picData = {
-          ref: "plugin::users-permissions.user",
-          refId: user.id,
-          field: "profile_image",
-          files: file, // Use the selected file directly
-        };
-      
-        if (file) {
-            // Make the API call with the selected file
-            APIs.uploadImage(picData).then((response) => {
-                //   let resData = response.data[0];
-                //   setProfilePicURL(resData.url);
+        if (file && file.type.startsWith('image/')) {
+            setProfilePic(file);
+            let picData = {
+              ref: "plugin::users-permissions.user",
+              refId: user.id,
+              field: "profile_image",
+              files: file, 
+            };
+            APIs.uploadImage(picData)
+              .then((response) => {
                 getSpecificUser(user?.id);
-            })
-            .catch((err) => console.log(err));
-        }
+              })
+              .catch((err) => console.log(err));
+          } else {
+            toast.warn("Please select a valid image file.");
+          }
     };
 
     const handlePwdChange = (event: any) => {
