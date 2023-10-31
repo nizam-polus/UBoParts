@@ -147,7 +147,7 @@ function Productsingle() {
                    // Check if the category exists in the data before filtering
                 const filteredProducts = products.filter(
                 (product: any) => (
-                product.attributes.category.data.attributes.category_name === categoryName
+                (product.attributes.category.data.attributes.category_name === categoryName ) && (product.id != id)
                 )
             );
             return  filteredProducts.slice(0, 4);

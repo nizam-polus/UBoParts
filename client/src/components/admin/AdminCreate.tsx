@@ -13,7 +13,7 @@ function AdminCreate() {
         userdetails = localStorage.getItem('userdetails');
         userdetails = JSON.parse(userdetails);
     }
-    const {user, saveUser} = UserContext();
+    const { user, saveUser } = UserContext();
     const router = useRouter();
 
     const [accountName, setAccountName] = useState<any>("");
@@ -23,6 +23,7 @@ function AdminCreate() {
     const [countries, setCountries] = useState<any>([]);
     const [adminDetails, setAdminDetails] = useState<any>([])
     const [adminRequirements, setAdminRequirements] = useState<any>([])
+    const [verificationURL, setVerificationURL] = useState("")
 
     useEffect(() => {
         APIs.getCountries().then(response => {
@@ -30,20 +31,21 @@ function AdminCreate() {
         }).catch(error => {
             console.error('Error fetching data:', error);
         });
-      }, []); 
+    }, []);
 
-      useEffect(() =>{
-       APIs.getAdminStatus().then((res) =>{
-        console.log(res.data)
-        setAdminDetails(res.data)
-        setAdminRequirements(res.data.compliance_requirements)
-        setAccountNumber(res.data.bank_details[0].account.account_iban)
-        setAccountName(res.data.bank_details[0].account.account_name)
-       })
-      },[])
+    useEffect(() => {
+        APIs.getAdminStatus().then((res) => {
+            console.log(res.data)
+            setAdminDetails(res.data)
+            setAdminRequirements(res.data.compliance_requirements)
+            setAccountNumber(res?.data?.new_accounts[0]?.account.account_iban)
+            setAccountName(res?.data?.new_accounts[0]?.account.account_name)
+            setVerificationURL(res.data.new_accounts[0]?.verification_url)
+        })
+    }, [])
 
     return (
-        <> 
+        <>
             <div className="main-body pb-2 mb-5">
                 <div className="container">
                     <section className="profile-wrapper">
@@ -55,11 +57,11 @@ function AdminCreate() {
                         <div className="row mt-3 ">
                             <div className="col-12 col-md-12 col-xl-3">
                                 <div className="profile-image-wrapper coulmn-bg-color-1 rounded-2 p-5 pb-2 text-center">
-                                    <AppImage src={BASE_URL + (profilePicURL || '/images/img/dummy-profile.png')} className="profile-pic" width={"70px"} height={"70px"} style={{borderRadius: "100%"}}/>
+                                    <AppImage src={BASE_URL + (profilePicURL || '/images/img/dummy-profile.png')} className="profile-pic" width={"70px"} height={"70px"} style={{ borderRadius: "100%" }} />
                                     <div>
-                                        <label  htmlFor="formId" className='position-relative position-overlap-edit-icon'>
+                                        <label htmlFor="formId" className='position-relative position-overlap-edit-icon'>
                                             <input type="file" id="formId" hidden />
-                                            <AppImage className="icon-size1" src={'images/img/Vector.png'}/>
+                                            <AppImage className="icon-size1" src={'images/img/Vector.png'} />
                                         </label>
                                     </div>
                                     <p className="mt-0 mb-1 custom-color-1 boldfont products-name">{(user.first_name || '') + ' ' + (user.last_name || '')}</p>
@@ -77,13 +79,13 @@ function AdminCreate() {
                                                 <tr>
                                                     <th colSpan={2} className="px-5 pt-3 pb-3 custom-color-3 regularfont subtitles border-top-0 border-bottom">Admin Status</th>
                                                 </tr>
-                                            
+
                                                 <tr className="double">
                                                     <td className='pl-5 pr-xl-3 pr-md-3 pr-5 pt-3 pb-2'>
                                                         <label className="custom-color-2 regularfont products-name pb-2">Merchant Status</label>
                                                         <input type="text" value={adminDetails.status}
                                                             className={`form-control input-bg-color-2 products-name`}
-                                                            readOnly 
+                                                            readOnly
                                                         />
                                                     </td>
                                                     <td className='pr-5 pl-xl-3 pl-md-3 pl-5 pt-3 pb-2'>
@@ -95,22 +97,22 @@ function AdminCreate() {
                                                     </td>
                                                 </tr>
                                                 <tr className="single">
-                                                     <td colSpan={2}>
+                                                    <td colSpan={2}>
                                                         <div className="mb-3 px-sm-3 pt-2">
-                                                        <h3>Outstanding Compliance Requirements</h3>
+                                                            <h3>Outstanding Compliance Requirements</h3>
                                                         </div>
                                                         <div className='px-sm-3'>
                                                             <ul>
                                                                 <div>
-                                                                {adminRequirements && adminRequirements.map((item: any, index: any) =>{
-                                                                    console.log(item.object_type)
-                                                                    return (
+                                                                    {adminRequirements && adminRequirements.map((item: any, index: any) => {
+                                                                        console.log(item.object_type)
+                                                                        return (
 
-                                                                        <li>
-                                                                            {item.object_type} : <span className='ml-2' style={{color: "red"}}> {item.status}</span>
-                                                                        </li> 
-                                                                    )
-                                                                })}
+                                                                            <li>
+                                                                                {item.object_type} : <span className='ml-2' style={{ color: "red" }}> {item.status}</span>
+                                                                            </li>
+                                                                        )
+                                                                    })}
                                                                 </div>
                                                             </ul>
                                                         </div>
@@ -121,47 +123,47 @@ function AdminCreate() {
                                     </div>
                                     {adminDetails?.bank_details && (
                                         <div className="table-responsive">
-                                        <table className="table profile-table-1 coulmn-bg-color-1 rounded-2 mt-2">
-                                            <tbody>
-                                                <tr>
-                                                    <th colSpan={2} className="px-5 pt-3 pb-3 custom-color-3 regularfont subtitles border-top-0 border-bottom ">
-                                                        <div className="float-left pt-2">Account Details</div>
-                                                    </th>
-                                                    <div className="row mt-3 mx-2">
-                                                    <div className="col">
-                                                        <button type="submit"
-                                                            className="custom-color-7 mediumfont rounded border-0 button-bg-color-1 pb-2 pt-2 px-5 d-flex align-items-center justify-content-center ubo-btn-mobile"
-                                                        >{adminDetails.bank_details[0].status}</button>
-                                                    </div>
-                                                </div>
-                                                </tr>            
-                                                <tr className="single">
-                                                    <td>
-                                                        <>
-                                                            <div className='px-sm-3'>
-                                                                <label className="custom-color-2 regularfont products-name pb-2">Account Number</label>
-                                                                <input type="text"
-                                                                    value={adminDetails?.bank_details[0]?.account.account_iban}
-                                                                    className="form-control input-bg-color-2 border-0 products-name"
-                                                                    name="account_number"
-                                                                    readOnly
-                                                                />
+                                            <table className="table profile-table-1 coulmn-bg-color-1 rounded-2 mt-2">
+                                                <tbody>
+                                                    <tr>
+                                                        <th colSpan={2} className="px-5 pt-3 pb-3 custom-color-3 regularfont subtitles border-top-0 border-bottom ">
+                                                            <div className="float-left pt-2">Account Details</div>
+                                                        </th>
+                                                        <div className="row mt-3 mx-2">
+                                                            <div className="col">
+                                                                <button type="submit"
+                                                                    className="custom-color-7 mediumfont rounded border-0 button-bg-color-1 pb-2 pt-2 px-5 d-flex align-items-center justify-content-center ubo-btn-mobile"
+                                                                >{adminDetails.bank_details[0].status}</button>
                                                             </div>
-                                                            <div className="mb-3 px-sm-3 pt-2">
-                                                                <label className="custom-color-2 regularfont products-name pb-2">Account Name</label>
-                                                                <input type="text"
-                                                                    value={adminDetails?.bank_details[0]?.account.account_name}
-                                                                    className={`form-control input-bg-color-2 products-name `}
-                                                                    name="account_name"
-                                                                    readOnly
-                                                                />
-                                                            </div>
-                                                        </>  
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                                        </div>
+                                                    </tr>
+                                                    <tr className="single">
+                                                        <td>
+                                                            <>
+                                                                <div className='px-sm-3'>
+                                                                    <label className="custom-color-2 regularfont products-name pb-2">Account Number</label>
+                                                                    <input type="text"
+                                                                        value={adminDetails?.bank_details[0]?.account.account_iban}
+                                                                        className="form-control input-bg-color-2 border-0 products-name"
+                                                                        name="account_number"
+                                                                        readOnly
+                                                                    />
+                                                                </div>
+                                                                <div className="mb-3 px-sm-3 pt-2">
+                                                                    <label className="custom-color-2 regularfont products-name pb-2">Account Name</label>
+                                                                    <input type="text"
+                                                                        value={adminDetails?.bank_details[0]?.account.account_name}
+                                                                        className={`form-control input-bg-color-2 products-name `}
+                                                                        name="account_name"
+                                                                        readOnly
+                                                                    />
+                                                                </div>
+                                                            </>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     )
                                     }
                                     <div className="table-responsive">
@@ -170,7 +172,7 @@ function AdminCreate() {
 
                                                 <tr>
                                                     <th colSpan={2} className="px-5 pt-3 pb-3 custom-color-3 regularfont subtitles border-top-0 border-bottom ">
-                                                        <div className="float-left pt-2">Edit Account Details</div>
+                                                        <div className="float-left pt-2">Change Account Details</div>
                                                     </th>
                                                 </tr>
                                                 <tr className="single">
@@ -186,24 +188,32 @@ function AdminCreate() {
                                                         </div>
                                                         <div className="mb-3 px-sm-3 pt-2">
                                                             <label className="custom-color-2 regularfont products-name pb-2">Account Name</label>
-                                                            <input type="text" 
+                                                            <input type="text"
                                                                 value={accountName}
-                                                                className={`form-control input-bg-color-2 products-name `} 
-                                                                name="account_name" 
+                                                                className={`form-control input-bg-color-2 products-name `}
+                                                                name="account_name"
                                                                 onChange={(e) => setAccountName(e.target.value)}
                                                             />
                                                         </div>
                                                     </td>
                                                 </tr>
+                                                <tr>
+                                                </tr>
+                                                <div className="row mt-3 mx-2 mb-2 ml-5">
+                                                    {verificationURL && 
+                                                    <div className="col">
+                                                        <button type="submit"
+                                                            className="custom-color-7 mediumfont rounded border-0 button-bg-color-1 pb-2 pt-2 px-5 d-flex align-items-center justify-content-center ubo-btn-mobile"
+                                                        >
+                                                            <Link href={verificationURL}>
+                                                                Change Account details
+                                                            </Link>
+                                                        </button>
+                                                    </div>
+                                                    } 
+                                                </div>
                                             </tbody>
                                         </table>
-                                    </div>
-                                    <div className="row mt-3 mx-2">
-                                        <div className="col">
-                                            <button type="submit" 
-                                                className="custom-color-7 mediumfont rounded border-0 button-bg-color-1 pb-2 pt-2 px-5 d-flex align-items-center justify-content-center ubo-btn-mobile"
-                                            >Change Account details</button>
-                                        </div>
                                     </div>
                                 </form>
                             </div>
