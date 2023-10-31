@@ -2,6 +2,7 @@ import { BASE_URL } from "configuration";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { UserContext } from "~/components/account_/UserContext";
 import APIs from "~/services/apiService";
 
@@ -28,6 +29,7 @@ function PaymentResult() {
             interavls.push(checkPaymentStatus)
             APIs.paymentStatus(transactionId, user.id).then((response: any) => {
                 let status = response.data.rows.length ? response.data.rows[0].status : 'failed';
+                (status === 'pending') && setStatus(status);
                 if (status !== 'created' && status !== 'pending') {
                     clearInterval(checkPaymentStatus);
                     switch(status) {
@@ -70,13 +72,18 @@ function PaymentResult() {
 
     useEffect(() => {
         let timeout = 1000 * 60 * 15;
-        if (status !== 'created' && status !== 'pending') timeout = 5000;        
-        status !== 'completed' && setTimeout(() => {
+        if (status !== 'created' && status !== 'pending') timeout = 5000;
+        (status !== 'completed') && setTimeout(() => {
+            if (status === 'pending') {
+                toast.warn('Payment is still pending...');
+                router.push('/homepage');
+            };
             router.push(path);
         }, timeout);
         setTimeout(() => {
+            (status && status !== 'created' && status !== 'pending') && toast.warn('Payment ' + status);
             interavls.forEach((interval: any) => clearInterval(interval))
-        }, 1000 * 60 * 15);
+        }, 1000 * 60 * 60);
     }, [status])
 
     const getOrderDetails = () => {
@@ -112,7 +119,13 @@ function PaymentResult() {
                     <h4>
                         {`${Math.floor(time / 60)}`.padStart(2, '0')}:{`${time % 60}`.padStart(2, '0')}
                     </h4>
-                </div> :
+                </div> : status === 'pending' ? 
+                <div style={{textAlign: 'center', position: 'relative', marginTop: '5%'}} className="mb-4">
+                    <h2 className="" >{'Payment transaction is pending...'}</h2>
+                    <h4>
+                        {`${Math.floor(time / 60)}`.padStart(2, '0')}:{`${time % 60}`.padStart(2, '0')}
+                    </h4>
+                </div> : 
                 <div style={{textAlign: 'center', position: 'relative', marginTop: '5%'}} className="mb-4">
                     {status === 'completed' && <i className="fa fa-check-circle pb-2" style={{fontSize: '3rem', color: '#587E50'}}></i>}
                     <h2 className="" >{status === 'completed' ? 'Order placed successfully' : 'Payment transaction ' + status }</h2>
