@@ -21,6 +21,7 @@ function OrderDetails() {
     const [orderDetails, setOrderDetails] = useState<any>([]);
     const [total, setTotal] = useState<number>(0);
     const [hide, setHide] = useState(true)
+    const [shippingCost, setShippingCost] = useState(0)
 
 
     useEffect(() => {
@@ -28,7 +29,9 @@ function OrderDetails() {
             let orders = response.data.data;
             setOrderDetails(orders);
             let invoiceID = orders[0]?.attributes?.invoice_id
+            let shippingCost = orders[0]?.attributes?.shipping_cost
             setInvoiceId(invoiceID)
+            setShippingCost(shippingCost)
             if (orders.length) {
                 let total = 0;
                 let totalDiscount = 0;
@@ -117,10 +120,13 @@ function OrderDetails() {
                                                                 <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Order No</th>
                                                             </tr>
                                                             <tr>
-                                                                <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Order Total</th>
+                                                                <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Invoice No</th>
                                                             </tr>
                                                             <tr>
-                                                                <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Invoice No</th>
+                                                                <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Shipping</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Order Total</th>
                                                             </tr>
                                                         </thead>
                                                     </table>
@@ -139,16 +145,20 @@ function OrderDetails() {
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                               
-                                                                 <td className="custom-color-2 regularfont body-sub-titles-2 my-0">
-                                                                    
-                                                                 { total - totalDiscount}
-                                                             </td>  
-                                                            </tr>
-                                                            <tr>
                                                                 <td className="custom-color-2 regularfont body-sub-titles-2 my-0">
                                                                     {invoiceId}
                                                                 </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td className="custom-color-2 regularfont body-sub-titles-2 my-0">
+                                                                    € {shippingCost}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td className="custom-color-2 regularfont body-sub-titles-2 my-0">
+
+                                                                    € {(total - totalDiscount + shippingCost).toFixed(2)}
+                                                                </td>  
                                                             </tr>
                                                         </tbody>
                                                     </table>

@@ -22,6 +22,7 @@ function Cart() {
     const [totalShippingCost, setTotalShippingCost] = useState<any>()
     const [countries, setCountries] = useState([]);
     const [checkoutProducts, setCheckoutProducts]: any = useState([]);
+    const [clicked, setClicked] = useState<boolean>(false)
     const [formData, setFormData] = useState({
         first_name: '',
         last_name: '',
@@ -222,6 +223,7 @@ function Cart() {
     };
 
     const CheckoutFunction = () =>{
+        setClicked(true)
         let isValidShipping = true
         APIs.getCountries().then(response => {
             let countries: any = response.data.data;
@@ -291,13 +293,16 @@ function Cart() {
                         }
                         if (!user.country || !user.postcode){
                             toast.error(() => <div>Please complete your profile to proceed. <Link href={'/profile_'}>Profile</Link></div>, {autoClose: 4000});
+                            setClicked(false);
                             return;
                         }
                         if (!cartProducts.length){
                             toast.warning("Your cart is Empty");
                             router.push("/cartpage");
+                            setClicked(false)
                         } else if (!isValidShipping){
                             toast.error("Product weight or Delivery region is not eligible for shipping.", {autoClose: 4000});
+                            setClicked(false)
                             return;
                         } else {
                             router.push('/checkoutpage');
@@ -439,13 +444,19 @@ function Cart() {
                                                 <td className="pb-2 pt-1 pl-0 semifont boldfontsize border-top-0 custom-color-3">€{(totalCartPrice - totalDiscount).toFixed(2)}</td>
                                             </tr>
                                             <tr><td colSpan={2} className="px-3 pt-3 pb-2 w-100">
-                                            {/* href={`${cartProducts?.length ? '/checkoutpage' : '/cartpage'}`} */}
-                                                <button type="button" onClick={CheckoutFunction} className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1">
-                                                
-                                                        <button type="button" className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"
+                                                {
+                                                clicked ? 
+                                                    <button type="button" disabled className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1">
+                                                    <button type="button" className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"
+                                                        >Proceeding..</button>
+                                                    </button>
+                                                :
+                                                    <button type="button" onClick={CheckoutFunction} className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1">
+                                                    <button type="button" className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"
                                                         >Proceed to checkout</button>
-                                                
-                                                </button>
+                                                    </button>
+                                                }
+                                               
                                             </td></tr>
                                             <tr>
                                                 <td className="advanced_search pb-2 pt-0 pr-0 pl-4 semifont mini-text-1 border-top-0">* Shipping cost will be extra</td>

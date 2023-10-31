@@ -199,8 +199,8 @@ function EditShop() {
                                                                         name="iban_number"
                                                                         placeholder="Iban number."
                                                                         onChange={(e) => {
-                                                                            const numericValue = e.target.value.replace(/\D/g, '');
-                                                                            handleFormChange({ target: { name: 'iban_number', value: numericValue } });
+                                                                            const newValue = e.target.value
+                                                                            handleFormChange({ target: { name: 'iban_number', value: newValue } });
                                                                         }}
                                                                     />
                                                                 </td>

@@ -21,6 +21,7 @@ function SellerOrderDetails() {
     const [total, setTotal] = useState<number>(0);
     const [customer, setCustomer] = useState<any>();
     const [hide, setHide] = useState(true)
+    const [shippngCost, setShippingCost] = useState(0)
 
     useEffect(() => {
         APIs.getOrderDetails(orderId).then(response => {
@@ -28,7 +29,9 @@ function SellerOrderDetails() {
             setOrderDetails(orders);
             let customerId = orders[0]?.attributes?.customer_id;
             let invoiceID = orders[0]?.attributes?.invoice_id
+            let shippingCost = orders[0]?.attributes?.shipping_cost
             setInvoiceId(invoiceID)
+            setShippingCost(shippingCost)
             APIs.getSpecificUser(customerId).then(response => {
                 setCustomer(response.data);
                 console.log(response.data)
@@ -121,11 +124,15 @@ function SellerOrderDetails() {
                                                                         <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Order No</th>
                                                                     </tr>
                                                                     <tr>
-                                                                        <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Order Total</th>
-                                                                    </tr>
-                                                                    <tr>
                                                                         <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Invoice No</th>
                                                                     </tr>
+                                                                    <tr>
+                                                                        <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Shipping </th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Order Total</th>
+                                                                    </tr>
+                                                                   
                                                                 </thead>
                                                             </table>
                                                         </div>
@@ -142,17 +149,23 @@ function SellerOrderDetails() {
                                                                             {orderId}
                                                                         </td>
                                                                     </tr>
-                                                                    <tr>    
-                                                                        <td className="custom-color-2 regularfont body-sub-titles-2 my-0">
-
-                                                                             {total - totalDiscount}
-                                                                        </td>
-                                                                     </tr>
                                                                     <tr>
                                                                         <td className="custom-color-2 regularfont body-sub-titles-2 my-0">
                                                                             {invoiceId}
                                                                         </td>
                                                                     </tr>
+                                                                    <tr>
+                                                                        <td className="custom-color-2 regularfont body-sub-titles-2 my-0">
+                                                                        € {shippngCost}
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>    
+                                                                        <td className="custom-color-2 regularfont body-sub-titles-2 my-0">
+
+                                                                        € {(total - totalDiscount + shippngCost).toFixed(2)}
+                                                                        </td>
+                                                                     </tr>
+                                                                   
                                                                 </tbody>
                                                             </table>
                                                         </div>

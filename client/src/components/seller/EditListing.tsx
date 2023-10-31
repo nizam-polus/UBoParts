@@ -10,6 +10,8 @@ import { toast } from 'react-toastify';
 import Qrgenerator from './Qrgenerator';
 import ReactToPrint from 'react-to-print';
 import { FormattedMessage } from 'react-intl';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 function EditListing() {
     const [error, setError] = useState(null);
@@ -51,6 +53,7 @@ function EditListing() {
     const [year, setYear] = useState('')
     const [locationNo, setLocationNo] = useState<any>('A2')
     const [locationText, setLocationText] = useState<any>("")
+    const [clicked, setClicked] = useState(false)
 
     const router = useRouter()
     const id = router.query.id;
@@ -183,6 +186,7 @@ function EditListing() {
                                                   }
                                               }
                                           })
+                                          break;
                                       } else {
                                           if (modelObj.model.toUpperCase().includes(model)) {
                                               i += 1;
@@ -436,6 +440,7 @@ function EditListing() {
     })
     };
     const createNewList = () => {
+      setClicked(true)
       let incomplete = !(!!listName  && !!productImage && !!selectedMake  && !!selectedModel  && !!selectedYear && !!selectedCategoryId  && !!listPrice && !!listQuantity && !!listArticle &&listLocation && !!listBarcode && !!listDescription && !!uname && !!uid)
       setIncomplete(incomplete);
         if(!incomplete){
@@ -485,18 +490,40 @@ function EditListing() {
                 );    
             } else {
                 console.error("No product image selected.");
+                setClicked(false)
             }
             return Promise.all(uploadPromises);
 
           }).then(() => router.push('/seller/listings'))
           .catch((error) => {
+            setClicked(false)
             console.log(error);
             setError(error);
           });
         }else{
           toast.error("Fill all fields for Edit list")
+          setClicked(false)
         }
     }
+
+    const printBarcode = () =>{
+      const input = componentRef.current;
+      if (input) {
+        const mainPdf = new jsPDF('landscape', 'in', [4, 2], true);
+        html2canvas(input, { logging: true, allowTaint: false, useCORS: true, onclone: function (clonedDoc: any) {
+         } }).then((canvas: any) => {
+          const imgData = canvas.toDataURL('image/png');
+          mainPdf.addImage(imgData, 'PNG', 0, 0, 4 , 2 );
+          const pdfBlob = mainPdf.output('blob');
+          const pdfUrl = URL.createObjectURL(pdfBlob);
+          const newWindow : any= window.open(pdfUrl, '_blank', 'width=600,height=800');
+          newWindow.print();
+          newWindow.onafterprint = function () {
+            newWindow.close();
+          };
+        });
+      }
+  }
   return (
       <>
         <div className="main-body pb-2 mb-5">
@@ -725,7 +752,7 @@ function EditListing() {
                                                                 </div>
                                                             </div>
                                                         <div>
-                                                            <ReactToPrint
+                                                            {/* <ReactToPrint
                                                                 pageStyle={`
                                                                 @page {
                                                                     size: 11cm 5cm;
@@ -748,7 +775,15 @@ function EditListing() {
                                                                     </button>
                                                                 )}
                                                                 content={() => componentRef.current}
-                                                            />
+                                                            /> */}
+                                                            <button
+                                                              type="button"
+                                                              className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2 p-2 my-2"
+                                                              style={{ width: "415.78px" }}
+                                                              onClick={printBarcode}
+                                                            >
+                                                              Print
+                                                            </button>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -807,7 +842,12 @@ function EditListing() {
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2} className="border-0 px-5">
+                                                      {
+                                                        clicked ? 
+                                                        <button type="submit" disabled className="place-quote text-white mediumfont products-name rounded border-0 button-bg-color-1 ubo-btn-custom">Saving..</button>
+                                                        :
                                                         <button type="submit" onClick={createNewList} className="place-quote text-white mediumfont products-name rounded border-0 button-bg-color-1 ubo-btn-custom">Save</button>
+                                                      }
                                                     </td>
                                                 </tr>
                                             </tbody>

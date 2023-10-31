@@ -10,6 +10,8 @@ import { toast } from 'react-toastify';
 import classNames from 'classnames';
 import { FormattedMessage } from 'react-intl';
 import ReactToPrint from 'react-to-print';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 function Create_new_listing() {
     const [error, setError] = useState(null);
@@ -54,13 +56,13 @@ function Create_new_listing() {
     const [makeName, setMakeName] = useState('')
     const [modelName, setModelName] = useState('')
     const [year, setYear] = useState('')
+    const [clicked, setClicked] = useState<boolean>(false)
 
     const router = useRouter()
     const inputRef: any = useRef()
     const galleryRef: any = useRef()
     const upperCaseListName = listName.toUpperCase();
     const componentRef:any = useRef();
-
 
     useEffect(() => {
         let userDetails: any = localStorage.getItem("userdetails")
@@ -153,6 +155,7 @@ function Create_new_listing() {
                                                     }
                                                 }
                                             })
+                                            break;
                                         } else {
                                             if (modelObj.model.toUpperCase().includes(model)) {
                                                 i += 1;
@@ -290,7 +293,6 @@ function Create_new_listing() {
         if (selectedCategoryData) {
             const selectedCategoryId = selectedCategoryData.id;
             setSelectedCategoryId(selectedCategoryId);
-
             // Fetch subcategories based on the selected category's ID
             APIs.getSubcategories(selectedCategoryId)
                 .then((response) => {
@@ -420,6 +422,7 @@ function Create_new_listing() {
     };
 
     const createNewList = () => {
+        setClicked(true)
         let incomplete = !(!!listName && !! productImage && !!selectedCategoryId  && !!selectedMake  && !!selectedModel  && !!selectedYear  && !!listPrice && !!listQuantity && !!listLocation && !!listArticle && !!listBarcode && !!listDescription && !!uname && !!uid)
         setIncomplete(incomplete);
         if (!incomplete) {
@@ -494,6 +497,7 @@ function Create_new_listing() {
                     } else {
                         // Handle the case where productImage is not defined
                         console.error("No product image selected.");
+                        setClicked(false)
                     }
 
                     // Wait for all image upload promises to complete
@@ -502,16 +506,37 @@ function Create_new_listing() {
                 .then(() => {
                     // All images have been uploaded, now you can navigate to the new page
                     router.push('/seller/listings');
+                    setClicked(false)
                 })
                 .catch((error) => {
                     console.log(error);
                     setError(error);
+                    setClicked(false)
                 });
         } else {
             toast.error("Fill all fields for create new list")
+            setClicked(false)
         }
     }
 
+    const printBarcode = () =>{
+        const input = componentRef.current;
+        if (input) {
+          const mainPdf = new jsPDF('landscape', 'in', [4, 2], true);
+          html2canvas(input, { logging: true, allowTaint: false, useCORS: true, onclone: function (clonedDoc: any) {
+           } }).then((canvas) => {
+            const imgData = canvas.toDataURL('image/png');
+            mainPdf.addImage(imgData, 'PNG', 0, 0, 4 , 2 );
+            const pdfBlob = mainPdf.output('blob');
+            const pdfUrl = URL.createObjectURL(pdfBlob);
+            const newWindow : any= window.open(pdfUrl, '_blank', 'width=600,height=800');
+            newWindow.print();
+            newWindow.onafterprint = function () {
+              newWindow.close();
+            };
+          });
+        }
+    }
     return (
         <>
             <div className="main-body pb-2 mb-5">
@@ -774,7 +799,7 @@ function Create_new_listing() {
                                                                 </div>
                                                             </div>
                                                         <div>
-                                                            <ReactToPrint
+                                                            {/* <ReactToPrint
                                                                 pageStyle={`
                                                                 @page {
                                                                     size: landscape;
@@ -784,8 +809,6 @@ function Create_new_listing() {
                                                                     -o-transform: rotate(90deg);
                                                                     -ms-transform: rotate(90deg);
                                                                     transform: rotate(90deg);
-
-                                                                    
                                                                 }
                                                                 @media print {
                                                                 body {
@@ -800,6 +823,7 @@ function Create_new_listing() {
                                                                 }
                                                                 `}
                                                                 trigger={() => (
+
                                                                     <button
                                                                         type="button"
                                                                         className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2 p-2 my-2 ubo-btn-custom"
@@ -808,8 +832,17 @@ function Create_new_listing() {
                                                                     </button>
                                                                 )}
                                                                 content={() => componentRef.current}
-                                                            />
+                                                            /> */}
+                                                            
+                                                            <button
+                                                            onClick={printBarcode}
+                                                                type="button"
+                                                                className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2 p-2 my-2 ubo-btn-custom"
+                                                            >
+                                                                Print
+                                                            </button>
                                                         </div>
+                                                        {/* <div><button onClick={printBarcode}>print</button></div> */}
                                                     </td>
                                                 </tr>
                                                 <tr className="double">
@@ -862,8 +895,12 @@ function Create_new_listing() {
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2} className="border-0 px-5">
+                                                        {clicked ? <button type="submit" disabled
+                                                        className="place-quote text-white mediumfont products-name rounded border-0 button-bg-color-1 ubo-btn-custom">Creating....</button>
+                                                        :
                                                         <button type="submit" onClick={createNewList} 
                                                         className="place-quote text-white mediumfont products-name rounded border-0 button-bg-color-1 ubo-btn-custom">Create Listing</button>
+                                                        }
                                                     </td>
                                                 </tr>
                                             </tbody>
