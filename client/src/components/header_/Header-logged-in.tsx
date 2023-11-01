@@ -6,6 +6,7 @@ import Forgotpass from '../forgot/Forgotpass';
 import Login from '../account_/Login';
 import APIs from '~/services/apiService';
 import { UserContext } from '../account_/UserContext';
+import { FormattedMessage } from 'react-intl';
 
 function Header_logged_in() {
 
@@ -29,6 +30,7 @@ function Header_logged_in() {
                                 <li className="menu_font_size regularfont"><a href="/request">Request</a></li>
                                 <li className="menu_font_size regularfont"><a href="">Dismantle Car</a></li>
                                 <li className="menu_font_size regularfont"><a href="">My Account <AppImage src="images/svg/my-account.svg" className="my-account"/></a></li>
+                                <li className="menu_font_size regularfont"><a href=""></a></li>
                                 <li><a href="/cartpage"><AppImage src="/images/cart-white.svg"/><span className="count">{cartCount}</span></a></li>
                             </ul>
                         </div>

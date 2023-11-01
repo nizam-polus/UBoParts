@@ -14,26 +14,42 @@ function Contact_us() {
     const [email, setEmail] = useState<any>("");
     const [subject, setSubject] = useState<any>("");
     const [message, setMessage] = useState<any>("");
+    const [incomplete, setIncomplete] = useState<boolean>(false);
+
+    const checkFormStatus = () => {
+        let incomplete = true;
+        incomplete = !(!!name && !!email && !!subject && !!message);
+        setIncomplete(incomplete);
+        return incomplete
+    }
 
     const handleFormSubmit = () => {
-        let contactData = {
-            contactus: [
-                {
+        let incomplete = checkFormStatus();
+        console.log(incomplete)
+        if (!incomplete) {
+            let contactData = {
+                contactus: {
                     name,
                     email,
                     subject,
                     message
-                }
-            ],
-            lang: language.value
-        };
-        APIs.contactUs(contactData)
-        .then(() => toast.success('Form submitted.'))
-        .catch(err => {
-            console.log(err);
-            let errorMsg = err?.response?.data?.error?.message || 'Something went wrong!';
-            toast.error(errorMsg);
-        })
+                },
+                lang: language.value
+            };
+            APIs.contactUs(contactData)
+            .then(() => {
+                toast.success('Form submitted.');
+                setName('');
+                setEmail('');
+                setSubject('');
+                setMessage('');
+            })
+            .catch(err => {
+                console.log(err);
+                let errorMsg = err?.response?.data?.error?.message || 'Something went wrong!';
+                toast.error(errorMsg);
+            })
+        }
     }
 
     return (
@@ -80,42 +96,42 @@ function Contact_us() {
                                     <tbody>
                                         <tr className="double">
                                             <td className="px-5">
-                                                <label className="custom-color-2 regularfont products-name pb-2">Your Name</label>
+                                                <label className="custom-color-2 regularfont products-name pb-2">Your Name <span className="required">*</span></label>
                                                 <span className="">
                                                     <input type="text" onChange={(e) => setName(e.target.value)} 
-                                                        className="form-control input-bg-color-2 border-0 products-name" 
-                                                        name="name" placeholder="Jhon cina" 
+                                                        className={`form-control input-bg-color-2 products-name ${incomplete && !name ? 'required-field' : 'border-0'}`}
+                                                        name="name" placeholder="Jhon cina" value={name}
                                                     />
                                                 </span>
                                             </td>
                                             <td className="px-5">
-                                                <label className="custom-color-2 regularfont products-name pb-2">Email</label>
+                                                <label className="custom-color-2 regularfont products-name pb-2">Email <span className="required">*</span></label>
                                                 <span className="">
                                                     <input type="text" onChange={(e) => { setEmail(e.target.value) }} 
-                                                        className="form-control input-bg-color-2 border-0 products-name" 
-                                                        name="email" placeholder="jhon@gmail.com" 
+                                                        className={`form-control input-bg-color-2 products-name ${incomplete && !email ? 'required-field' : 'border-0'}`} 
+                                                        name="email" placeholder="jhon@gmail.com" value={email}
                                                     />
                                                 </span>
                                             </td>
                                         </tr>
                                         <tr className="single">
                                             <td className="px-5 pb-3" colSpan={2} style={{borderTop: "none"}}>
-                                                <label className="custom-color-2 regularfont products-name pb-2">Subject</label>
+                                                <label className="custom-color-2 regularfont products-name pb-2">Subject <span className="required">*</span></label>
                                                 <span className="">
                                                     <input type="text" onChange={(e) => setSubject(e.target.value)} 
-                                                        className="form-control input-bg-color-2 border-0 products-name" 
-                                                        name="subject" placeholder="subject.." 
+                                                        className={`form-control input-bg-color-2 products-name ${incomplete && !subject ? 'required-field' : 'border-0'}`}
+                                                        name="subject" placeholder="subject.." value={subject}
                                                     />
                                                 </span>
                                             </td>
                                         </tr>
                                         <tr className="single">
                                             <td className="px-5 pb-5" colSpan={2} style={{borderTop: "none"}}>
-                                                <label className="custom-color-2 regularfont products-name pb-2">Message</label>
+                                                <label className="custom-color-2 regularfont products-name pb-2">Message <span className="required">*</span></label>
                                                 <span className="">
                                                     <textarea onChange={(e) => setMessage(e.target.value)} 
-                                                        className="form-control input-bg-color-2 border-0 products-name" 
-                                                        name="message" placeholder="Message..." 
+                                                        className={`form-control input-bg-color-2 products-name ${incomplete && !message ? 'required-field' : 'border-0'}`}
+                                                        name="message" placeholder="Message..." value={message}
                                                     />
                                                 </span>
                                             </td>

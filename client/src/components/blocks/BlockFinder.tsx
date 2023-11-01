@@ -40,7 +40,7 @@ function BlockFinder() {
             />
             <div className="block-finder__body container container--max--xl">
                 <div className="block-finder__title">
-                    <FormattedMessage id="TEXT_BLOCK_FINDER_TITLE" />
+                   :: <FormattedMessage id="TEXT_BLOCK_FINDER_TITLE" />
                 </div>
                 <div className="block-finder__subtitle">
                     <FormattedMessage id="TEXT_BLOCK_FINDER_SUBTITLE" />

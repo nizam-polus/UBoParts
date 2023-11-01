@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 // import { getSession } from 'next-auth/client';
 // import  { getItem, setItem } from '../utility/localStorageControl'
 
@@ -78,6 +78,8 @@ class DataService {
   }
 }
 
+let requestsInProgress = 0;
+
 /**
  * axios interceptors runs before and after a request, letting the developer modify req,req more
  * For more details on axios interceptor see https://github.com/axios/axios#interceptors
@@ -88,12 +90,29 @@ client.interceptors.request.use(config => {
   const requestConfig: any = config;
   const { headers } = config;
   requestConfig.headers = { ...headers, Authorization: `Bearer ${getToken()}` };
+  // Increment the request counter
+  requestsInProgress++;
+
+  // If it's the first request, show the loading indicator
+  if (requestsInProgress === 1) {
+    console.log("loading");
+  }
 
   return requestConfig;
 });
 
 client.interceptors.response.use(
-  response => response,
+  (response: AxiosResponse) =>  {
+    // Decrement the request counter
+    requestsInProgress--;
+
+    // If there are no more pending requests, hide the loading indicator
+    if (requestsInProgress === 0) {
+      console.log('Done loading.');
+    }
+
+    return response;
+  },
   error => {
     /**
      * Do something in case the response returns an error code [3**, 4**, 5**] etc

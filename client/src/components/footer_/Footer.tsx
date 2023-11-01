@@ -4,6 +4,7 @@ import AppImage from '../shared/AppImage';
 import { useState } from 'react';
 import Login from '../account_/Login';
 import Register from '../account_/Register';
+import { FormattedMessage } from 'react-intl';
 
 function Footer() {
 
@@ -39,10 +40,10 @@ function Footer() {
                     <div className="container">
                         <div className="row g-5">
                             <div className="col">
-                                <p className="boldfontsize regularfont text-white">Contact Us</p>
+                                <p className="boldfontsize regularfont text-white"><FormattedMessage id="CONTACT_US" /></p>
                                 <div className="row">
                                     <div className="col">
-                                        <p className="regularfont short-labels label-color-1 mb-1">Phone Number</p>
+                                        <p className="regularfont short-labels label-color-1 mb-1"><FormattedMessage id="PHONE_NO" /></p>
                                         <p className="text-white regularfont short-labels-1 mb-3">+31 6 33490782</p>
                                         <p className="regularfont short-labels label-color-1 mb-1">Working Hours</p>
                                         <p className="text-white regularfont short-labels-1 mb-3">Monday - Friday<br/> 
