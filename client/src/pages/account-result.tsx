@@ -2,8 +2,12 @@ import { BASE_URL } from "configuration";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { FormattedMessage } from "react-intl";
 import { UserContext } from "~/components/account_/UserContext";
+import AppLink from "~/components/shared/AppLink";
 import APIs from "~/services/apiService";
+// import Check100 from '../svg/check-100.svg';
+
 
 function AccountResult() {
 
@@ -127,7 +131,27 @@ function AccountResult() {
                     <p>{ status !== 'completed' && 'You will be redirected to homepage.' }</p>
                 </div>
             } */}
-            <h2>Status: {status}</h2>  
+
+            <div className="block order-success">
+                <div className="container">
+                    <div className="order-success__body">
+                        <div className="order-success__header">
+                            {/* <Check100 className="order-success__icon" /> */}
+                            <h1 className="order-success__title">
+                                <FormattedMessage id="HEADER_ORDER_SUCCESS_TITLE" />
+                            </h1>
+                            <div className="order-success__subtitle">
+                                {/* <FormattedMessage id="HEADER_ORDER_SUCCESS_SUBTITLE" /> */}
+                                Your account status is {status}
+                            </div>
+                            <div className="order-success__actions">
+                                {/* <AppLink href={url.home()} className="btn btn-sm btn-secondary">
+                                    <FormattedMessage id="BUTTON_GO_TO_HOMEPAGE" />
+                                </AppLink> */}
+                            </div>
+                        </div>
+
+                        </div> </div></div> 
             {status === 'completed' &&
                 <> 
                     <div className="main-body">

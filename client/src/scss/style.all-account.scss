@@ -1966,5 +1966,18 @@ tr {
 .fs-20{
     font-size: 20px;
 }
+.ubo-btn-bank-change a {
+    background-color: #587e50;
+    color: #f5f5f5;
+    font-family: poppinsmedium;
+    padding-left: 3rem!important;
+    padding-right: 3rem!important;
+    padding-bottom: 0.5rem!important;
+    padding-top: 0.5rem!important;
+    border-radius: 0.25rem!important;
+}
 
+#accountDetails .btn:focus, #newBankAccounts .btn:focus {
+    box-shadow: none !important;
+  }
 
