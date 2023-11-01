@@ -48,6 +48,10 @@ function Shop() {
     
     const router = useRouter();
     const { HomeMakeId } : any = router.query;
+
+    if (typeof window !== 'undefined') {
+        (HomeMakeId && HomeMakeId !== 'undefined') && localStorage.setItem('makeId', HomeMakeId);
+    }
     
     const categoriesArray = (resData: any) => {
         return [...new Set(resData.map((item: any) => ({
@@ -62,6 +66,7 @@ function Shop() {
     }
 
     useEffect(() => {
+        setSearchedProducts([]);
         let makeId, modelId, yearId, category, articleNumber;
         APIs.getCarMake().then((response: any) => {
             setMakesArray(response.data.rows);
@@ -73,10 +78,6 @@ function Shop() {
             makeId && getModel(makeId);
             makeId && modelId && getYear(modelId);
             setSelectedMake(makeId);
-            if(HomeMakeId){
-                setSelectedMake(HomeMakeId)
-                getModel(HomeMakeId)
-            }
             setSelectedModel(modelId);
             setSelectedYear(yearId);
             setSelectedCategory(category);
@@ -84,7 +85,7 @@ function Shop() {
                 APIs.getProductUsingArticleNumber(articleNumber).then(response => {
                     setSearchedProducts(response.data.data)
                 })
-            } else if (makeId && modelId && yearId) {
+            } else if (makeId) {
                 searchProducts(makeId, modelId, yearId, category)
             } else {
                 getAllProducts();
@@ -159,9 +160,11 @@ function Shop() {
         let makeId = event.target.value
         getModel(makeId);
         setSelectedMake(event.target.value);
+        localStorage.setItem('makeId', makeId);
         setSelectedModel('');
         setSelectedYear('');
         setFilterCategory([]);
+        searchProducts(makeId, '', '', '');
         localStorage.removeItem('article');
     };
 
@@ -169,6 +172,7 @@ function Shop() {
         let modelId = event.target.value;
         getYear(modelId);
         setSelectedModel(modelId);
+        localStorage.setItem('modelId', modelId);
         setSelectedYear('');
         searchProducts(selectedMake, modelId, '', '');
     };
@@ -176,6 +180,7 @@ function Shop() {
     const handleYearChange = (event: any) => {
         let year = event.target.value
         setSelectedYear(year);
+        localStorage.setItem('yearId', year);
         searchProducts(selectedMake, selectedModel, year, '');
         setFilterCategory([])
     };
@@ -183,6 +188,7 @@ function Shop() {
     const handleCategoryChange = (event: any) => {
         let category = event.target.value
         setSelectedCategory(category);
+        localStorage.setItem('category', category);
         searchProducts(selectedMake, selectedModel, selectedYear, category);
         setFilterCategory([])
     };
@@ -193,9 +199,9 @@ function Shop() {
         setSelectedModel('');
         setSelectedYear('');
         setSelectedCategory('');
-        localStorage.removeItem('make');
-        localStorage.removeItem('model');
-        localStorage.removeItem('year');
+        localStorage.removeItem('makeId');
+        localStorage.removeItem('modelId');
+        localStorage.removeItem('yearId');
         localStorage.removeItem('category');
         localStorage.removeItem('article')
         getAllProducts();
@@ -332,6 +338,7 @@ function Shop() {
       };
 
     useEffect(() => {
+        setSearchedProducts([]);
         let vehicleDetails = {make: selectedMake, model: selectedModel, year: selectedYear}
         if (filterCategory.length > 0) {
           APIs.searchFilter(vehicleDetails, categories, filterCategory, filterSubcategory, { min: minPrice, max: maxPrice }, { sort: sortState, page: '1' })

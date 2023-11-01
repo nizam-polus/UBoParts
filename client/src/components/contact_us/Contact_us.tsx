@@ -28,14 +28,12 @@ function Contact_us() {
         console.log(incomplete)
         if (!incomplete) {
             let contactData = {
-                contactus: [
-                    {
-                        name,
-                        email,
-                        subject,
-                        message
-                    }
-                ],
+                contactus: {
+                    name,
+                    email,
+                    subject,
+                    message
+                },
                 lang: language.value
             };
             APIs.contactUs(contactData)
