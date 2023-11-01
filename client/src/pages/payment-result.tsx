@@ -167,7 +167,7 @@ function PaymentResult() {
                                                                                         <Link href={'/products_/' + product?.attributes?.product_id}>{product?.attributes?.product_name}</Link><br />
                                                                                         <span className="lightfont body-sub-titles-2">Quantity: {product?.attributes?.quantity}</span>
                                                                                     </td>
-                                                                                    <td className="w-25">€{product?.attributes?.total_price - product.attributes.discount_price * product.attributes.quantity}</td>
+                                                                                    <td className="w-25">€{(product?.attributes?.total_price - product.attributes.discount_price * product.attributes.quantity).toFixed(2)}</td>
                                                                                 </tr>
                                                                             </>
                                                                         )
