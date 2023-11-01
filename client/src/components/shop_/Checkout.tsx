@@ -267,7 +267,7 @@ function Checkout() {
                                            
                                                 <tr className="double">
                                                     <td>
-                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">First Name</label>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">First Name <span className="required">*</span></label>
                                                         <input type="text" value={formData.first_name}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.first_name ? 'required-field' : 'border-0' }`} 
                                                             name="first_name" placeholder="Mark"
@@ -275,7 +275,7 @@ function Checkout() {
                                                         />
                                                     </td>
                                                     <td>
-                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Last Name</label>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Last Name <span className="required">*</span></label>
                                                         <input type="text" value={formData.last_name}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.last_name ? 'required-field' : 'border-0' }`} 
                                                             name="last_name" placeholder="Twain"
@@ -295,7 +295,7 @@ function Checkout() {
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2}>
-                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Country</label>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Country <span className="required">*</span></label>
                                                         <select className={`form-control input-bg-color-2 body-sub-titles  ${incomplete && !formData.country ? 'required-field' : 'border-0' }`}
                                                             style={{ height: '3.5rem' }} name="country" value={formData.country}
                                                             onChange={(e) => handleFormChange(e)}
@@ -309,7 +309,7 @@ function Checkout() {
                                                 <tr className="single">
                                                     <td colSpan={2}>
                                                         <div className="mb-3">
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Street Address</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Street Address <span className="required">*</span></label>
                                                             <input type="text" value={formData.streetaddress_housenumber}
                                                                 className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.streetaddress_housenumber ? 'required-field' : 'border-0' }`}  
                                                                 name="streetaddress_housenumber" placeholder="House number and street name"
@@ -327,7 +327,7 @@ function Checkout() {
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2}>
-                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">City</label>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">City <span className="required">*</span></label>
                                                         <input type="text" value={formData.city}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.city ? 'required-field' : 'border-0' }`} 
                                                             name="city" placeholder="City"
@@ -337,7 +337,7 @@ function Checkout() {
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2}>
-                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">State</label>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">State <span className="required">*</span></label>
                                                         <input type="text" value={formData.state}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.state ? 'required-field' : 'border-0' }`} 
                                                             name="state" placeholder="State"
@@ -347,7 +347,7 @@ function Checkout() {
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2}>
-                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Postcode</label>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Postcode <span className="required">*</span></label>
                                                         <input type="text" value={formData.postcode}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.postcode ? 'required-field' : 'border-0' }`} 
                                                             name="postcode" placeholder="Postcode"
@@ -364,7 +364,7 @@ function Checkout() {
                                                         />
                                                     </td>
                                                     <td>
-                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Phone Number</label>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Phone Number <span className="required">*</span></label>
                                                         <input type="text" value={formData.phone_number}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.phone_number ? 'required-field' : 'border-0' }`} 
                                                             name="phone_number" placeholder="(XXX) XXX-XXXX"
@@ -398,7 +398,7 @@ function Checkout() {
                                                 {differentAddr && <>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Country</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Country <span className="required">*</span></label>
                                                             <select className={`form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_country ? 'required-field' : 'border-0' }`}
                                                                 style={{ height: '3.5rem' }} name="shippingaddress_country" value={shippingData.shippingaddress_country}
                                                                 onChange={(e) => handleShippingAddChange(e)}
@@ -412,7 +412,7 @@ function Checkout() {
                                                     <tr className="single">
                                                         <td colSpan={2}>
                                                             <div className="mb-3">
-                                                                <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Street Address</label>
+                                                                <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Street Address <span className="required">*</span></label>
                                                                 <input type="text" value={shippingData.shippingaddress_streataddress_housenumber}
                                                                     className={`check-form form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_streataddress_housenumber ? 'required-field' : 'border-0' }`}  
                                                                     name="shippingaddress_streataddress_housenumber" placeholder="House number and street name"
@@ -430,7 +430,7 @@ function Checkout() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">City</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">City <span className="required">*</span></label>
                                                             <input type="text" value={shippingData.shippingaddress_city}
                                                                 className={`check-form form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_city ? 'required-field' : 'border-0' }`} 
                                                                 name="shippingaddress_city" placeholder="City"
@@ -440,7 +440,7 @@ function Checkout() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">State</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">State <span className="required">*</span></label>
                                                             <input type="text" value={shippingData.shippingaddress_state}
                                                                 className={`check-form form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_state ? 'required-field' : 'border-0' }`} 
                                                                 name="shippingaddress_state" placeholder="State"
@@ -450,7 +450,7 @@ function Checkout() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Postcode</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Postcode <span className="required">*</span></label>
                                                             <input type="text" value={shippingData.shippingaddress_postcode}
                                                                 className={`check-form form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_postcode ? 'required-field' : 'border-0' }`} 
                                                                 name="shippingaddress_postcode" placeholder="Postcode"
@@ -460,7 +460,7 @@ function Checkout() {
                                                     </tr> 
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Phone Number</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Phone Number <span className="required">*</span></label>
                                                             <input type="text" value={shippingData.shippingaddress_phonenumber}
                                                                 className={`check-form form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_phonenumber ? 'required-field' : 'border-0' }`} 
                                                                 name="shippingaddress_phonenumber" placeholder="(XXX) XXX-XXXX"

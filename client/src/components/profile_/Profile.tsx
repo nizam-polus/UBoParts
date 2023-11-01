@@ -187,7 +187,7 @@ function Profile() {
                                             
                                                 <tr className="double">
                                                     <td className='pl-5 pr-xl-3 pr-md-3 pr-5 pt-3 pb-2'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">First Name</label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">First Name <span className="required">*</span></label>
                                                         <input type="text" value={firstname}
                                                             className={`form-control input-bg-color-2 products-name ${incomplete && !firstname ? 'required-field' : 'border-0' }`}
                                                             name="first-name" placeholder="First Name"
@@ -195,7 +195,7 @@ function Profile() {
                                                         />
                                                     </td>
                                                     <td className='pr-5 pl-xl-3 pl-md-3 pl-5 pt-3 pb-2'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Last Name</label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Last Name <span className="required">*</span></label>
                                                         <input type="text" value={lastname}
                                                             className={`form-control input-bg-color-2 products-name ${incomplete && !lastname ? 'required-field' : 'border-0' }`}
                                                             name="last-name" placeholder="Last Name"
@@ -205,14 +205,14 @@ function Profile() {
                                                 </tr>
                                                 <tr className="double">
                                                     <td className="pl-5 pr-xl-3 pr-md-3 pr-5 pb-0 pb-xl-5 pb-md-5 border-0">
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Email Address</label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Email Address <span className="required">*</span></label>
                                                         <input type="text" value={email} disabled
                                                             className={`form-control input-bg-color-2 products-name ${incomplete && !email ? ' required-field' : 'border-0' }`} 
                                                             name="email-address" placeholder="Email Address"
                                                         />
                                                     </td>
                                                     <td className="pr-5 pl-xl-3 pl-md-3 pl-5 pb-5 pb-xl-5 pb-md-5 border-0">
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Phone</label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Phone <span className="required">*</span></label>
                                                         <input
                                                             type="text"
                                                             value={phone}
@@ -247,7 +247,7 @@ function Profile() {
                                                 <tr className="single">
                                                     <td colSpan={2}>
                                                         <div className="mb-3 px-sm-3 pt-2">
-                                                            <label className="custom-color-2 regularfont products-name pb-2">Street Address</label>
+                                                            <label className="custom-color-2 regularfont products-name pb-2">Street Address <span className="required">*</span></label>
                                                             <input type="text" value={address_1}
                                                                 className={`form-control input-bg-color-2 products-name ${incomplete && !address_1 ? ' required-field' : 'border-0' }`} 
                                                                 name="street-name" placeholder="House number and street name"
@@ -265,7 +265,7 @@ function Profile() {
                                                 </tr>
                                                 <tr className="double">
                                                     <td className='pl-5 pr-xl-3 pr-md-3 pr-5'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">City</label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">City <span className="required">*</span></label>
                                                         <input type="text" value={city}
                                                             className={`form-control input-bg-color-2 products-name ${incomplete && !city ? ' required-field' : 'border-0' }`}
                                                             name="city" placeholder="City"
@@ -273,7 +273,7 @@ function Profile() {
                                                         />
                                                     </td>
                                                     <td className='pr-5 pl-xl-3 pl-md-3 pl-5'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">State</label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">State <span className="required">*</span></label>
                                                         <input type="text" value={state}
                                                             className={`form-control input-bg-color-2 products-name ${incomplete && !state ? ' required-field' : 'border-0' }`} 
                                                             name="state" placeholder="State"
@@ -283,18 +283,18 @@ function Profile() {
                                                 </tr>
                                                 <tr className="double">
                                                     <td className="pb-0 pb-xl-5 pb-md-5 pl-5 pr-xl-3 pr-md-3 pr-5">
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Country</label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Country <span className="required">*</span></label>
                                                             <select className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !country ? 'required-field' : 'border-0'}`}
                                                                 style={{height: '3.5rem'}} name="country" value={country}
                                                                 onChange={(e) => setCountry(e.target.value)} 
                                                             >
-                                                                <option className="mini-text-2" value="" disabled>Select Country</option>
+                                                                <option className="mini-text-2" value="" disabled>Select Country <span className="required">*</span></option>
                                                                 {countries.map((country: any) => (
                                                                 <option key={country.id} value={country.attributes.country}>{country.attributes.country}</option>))}
                                                             </select>
                                                     </td>
                                                     <td className="pb-5 pr-5 pl-xl-3 pl-md-3 pl-5">
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Postcode</label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Postcode <span className="required">*</span></label>
                                                         <input type="text" value={postcode}
                                                             className={`form-control input-bg-color-2 products-name ${incomplete && !postcode ? ' required-field' : 'border-0' }`}
                                                             name="postcode" placeholder="Postcode"
@@ -324,7 +324,7 @@ function Profile() {
                                                 </div>
                                                 <tr className="single">
                                                     <td className="px-5">
-                                                        <label className="custom-color-2 regularfont products-name pb-2">New Password</label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">New Password <span className="required">*</span></label>
                                                         <span className="password-wrapper-field">
                                                             <input type="password" value={newpwd}
                                                                 className={`form-control input-bg-color-2 products-name ${incompletePwd && !newpwd ? ' required-field' : 'border-0' }`} 
@@ -337,7 +337,7 @@ function Profile() {
                                                 </tr>
                                                 <tr className="single">
                                                     <td className="px-5 pb-5">
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Confirm Password</label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2">Confirm Password <span className="required">*</span></label>
                                                         <span className="password-wrapper-field">
                                                             <input type="password" value={confrmpwd}
                                                                 className={`form-control input-bg-color-2 products-name ${incompletePwd && !confrmpwd ? ' required-field' : 'border-0' }`}
