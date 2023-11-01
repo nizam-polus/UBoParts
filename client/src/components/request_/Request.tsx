@@ -113,7 +113,9 @@ function Request() {
                                                     </tr>
                                                     <tr className="double">
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2 "><FormattedMessage id="PLATE_NO"/></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2 ">
+                                                                <FormattedMessage id="PLATE_NO"/> <span className="required">*</span>
+                                                            </label>
                                                             <input type="text" 
                                                                 className={`w-100 form-control input-bg-color-2 body-sub-titles-1 ${incomplete && !formData.plate_number ? 'required-field' : 'border-0'}`}
                                                                 name="plate_number" placeholder="Plate Number" 
@@ -121,7 +123,9 @@ function Request() {
                                                             />
                                                         </td>
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2 "><FormattedMessage id="AUTO_MODEL"/></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2 ">
+                                                                <FormattedMessage id="AUTO_MODEL"/> <span className="required">*</span>
+                                                            </label>
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles-1 ${incomplete && !formData.auto_model ? 'required-field' : 'border-0'}`}
                                                                 name="auto_model" placeholder="Auto Model" value={formData.auto_model}
@@ -131,7 +135,9 @@ function Request() {
                                                     </tr>
                                                     <tr className="double">
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="YEAR"/></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                                <FormattedMessage id="YEAR"/> <span className="required">*</span>
+                                                            </label>
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles-1 ${incomplete && !formData.year ? 'required-field' : 'border-0'}`} 
                                                                 name="year" placeholder="Year" value={formData.year}
@@ -139,7 +145,9 @@ function Request() {
                                                             />
                                                         </td>
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="MAKE"/></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                                <FormattedMessage id="MAKE"/> <span className="required">*</span>
+                                                            </label>
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles-1 ${incomplete && !formData.make ? 'required-field' : 'border-0'}`}
                                                                 name="make" placeholder="Make" value={formData.make}
@@ -149,7 +157,9 @@ function Request() {
                                                     </tr>
                                                     <tr className="double">
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="FIRST_NAME"/></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                                <FormattedMessage id="FIRST_NAME"/> <span className="required">*</span>
+                                                            </label>
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles-1 ${incomplete && !formData.first_name ? 'required-field' : 'border-0'}`}
                                                                 name="first_name" placeholder="First Name" 
@@ -157,7 +167,9 @@ function Request() {
                                                             />
                                                         </td>
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="LAST_NAME"/></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                                <FormattedMessage id="LAST_NAME"/> <span className="required">*</span>
+                                                            </label>
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles-1 ${incomplete && !formData.last_name ? 'required-field' : 'border-0'}`}
                                                                 name="last_name" placeholder="Last Name" 
@@ -167,7 +179,9 @@ function Request() {
                                                     </tr>
                                                     <tr className="double">
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="EMAIL_ADDRESS"/></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                                <FormattedMessage id="EMAIL_ADDRESS"/> <span className="required">*</span>
+                                                            </label>
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles-1 ${incomplete && !formData.email ? 'required-field' : 'border-0'}`}
                                                                 name="email" placeholder="Email Address" 
@@ -175,7 +189,9 @@ function Request() {
                                                             />
                                                         </td>
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="PHONE"/></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                                <FormattedMessage id="PHONE"/> <span className="required">*</span>
+                                                            </label>
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles-1 ${incomplete && !formData.phone_number ? 'required-field' : 'border-0'}`}
                                                                 name="phone_number" placeholder="(XXX) XXX-XXXX" 
@@ -185,7 +201,9 @@ function Request() {
                                                     </tr>
                                                     <tr className="double">
                                                         <td>
-                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="DELIVERY_TYPE"/> <span className="required">*</span></label>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                            <FormattedMessage id="DELIVERY_TYPE"/> <span className="required">*</span>
+                                                        </label>
                                                             <fieldset>
                                                                 <div className="position-relative d-flex">
                                                                     <span>
@@ -210,7 +228,9 @@ function Request() {
                                                             </fieldset>
                                                         </td>
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="BUYING_RANGE"/> (€)</label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                                <FormattedMessage id="BUYING_RANGE"/> <span className="required">*</span>
+                                                            </label>
                                                             <div className="d-flex">
                                                                 <div className="col pl-0">
                                                                     <input type="number" 
@@ -232,14 +252,18 @@ function Request() {
                                                     </tr>
                                                     <tr className="double">
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="PART_IMAGES"/></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                                <FormattedMessage id="PART_IMAGES"/> <span className="required">*</span>
+                                                            </label>
                                                             <input className={`form-control p-2 choosefile ${incomplete && !imageData ? 'required-field' : 'border-0'}`}
                                                                 type="file" id="formFile" 
                                                                 onChange={handleImageUpload}
                                                             />
                                                         </td>
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="QUANTITY"/></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                                <FormattedMessage id="QUANTITY"/> <span className="required">*</span>
+                                                            </label>
                                                             <input type="number" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles-1 ${incomplete && !formData.quantity ? 'required-field' : 'border-0'}`}
                                                                 name="quantity" placeholder="Quantity" 
@@ -249,7 +273,9 @@ function Request() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="DESCRIPTION_OF_PRODUCT"/></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                                <FormattedMessage id="DESCRIPTION_OF_PRODUCT"/> <span className="required">*</span>
+                                                            </label>
                                                             <textarea placeholder="Type here..." 
                                                                 className={`form-control input-bg-color-2 body-sub-titles-1 ${incomplete && !formData.description ? 'required-field' : 'border-0'}`}
                                                                 rows={4} name='description'
