@@ -30,6 +30,10 @@ function Header_home(props: any) {
             image: "https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg",
             TitleShort: "EN"
         })
+        let storedLocal: any = localStorage.getItem("locale")
+        let storedCaps: any = localStorage.getItem("localCaps")
+        setLocale(storedLocal)
+        setSelectedLanguage(storedCaps);
     }, []);
 
     useEffect(() => {
@@ -77,6 +81,8 @@ function Header_home(props: any) {
         setLocale(item.value);
         setSelectedLanguage(item.TitleShort);
         setLanguage(item);
+        localStorage.setItem("locale", item.value)
+        localStorage.setItem("localCaps", item.TitleShort)
     };
 
     let languageItems = [

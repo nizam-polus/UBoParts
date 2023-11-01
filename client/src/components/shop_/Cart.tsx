@@ -14,7 +14,6 @@ function Cart() {
     const [cartProducts, setCartProducts] = useState<any>([]);
     const [totalCartPrice, setTotal] = useState(0);
     const [totalDiscount, setTotalDiscount] = useState(0)
-    const [total, setTotalAmount]: any = useState(0);
     const [isError, setIsError] = useState<{ [key: string]: string | null }>({});
     const [inputValue, setInputValue] = useState("");
     const [debouncedInputValue, setDebouncedInputValue] = useState("");
@@ -108,7 +107,6 @@ function Cart() {
     }  
     const handleQuantityChange = (product: any, valueChange: string, index: number) => {
         let newQuantity = product.quantity;
-    
         if (valueChange === 'inc') {
             newQuantity++;
         } else if (valueChange === 'dec' && newQuantity > 1) {
@@ -124,7 +122,7 @@ function Cart() {
             quantity: newQuantity,
             productprice: product.price,
             "productWeight": product?.product_weight,
-            "discountPrice": discountAmount(product.price,product.discount),
+            "discountPrice": discountAmount(product.price,product.discount_percentage_value),
         }).then(response => {
             if (response.data.error) {
                 setIsError(prevErrors => ({
@@ -176,7 +174,7 @@ function Cart() {
             quantity: newQuantity,
             productprice: product.price,
             "productWeight": product?.product_weight,
-            "discountPrice": discountAmount(product.price,product.discount),
+            "discountPrice": discountAmount(product.price,product.discount_percentage_value),
         }).then(response => {
             if (response.data.error) {
                 setIsError(prevErrors => ({
@@ -194,7 +192,6 @@ function Cart() {
                     ...prevErrors,
                     [product.product_id]: null
                 }));
-               
             }
                   APIs.getCartData({ customerid: user.id }).then((response) => {
                     setCartProducts(response.data.rows);
@@ -244,9 +241,7 @@ function Cart() {
                 const getContryCode = (country: string, countries: any[]) =>{
                     let countryData: any = countries.find((item: any, index) => item.attributes.country == country);
                     return countryData?.attributes?.code;
-                 }
-        
-                // Create an array of promises for each seller's shipping data
+                 }        
                 const shippingDataPromises = sellerIdsArray.map((sellerId: any) => {
                     return APIs.getSpecificUser(sellerId).then((res) => {
                         let shippingCountryCode = getContryCode(res.data.shippingaddress_country, countries);
@@ -359,7 +354,7 @@ function Cart() {
                                                         ?
                                                         <td className="p-3 custom-color-3 semifont mini-text-3 text-center ">€{product.price}</td>
                                                         :
-                                                        <td className="p-3 custom-color-3 semifont mini-text-3 text-center "><s style={{color: "grey"}}>€{product.price}</s> €{(product.price - product.discount_price / product.quantity).toFixed(2)}</td>
+                                                        <td className="p-3 custom-color-3 semifont mini-text-3 text-center "><s style={{color: "grey"}}>€{product.price}</s>  €{product.price - discountAmount(product.price,product.discount_percentage_value)}</td>
                                                     }
                                                     
                                                     <td className="p-3 custom-color-3 regularfont">
@@ -387,10 +382,16 @@ function Cart() {
                                                                      }
                                                                    }}
                                                                  />
-
-                                                            <span className="input-group-btn minus-icon regularfont pointer" onClick={() => handleQuantityChange(product, 'inc', index)}>
-                                                                <i className="fa fa-plus mini-text-0 mini-text-0-color " aria-hidden="true"></i>
-                                                            </span>
+                                                            {
+                                                                product.quantity === product.stock_count  ?
+                                                                    <span className="input-group-btn minus-icon regularfont pointer">
+                                                                        <i className="fa fa-plus mini-text-0 mini-text-0-color " aria-hidden="true"></i>
+                                                                    </span>
+                                                                    :
+                                                                    <span className="input-group-btn minus-icon regularfont pointer" onClick={() => handleQuantityChange(product, 'inc', index)}>
+                                                                        <i className="fa fa-plus mini-text-0 mini-text-0-color " aria-hidden="true"></i>
+                                                                    </span>
+                                                            } 
                                                             <span className="text-center text-danger mini-text-0" >
                                                                 {isError[product.product_id]}
                                                             </span>
