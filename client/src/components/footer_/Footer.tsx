@@ -5,12 +5,15 @@ import { useState } from 'react';
 import Login from '../account_/Login';
 import Register from '../account_/Register';
 import { FormattedMessage } from 'react-intl';
+import APIs from '~/services/apiService';
+import { toast } from 'react-toastify';
 
 function Footer() {
 
     const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
     const [registerIsOpen, setRegisterIsOpen] = useState<boolean>(false);
     const [loginmodal, setLoginModal] = useState<boolean>(true);
+    const [email, setEmail] = useState<string>('');
 
     const onLoginModalClose = () => {
         setLoginModalIsOpen(false);
@@ -33,6 +36,17 @@ function Footer() {
         setRegisterIsOpen(true);
         setLoginModal(false);
     };
+
+    const handleSubscribe = (event: any) => {
+        event.preventDefault();
+        APIs.newsletter(email)
+        .then(() => toast.success('Your subscription is registered.'))
+        .catch(err => {
+            console.log(err);
+            toast.error('Something went wrong!');
+        })
+    }
+
     return (
         <>
             <footer className="bg-color-1 p-5">
@@ -107,18 +121,25 @@ function Footer() {
                             </div>
                             <div className="col">
                                 <p className="boldfontsize regularfont text-white"><FormattedMessage id="NEWS_LETTER" /></p>
-                                <p className="regularfont short-labels-1 label-color-1 mb-2">Enter your email address to subscribe to our newsletter and keep up to date with discounts and special offers.</p>
+                                <p className="regularfont short-labels-1 label-color-1 mb-2"><FormattedMessage id="NEWSLETTER_DETAILS"/></p>
                                 <form className="newsletter-signup">
                                     <div className="row g-2 mb-2">
                                         <div className="col-12 col-sm-9">
-                                            <input type="email" className=" lightfont form-control h-auto input-bg-color-1 text-white footer-placeholder-font-size rounded-lg border-0" placeholder="Email Address..." name="email"/>
+                                            <input type="email" 
+                                                className=" lightfont form-control h-auto input-bg-color-1 text-white footer-placeholder-font-size rounded-lg border-0" 
+                                                placeholder="Email Address..." name="email" value={email}
+                                                onChange={(e: any) => setEmail(e.target.value)}
+                                            />
                                         </div>
                                         <div className="col-12 col-sm-3 pl-sm-0">
-                                            <button type="submit" className="btn regularfont button-bg-color-1 text-white border-0 rounded-lg ubo-btn-subscribe">Subscribe</button>
+                                            <button type="submit" 
+                                                className="btn regularfont button-bg-color-1 text-white border-0 rounded-lg ubo-btn-subscribe"
+                                                onClick={handleSubscribe}
+                                            >Subscribe</button>
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <p className="regularfont short-labels-1 label-color-1 mb-2 w-100 px-3 ">Follow us on social networks</p>
+                                        <p className="regularfont short-labels-1 label-color-1 mb-2 w-100 px-3 "><FormattedMessage id="FOLLOW_US"/></p>
                                         <div className="col">
                                             <a href=""><AppImage src="images/instagram.svg"/></a>
                                         </div>

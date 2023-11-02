@@ -1629,10 +1629,7 @@ tr {
     }	
     .header-middle-text{	
         min-height: 65vh;	
-    } 	
-    .pointer{	
-        cursor: pointer;	
-    }	
+    } 		
     .add_to_cart{	
         transition: 0.1s;	
     }	
@@ -1955,6 +1952,9 @@ tr {
 }
 .required-field {
     border: solid 1px red;
+}
+.pointer{	
+    cursor: pointer;	
 }
 .required-text {
     color: rgb(255 102 102);

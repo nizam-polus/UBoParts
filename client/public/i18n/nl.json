@@ -393,6 +393,7 @@
     "MIN_PRICE": "Minimale Prijs",
     "MAX_PRICE": "Maximale Prijs",
     "APPLY_FILTER": "Filter Toepassen",
+    "CLEAR_FILTER": "Filter wissen",
     "SORT_BY": "Sorteer op",
     "PRICE_HIGH_TO_LOW": "Prijs: Hoog naar Laag",
     "PRICE_LOW_TO_HIGH": "Prijs: Laag naar Hoog",
@@ -547,7 +548,10 @@
   "TERMS_CONDITIONS": "Algemene Voorwaarden",
   "PRIVACY_POLICY": "Privacybeleid",
   "ADS_WITH_US": "Adverteren bij ons",
-  "COOKIES": "Cookies"
+  "COOKIES": "Cookies",
+  "NEWSLETTER_DETAILS": "Vul uw e-mailadres in om u te abonneren op onze nieuwsbrief en blijf op de hoogte van kortingen en speciale aanbiedingen.",
+  "FOLLOW_US": "Volg ons op sociale netwerken"
+
   }
   
   

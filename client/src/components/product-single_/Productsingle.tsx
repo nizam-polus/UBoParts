@@ -283,11 +283,18 @@ function Productsingle() {
                                             <div className="row pt-1 pb-1 d-flex justify-content-center align-items-center">
                                                 <div className="col-4 col-md-4 col-lg-12 col-xl-5">
                                                     <div className="input-group quanitity-box mt-3">
-                                                        <span className="input-group-btn plus-icon semifont"
-                                                            onClick={() => quantity !== 1 && setQuantity(Number(quantity) - 1)}
-                                                        >
-                                                            <i className="fa fa-minus mini-text-3" aria-hidden="true"></i>
-                                                        </span>
+                                                        {quantity == 1 ?
+                                                            <span style={{ cursor: "not-allowed" }} className="input-group-btn plus-icon semifont"
+                                                            >
+                                                                <i className="fa fa-minus mini-text-3" aria-hidden="true"></i>
+                                                            </span>
+                                                            :
+                                                            <span className="input-group-btn plus-icon semifont"
+                                                                onClick={() => quantity !== 1 && setQuantity(Number(quantity) - 1)}
+                                                            >
+                                                                <i className="fa fa-minus mini-text-3" aria-hidden="true"></i>
+                                                            </span>
+                                                        }
                                                         <input 
                                                             type="text" name="quant[1]" 
                                                             style={{ maxHeight: '25px' }}

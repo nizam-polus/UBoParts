@@ -150,6 +150,8 @@ const APIs = {
 
     contactUs: (contactData: any) => axios.post(BACKEND_URL + 'contact-us', contactData, {headers}),
 
+    newsletter: (email: string) => axios.post(BACKEND_URL + 'newsletters', {data: {email}}, {headers}),
+
 
         /* ---------------- jwt token based apis ----------------- */
 
