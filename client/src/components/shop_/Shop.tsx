@@ -40,7 +40,6 @@ function Shop() {
     const [minPrice, setMinPrice] = useState(0)
     const [maxPrice, setMaxPrice] = useState(1000)
     const [filterOption, setFilterOption] = useState('Latest');
-    const [initialproducts, setInitialProducts] = useState<any>([])
     const [pageNumber, setPageNumber] = useState(1)
     const [pageCount, setPageCount] = useState();
     const [sortState, setSortState] = useState("sort[0]=createdAt:desc")
@@ -292,6 +291,24 @@ function Shop() {
         }).catch(err => console.log)
     }
 
+    const FilterPagination = (pageNum: any) => {
+        // event.preventDefault();
+        APIs.searchFilter(
+            {make: selectedMake, model: selectedModel, year: selectedYear}, 
+            categories, filterCategory, 
+            filterSubcategory, 
+            {min: minPrice, max: maxPrice}, 
+            {sort: sortState, page: pageNum},
+            sellerId
+        ).then(response => {
+            let pagination = response.data.meta.pagination;
+            setPageRange(pageRangeFinder(pagination.pageCount));
+            setPagination(pagination);
+            setSearchedProducts(response.data.data)
+            setPageCount(response.data.meta.pagination.pageCount)
+        }).catch(err => console.log)
+    }
+
     const handleAddToCart = (productData: any) => {
         
         if (!user || user && !user.id) {
@@ -443,13 +460,16 @@ function Shop() {
             // Update the page number here
             setPageNumber(page);
         }
-        APIs.getAllPaginationProducts(page, sortState, sellerId).then(response => {
-            let pagination = response.data.meta.pagination;
-            setPageRange(pageRangeFinder(pagination.pageCount));
-            setPagination(pagination);
-            setSearchedProducts(response.data.data);
-            setInitialProducts(response.data.data)
-        })
+        if(filterCategory){
+            FilterPagination(page)
+            return
+        }
+        // APIs.getAllPaginationProducts(page, sortState, sellerId).then(response => {
+        //     let pagination = response.data.meta.pagination;
+        //     setPageRange(pageRangeFinder(pagination.pageCount));
+        //     setPagination(pagination);
+        //     setSearchedProducts(response.data.data);
+        // })
     }
 
     return (
@@ -515,10 +535,9 @@ function Shop() {
                                             </select>
                                         </div>
                                     </div>
-                                    <div className="col-1">
+                                    <div className="col">
                                         <div className="form-group">
-                                            <button className='regularfont' 
-                                                style={{background: '#587E50', padding: '0.2rem 1.1rem', color: 'white', border: 'none', borderRadius: '5px'}}
+                                            <button className='regularfont w-100 btn-dark btn' 
                                                 onClick={(e) => clearSearch(e)}
                                             >
                                                 <FormattedMessage id="CLEAR"/>
@@ -716,7 +735,7 @@ function Shop() {
                                             {searchedProducts.map((product: any, index: any) => {
                                                 return (
                                                     <div className="col-12 col-sm-6 col-lg-4  mb-4" key={index}>
-                                                    {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null)&& (
+                                                    {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product?.attributes?.sale?.data != null)&& (
                                                         <span  className="sale-tag position-absolute">{product.attributes?.sale?.data?.attributes?.discount}</span>
                                                     )}
                                                         <div className="latest-prods card card-shadows" style={{height: "100%"}}>
@@ -756,7 +775,7 @@ function Shop() {
                                                                 </div> */}
                                                                     <div className="col-12 d-flex justify-content-between">
                                                                         {
-                                                                            (product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null) ?
+                                                                            (product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product?.attributes?.sale?.data != null) ?
                                                                                 <span className="product-price"><s>€{product?.attributes?.price}</s> €{discountedPrice(product.attributes.price, product.attributes.sale.data.attributes.discount)}</span>
                                                                                 :
                                                                                 <span className="product-price">€{product?.attributes?.price}</span>
