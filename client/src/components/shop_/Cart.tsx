@@ -359,7 +359,7 @@ function Cart() {
                                                     
                                                     <td className="p-3 custom-color-3 regularfont">
                                                         <div className="input-group quanitity-box quanitity-incrementor">
-                                                            <span className="input-group-btn plus-icon regularfont pointer" onClick={() => handleQuantityChange(product, 'dec', index)}>
+                                                            <span className="input-group-btn plus-icon regularfont pointer" style={{cursor: `${product.quantity == 1 ? "not-allowed" : "pointer"}`}} onClick={() => handleQuantityChange(product, 'dec', index)}>
                                                                 <i className="fa fa-minus mini-text-0 mini-text-0-color " aria-hidden="true"></i>
                                                             </span>
                                                                  <input

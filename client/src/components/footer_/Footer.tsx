@@ -121,7 +121,7 @@ function Footer() {
                             </div>
                             <div className="col">
                                 <p className="boldfontsize regularfont text-white"><FormattedMessage id="NEWS_LETTER" /></p>
-                                <p className="regularfont short-labels-1 label-color-1 mb-2">Enter your email address to subscribe to our newsletter and keep up to date with discounts and special offers.</p>
+                                <p className="regularfont short-labels-1 label-color-1 mb-2"><FormattedMessage id="NEWSLETTER_DETAILS"/></p>
                                 <form className="newsletter-signup">
                                     <div className="row g-2 mb-2">
                                         <div className="col-12 col-sm-9">
@@ -139,7 +139,7 @@ function Footer() {
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <p className="regularfont short-labels-1 label-color-1 mb-2 w-100 px-3 ">Follow us on social networks</p>
+                                        <p className="regularfont short-labels-1 label-color-1 mb-2 w-100 px-3 "><FormattedMessage id="FOLLOW_US"/></p>
                                         <div className="col">
                                             <a href=""><AppImage src="images/instagram.svg"/></a>
                                         </div>
