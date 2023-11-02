@@ -696,9 +696,10 @@ function Home() {
                             <div className="col-12 d-sm-flex justify-content-sm-between ubo-nav-tab">
                                 <div className='col-12 col-sm-auto mb-3 mb-sm-0 text-center text-sm-left pointer'>
                                     <span onClick={() => setSelectedHomecontent("category")} 
-                                     className={`popular_categories body-sub-titles regularfont ${selectedHomeContent == "category" ? 'active' : ''}`}>
+                                        className={`popular_categories body-sub-titles regularfont ${selectedHomeContent == "category" ? 'active' : ''}`}
+                                    >
                                         <FormattedMessage id="POPULAR"/>
-                                        </span>
+                                    </span>
                                 </div>
                                 <div className='d-flex justify-content-between d-sm-block'>
                                     <button type="button" onClick={() => setSelectedHomecontent("saleOffers")}  className={`saleoffers regularfont body-sub-titles ${selectedHomeContent == "saleOffers" ? 'active' : ''}`}><FormattedMessage id="SALE_OFFERS" /></button>
