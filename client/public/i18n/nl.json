@@ -524,13 +524,30 @@
   "HOME": "Thuis",
   "SHOP": "Winkel",
   "REQUEST": "Verzoek",
-  "MY_ACCOUNT": "Mijn rekening",
+  "DISMANTLE": "Ontmantelen",
+  "MY_ACCOUNT": "Mijnrekening",
+  "PROFILE": "Profiel",
+  "LOGOUT": "Uitloggen",
+
+  "NEED_A": "Heb nodig",
+  "SPECIFIC_PART": "Specifiek onderdeel?",
+  "START_SELL": "Begin met verkopen",
+  "WITH_US": "Met ons",
 
   "SALE_OFFERS": "Verkoopaanbiedingen",
   "TOP_SELLING": "Best verkopende",
 
 
-  "WORKING_HOURS": ""
+  "WORKING_HOURS": "Werkuren",
+  "MONDAY_TO_FRIDAY": "Maandag - vrijdag",
+  "OUR_LOCATION": "onze locatie",
+  "INFORMATION": "Informatie",
+  "USEFULL_LINKS": "handige links",
+  "NEWS_LETTER": "Nieuwsbrief",
+  "TERMS_CONDITIONS": "Algemene Voorwaarden",
+  "PRIVACY_POLICY": "Privacybeleid",
+  "ADS_WITH_US": "Adverteren bij ons",
+  "COOKIES": "Cookies"
   }
   
   

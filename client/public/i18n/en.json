@@ -530,15 +530,32 @@
   "COOKIE_STATEMENT": "Cookie Statement",
   
   "HOME": "Home",
-  "SHOP": "",
-  "REQUEST": "",
-  "MY_ACCOUNT": "",
+  "SHOP": "Shop",
+  "REQUEST": "Request",
+  "DISMANTLE": "Dismantle",
+  "MY_ACCOUNT": "My Account",
+  "PROFILE": "Profile",
+  "LOGOUT": "Logout",
+
+  "NEED_A": "Need A",
+  "SPECIFIC_PART": "Specific Part?",
+  "START_SELL": "Start Selling",
+  "WITH_US": "With Us",
+  
 
   "SALE_OFFERS": "Sale Offers",
   "TOP_SELLING": "Top Selling",
 
 
-  "WORKING_HOURS": "Working Hours"
+  "WORKING_HOURS": "Working Hours",
+  "MONDAY_TO_FRIDAY": "Monday - Friday",
+  "OUR_LOCATION": "Our Location",
+  "INFORMATION": "Information",
+  "USEFULL_LINKS": "Useful Links",
+  "NEWS_LETTER": "Newsletter",
+  "TERMS_CONDITIONS": "Terms And Conditions",
+  "PRIVACY_POLICY": "Privacy and Policy",
+  "ADS_WITH_US": "Advertise with Us",
+  "COOKIES": "Cookies"
 
-  
 }

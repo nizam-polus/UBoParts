@@ -45,12 +45,12 @@ function Footer() {
                                     <div className="col">
                                         <p className="regularfont short-labels label-color-1 mb-1"><FormattedMessage id="PHONE_NO" /></p>
                                         <p className="text-white regularfont short-labels-1 mb-3">+31 6 33490782</p>
-                                        <p className="regularfont short-labels label-color-1 mb-1">Working Hours</p>
-                                        <p className="text-white regularfont short-labels-1 mb-3">Monday - Friday<br/> 
+                                        <p className="regularfont short-labels label-color-1 mb-1"><FormattedMessage id="WORKING_HOURS" /></p>
+                                        <p className="text-white regularfont short-labels-1 mb-3"><FormattedMessage id="MONDAY_TO_FRIDAY" /><br/> 
                                             08:00 - 17:00</p>
                                     </div>
                                     <div className="col">
-                                        <p className="regularfont short-labels label-color-1 mb-1">Email Address</p>
+                                        <p className="regularfont short-labels label-color-1 mb-1"><FormattedMessage id="OUR_LOCATION" /></p>
                                         <p className="text-white regularfont short-labels-1 mb-3">Info@uboparts.com</p>
                                         <p className="regularfont short-labels label-color-1 mb-1">Our Location</p>
                                         <p className="text-white regularfont short-labels-1 mb-3">UBO Parts,<br/> 
@@ -59,43 +59,43 @@ function Footer() {
                                 </div>
                             </div>
                             <div className="col-auto footer-link-section">
-                                <p className="boldfontsize regularfont text-white">Information</p>
+                                <p className="boldfontsize regularfont text-white"><FormattedMessage id="INFORMATION" /></p>
                                 <p className="regularfont short-labels-1 label-color-1 mb-2">
                                     <Link  href="/about_us_">
-                                        About Us
+                                        <span className='pointer'><FormattedMessage id="ABOUT_US"/></span>
                                     </Link>
                                 </p>
                                 <p className="regularfont short-labels-1 label-color-1 mb-2">
                                     <Link href="/cookie">
-                                        Terms & Conditions
+                                    <span className='pointer'><FormattedMessage id="TERMS_CONDITIONS"/></span>
                                     </Link>
                                 </p>
                                 <p className="regularfont short-labels-1 label-color-1 mb-2">
                                     <Link href="/cookie">
-                                        Privacy Policy
+                                    <span className='pointer'><FormattedMessage id="PRIVACY_POLICY"/></span>
                                     </Link>
                                 </p>
                                 <p className="regularfont short-labels-1 label-color-1 mb-2">
                                     <Link href="/contact_us">
-                                        Contact Us
+                                    <span className='pointer'><FormattedMessage id="CONTACT_US"/></span>
                                     </Link>
                                 </p>
                                 <p className="regularfont short-labels-1 label-color-1 mb-2">
                                     <Link href="/advertise-with-us">
-                                        Advertise with us
+                                    <span className='pointer'><FormattedMessage id="ADS_WITH_US"/></span>
                                     </Link>
                                 </p>
                                 <p className="regularfont short-labels-1 label-color-1 mb-2">
-                                    <Link href="/cookies">
-                                        Cookies
+                                    <Link href="/cookie">
+                                    <span className='pointer'><FormattedMessage id="COOKIES"/></span>
                                     </Link>
                                 </p>
                             </div>
                             <div className="col-auto footer-link-section">
-                                <p className="boldfontsize regularfont text-white">Useful Links</p>
+                                <p className="boldfontsize regularfont text-white"><FormattedMessage id="USEFULL_LINKS" /></p>
                                 <p className="regularfont short-labels-1 label-color-1 mb-2">
                                     <Link href="/seller-registration">
-                                        Start selling with us
+                                        <span className='pointer'><FormattedMessage id="START_SELLING"/></span>
                                     </Link>
                                 </p>
                                 <p onClick={showRegister} className="regularfont short-labels-1 label-color-1 mb-2">       
@@ -106,7 +106,7 @@ function Footer() {
                                 </p>
                             </div>
                             <div className="col">
-                                <p className="boldfontsize regularfont text-white">Newsletter</p>
+                                <p className="boldfontsize regularfont text-white"><FormattedMessage id="NEWS_LETTER" /></p>
                                 <p className="regularfont short-labels-1 label-color-1 mb-2">Enter your email address to subscribe to our newsletter and keep up to date with discounts and special offers.</p>
                                 <form className="newsletter-signup">
                                     <div className="row g-2 mb-2">

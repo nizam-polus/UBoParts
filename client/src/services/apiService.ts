@@ -47,7 +47,7 @@ const APIs = {
     searchProducts: (make: string, model: string, year: string, category: string, filter: any, sellerid = '') => {
         return axios.get(
             BACKEND_URL + `products?populate=*` + `${filter.sort}&pagination[page]=${filter.page}&pagination[pageSize]=18` + 
-                `&filters[$and][0][make][id][$eq]=${make}` +
+                `${make && `&filters[$and][0][make][id][$eq]=${make}`}` +
                 `${model && `&filters[$and][1][model][id][$eq]=${model}`}` + 
                 `${year && '&filters[$and][2][year][id][$eq]='+year}${category && `&filters[$and][][category][category_name][$eq]=${category}`}` + 
                 `${sellerid && '&filters[$and][3][seller_id][$ne]=' + sellerid}`, {headers}

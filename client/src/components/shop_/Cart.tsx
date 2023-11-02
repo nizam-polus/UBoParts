@@ -384,7 +384,7 @@ function Cart() {
                                                                  />
                                                             {
                                                                 product.quantity === product.stock_count  ?
-                                                                    <span className="input-group-btn minus-icon regularfont pointer">
+                                                                    <span className="input-group-btn minus-icon regularfont" style={{cursor: "not-allowed"}}>
                                                                         <i className="fa fa-plus mini-text-0 mini-text-0-color " aria-hidden="true"></i>
                                                                     </span>
                                                                     :
