@@ -394,6 +394,7 @@
   "MIN_PRICE": "Min Price",
   "MAX_PRICE": "Max Price",
   "APPLY_FILTER": "Apply Filter",
+  "CLEAR_FILTER": "Clear Filter",
   "SORT_BY": "Sort by",
   "PRICE_HIGH_TO_LOW": "Price: High to Low",
   "PRICE_LOW_TO_HIGH": "Price: Low to High",

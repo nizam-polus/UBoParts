@@ -166,6 +166,7 @@ function Shop() {
         let makeId = event.target.value
         getModel(makeId);
         setSelectedMake(event.target.value);
+        router.replace('/shop', undefined, {shallow:true});
         localStorage.setItem('makeId', makeId);
         setSelectedModel('');
         setSelectedYear('');
@@ -262,6 +263,26 @@ function Shop() {
             {min: minPrice, max: maxPrice}, 
             {sort: '&sort[0]=createdAt:desc', page: '1'},
             sellerId
+        ).then(response => {
+            let pagination = response.data.meta.pagination;
+            setPageRange(pageRangeFinder(pagination.pageCount));
+            setPagination(pagination);
+            setSearchedProducts(response.data.data)
+            setPageCount(response.data.meta.pagination.pageCount)
+        }).catch(err => console.log)
+    }
+
+    const handleClearFilter = (event: any) => {
+        event.preventDefault();
+        setFilterCategory([]);
+        setFilterSubcategory([]);
+        APIs.searchFilter(
+            {make: selectedMake, model: selectedModel, year: selectedYear}, 
+            categories, 
+            [], 
+            [], 
+            {min: 0, max: 1000}, 
+            {sort: '&sort[0]=createdAt:desc', page: '1'}
         ).then(response => {
             let pagination = response.data.meta.pagination;
             setPageRange(pageRangeFinder(pagination.pageCount));
@@ -544,7 +565,7 @@ function Shop() {
                                                         <div>
                                                             <div className="form-check mb-2" key={idx}>
                                                                 <input type="checkbox" 
-                                                                    className="form-check-input border-0" 
+                                                                    className="form-check-input border-0" checked={!!filterCategory.find((ele: any) => ele === category.category_name)}
                                                                     id={idx} name={category.category_name} value={category.category_name} 
                                                                     onChange={(e) => handleCategoryFilter(e)}
                                                                 />
@@ -652,11 +673,19 @@ function Shop() {
                                                     </div>
                                                 </div> */}
                                             <div className='text-center mt-4 mini-text-2'>
-                                                <button style={{background: '#2a2a2a', color:'white', border: 'none', padding: '0.4rem 1.5rem'}}
+                                            <button 
+                                                    className='mr-3'
+                                                    style={{background: 'none', color:'black', border: '1.7px solid black', padding: '0.3rem 1.4rem'}}
+                                                    onClick={(e) => handleClearFilter(e)}
+                                                >
+                                                    <FormattedMessage id="CLEAR_FILTER"/>
+                                                </button>
+                                                <button style={{background: '#587E50', color:'white', border: 'none', padding: '0.4rem 1.5rem'}}
                                                     onClick={(e) => handleApplyFilter(e)}
                                                 >
                                                     <FormattedMessage id="APPLY_FILTER"/>
                                                 </button>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -681,6 +710,9 @@ function Shop() {
                                             </div>
                                         </div>
                                         <div className="row g-4 pt-3">
+                                            {!searchedProducts.length && <div className='w-100 text-center mt-4'>
+                                                <p>No products available</p>
+                                            </div>}
                                             {searchedProducts.map((product: any, index: any) => {
                                                 return (
                                                     <div className="col-12 col-sm-6 col-lg-4  mb-4" key={index}>

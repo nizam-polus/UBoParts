@@ -393,6 +393,7 @@
     "MIN_PRICE": "Minimale Prijs",
     "MAX_PRICE": "Maximale Prijs",
     "APPLY_FILTER": "Filter Toepassen",
+    "CLEAR_FILTER": "Filter wissen",
     "SORT_BY": "Sorteer op",
     "PRICE_HIGH_TO_LOW": "Prijs: Hoog naar Laag",
     "PRICE_LOW_TO_HIGH": "Prijs: Laag naar Hoog",
