@@ -236,7 +236,7 @@ function Home() {
     };
 
     const handleCategoryClick = (categoryName : any) => {
-    setSelectedItem(categoryName);
+        setSelectedItem(categoryName);
     };
     
     const searchProducts = () => {
@@ -694,10 +694,9 @@ function Home() {
                     <section className="categories-wrapper">
                         <div className="row mt-5">
                             <div className="col-12 d-sm-flex justify-content-sm-between ubo-nav-tab">
-                                <div className='col-12 col-sm-auto mb-3 mb-sm-0 text-center text-sm-left'>
+                                <div className='col-12 col-sm-auto mb-3 mb-sm-0 text-center text-sm-left pointer'>
                                     <span onClick={() => setSelectedHomecontent("category")} 
-                                     className={`popular_categories body-sub-titles regularfont  ${selectedHomeContent == "category" ? 'active' : ''}`}>
-                                        {/* Popular Categories */}
+                                     className={`popular_categories body-sub-titles regularfont ${selectedHomeContent == "category" ? 'active' : ''}`}>
                                         <FormattedMessage id="POPULAR"/>
                                         </span>
                                 </div>
@@ -970,6 +969,9 @@ function Home() {
                     </section>
                     <section className="latest-products-second-wrapper">
                         <div className="row mt-5 mt-lg-4 mt-xxl-5 g-4">
+                        {!latestItems.length && <div className='w-100 text-center mt-4'>
+                            <p className=''>No products available</p>
+                        </div>}
                         {latestItems && latestItems.map((product: any, index: any) => {
                             return (
                                 <div className="col-12 col-sm-6 col-lg-3 mb-4" key={index}>
