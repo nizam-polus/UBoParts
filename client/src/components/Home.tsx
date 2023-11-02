@@ -679,12 +679,12 @@ function Home() {
                                 <>
                                     <div className="col-12 col-sm-6" onClick={() => router.push('/request')}>
                                         <div className="specific_part">
-                                            <h3 className="text-white bg-image-text semifont m-0 selling-text">Need A <br />Specific Part?</h3>
+                                            <h3 className="text-white bg-image-text semifont m-0 selling-text"><FormattedMessage id="NEED_A" /> <br /><FormattedMessage id="SPECIFIC_PART"/></h3>
                                         </div>
                                     </div>
                                     <div className="col-12 col-sm-6 my-3 my-md-0" onClick={() => router.push('/seller-registration')}>
                                         <div className="start_selling">
-                                            <h3 className="text-white bg-image-text semifont m-0 selling-text">Start Selling <br />With Us</h3>
+                                            <h3 className="text-white bg-image-text semifont m-0 selling-text"><FormattedMessage id="START_SELL"/><br /><FormattedMessage id="WITH_US"/></h3>
                                         </div>
                                     </div>
                                 </>
