@@ -10,7 +10,7 @@ const getToken = () => {
     }
 }
 
-const token = 'f514abac9b5d891002239c6ff2069908f06f868662d9f36d7b7e25e650cb007419f890453d4f63de9b023a6c72b1946f4a05070ef5d1a601732f304a4bf4b106b091f059cce346e0eb008e11c743600cdaf04c3ae74ae195841b957b98b36935473ea98219d1d7d2a0378982ff22b69fd4a918142b3c7b3f6314bb32fb8eba36';
+const token = 'f7a6b0263f2c433d17994cefee193b9d8e6a7fed0daa9ae53599bd1f5d2d63ea1a2b00eeea638bff0833d169d8da8413ef49cc5ac03e1e601025c924e93c9039b07a384ad6fee46b1069c79d34b68951f10580b87d59142351ae682cf14a091c81acff1ed6c2ff62e66e966e62d9a6226bbbcac88961692f5bf7dd5378e47c0d';
 
 const headers = {
     Authorization: `Bearer ${token}`,
@@ -47,7 +47,7 @@ const APIs = {
     searchProducts: (make: string, model: string, year: string, category: string, filter: any, sellerid = '') => {
         return axios.get(
             BACKEND_URL + `products?populate=*` + `${filter.sort}&pagination[page]=${filter.page}&pagination[pageSize]=18` + 
-                `&filters[$and][0][make][id][$eq]=${make}` +
+                `${make && `&filters[$and][0][make][id][$eq]=${make}`}` +
                 `${model && `&filters[$and][1][model][id][$eq]=${model}`}` + 
                 `${year && '&filters[$and][2][year][id][$eq]='+year}${category && `&filters[$and][][category][category_name][$eq]=${category}`}` + 
                 `${sellerid && '&filters[$and][3][seller_id][$ne]=' + sellerid}`, {headers}

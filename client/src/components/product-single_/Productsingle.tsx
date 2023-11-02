@@ -304,11 +304,19 @@ function Productsingle() {
                                                                 }                                                              
                                                             }}
                                                             />
-                                                        <span className="input-group-btn minus-icon semifont" 
-                                                            onClick={() => setQuantity(Number(quantity) + 1)}
-                                                        >
-                                                            <i className="fa fa-plus mini-text-3" aria-hidden="true"></i>
-                                                        </span>
+                                                            { quantity == stockCount ? 
+                                                                <span className="input-group-btn minus-icon semifont" 
+                                                                style={{cursor: "not-allowed"}}
+                                                                >
+                                                                    <i className="fa fa-plus mini-text-3" aria-hidden="true"></i>
+                                                                </span>
+                                                                :
+                                                                <span className="input-group-btn minus-icon semifont" 
+                                                                onClick={() => setQuantity(Number(quantity) + 1)}
+                                                                >
+                                                                <i className="fa fa-plus mini-text-3" aria-hidden="true"></i>
+                                                                </span>
+                                                            }
                                                     </div>
                                                 </div>
                                                 <div className="col-8 col-md-8 col-lg-12 col-xl-7">

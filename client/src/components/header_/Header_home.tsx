@@ -5,12 +5,13 @@ import AppImage from '../shared/AppImage';
 import Forgotpass from '../forgot/Forgotpass';
 import Login from '../account_/Login';
 import { useRouter } from 'next/router';
-import Link from 'next/dist/client/link';
+import Link from 'next/link';
 import APIs from '~/services/apiService';
 import { UserContext } from '../account_/UserContext';
 import { BASE_URL } from 'configuration';
 import Dropdown from '~/components/header/Dropdown';
 import { useSetLocale } from '~/services/i18n/hooks';
+import { FormattedMessage } from 'react-intl';
 
 
 function Header_home(props: any) {
@@ -30,6 +31,15 @@ function Header_home(props: any) {
             image: "https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg",
             TitleShort: "EN"
         })
+        let storedLocal: any = localStorage.getItem("locale")
+        let storedCaps: any = localStorage.getItem("localCaps")
+        if(storedCaps){
+            setSelectedLanguage(storedCaps);
+        }else{
+            setSelectedLanguage("EN")
+        }
+        setLocale(storedLocal)
+        
     }, []);
 
     useEffect(() => {
@@ -77,6 +87,8 @@ function Header_home(props: any) {
         setLocale(item.value);
         setSelectedLanguage(item.TitleShort);
         setLanguage(item);
+        localStorage.setItem("locale", item.value)
+        localStorage.setItem("localCaps", item.TitleShort)
     };
 
     let languageItems = [
@@ -117,13 +129,13 @@ function Header_home(props: any) {
                         </div>
                         <div className="bar w-100 bar-mobile">
                             <ul style={{display: `${isAdmin? "none" : ""}`}}>
-                                <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/homepage">Home</Link></li>
-                                <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/shop">Shop</Link></li>
-                                <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/about_us_">About us</Link></li>
-                                <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/request">Request</Link></li>
-                                <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/dismantle_car">Dismantle Car</Link></li>
-                                {!userToken && <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/seller-registration">Start Selling</Link></li>}
-                                {!userToken && <li className="menu_font_size regularfont"><button type="button" onClick={showLoginModal} className="ub_login">Login</button></li>}
+                                <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/homepage"><span className='pointer'><FormattedMessage id="HOME"/></span></Link></li>
+                                <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/shop"><span className='pointer'><FormattedMessage id="SHOP"/></span></Link></li>
+                                <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/about_us_"><span className='pointer'><FormattedMessage id="ABOUT_US"/></span></Link></li>
+                                <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/request"><span className='pointer'><FormattedMessage id="REQUEST"/></span></Link></li>
+                                <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/dismantle_car"><span className='pointer'><FormattedMessage id="DISMANTLE"/></span></Link></li>
+                                {!userToken && <li className="menu_font_size regularfont" onClick={() =>setIsOpen(false)}><Link href="/seller-registration"><span className='pointer'><FormattedMessage id="START_SELL"/></span></Link></li>}
+                                {!userToken && <li className="menu_font_size regularfont"><button type="button" onClick={showLoginModal} className="ub_login"><span className='pointer'><FormattedMessage id="LOGIN"/></span></button></li>}
                                 {/*props.userToken && <li className="menu_font_size regularfont"> 
                                 <a href=""><AppImage src="/images/svg/my-account.svg" className="my-account"/></a></li>*/}
                             </ul>
@@ -179,7 +191,7 @@ function Header_home(props: any) {
                         {userToken && 
                             <div className="bar w-27 d-flex flex-row ubo-menu-wrapper">
                                 <div className='bar-mobile-myaccount'>
-                                    <button className="btn border-0 menu_font_size regularfont menu-color" onClick={() => setIsOpen(!isOpen)}>My Account</button>
+                                    <button className="btn border-0 menu_font_size regularfont menu-color" onClick={() => setIsOpen(!isOpen)}><FormattedMessage id="MY_ACCOUNT"/></button>
                                     {isOpen && (
                                         <div className='position-absolute menu-dropdown account-dropdown'>
                                             <div style={{display: `${isAdmin? "none" : "block"}`}} className='dropdownitem'>
@@ -189,7 +201,7 @@ function Header_home(props: any) {
                                                         router.push(route);
                                                         setIsOpen(!isOpen);
                                                     }}
-                                                >Dashboard</span>
+                                                ><FormattedMessage id="DASHBOARD"/></span>
                                             </div>
                                             <div style={{display: `${isAdmin? "none" : "block"}`}} className='dropdownitem'>
                                                 <span className='menu_font_size regularfont pointer' 
@@ -197,13 +209,13 @@ function Header_home(props: any) {
                                                         router.push('/profile_');
                                                         setIsOpen(!isOpen);
                                                     }}
-                                                >Profile</span>
+                                                ><FormattedMessage id="PROFILE"/></span>
                                             </div>
                                             <div className='dropdownitem'>
                                                 <span className='menu_font_size regularfont pointer' 
                                                     style={{zIndex: 2, position: 'relative'}} 
                                                     onClick={logout}
-                                                >Logout</span>
+                                                ><FormattedMessage id="LOGOUT"/></span>
                                             </div>
                                         </div>
                                     )}

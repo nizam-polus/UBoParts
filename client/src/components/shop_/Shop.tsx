@@ -45,12 +45,17 @@ function Shop() {
     const [pageCount, setPageCount] = useState();
     const [sortState, setSortState] = useState("sort[0]=createdAt:desc")
     const [viewFilter, setViewFilter] = useState(true)
+    const [sellerId, setSellerId] = useState("")
     
     const router = useRouter();
     const { HomeMakeId } : any = router.query;
 
     if (typeof window !== 'undefined') {
-        (HomeMakeId && HomeMakeId !== 'undefined') && localStorage.setItem('makeId', HomeMakeId);
+        if (HomeMakeId && HomeMakeId !== 'undefined') {
+            localStorage.setItem('makeId', HomeMakeId);
+            localStorage.removeItem('modelId');
+            localStorage.removeItem('yearId');
+        };
     }
     
     const categoriesArray = (resData: any) => {
@@ -66,6 +71,7 @@ function Shop() {
     }
 
     useEffect(() => {
+        setSellerId(user.user_type == "seller" ? user.id : "")
         setSearchedProducts([]);
         let makeId, modelId, yearId, category, articleNumber;
         APIs.getCarMake().then((response: any) => {
@@ -88,7 +94,7 @@ function Shop() {
             } else if (makeId) {
                 searchProducts(makeId, modelId, yearId, category)
             } else {
-                getAllProducts();
+                // getAllProducts();
             }
         }).catch((error) => {
             setError(error);
@@ -134,7 +140,7 @@ function Shop() {
     }
 
     const searchProducts = (make: any, model: any, year: any, category: any) => {
-        APIs.searchProducts(make, model, year, category, {sort: '&sort[0]=createdAt:desc', page: "1"}).then((response: any) => {
+        APIs.searchProducts(make, model, year, category, {sort: '&sort[0]=createdAt:desc', page: "1"}, sellerId).then((response: any) => {
             setSearchedProducts(response.data.data);
             let pagination = response.data.meta.pagination
             setPagination(pagination);
@@ -147,7 +153,7 @@ function Shop() {
     }
 
     const getAllProducts = () => {
-        APIs.getAllPaginationProducts("1",sortState).then(response => {
+        APIs.getAllPaginationProducts("1",sortState,sellerId).then(response => {
             let pagination = response.data.meta.pagination;
             setPageCount(response.data.meta.pagination.pageCount)
             setPageRange(pageRangeFinder(pagination.pageCount));
@@ -254,7 +260,8 @@ function Shop() {
             categories, filterCategory, 
             filterSubcategory, 
             {min: minPrice, max: maxPrice}, 
-            {sort: '&sort[0]=createdAt:desc', page: '1'}
+            {sort: '&sort[0]=createdAt:desc', page: '1'},
+            sellerId
         ).then(response => {
             let pagination = response.data.meta.pagination;
             setPageRange(pageRangeFinder(pagination.pageCount));
@@ -341,7 +348,7 @@ function Shop() {
         setSearchedProducts([]);
         let vehicleDetails = {make: selectedMake, model: selectedModel, year: selectedYear}
         if (filterCategory.length > 0) {
-          APIs.searchFilter(vehicleDetails, categories, filterCategory, filterSubcategory, { min: minPrice, max: maxPrice }, { sort: sortState, page: '1' })
+          APIs.searchFilter(vehicleDetails, categories, filterCategory, filterSubcategory, { min: minPrice, max: maxPrice }, { sort: sortState, page: '1' }, sellerId)
             .then((response) => {
               let pagination = response.data.meta.pagination;
               setPageRange(pageRangeFinder(pagination.pageCount));
@@ -352,7 +359,7 @@ function Shop() {
             .catch((err) => console.log(err));
         } else {
             if(selectedMake){
-                APIs.searchProducts(selectedMake, selectedModel, selectedYear, selectedCategory, { sort: sortState, page: '1' })
+                APIs.searchProducts(selectedMake, selectedModel, selectedYear, selectedCategory, { sort: sortState, page: '1' }, sellerId)
                 .then((response: any) => {
                   setSearchedProducts(response.data.data);
                   let pagination = response.data.meta.pagination;
@@ -365,15 +372,22 @@ function Shop() {
                   setLoading(false);
                 });
             } else{
-                APIs.getAllPaginationProducts("1",sortState).then(response => {
-                    let pagination = response.data.meta.pagination;
-                    setPageCount(response.data.meta.pagination.pageCount)
-                    setPageRange(pageRangeFinder(pagination.pageCount));
-                    setPagination(pagination);
-                    setSearchedProducts(response.data.data);
-                })
+                
+                let articleNumber,makeId, modelId, yearId;
+                articleNumber = localStorage.getItem('article') || '';
+                makeId = localStorage.getItem('makeId') || '';
+                modelId = localStorage.getItem('modelId') || '';
+                yearId = localStorage.getItem('yearId') || '';
+                if(!articleNumber && !makeId && !modelId && !yearId){
+                    APIs.getAllPaginationProducts("1",sortState, user.user_type == "seller" ? user.id : "").then(response => {
+                        let pagination = response.data.meta.pagination;
+                        setPageCount(response.data.meta.pagination.pageCount)
+                        setPageRange(pageRangeFinder(pagination.pageCount));
+                        setPagination(pagination);
+                        setSearchedProducts(response.data.data);
+                    })
+                }
             }
-          
         }
       }, [sortState]);
 
@@ -408,7 +422,7 @@ function Shop() {
             // Update the page number here
             setPageNumber(page);
         }
-        APIs.getAllPaginationProducts(page, sortState).then(response => {
+        APIs.getAllPaginationProducts(page, sortState, sellerId).then(response => {
             let pagination = response.data.meta.pagination;
             setPageRange(pageRangeFinder(pagination.pageCount));
             setPagination(pagination);
@@ -667,7 +681,7 @@ function Shop() {
                                             </div>
                                         </div>
                                         <div className="row g-4 pt-3">
-                                            {searchedProducts.filter((item: any, index: any) => item.attributes.seller_id !== user.id).map((product: any, index: any) => {
+                                            {searchedProducts.map((product: any, index: any) => {
                                                 return (
                                                     <div className="col-12 col-sm-6 col-lg-4  mb-4" key={index}>
                                                     {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null)&& (
