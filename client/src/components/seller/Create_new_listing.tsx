@@ -522,11 +522,11 @@ function Create_new_listing() {
     const printBarcode = () =>{
         const input = componentRef.current;
         if (input) {
-          const mainPdf = new jsPDF('landscape', 'in', [4, 2], true);
+          const mainPdf = new jsPDF('landscape', 'in', [4.5, 2.5], true);
           html2canvas(input, { logging: true, allowTaint: false, useCORS: true, onclone: function (clonedDoc: any) {
            } }).then((canvas) => {
             const imgData = canvas.toDataURL('image/png');
-            mainPdf.addImage(imgData, 'PNG', 0, 0, 4 , 2 );
+            mainPdf.addImage(imgData, 'PNG', 0, 0, 4.5 , 2.5 );
             const pdfBlob = mainPdf.output('blob');
             const pdfUrl = URL.createObjectURL(pdfBlob);
             const newWindow : any= window.open(pdfUrl, '_blank', 'width=600,height=800');
@@ -780,7 +780,7 @@ function Create_new_listing() {
                                                             <div className='d-flex align-items-center justify-content-center flex-column ubo-barcode-container'
                                                                 ref={componentRef}
                                                                 >
-                                                                <div className="details d-flex flex-column flex-sm-row" style={{ width: "100%", fontWeight: "bolder", padding: "0px 10px 0 10px", fontSize: "14px" }}>
+                                                                <div className="details d-flex flex-column flex-sm-row" style={{ width: "100%", fontWeight: "bolder", padding: "0px 10px 0 10px", fontSize: "16px" }}>
                                                                     <div className='d-flex justify-content-between' style={{ minWidth: "180px" }}>
                                                                         {listBarcode && <Qrgenerator qrValue={listBarcode} />}
                                                                     </div>
