@@ -7,6 +7,7 @@ import { BASE_URL } from 'configuration';
 import Link from 'next/dist/client/link';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
+import { FormattedMessage } from 'react-intl';
 
 function Profile() {
 
@@ -156,7 +157,7 @@ function Profile() {
                     <section className="profile-wrapper">
                         <div className="row mt-5">
                             <div className="col">
-                                <p className="semifont bg-image-text custom-color-8 text-center">Profile</p>
+                                <p className="semifont bg-image-text custom-color-8 text-center"><FormattedMessage id="PROFILE"/></p>
                             </div>
                         </div>
                         <div className="row mt-3 ">
@@ -182,12 +183,12 @@ function Profile() {
                                         <table className="table profile-table-1 coulmn-bg-color-1 rounded-2">
                                             <tbody>
                                                 <tr>
-                                                    <th colSpan={2} className="px-5 pt-3 pb-3 custom-color-3 regularfont subtitles border-top-0 border-bottom">Personal Details</th>
+                                                    <th colSpan={2} className="px-5 pt-3 pb-3 custom-color-3 regularfont subtitles border-top-0 border-bottom"><FormattedMessage id="PERSONAL_DETAILS"/></th>
                                                 </tr>
                                             
                                                 <tr className="double">
                                                     <td className='pl-5 pr-xl-3 pr-md-3 pr-5 pt-3 pb-2'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">First Name <span className="required">*</span></label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="FIRST_NAME"/><span className="required">*</span></label>
                                                         <input type="text" value={firstname}
                                                             className={`form-control input-bg-color-2 products-name ${incomplete && !firstname ? 'required-field' : 'border-0' }`}
                                                             name="first-name" placeholder="First Name"
@@ -195,7 +196,7 @@ function Profile() {
                                                         />
                                                     </td>
                                                     <td className='pr-5 pl-xl-3 pl-md-3 pl-5 pt-3 pb-2'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Last Name <span className="required">*</span></label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="LAST_NAME"/> <span className="required">*</span></label>
                                                         <input type="text" value={lastname}
                                                             className={`form-control input-bg-color-2 products-name ${incomplete && !lastname ? 'required-field' : 'border-0' }`}
                                                             name="last-name" placeholder="Last Name"
@@ -205,14 +206,14 @@ function Profile() {
                                                 </tr>
                                                 <tr className="double">
                                                     <td className="pl-5 pr-xl-3 pr-md-3 pr-5 pb-0 pb-xl-5 pb-md-5 border-0">
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Email Address <span className="required">*</span></label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="EMAIL_ADDRESS"/> <span className="required">*</span></label>
                                                         <input type="text" value={email} disabled
                                                             className={`form-control input-bg-color-2 products-name ${incomplete && !email ? ' required-field' : 'border-0' }`} 
                                                             name="email-address" placeholder="Email Address"
                                                         />
                                                     </td>
                                                     <td className="pr-5 pl-xl-3 pl-md-3 pl-5 pb-5 pb-xl-5 pb-md-5 border-0">
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Phone <span className="required">*</span></label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="PHONE"/> <span className="required">*</span></label>
                                                         <input
                                                             type="text"
                                                             value={phone}
@@ -236,7 +237,7 @@ function Profile() {
 
                                                 <tr>
                                                     <th colSpan={2} className="px-5 pt-3 pb-3 custom-color-3 regularfont subtitles border-top-0 border-bottom ">
-                                                        <div className="float-left pt-2">Address</div>
+                                                        <div className="float-left pt-2"><FormattedMessage id="ADDRESS"/></div>
                                                         {/* <div className="float-right">
                                                             <button type="button" 
                                                                 className="custom-color-7 boldfont mini-text-3 rounded border-0 button-bg-color-1 pb-2 pt-2 px-5"
@@ -247,7 +248,7 @@ function Profile() {
                                                 <tr className="single">
                                                     <td colSpan={2}>
                                                         <div className="mb-3 px-sm-3 pt-2">
-                                                            <label className="custom-color-2 regularfont products-name pb-2">Street Address <span className="required">*</span></label>
+                                                            <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="STREET_ADDRESS"/> <span className="required">*</span></label>
                                                             <input type="text" value={address_1}
                                                                 className={`form-control input-bg-color-2 products-name ${incomplete && !address_1 ? ' required-field' : 'border-0' }`} 
                                                                 name="street-name" placeholder="House number and street name"
@@ -265,7 +266,7 @@ function Profile() {
                                                 </tr>
                                                 <tr className="double">
                                                     <td className='pl-5 pr-xl-3 pr-md-3 pr-5'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">City <span className="required">*</span></label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="CITY"/> <span className="required">*</span></label>
                                                         <input type="text" value={city}
                                                             className={`form-control input-bg-color-2 products-name ${incomplete && !city ? ' required-field' : 'border-0' }`}
                                                             name="city" placeholder="City"
@@ -273,7 +274,7 @@ function Profile() {
                                                         />
                                                     </td>
                                                     <td className='pr-5 pl-xl-3 pl-md-3 pl-5'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">State <span className="required">*</span></label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="STATE"/> <span className="required">*</span></label>
                                                         <input type="text" value={state}
                                                             className={`form-control input-bg-color-2 products-name ${incomplete && !state ? ' required-field' : 'border-0' }`} 
                                                             name="state" placeholder="State"
@@ -283,7 +284,7 @@ function Profile() {
                                                 </tr>
                                                 <tr className="double">
                                                     <td className="pb-0 pb-xl-5 pb-md-5 pl-5 pr-xl-3 pr-md-3 pr-5">
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Country <span className="required">*</span></label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="COUNTRY"/> <span className="required">*</span></label>
                                                             <select className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !country ? 'required-field' : 'border-0'}`}
                                                                 style={{height: '3.5rem'}} name="country" value={country}
                                                                 onChange={(e) => setCountry(e.target.value)} 
@@ -294,7 +295,7 @@ function Profile() {
                                                             </select>
                                                     </td>
                                                     <td className="pb-5 pr-5 pl-xl-3 pl-md-3 pl-5">
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Postcode <span className="required">*</span></label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="POST_CODE"/> <span className="required">*</span></label>
                                                         <input type="text" value={postcode}
                                                             className={`form-control input-bg-color-2 products-name ${incomplete && !postcode ? ' required-field' : 'border-0' }`}
                                                             name="postcode" placeholder="Postcode"
@@ -310,21 +311,21 @@ function Profile() {
                                             <button type="submit" 
                                                 className="custom-color-7 mediumfont rounded border-0 button-bg-color-1 pb-2 pt-2 px-5 d-flex align-items-center justify-content-center ubo-btn-mobile"
                                                 onClick={(e) => handleProfileSubmit(e)}
-                                            >Save</button>
+                                            ><FormattedMessage id="SAVE"/></button>
                                         </div>
                                     </div>
                                     <div className="table-responsive">
                                         <table className="table profile-table-1 password-wrapper coulmn-bg-color-1 rounded mt-2 rounded-2">
                                             <tbody>
                                                 <tr>
-                                                    <th className="px-5 pt-3 pb-3 custom-color-3 regularfont subtitles border-top-0 border-bottom">Change Password</th>
+                                                    <th className="px-5 pt-3 pb-3 custom-color-3 regularfont subtitles border-top-0 border-bottom"><FormattedMessage id="CHANGE_PASSWORD"/></th>
                                                 </tr>
                                                 <div className='ml-4 mb-0 mt-4'>
                                                     {pwdmismatch && <p className='required-text' id='required'>* Password does not match</p>}
                                                 </div>
                                                 <tr className="single">
                                                     <td className="px-5">
-                                                        <label className="custom-color-2 regularfont products-name pb-2">New Password <span className="required">*</span></label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="NEW_PASSWORD"/> <span className="required">*</span></label>
                                                         <span className="password-wrapper-field">
                                                             <input type="password" value={newpwd}
                                                                 className={`form-control input-bg-color-2 products-name ${incompletePwd && !newpwd ? ' required-field' : 'border-0' }`} 
@@ -337,7 +338,7 @@ function Profile() {
                                                 </tr>
                                                 <tr className="single">
                                                     <td className="px-5 pb-5">
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Confirm Password <span className="required">*</span></label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="CONFIRM_PASSWORD"/> <span className="required">*</span></label>
                                                         <span className="password-wrapper-field">
                                                             <input type="password" value={confrmpwd}
                                                                 className={`form-control input-bg-color-2 products-name ${incompletePwd && !confrmpwd ? ' required-field' : 'border-0' }`}
@@ -355,7 +356,7 @@ function Profile() {
                                             <button type="submit" 
                                                 className="custom-color-7 mediumfont rounded border-0 button-bg-color-1 pb-2 pt-2 px-5 d-flex align-items-center justify-content-center ubo-btn-mobile"
                                                 onClick={(e) => handlePwdChange(e)}
-                                            >Change Password</button>
+                                            ><FormattedMessage id="CHANGE_PASSWORD"/></button>
                                         </div>
                                     </div>
                                 </form>

@@ -8,6 +8,7 @@ import { useRef } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { display } from "html2canvas/dist/types/css/property-descriptors/display";
+import { FormattedMessage } from "react-intl";
 
 
 function OrderDetails() {
@@ -92,14 +93,14 @@ function OrderDetails() {
                                     </header>
                                 <div className="d-flex justify-content-between m-0 pt-3 ml-sm-3">
                                     <div className="col-8 p-0">
-                                        <span className="custom-color-2 boldfont body-sub-titles">Order details 
+                                        <span className="custom-color-2 boldfont body-sub-titles"><FormattedMessage id="ORDER_DETAILS"/> 
                                             <span className="pl-1">#</span>
                                             <span className=" order-no regularfont body-sub-titles">{orderId}</span>
                                         </span>
                                     </div>
                                    
                                     <div className="col-4 d-flex flex-row-reverse">
-                                        <button onClick={downloadPdf}  className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2" style={{visibility: hide ? "visible" : "hidden"}}>Download</button>
+                                        <button onClick={downloadPdf}  className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2" style={{visibility: hide ? "visible" : "hidden"}}><FormattedMessage id="DOWNLOAD"/></button>
                                     </div>
                                     <br />
                                 </div>
@@ -110,28 +111,28 @@ function OrderDetails() {
                                                 <span className="custom-color-2 semifont body-sub-titles-1">Order summary</span><br />
                                             </div> */}
                                             <div className="row m-0 px-0">
-                                                <div className="col-6 col-sm-3">
+                                                <div className="col-6 col-sm-7">
                                                     <table >
                                                         <thead>
                                                             <tr>
-                                                                <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Order Date</th>
+                                                                <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3"><FormattedMessage id="ORDER_DATE"/></th>
                                                             </tr>
                                                             <tr>
-                                                                <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Order No</th>
+                                                                <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3"><FormattedMessage id="ORDER_NO"/></th>
                                                             </tr>
                                                             <tr>
-                                                                <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Invoice No</th>
+                                                                <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3"><FormattedMessage id="INVOICE_NO"/></th>
                                                             </tr>
                                                             <tr>
-                                                                <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Shipping</th>
+                                                                <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3"><FormattedMessage id="SHIPPING"/></th>
                                                             </tr>
                                                             <tr>
-                                                                <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3">Order Total</th>
+                                                                <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3"><FormattedMessage id="ORDER_TOTAL"/></th>
                                                             </tr>
                                                         </thead>
                                                     </table>
                                                 </div>
-                                                <div className="col-6 col-sm-9">
+                                                <div className="col-6 col-sm-5">
                                                     <table className="order-table">
                                                         <tbody>
                                                             <tr>
@@ -171,10 +172,10 @@ function OrderDetails() {
                                                 <table className="table order-table2">
                                                     <thead>
                                                         <tr>
-                                                            <td className="custom-color-2 boldfont body-sub-titles-2 pb-2 border-bottom">Item Summary</td>
-                                                            <td className="custom-color-2 boldfont body-sub-titles-2 pb-2 border-bottom text-center">Quantity</td>
-                                                            <td className="custom-color-2 boldfont body-sub-titles-2 pb-2 border-bottom text-center">Price</td>
-                                                            <td className="custom-color-2 boldfont body-sub-titles-2 pb-2 border-bottom text-center">Total Price</td>
+                                                            <td className="custom-color-2 boldfont body-sub-titles-2 pb-2 border-bottom"><FormattedMessage id="ITEM_SUMMARY"/></td>
+                                                            <td className="custom-color-2 boldfont body-sub-titles-2 pb-2 border-bottom text-center"><FormattedMessage id="QUANTITY"/></td>
+                                                            <td className="custom-color-2 boldfont body-sub-titles-2 pb-2 border-bottom text-center"><FormattedMessage id="PRICE"/></td>
+                                                            <td className="custom-color-2 boldfont body-sub-titles-2 pb-2 border-bottom text-center"><FormattedMessage id="TOTAL_PRICE"/></td>
                                                         </tr>
                                                     </thead>
                                                     <tbody className="text-center">
@@ -207,18 +208,18 @@ function OrderDetails() {
                                             <div className="row">
                                                 <div className="col-12">
                                                     <div className="col-auto">
-                                                        <p className="custom-color-2 semifont body-sub-titles-1">Delivery Address</p>
-                                                        <span className="custom-color-2  semifont mini-text-2">Street Address : </span><span className="custom-color-2 regularfont mini-text-2">{orderDetails[0]?.attributes?.address_housenumber}</span><br />
+                                                        <p className="custom-color-2 semifont body-sub-titles-1"><FormattedMessage id="DELIVERY_ADDRESS"/></p>
+                                                        <span className="custom-color-2  semifont mini-text-2"><FormattedMessage id="STREET_ADDRESS"/> : </span><span className="custom-color-2 regularfont mini-text-2">{orderDetails[0]?.attributes?.address_housenumber}</span><br />
                                                         {orderDetails[0]?.attributes?.address_apartment && 
                                                             <>
                                                                 <span className="custom-color-2 regularfont body-sub-titles-2">{orderDetails[0]?.attributes?.address_apartment}</span>
                                                                 <br />
                                                             </>
                                                         }
-                                                        <span className="custom-color-2  semifont mini-text-2 ">City : </span><span className="custom-color-2 regularfont mini-text-2">{orderDetails[0]?.attributes?.city}</span><br />
-                                                        <span className="custom-color-2  semifont mini-text-2">State : </span><span className="custom-color-2 regularfont mini-text-2">{orderDetails[0]?.attributes?.state}</span><br />
-                                                        <span className="custom-color-2  semifont mini-text-2">Country : </span><span className="custom-color-2 regularfont mini-text-2">{orderDetails[0]?.attributes?.country}</span><br />
-                                                        <span className="custom-color-2  semifont mini-text-2">Postcode : </span><span className="custom-color-2 regularfont mini-text-2">{orderDetails[0]?.attributes?.postcode}</span><br />
+                                                        <span className="custom-color-2  semifont mini-text-2 "><FormattedMessage id="CITY"/> : </span><span className="custom-color-2 regularfont mini-text-2">{orderDetails[0]?.attributes?.city}</span><br />
+                                                        <span className="custom-color-2  semifont mini-text-2"><FormattedMessage id="STATE"/> : </span><span className="custom-color-2 regularfont mini-text-2">{orderDetails[0]?.attributes?.state}</span><br />
+                                                        <span className="custom-color-2  semifont mini-text-2"><FormattedMessage id="COUNTRY"/> : </span><span className="custom-color-2 regularfont mini-text-2">{orderDetails[0]?.attributes?.country}</span><br />
+                                                        <span className="custom-color-2  semifont mini-text-2"><FormattedMessage id="POSTCODE"/> : </span><span className="custom-color-2 regularfont mini-text-2">{orderDetails[0]?.attributes?.postcode}</span><br />
                                                     </div>
                                                 </div>
                                             </div>

@@ -403,9 +403,11 @@
     "ABOUT_US": "Over Ons",
     "ABOUT_US_DISCRIPTION": "UBO Parts Inc is een in Nederland gevestigd online platform van derden, gespecialiseerd in autotechnologie. Onze missie is om alle deelnemers aan het Nederlandse auto-ecosysteem, met name autodemontagebedrijven, te empoweren door het beheer van hun reserveonderdelenactiviteiten te verbeteren. Wij streven ernaar reserveonderdelen van topkwaliteit te leveren, waardoor we de activiteiten efficiënt stroomlijnen en uitmuntendheid in de hele sector bevorderen.",
     "MEET_OUR_TEAM": "Maak kennis met ons professionele team",
+    "ABOUT_QUOTES": "De grootste manier om invloed uit te oefenen op een organisatie is door te focussen op leiderschapsontwikkeling. Er zijn vrijwel geen grenzen aan het potentieel van een organisatie die goede mensen rekruteert, hen tot leiders opleidt en hen voortdurend ontwikkelt",
     "CONTACT_US": "Neem contact met ons op",
     
     "REQUEST_PARTS": "Vraag onderdelen bij ons aan",
+    "REQUEST_PART": "Onderdelen aanvragen",
     "REQUEST_DISCRIPTION" : "Blader door ons uitgebreide aanbod met honderden merken en tienduizenden kwaliteitsonderdelen.",
     "PLATE_NO": "Plaat nummer",
     "AUTO_MODEL": "Automodel",
@@ -429,6 +431,8 @@
     "SUBMIT": "Indienen",
     
     "DISMANTLE_CAR": "Demonteer bij ons uw auto",
+    "DISMANTLE_YOUR": "Ontmantel uw",
+    "CAR_WITH_US": "Auto bij ons",
     "DRIVING_CONDITION": "Rijconditie",
     "DRIVABLE": "Rijdbaar",
     "NOT_DRIVABLE": "Niet rijdbaar",
@@ -440,6 +444,8 @@
     "CAR_IMAGE": "Auto afbeeldingen",
     "SELECT_COUNTRY": "Select Country",
     "NOTE": "Opmerking",
+
+    "FILL_YOUR_ACCOUNT_INFO": "Vul uw accountgegevens in",
     
     "LOGIN": "Log in",
     "LOGIN_DETAILS": "Welkom terug! Voer uw gegevens in",
@@ -467,6 +473,7 @@
     "DELETE" : "Verwijderen",
     "DELETING" : "Verwijderen...",
     "EDIT": "Bewerking",
+    "EDIT_LIST": "Lijst bewerken",
 
   "PLATE_NUMBER": "Plaat nummer",
   "LIST_NAME": "Lijstnaam",
@@ -488,6 +495,8 @@
   "LISTING_DESCRIPTION": "Beschrijving van vermelding",
   "CREATE_LISTING": "Maak een vermelding",
   "PRINT": "Afdrukken",
+  "SAVE": "Redden",
+  "SAVING": "Besparing..",
 
 
   "ORDER_HISTORY": "Bestelgeschiedenis",
@@ -496,8 +505,10 @@
   "ORDER_DATE": "Besteldatum",
   "STATUS": "Toestand",
   "COMPLETED": "Voltooid",
+  "ORDER_DETAILS": "Bestel Details",
 
   "ORDER_NO": "Bestelnr",
+  "SHIPPING": "Verzenden",
   "ORDER_TOTAL": "totale bestelling",
   "INVOICE_NO": "Factuur nr",
   "ITEM_SUMMARY": "artikel Samenvatting",
@@ -550,7 +561,25 @@
   "ADS_WITH_US": "Adverteren bij ons",
   "COOKIES": "Cookies",
   "NEWSLETTER_DETAILS": "Vul uw e-mailadres in om u te abonneren op onze nieuwsbrief en blijf op de hoogte van kortingen en speciale aanbiedingen.",
-  "FOLLOW_US": "Volg ons op sociale netwerken"
+  "FOLLOW_US": "Volg ons op sociale netwerken",
+
+  "SELL_QUALITY_PARTS": "Verkoop kwaliteitsonderdelen",
+  "CREATE_PASSWORD": "Maak een wachtwoord",
+  "ACCEPT_TERMS_AND_CONDITIONS": "Accepteer algemene voorwaarden",
+
+
+  "PERSONAL_DETAILS": "Persoonlijke gegevens",
+  "NEW_PASSWORD": "nieuw paswoord",
+  "CHANGE_PASSWORD": "Verander wachtwoord",
+
+  "OUR_ADDRESS": "Our Address",
+  "OPENING_HOURS": "Opening Hours",
+  "LEAVE_US_A_MESSGE": "Leave Us a Message",
+  "YOUR_NAME": "Your Name",
+  "SUBJECT": "Subject",
+  "MESSAGE": "Message"
+
+  
 
   }
   

@@ -235,7 +235,7 @@ function SellerRegistration() {
                                                     </tr>
                                                     <tr className="double">
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Create Password  <span className="required">*</span></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="CREATE_PASSWORD"/>  <span className="required">*</span></label>
                                                             <input type="password" value={password} disabled={user.id}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !password ? 'required-field' : 'border-0'}`}
                                                                 name="password" placeholder="Create Password" 
@@ -247,7 +247,7 @@ function SellerRegistration() {
                                                             {(password.length < 6 && incomplete && !user.id) && <span className="required-text">Password must be at least 6 characters </span>}
                                                         </td>
                                                         <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Confirm Password  <span className="required">*</span></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="CONFIRM_PASSWORD"/>  <span className="required">*</span></label>
                                                             <input type="password" value={cnfrmPassword} disabled={user.id}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !cnfrmPassword ? 'required-field' : 'border-0'}`}
                                                                 name="c_password" placeholder="Confirm Password" 
@@ -258,7 +258,7 @@ function SellerRegistration() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Phone Number  <span className="required">*</span></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="PHONE_NO" />  <span className="required">*</span></label>
                                                             <input
                                                                 type="tel" 
                                                                 value={formData.phone_number}
@@ -276,7 +276,7 @@ function SellerRegistration() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Account Type  <span className="required">*</span></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="ACCOUNT_TYPE"/> <span className="required">*</span></label>
                                                             <select className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.Account_type ? 'required-field' : 'border-0'}`}
                                                                 style={{height: '3.5rem'}} name="Account_type" value={formData.Account_type}
                                                                 onChange={(e) => handleFormChange(e)}
@@ -289,7 +289,7 @@ function SellerRegistration() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Account Title  <span className="required">*</span></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="ACCOUNT_TITLE"/> <span className="required">*</span></label>
                                                             <input type="text" value={formData.Account_title}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.Account_title ? 'required-field' : 'border-0'}`}
                                                                 name="Account_title" placeholder="Account Title." 
@@ -299,7 +299,7 @@ function SellerRegistration() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Bank Name  <span className="required">*</span></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="BANK_NAME"/>  <span className="required">*</span></label>
                                                             <input type="text" value={formData.Bank_name}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.Bank_name ? 'required-field' : 'border-0'}`}
                                                                 name="Bank_name" placeholder="bank Name." 
@@ -309,7 +309,7 @@ function SellerRegistration() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Iban Number  <span className="required">*</span></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="IBAN_NO"/>  <span className="required">*</span></label>
                                                             <input
                                                                 type="text"
                                                                 value={formData.iban_number}
@@ -327,7 +327,7 @@ function SellerRegistration() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Company or Shop name  <span className="required">*</span></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="COMPANY_OR_SHOP_NAME"/>  <span className="required">*</span></label>
                                                             <input type="text" value={formData.company_name}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.company_name ? 'required-field' : 'border-0'}`}
                                                                 name="company_name" placeholder="shop Name." 
@@ -361,7 +361,7 @@ function SellerRegistration() {
                                                     }
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Country  <span className="required">*</span></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="COUNTRY"/> <span className="required">*</span></label>
                                                             <select className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.country ? 'required-field' : 'border-0'}`}
                                                                 style={{height: '3.5rem'}} name="country" value={formData.country}
                                                                 onChange={(e) => handleFormChange(e)} disabled={user.country}
@@ -375,7 +375,7 @@ function SellerRegistration() {
                                                     <tr className="single">
                                                         <td colSpan={2}>
                                                             <div className="mb-3">
-                                                                <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Street Address  <span className="required">*</span></label>
+                                                                <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="STREET_ADDRESS"/>  <span className="required">*</span></label>
                                                                 <input type="text" value={formData.streetaddress_housenumber} disabled={user.streetaddress_housenumber}
                                                                     className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.streetaddress_housenumber ? 'required-field' : 'border-0'}`} 
                                                                     name="streetaddress_housenumber" placeholder="House number and street name" 
@@ -393,7 +393,7 @@ function SellerRegistration() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">City  <span className="required">*</span></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="CITY"/>  <span className="required">*</span></label>
                                                             <input type="text" value={formData.city} disabled={user.city}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.city ? 'required-field' : 'border-0'}`}
                                                                 name="city" placeholder="City" 
@@ -403,7 +403,7 @@ function SellerRegistration() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">State  <span className="required">*</span></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="STATE"/>  <span className="required">*</span></label>
                                                             <input type="text" value={formData.state} disabled={user.state}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.state ? 'required-field' : 'border-0'}`}
                                                                 name="state" placeholder="State" 
@@ -413,7 +413,7 @@ function SellerRegistration() {
                                                     </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Postcode  <span className="required">*</span></label>
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="POST_CODE"/>  <span className="required">*</span></label>
                                                             <input type="text" value={formData.postcode} disabled={user.postcode}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.postcode ? 'required-field' : 'border-0'}`}
                                                                 name="postcode" placeholder="Postcode" 
@@ -427,7 +427,7 @@ function SellerRegistration() {
                                                                 <input type="checkbox" name="agreement" className="width-checkout"
                                                                     onChange={() => setAgreement(!agreement)}
                                                                 /> 
-                                                                Accept terms & conditons
+                                                                <FormattedMessage id="ACCEPT_TERMS_AND_CONDITIONS"/>
                                                             </label>
                                                             {(!agreement && incomplete) && <p className="required-text">Agree to the terms</p>}
                                                         </td>
@@ -436,7 +436,7 @@ function SellerRegistration() {
                                                         <td colSpan={2} className="">
                                                             <button type="submit" 
                                                                 className="place-quote text-white mediumfont body-sub-titles-1 rounded-lg border-0 button-bg-color-1 h-auto p-2"
-                                                            >Submit</button>
+                                                            ><FormattedMessage id="SUBMIT"/></button>
                                                         </td>
                                                     </tr>
                                                 </tbody>

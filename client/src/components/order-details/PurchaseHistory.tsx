@@ -3,6 +3,7 @@ import SellerSideBar from "../seller/SellerSideBar";
 import APIs from "~/services/apiService";
 import { UserContext } from "../account_/UserContext";
 import Link from "next/link";
+import { FormattedMessage } from "react-intl";
 
 function PurchaseHistory() {
 
@@ -44,16 +45,16 @@ function PurchaseHistory() {
                         <div className="col-12 col-md-9 p-0 p-sm-3">
                             <div className="coulmn-bg-color-1 rounded">
                                 <div className="row d-flex justify-content-between  m-0 p-2 pb-1 pt-3">
-                                    <div className="col-auto"><span className="custom-color-2 boldfont body-sub-titles">Purchase History</span></div>
+                                    <div className="col-auto"><span className="custom-color-2 boldfont body-sub-titles"><FormattedMessage id="PURCHASE_HISTORY"/></span></div>
                                 </div>
                                 <div className="row m-0 px-0">
                                     <div className="table-responsive">
                                         <table className="table m-0 purchase-history">
                                             <thead >
                                                 <tr>
-                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal pl-4 ps-3 pb-2 pt-2">Orders</th>
-                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Order Date</th>
-                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Status</th>
+                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal pl-4 ps-3 pb-2 pt-2"><FormattedMessage id="ORDERS"/></th>
+                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2"><FormattedMessage id="ORDER_DATE"/></th>
+                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2"><FormattedMessage id="STATUS"/></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -87,10 +88,10 @@ function PurchaseHistory() {
                                                     className="page-link border-0 regularfont mini-text-1"
                                                     href="#"
                                                 >
-                                                    <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> Previous
+                                                    <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> <FormattedMessage id="PREVIOUS"/>
                                                 </a> ) : 
                                                 (<span className="page-link border-0 regularfont mini-text-1 disabled custom-color-4">
-                                                    <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> Previous
+                                                    <i className="fa fa-angle-left custom-color-4 mini-text-1 m-1"></i> <FormattedMessage id="PREVIOUS"/>
                                                 </span>)
                                             }
                                         </li>
@@ -115,10 +116,10 @@ function PurchaseHistory() {
                                                     onClick={() => handlePageChange(currentPage + 1)}
                                                     className="page-link border-0 custom-color-3 regularfont mini-text-1"
                                                     href="#"
-                                                >Next <i className="fa fa-angle-right custom-color-3 mini-text-1 m-1"></i>
+                                                ><FormattedMessage id="NEXT"/><i className="fa fa-angle-right custom-color-3 mini-text-1 m-1"></i>
                                                 </a>) : 
                                                 (<span className="page-link border-0 custom-color-4 regularfont mini-text-1 disabled">
-                                                    Next <i className="fa fa-angle-right custom-color-4 mini-text-1 m-1"></i>
+                                                    <FormattedMessage id="NEXT"/> <i className="fa fa-angle-right custom-color-4 mini-text-1 m-1"></i>
                                                 </span>)
                                             }
                                         </li>

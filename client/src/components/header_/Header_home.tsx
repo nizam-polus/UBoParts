@@ -273,7 +273,7 @@ function Header_home(props: any) {
                 {router.pathname == '/request' && <div className="container">
                     <div className="row d-flex align-items-center header-middle-text pl-5">
                         <div className="col box w-100">
-                            <p className="semifont heading_text text-white">Request Parts<br /> With Us</p>
+                            <p className="semifont heading_text text-white"><FormattedMessage id="REQUEST_PART"/><br /> <FormattedMessage id="WITH_US"/></p>
                             <p className="lightfont sub-text-1 text-white">Browse our expansive selection<br /> featuring hundreds of brands and<br /> tens of thousands of quality parts.</p>
                         </div>
                     </div>
@@ -281,7 +281,7 @@ function Header_home(props: any) {
                 {router.pathname == '/dismantle_car' && <div className="container">
                     <div className="row d-flex align-items-center header-middle-text pl-5 ml-5">
                         <div className="col box w-100">
-                            <p className="semifont heading_text text-white">Dismantle Your<br /> Car With Us</p>
+                            <p className="semifont heading_text text-white"><FormattedMessage id="DISMANTLE_YOUR" /><br /> <FormattedMessage id="CAR_WITH_US" /></p>
                             <p className="lightfont sub-text-1 text-white">Browse our expansive selection<br /> featuring hundreds of brands and<br /> tens of thousands of quality parts.</p>
                         </div>
                     </div>
@@ -289,7 +289,7 @@ function Header_home(props: any) {
                 {router.pathname == '/seller-registration' && <div className="container">
                     <div className="row d-flex align-items-center header-middle-text pl-5 ml-5">
                         <div className="col box w-100">
-                            <p className="semifont heading_text text-white">Sell Quality Parts<br /> With Us</p>
+                            <p className="semifont heading_text text-white"><FormattedMessage id="SELL_QUALITY_PARTS"/><br /> <FormattedMessage id="WITH_US"/></p>
                             <p className="lightfont sub-text-1 text-white">Browse our expansive selection<br /> featuring hundreds of brands and<br /> tens of thousands of quality parts.</p>
                         </div>
                     </div>
