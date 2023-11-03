@@ -522,11 +522,11 @@ function Create_new_listing() {
     const printBarcode = () =>{
         const input = componentRef.current;
         if (input) {
-          const mainPdf = new jsPDF('landscape', 'in', [4, 2], true);
+          const mainPdf = new jsPDF('landscape', 'in', [4.5, 2.5], true);
           html2canvas(input, { logging: true, allowTaint: false, useCORS: true, onclone: function (clonedDoc: any) {
            } }).then((canvas) => {
             const imgData = canvas.toDataURL('image/png');
-            mainPdf.addImage(imgData, 'PNG', 0, 0, 4 , 2 );
+            mainPdf.addImage(imgData, 'PNG', 0, 0, 4.5 , 2.5 );
             const pdfBlob = mainPdf.output('blob');
             const pdfUrl = URL.createObjectURL(pdfBlob);
             const newWindow : any= window.open(pdfUrl, '_blank', 'width=600,height=800');
@@ -604,11 +604,11 @@ function Create_new_listing() {
                                                 </tr>
                                                 <tr className="double">
                                                     <td className='px-5 pt-4 pb-2'>
-                                                        <label className={`custom-color-2 regularfont products-name pb-2 ${incomplete && !selectedMake ? 'required-field' : 'border-0'}`}>
+                                                        <label className={`custom-color-2 regularfont products-name pb-2`}>
                                                             <FormattedMessage id="LISTING_MAKE" />
                                                             <span className="required">*</span>
                                                         </label><br />
-                                                        <select className="form-select input-bg-color-2 border-0 products-name custom-color-2" name="make" id="makeOption"
+                                                        <select className={`form-select input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !selectedMake ? 'required-field' : 'border-0'}`} name="make" id="makeOption"
                                                             value={selectedMake} onChange={handleMakeChange}>
                                                             <option value="" disabled={true}>Select Make</option>
                                                             {makesArray && makesArray.map((make: any, index: any) => (
@@ -780,7 +780,7 @@ function Create_new_listing() {
                                                             <div className='d-flex align-items-center justify-content-center flex-column ubo-barcode-container'
                                                                 ref={componentRef}
                                                                 >
-                                                                <div className="details d-flex flex-column flex-sm-row" style={{ width: "100%", fontWeight: "bolder", padding: "0px 10px 0 10px", fontSize: "14px" }}>
+                                                                <div className="details d-flex flex-column flex-sm-row" style={{ width: "100%", fontWeight: "bolder", padding: "0px 10px 0 10px", fontSize: "16px" }}>
                                                                     <div className='d-flex justify-content-between' style={{ minWidth: "180px" }}>
                                                                         {listBarcode && <Qrgenerator qrValue={listBarcode} />}
                                                                     </div>
@@ -882,7 +882,7 @@ function Create_new_listing() {
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2} className='px-5 pb-2 border-0'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="Listing_Description" />
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="LISTING_DESCRIPTION" />
                                                             <span className="required"> *</span>
                                                         </label>
                                                         <textarea onChange={handleDescriptionChange} 

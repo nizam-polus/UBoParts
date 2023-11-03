@@ -289,7 +289,7 @@ function Profile() {
                                                                 style={{height: '3.5rem'}} name="country" value={country}
                                                                 onChange={(e) => setCountry(e.target.value)} 
                                                             >
-                                                                <option className="mini-text-2" value="" disabled>Select Country <span className="required">*</span></option>
+                                                                <option className="mini-text-2" value="" disabled>Select Country </option>
                                                                 {countries.map((country: any) => (
                                                                 <option key={country.id} value={country.attributes.country}>{country.attributes.country}</option>))}
                                                             </select>

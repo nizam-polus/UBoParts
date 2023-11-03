@@ -97,7 +97,7 @@ function EditShop() {
                             <SellerSideBar />
                             <div className="col-12 col-md-9 p-0 p-sm-3">
                                 <div>
-                                    {incomplete && <p className='required-text text-danger' id='required'>* Please fill the required fields</p>}
+                                    {incomplete && <p className='required-text text-danger' id='required'>* <FormattedMessage id="FILL_REQUIRED_FIELDS"/></p>}
                                 </div>
                                 <div className="row">
                                     <div className="col-12">
@@ -214,7 +214,7 @@ function EditShop() {
                                                                         />
                                                                         <FormattedMessage id="ACCEPT_TERMS_AND_CONDITIONS"/>
                                                                     </label>
-                                                                    {(!agreement && incomplete) && <p className="required-text text-danger">Agree to the terms</p>}
+                                                                    {(!agreement && incomplete) && <p className="required-text text-danger"><FormattedMessage id="AGREE_TO_THE_TERMS" /></p>}
                                                                 </td>
                                                             </tr>
                                                             <tr className="single">

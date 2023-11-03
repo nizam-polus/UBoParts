@@ -10,6 +10,7 @@ import { BASE_URL } from 'configuration';
 import Qrgenerator from './Qrgenerator';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { FormattedMessage } from 'react-intl';
 
 const SellerListSingle = () => {
 
@@ -73,13 +74,13 @@ const SellerListSingle = () => {
       const printBarcode = () =>{
         const input = componentRef.current;
         if (input) {
-          const mainPdf = new jsPDF('landscape', 'in', [4, 2], true);
+          const mainPdf = new jsPDF('landscape', 'in', [4.5, 2.5], true);
           html2canvas(input, { logging: true, allowTaint: false, useCORS: true, onclone: function (clonedDoc: any) {
            } }).then((canvas) => {
             const imgData = canvas.toDataURL('image/png');
             const pdfWidth = 2; // 11cm in mm
             const pdfHeight = 4; // 5cm in mm
-            mainPdf.addImage(imgData, 'PNG', 0, 0, 4 , 2 );
+            mainPdf.addImage(imgData, 'PNG', 0, 0, 4.5 , 2.5 );
             // mainPdf.save('invoice.pdf');
             const pdfBlob = mainPdf.output('blob');
             const pdfUrl = URL.createObjectURL(pdfBlob);
@@ -136,11 +137,11 @@ const SellerListSingle = () => {
                                     }
                                 </p>
                                 <hr />
-                                <p className="semifont placeholderfontsize custom-color-5 mb-1">Key Features:</p>
+                                <p className="semifont placeholderfontsize custom-color-5 mb-1"><FormattedMessage id="KEY_FEATURES"/>:</p>
                                 <ul className="list-group custom-color-2 regularfont placeholderfontsize p-3 pt-0 pb-4">
-                                    <li className="mb-1">Make: {productData?.attributes?.make?.data?.attributes?.make_name}</li>
-                                    <li className="mb-1">Model: {productData?.attributes?.model?.data?.attributes?.model_name}</li>
-                                    <li>Year: {productData?.attributes?.year?.data?.attributes?.year}</li>
+                                    <li className="mb-1"><FormattedMessage id="MAKE"/>: {productData?.attributes?.make?.data?.attributes?.make_name}</li>
+                                    <li className="mb-1"><FormattedMessage id="MODEL"/>: {productData?.attributes?.model?.data?.attributes?.model_name}</li>
+                                    <li><FormattedMessage id="YEAR"/>: {productData?.attributes?.year?.data?.attributes?.year}</li>
                                 </ul>
                                 <hr />
                                 {/* <p className="custom-color-6 regularfont mini-text-2">See Full Specifications</p> */}
@@ -165,31 +166,31 @@ const SellerListSingle = () => {
                                                 <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">Kila International AUODEMONTAGEBED</span></div>
                                             </div> */}
                                             <div className="row pt-1 pb-1 border-bottom-row">
-                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Category </span></div>
+                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3"><FormattedMessage id="CATEGORY"/> </span></div>
                                                 <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">{productData?.attributes?.category?.data?.attributes?.category_name}</span></div>
                                             </div>
                                             <div className="row pt-1 pb-1 border-bottom-row">
-                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Sub Category </span></div>
+                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3"><FormattedMessage id="SUB_CATEGORY"/> </span></div>
                                                 <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">{productData?.attributes?.sub_category?.data?.attributes?.name}</span></div>
                                             </div>
                                             <div className="row pt-1 pb-1 border-bottom-row">
-                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Article  </span></div>
+                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3"><FormattedMessage id="ARTICLE"/>  </span></div>
                                                 <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">{productData?.attributes?.article_number}</span></div>
                                             </div>
                                             <div className="row pt-1 pb-1 border-bottom-row">
-                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Warehouse</span></div>
+                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3"><FormattedMessage id="WAREHOUSE"/></span></div>
                                                 <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">
                                                     <span>{productData?.attributes?.product_location_warehouse}</span>
                                                 </span></div>
                                             </div>
                                             <div className="row pt-1 pb-1 border-bottom-row">
-                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Status</span></div>
+                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3"><FormattedMessage id="STATUS"/></span></div>
                                                 <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">
                                                     <span>{productData?.attributes?.product_status}</span>
                                                 </span></div>
                                             </div>
                                             <div className="row pt-1 pb-1 border-bottom-row">
-                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Stock</span></div>
+                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3"><FormattedMessage id="STOCK"/></span></div>
                                                 <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">
                                                     <span>{productData?.attributes?.stock_count}</span>
                                                 </span></div>
@@ -203,21 +204,21 @@ const SellerListSingle = () => {
                                             <div className="qr-image" ref={componentRef}>
                                                 <div style={{ padding: "5px", background: `#ffcf00`, width: "415.7480315px", height: "188.97637795px" }} 
                                                     className='d-flex align-items-center justify-content-center flex-column'>
-                                                    <div className="details d-flex" style={{ width: "100%", fontWeight: "bolder", padding: "0px 10px 0 10px", fontSize: "14px" }}>
+                                                    <div className="details d-flex" style={{ width: "100%", fontWeight: "bolder", padding: "0px 10px 0 10px", fontSize: "16px" }}>
                                                         <div className='d-flex justify-content-between' style={{minWidth: "180px"}}>
                                                             <Qrgenerator qrValue={productData?.attributes?.part_no_barcode_no}/>
                                                         </div>
                                                         <div className='d-flex flex-column'>
                                                             <div>
-                                                                 <div className='text-right'>UBOPARTS</div>
-                                                                 <div className='text-right'>{productData?.attributes?.title.toUpperCase()}</div>
+                                                                 <div className='text-left'>UBOPARTS</div>
+                                                                 <div className='text-left'>{productData?.attributes?.title.toUpperCase()}</div>
                                                             </div>
-                                                            <div className='text-right' style={{minWidth: "110px"}}>
+                                                            <div className='text-left' style={{minWidth: "110px"}}>
                                                                 <div>REK NUMMER : {productData?.attributes?.product_location_warehouse}</div>
                                                                 {/* <div> {productData?.attributes?.product_location_warehouse}</div> */}
                                                             </div>
-                                                            <div className='text-right'>ARTICLE NO {productData?.attributes?.article_number}</div>
-                                                            <div className='text-right'>{productData?.attributes?.make?.data?.attributes?.make_name} {productData?.attributes?.model?.data?.attributes?.model_name} {productData?.attributes?.year?.data?.attributes?.year}</div>
+                                                            <div className='text-left'>ARTICLE NO {productData?.attributes?.article_number}</div>
+                                                            <div className='text-left'>{productData?.attributes?.make?.data?.attributes?.make_name} {productData?.attributes?.model?.data?.attributes?.model_name} {productData?.attributes?.year?.data?.attributes?.year}</div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -259,7 +260,7 @@ const SellerListSingle = () => {
                                                 style={{ width: "100%" }}
                                                 onClick={printBarcode}
                                             >
-                                                Print
+                                                <FormattedMessage id="PRINT"/>
                                             </button>
                                         </div>
                                         <div>
@@ -267,7 +268,7 @@ const SellerListSingle = () => {
                                                 onClick={handleDownload}
                                                 className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2 my-2" style={{ width: "100%" }}
                                             >
-                                                Download
+                                                <FormattedMessage id="DOWNLOAD"/>
                                             </button>
                                         </div>
                                     </div>
