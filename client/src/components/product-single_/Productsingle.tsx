@@ -13,6 +13,7 @@ import APIs from '~/services/apiService';
 import { BASE_URL } from 'configuration';
 import { UserContext } from '../account_/UserContext';
 import Login from '../account_/Login';
+import { FormattedMessage } from 'react-intl';
 
 function Productsingle() {
 
@@ -233,11 +234,11 @@ function Productsingle() {
                                     }
                                 </p>
                                 <hr/>
-                                <p className="semifont placeholderfontsize custom-color-5 mb-1">Key Features:</p>
+                                <p className="semifont placeholderfontsize custom-color-5 mb-1"><FormattedMessage id="KEY_FEATURES" />:</p>
                                 <ul className="list-group custom-color-2 regularfont placeholderfontsize p-3 pt-0 pb-4">
-                                    <li className="mb-1">Make: {productData?.attributes?.make?.data?.attributes?.make_name}</li>
-                                    <li className="mb-1">Model: {productData?.attributes?.model?.data?.attributes?.model_name}</li>
-                                    <li>Year: {productData?.attributes?.year?.data?.attributes?.year}</li>
+                                    <li className="mb-1"><FormattedMessage id="MAKE" />: {productData?.attributes?.make?.data?.attributes?.make_name}</li>
+                                    <li className="mb-1"><FormattedMessage id="MODEL" />: {productData?.attributes?.model?.data?.attributes?.model_name}</li>
+                                    <li><FormattedMessage id="YEAR" />: {productData?.attributes?.year?.data?.attributes?.year}</li>
                                 </ul>
                                 <hr/>
                                 {/* <p className="custom-color-6 regularfont mini-text-2">See Full Specifications</p> */}
@@ -255,9 +256,9 @@ function Productsingle() {
                                             
                                         </div>
                                         {stockCount > 0 ? 
-                                         <div className="col-auto"><span className="in-stock custom-color-6 rounded-pill px-3 pb-1 pt-1 d-flex mini-text-2 semifont">In Stock</span></div>
+                                         <div className="col-auto"><span className="in-stock custom-color-6 rounded-pill px-3 pb-1 pt-1 d-flex mini-text-2 semifont"><FormattedMessage id="IN_STOCK" /></span></div>
                                         :
-                                        <div className="col-auto"><span className="in-stock custom-color-6 rounded-pill px-3 pb-1 pt-1 d-flex mini-text-2 semifont">Out of Stock</span></div> }
+                                        <div className="col-auto"><span className="in-stock custom-color-6 rounded-pill px-3 pb-1 pt-1 d-flex mini-text-2 semifont"><FormattedMessage id="OUT_OF_STOCK" /></span></div> }
                                     </div>
                                     <div className="row mt-3">
                                         <div className="col-12">
@@ -266,15 +267,15 @@ function Productsingle() {
                                                 <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">Kila International AUODEMONTAGEBED</span></div>
                                             </div> */}
                                             <div className="row pt-1 pb-1 border-bottom-row">
-                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Category:</span></div>
+                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3"><FormattedMessage id="CATEGORY" />:</span></div>
                                                 <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">{productData?.attributes?.category?.data?.attributes?.category_name}</span></div>
                                             </div>
                                             <div className="row pt-1 pb-1 border-bottom-row">
-                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Article #</span></div>
+                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3"><FormattedMessage id="ARTICLE" /> #</span></div>
                                                 <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">{productData?.attributes?.article_number}</span></div>
                                             </div>
                                             <div className="row pt-1 pb-1 border-bottom-row">
-                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3">Weight:</span></div>
+                                                <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3"><FormattedMessage id="WEIGHT" />:</span></div>
                                                 <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">
                                                 {productData?.attributes?.product_weight} KG
                                                 </span>
@@ -331,20 +332,20 @@ function Productsingle() {
                                                             <a className="add-to-cart-1 button-bg-color-05 custom-color-7 rounded pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
                                                                 style={{ cursor: 'not-allowed' }}
                                                             >
-                                                                Out of Stock
+                                                                <FormattedMessage id="OUT_OF_STOCK" />
                                                             </a>
                                                         ) : addToCartCompleted ? (
                                                             <a className="add-to-cart-1 button-bg-color-1 custom-color-7 rounded pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
                                                                 style={{ cursor: 'pointer' }}
                                                                 onClick={handleAddToCart}
                                                             >
-                                                                Add to Cart
+                                                                <FormattedMessage id="ADD_TO_CART" />
                                                             </a>
                                                         ) : (
                                                             <a className="add-to-cart-1 button-bg-color-05 custom-color-7 rounded pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
                                                                 style={{ cursor: 'not-allowed' }}
                                                             >
-                                                                Adding to Cart
+                                                                <FormattedMessage id="ADDING_TO_CART" />
                                                             </a>
                                                         )
                                                     }
@@ -362,7 +363,7 @@ function Productsingle() {
                                 <div className="coulmn-bg-color-1 rounded p-4 pt-2 pb-5">
                                     <ul className="nav nav-tabs justify-content-center justify-content-md-start" id="myTab" role="tablist">
                                         <li className="nav-item" role="presentation">
-                                            <button className="nav-link active custom-color-3 regularfont body-sub-titles" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="home" aria-selected="true">Description</button>
+                                            <button className="nav-link active custom-color-3 regularfont body-sub-titles" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="home" aria-selected="true"><FormattedMessage id="DESCRIPTION" /></button>
                                         </li>
                                         {/* <li className="nav-item" role="presentation">
                                             <button className="nav-link custom-color-3 regularfont body-sub-titles" id="specifications-tab" data-bs-toggle="tab" data-bs-target="#specifications" type="button" role="tab" aria-controls="profile" aria-selected="false">Specifications</button>
@@ -394,7 +395,7 @@ function Productsingle() {
                     <section className="latest-products-wrapper">
                         <div className="row mt-5">
                             <div className="col-12 d-lg-flex justify-content-between">
-                                <div><span className="popular_categories body-sub-titles regularfont">Related Products</span>
+                                <div><span className="popular_categories body-sub-titles regularfont"><FormattedMessage id="RELATED_PRODUCTS"/></span>
                                 </div>
                                 {/* <div className="mt-3 mt-lg-0">
                                     <button type="button" className="saleoffers regularfont body-sub-titles active">All</button>

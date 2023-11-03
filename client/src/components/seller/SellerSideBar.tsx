@@ -16,7 +16,7 @@ function SellerSideBar() {
                     <thead>
                         <tr>
                             <th className="pt-0 p-2 pb-1 ps-0 custom-color-2 regularfont body-sub-titles border-bottom border-top-0">
-                                {user?.isApproved === 'Active' && (user?.role && user?.role?.type === 'seller') ? 'Shop Manager' : 'Buyer Dashboard'}</th>
+                                {user?.isApproved === 'Active' && (user?.role && user?.role?.type === 'seller') ? <FormattedMessage id="SHOP_MANAGER"/> : <FormattedMessage id="BUYER_DASHBOARD"/>}</th>
                         </tr>
                     </thead>
                     <tbody>

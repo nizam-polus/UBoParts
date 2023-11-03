@@ -90,7 +90,7 @@ function Request() {
                 <div className="container">
                     <section className="quote-wrapper mt-5">
                         <div>
-                            {incomplete && <p className='required-text' id='required'>* Please fill the required fields</p>}
+                            {incomplete && <p className='required-text' id='required'>* <FormattedMessage id="FILL_REQUIRED_FIELDS"/></p>}
                         </div>
                         <div className="row mt-3">
                             <div className="col-12">

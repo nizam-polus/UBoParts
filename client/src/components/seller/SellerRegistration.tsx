@@ -176,7 +176,7 @@ function SellerRegistration() {
                 <div className="container">
                     <section className="quote-wrapper mt-5">
                         <div>
-                            {incomplete && <p className='required-text' id='required'>* Please fill the required fields</p>}
+                            {incomplete && <p className='required-text' id='required'>* <FormattedMessage id="FILL_REQUIRED_FIELDS"/></p>}
                         </div>
                         <div className="row mt-3">
                             <div className="col-12">
@@ -429,7 +429,7 @@ function SellerRegistration() {
                                                                 /> 
                                                                 <FormattedMessage id="ACCEPT_TERMS_AND_CONDITIONS"/>
                                                             </label>
-                                                            {(!agreement && incomplete) && <p className="required-text">Agree to the terms</p>}
+                                                            {(!agreement && incomplete) && <p className="required-text"><FormattedMessage id="AGREE_TO_THE_TERMS"/></p>}
                                                         </td>
                                                     </tr>
                                                     <tr className="single">

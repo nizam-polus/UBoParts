@@ -71,7 +71,7 @@ function Contact_us() {
                     <section className="contact-wrapper coulmn-bg-color-1 mt-5 contact-details-section">
                        <div className='custom-color-2 '>
                             <div>
-                                <h2 className='font-weight-bold semifont' style={{fontSize: "1.5rem"}}>Our Address</h2>
+                                <h2 className='font-weight-bold semifont' style={{fontSize: "1.5rem"}}><FormattedMessage id="OUR_ADDRESS" /></h2>
                                 <p className='regularfont pb-5' style={{maxWidth: "350px", fontSize: "18px"}}>
                                     UboParts, Zomerdijk 11, 1505HW Zaandam, The Netherlands <br></br>
                                     Email: Info@uboparts.com <br></br>
@@ -79,7 +79,7 @@ function Contact_us() {
                                 </p>
                             </div>
                             <div>
-                                <h3 className='font-weight-bold semifont' style={{fontSize: "1.5rem"}}>Opening Hours</h3>
+                                <h3 className='font-weight-bold semifont' style={{fontSize: "1.5rem"}}><FormattedMessage id="OPENING_HOURS" /></h3>
                                 <p className='regularfont' style={{maxWidth: "350px", fontSize: "18px"}}>
                                     Monday to Friday: 8h00-17h00
                                     Saturday: Closed <br></br>
@@ -89,14 +89,14 @@ function Contact_us() {
                        </div>
                        <div>
                             <div>
-                                <h2 className='text-center semifont'>Leave us a Message</h2>
+                                <h2 className='text-center semifont'><FormattedMessage id="LEAVE_US_A_MESSAGE" /></h2>
                             </div>
                             <div className="table-responsive">
                                 <table className="table  coulmn-bg-color-1 rounded mt-2 rounded-2">
                                     <tbody>
                                         <tr className="double">
                                             <td className="px-5">
-                                                <label className="custom-color-2 regularfont products-name pb-2">Your Name <span className="required">*</span></label>
+                                                <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="YOUR_NAME" /> <span className="required">*</span></label>
                                                 <span className="">
                                                     <input type="text" onChange={(e) => setName(e.target.value)} 
                                                         className={`form-control input-bg-color-2 products-name ${incomplete && !name ? 'required-field' : 'border-0'}`}
@@ -105,7 +105,7 @@ function Contact_us() {
                                                 </span>
                                             </td>
                                             <td className="px-5">
-                                                <label className="custom-color-2 regularfont products-name pb-2">Email <span className="required">*</span></label>
+                                                <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="EMAIL" /> <span className="required">*</span></label>
                                                 <span className="">
                                                     <input type="text" onChange={(e) => { setEmail(e.target.value) }} 
                                                         className={`form-control input-bg-color-2 products-name ${incomplete && !email ? 'required-field' : 'border-0'}`} 
@@ -116,7 +116,7 @@ function Contact_us() {
                                         </tr>
                                         <tr className="single">
                                             <td className="px-5 pb-3" colSpan={2} style={{borderTop: "none"}}>
-                                                <label className="custom-color-2 regularfont products-name pb-2">Subject <span className="required">*</span></label>
+                                                <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="SUBJECT" /> <span className="required">*</span></label>
                                                 <span className="">
                                                     <input type="text" onChange={(e) => setSubject(e.target.value)} 
                                                         className={`form-control input-bg-color-2 products-name ${incomplete && !subject ? 'required-field' : 'border-0'}`}
@@ -127,7 +127,7 @@ function Contact_us() {
                                         </tr>
                                         <tr className="single">
                                             <td className="px-5 pb-5" colSpan={2} style={{borderTop: "none"}}>
-                                                <label className="custom-color-2 regularfont products-name pb-2">Message <span className="required">*</span></label>
+                                                <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="MESSAGE" /> <span className="required">*</span></label>
                                                 <span className="">
                                                     <textarea onChange={(e) => setMessage(e.target.value)} 
                                                         className={`form-control input-bg-color-2 products-name ${incomplete && !message ? 'required-field' : 'border-0'}`}

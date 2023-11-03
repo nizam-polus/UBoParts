@@ -5,6 +5,7 @@ import { UserContext } from '../account_/UserContext';
 import { BASE_URL } from 'configuration';
 import APIs from '~/services/apiService';
 import Link from 'next/link';
+import { FormattedMessage } from 'react-intl';
 
 function SellerDashboard() {
 
@@ -108,7 +109,7 @@ function SellerDashboard() {
                                     <div className="col">
                                         <div className="month-wise-wrapper m-2 ms-3 me-3 p-4">
                                             <div className="row d-flex justify-content-between p-4">
-                                                <div className="col-auto"><span className="product-price custom-color-2 semifont boldfontsize">Sales Status</span></div>
+                                                <div className="col-auto"><span className="product-price custom-color-2 semifont boldfontsize"><FormattedMessage id="SALES_STATUS"/></span></div>
                                                 <div className="col-auto"><span className="in-stock custom-color-6 rounded-pill p-3 pb-1 pt-1 d-flex mini-text-1">{new Date().toDateString().slice(4)}</span></div>
                                             </div>
                                             <div className="row mt-2">
@@ -116,29 +117,29 @@ function SellerDashboard() {
                                                     <table className="table m-0 seller-table2">
                                                         <thead>
                                                             <tr>
-                                                                <th className="p-3 ps-4 semifont placeholderfontsize custom-color-2">Month/Year</th>
-                                                                <th className="p-3 pe-4 semifont placeholderfontsize custom-color-2 text-end">Sale(€)</th>
+                                                                <th className="p-3 ps-4 semifont placeholderfontsize custom-color-2"><FormattedMessage id="MONTH/YEAR"/></th>
+                                                                <th className="p-3 pe-4 semifont placeholderfontsize custom-color-2 text-end"><FormattedMessage id="SALE"/></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <tr>
-                                                                <td className="p-3 ps-4 lightfont placeholderfontsize custom-color-2 align-middle">This Month</td>
+                                                                <td className="p-3 ps-4 lightfont placeholderfontsize custom-color-2 align-middle"><FormattedMessage id="THIS_MONTH"/></td>
                                                                 <td className="p-3 pe-4 lightfont placeholderfontsize custom-color-2 align-middle text-end">€{salesData.thisMonth}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td className="p-3 ps-4 lightfont placeholderfontsize custom-color-2 align-middle">Last Month</td>
+                                                                <td className="p-3 ps-4 lightfont placeholderfontsize custom-color-2 align-middle"><FormattedMessage id="LAST_MONTH"/></td>
                                                                 <td className="p-3 pe-4 lightfont placeholderfontsize custom-color-2 align-middle text-end">€{salesData.lastMonth}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td className="p-3 ps-4 lightfont placeholderfontsize custom-color-2 align-middle">This Year</td>
+                                                                <td className="p-3 ps-4 lightfont placeholderfontsize custom-color-2 align-middle"><FormattedMessage id="THIS_YEAR"/></td>
                                                                 <td className="p-3 pe-4 lightfont placeholderfontsize custom-color-2 align-middle text-end">€{salesData.thisYear}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td className="p-3 ps-4 lightfont placeholderfontsize custom-color-2 align-middle">Last Year</td>
+                                                                <td className="p-3 ps-4 lightfont placeholderfontsize custom-color-2 align-middle"><FormattedMessage id="LAST_YEAR"/></td>
                                                                 <td className="p-3 pe-4 lightfont placeholderfontsize custom-color-2 align-middle text-end">€{salesData.lastYear}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td className="p-3 ps-4 semifont placeholderfontsize custom-color-2 align-middle">All time</td>
+                                                                <td className="p-3 ps-4 semifont placeholderfontsize custom-color-2 align-middle"><FormattedMessage id="ALL_TIME"/></td>
                                                                 <td className="p-3 pe-4 semifont placeholderfontsize custom-color-2 align-middle text-end">€{total}</td>
                                                             </tr>
                                                         </tbody>
@@ -151,16 +152,16 @@ function SellerDashboard() {
                             </div>
                             <div className="coulmn-bg-color-1 rounded mt-4 pb-4">
                                 <div className="row d-flex justify-content-between p-3 pb-1 pt-3">
-                                    <div className="col-auto"><span className="custom-color-2 boldfont body-sub-titles">Latest Orders</span></div>
+                                    <div className="col-auto"><span className="custom-color-2 boldfont body-sub-titles">Latest <FormattedMessage id="LATEST_ORDERS"/></span></div>
                                 </div>
                                 <div className="row mt-2 mx-3">
                                     <div className="table-responsive">
                                         <table className="table m-0 seller-table3">
                                             <thead>
                                                 <tr>
-                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Orders</th>
-                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Date</th>
-                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2">Status</th>
+                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2"><FormattedMessage id="ORDERS"/></th>
+                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2"><FormattedMessage id="DATE"/></th>
+                                                    <th className="mediumfont custom-color-2 products-name border-0 fw-normal ps-3 pb-2 pt-2"><FormattedMessage id="STATUS"/></th>
                                                 </tr>
                                             </thead>
                                             <tbody>

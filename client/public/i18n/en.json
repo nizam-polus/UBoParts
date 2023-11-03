@@ -368,6 +368,8 @@
 
   "POPULAR":"Popular Categories",
   "SEARCH_BY_CAR_BRAND": "Search by Car Brand",
+  "SEARCH_BY" : "Search by",
+  "CAR_BRAND" : "Car Brand",
   "SEARCH_WITH_PLATE": "Search with Car's plate number",
   "NO_RECORD_FOUND": "No Record Found Against this Plate Number!",
   "NEED_A_PART": "Need a Specific Part",
@@ -450,6 +452,8 @@
   "NOTE": "Note",
 
   "FILL_YOUR_ACCOUNT_INFO": "Fill your account information",
+  "FILL_REQUIRED_FIELDS": "Please fill the required fields",
+  "AGREE_TO_THE_TERMS": "Agree To The Terms",
 
 
   "LOGIN": "Login",
@@ -499,6 +503,7 @@
   "LISTING_FEATURED_IMAGE": "Listing Featured Image",
   "LISTING_IMAGES": "Listing Image(s)",
   "LISTING_DESCRIPTION": "Listing Description",
+  "DESCRIPTION": "Description",
   "CREATE_LISTING": "Create Listing",
   "PRINT": "Print",
   "SAVE": "Save",
@@ -571,7 +576,7 @@
   "NEWSLETTER_DETAILS": "Enter your email address to subscribe to our newsletter and keep up to date with discounts and special offers.",
   "FOLLOW_US": "Follow us on social networks",
 
-  "SELL_QUALITY_PARTS": "Sell Quality Parts With Us",
+  "SELL_QUALITY_PARTS": "Sell Quality Parts ",
   "CREATE_PASSWORD": "Create Password",
   "ACCEPT_TERMS_AND_CONDITIONS": "Accept terms & conditons",
   
@@ -579,12 +584,59 @@
   "PERSONAL_DETAILS": "Personal Details",
   "NEW_PASSWORD": "New Password",
   "CHANGE_PASSWORD": "Change Password",
-
+  "ADDRESS": "Address",
   "OUR_ADDRESS": "Our Address",
   "OPENING_HOURS": "Opening Hours",
   "LEAVE_US_A_MESSGE": "Leave Us a Message",
   "YOUR_NAME": "Your Name",
   "SUBJECT": "Subject",
-  "MESSAGE": "Message"
+  "MESSAGE": "Message",
+  "SEND": "Send",
+
+  "SHOPPING_CART": "Shopping Cart",
+  "TOTAL": "Total",
+  "IMAGE": "Image",
+  "PRODUCT": "Product",
+  "ADD_MORE_ITEMS": "Add More Items",
+  "CART_TOTAL": "Cart Total",
+  "DISCOUNT": "Discount",
+  "SUBTOTAL": "Subtotal",
+  "PROCEEDING": "Proceeding",
+  "PROCEED_TO_CHECKOUT": "Proceed To Checkout",
+
+  "KEY_FEATURES": "Key Features",
+  "RELATED_PRODUCTS": "Related Products",
+
+  "SALES_STATUS": "Sales Status",
+  "MONTH/YEAR": "Month/Year",
+  "DATE": "Date",
+  "SALE": "Sale(€)",
+  "THIS_MONTH": "This Month",
+  "LAST_MONTH": "Last Month",
+  "THIS_YEAR": "This Year",
+  "LAST_YEAR": "Last Year",
+  "ALL_TIME": "All Time",
+  "LATEST_ORDERS": "Latest Orders",
+
+
+  "MODEL": "Model",
+  "WEIGHT": "Weight",
+  "CATEGORY": "Category",
+  "SUB_CATEGORY": "Sub Category",
+  "STOCK": "Stock",
+  "WAREHOUSE": "Warehouse",
+  "CHECKOUT": "Checkout",
+  "BILLING_DETAILS": "Billing Details",
+  "SHIP_TO_DIFFRENT": "Ship to a different address?",
+  "PROCEED_TO_PAYMENT": "Proceed to Payment",
+  "COMPANY_NAME": "Company Name",
+  "SHIPPING_COST": "Shipping Cost",
+  "SUBSCRIBE": "Subscribe",
+  "SEARCH": "Search",
+  "BUYER_DASHBOARD": "Buyer Dashboard",
+  "SHOP_MANAGER": "Shop Manager"
+
+  
+
 
 }

@@ -604,11 +604,11 @@ function Create_new_listing() {
                                                 </tr>
                                                 <tr className="double">
                                                     <td className='px-5 pt-4 pb-2'>
-                                                        <label className={`custom-color-2 regularfont products-name pb-2 ${incomplete && !selectedMake ? 'required-field' : 'border-0'}`}>
+                                                        <label className={`custom-color-2 regularfont products-name pb-2`}>
                                                             <FormattedMessage id="LISTING_MAKE" />
                                                             <span className="required">*</span>
                                                         </label><br />
-                                                        <select className="form-select input-bg-color-2 border-0 products-name custom-color-2" name="make" id="makeOption"
+                                                        <select className={`form-select input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !selectedMake ? 'required-field' : 'border-0'}`} name="make" id="makeOption"
                                                             value={selectedMake} onChange={handleMakeChange}>
                                                             <option value="" disabled={true}>Select Make</option>
                                                             {makesArray && makesArray.map((make: any, index: any) => (
@@ -882,7 +882,7 @@ function Create_new_listing() {
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2} className='px-5 pb-2 border-0'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="Listing_Description" />
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="LISTING_DESCRIPTION" />
                                                             <span className="required"> *</span>
                                                         </label>
                                                         <textarea onChange={handleDescriptionChange} 
