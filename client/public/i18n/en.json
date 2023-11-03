@@ -406,8 +406,10 @@
   "ABOUT_US_DISCRIPTION": "UBO Parts Inc is a Netherlands-based online third-party platform specializing in automotive technology. Our mission is to empower all participants in the Dutch automotive ecosystem, particularly car dismantlers, by enhancing the management of their spare parts operations. We commit to providing top-quality spare parts, thereby efficiently streamlining operations and promoting excellence throughout the industry.",
   "MEET_OUR_TEAM": "Meet Our Professional Team",
   "CONTACT_US": "Contact Us",
+  "ABOUT_QUOTES": "The single biggest way to impact an organization is to focus on leadership development. There is almost no limit to the potential of an organization that recruits good people, raises them up as leaders and continually develops them",
 
   "REQUEST_PARTS": "Request Parts With Us",
+  "REQUEST_PART": "Request Parts",
   "REQUEST_DISCRIPTION" : "Browse our expansive selection featuring hundreds of brands and tens of thousands of quality parts.",
   "PLATE_NO": "Plate Number",
   "AUTO_MODEL": "Auto Model",
@@ -433,6 +435,8 @@
 
 
   "DISMANTLE_CAR": "Dismantle your car with us",
+  "DISMANTLE_YOUR": "Dismantle Your",
+  "CAR_WITH_US": "Car With Us",
   "DRIVING_CONDITION": "Driving Condition",
   "DRIVABLE": "Drivable",
   "NOT_DRIVABLE": "Not Drivable",
@@ -475,6 +479,7 @@
   "DELETE" : "Delete",
   "DELETING" : "Deleting...",
   "EDIT": "Edit",
+  "EDIT_LIST": "Edit list",
 
   "PLATE_NUMBER": "Plate Number",
   "LIST_NAME": "List Name",
@@ -496,6 +501,8 @@
   "LISTING_DESCRIPTION": "Listing Description",
   "CREATE_LISTING": "Create Listing",
   "PRINT": "Print",
+  "SAVE": "Save",
+  "SAVING": "Saving..",
 
 
   "ORDER_HISTORY": "Order History",
@@ -504,8 +511,10 @@
   "ORDER_DATE": "Order Date",
   "STATUS": "Status",
   "COMPLETED": "Completed",
+  "ORDER_DETAILS": "Order Details",
 
   "ORDER_NO": "Order No",
+  "SHIPPING": "Shipping",
   "ORDER_TOTAL": "Order Total",
   "INVOICE_NO": "Invoice No",
   "ITEM_SUMMARY": "Item Summary",
@@ -529,6 +538,7 @@
   "BANK_NAME": "Bank Name",
   "IBAN_NO": "Iban Number",
   "COOKIE_STATEMENT": "Cookie Statement",
+  
   
   "HOME": "Home",
   "SHOP": "Shop",
@@ -559,6 +569,22 @@
   "ADS_WITH_US": "Advertise with Us",
   "COOKIES": "Cookies",
   "NEWSLETTER_DETAILS": "Enter your email address to subscribe to our newsletter and keep up to date with discounts and special offers.",
-  "FOLLOW_US": "Follow us on social networks"
+  "FOLLOW_US": "Follow us on social networks",
+
+  "SELL_QUALITY_PARTS": "Sell Quality Parts With Us",
+  "CREATE_PASSWORD": "Create Password",
+  "ACCEPT_TERMS_AND_CONDITIONS": "Accept terms & conditons",
+  
+
+  "PERSONAL_DETAILS": "Personal Details",
+  "NEW_PASSWORD": "New Password",
+  "CHANGE_PASSWORD": "Change Password",
+
+  "OUR_ADDRESS": "Our Address",
+  "OPENING_HOURS": "Opening Hours",
+  "LEAVE_US_A_MESSGE": "Leave Us a Message",
+  "YOUR_NAME": "Your Name",
+  "SUBJECT": "Subject",
+  "MESSAGE": "Message"
 
 }

@@ -59,7 +59,7 @@ function About_us() {
                     <section className="about-quote-wrapper pt-5 ps-xl-5 pe-xl-5">
                         <div className="row ps-5 pe-5 mt-3 mt-md-3 mt-xl-5">
                             <div className="col-12">
-                                <p className="custom-color-1 text-center font-italic sub-subtext px-xl-5 mx-5 px-md-2">“The single biggest way to impact an organization is to focus on leadership development. There is almost no limit to the potential of an organization that recruits good people, raises them up as leaders and continually develops them.” </p>
+                                <p className="custom-color-1 text-center font-italic sub-subtext px-xl-5 mx-5 px-md-2">"<FormattedMessage id="ABOUT_QUOTES"/>” </p>
                             </div>
                             <div className="col-12">
                                 <p className="regularfont subtitles custom-color-1 text-center">— John Maxwell</p>

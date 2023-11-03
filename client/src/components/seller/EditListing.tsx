@@ -540,13 +540,12 @@ function EditListing() {
                                                     <th colSpan={2} 
                                                     className="px-5 pb-1 ps-0 custom-color-3  regularfont body-sub-titles border-bottom border-top-0"
                                                     >
-                                                      Edit List
+                                                      <FormattedMessage id="EDIT_LIST" />
                                                     </th>
                                                 </tr>
-
                                                 <tr className="double">
                                                 <td className='px-5 pt-4 pb-4'>
-                                                    <label className="custom-color-2 regularfont products-name pb-2">List Name <span className="required">*</span></label>
+                                                    <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="LIST_NAME" /> <span className="required">*</span></label>
                                                     <input type="text" value={listName} onChange={handleListChange} 
                                                       className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listName ? 'required-field' : 'border-0' }`}
                                                       name="first-name" placeholder="24 Inch Tyre for Mustang" required/>
@@ -575,7 +574,7 @@ function EditListing() {
                                                     </ul>
                                                   </td>
                                                     <td className='px-5 pt-4 pb-4'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Plate Number</label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="PLATE_NUMBER" /></label>
                                                         <input type="text" value={licenseplate} 
                                                           onChange={handleLicenseplateChange} className="form-control input-bg-color-2 border-0 products-name custom-color-2" 
                                                           name="last-name" placeholder="Enter Plate Number to Auto Fill form" required
@@ -589,7 +588,7 @@ function EditListing() {
                                                 </tr>
                                                 <tr className="double">
                                                     <td className='px-5 pt-4 pb-2'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Make <span className="required">*</span></label><br />
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="LISTING_MAKE" /> <span className="required">*</span></label><br />
                                                         <select className="form-select input-bg-color-2 border-0 products-name custom-color-2" name="make" id="makeOption"
                                                             value={selectedMake} onChange={handleMakeChange}>
                                                             <option value="" disabled={true}>Select Make</option>
@@ -599,7 +598,7 @@ function EditListing() {
                                                         </select>
                                                     </td>
                                                     <td className='px-5 pt-4 pb-2'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Model <span className="required">*</span></label><br />
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="LISTING_MODEL" /> <span className="required">*</span></label><br />
                                                         <select disabled={!selectedMake} 
                                                           className="form-select input-bg-color-2 border-0 products-name custom-color-2" 
                                                           name="model" id="modelOption"
@@ -615,7 +614,7 @@ function EditListing() {
                                                 </tr>
                                                 <tr className="double">
                                                     <td className='px-5 pb-2 border-0'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Year <span className="required">*</span></label><br/>
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="LISTING_YEAR" /> <span className="required">*</span></label><br/>
                                                         <select disabled={!selectedModel || (yearArray && yearArray.length && !yearArray[0].year)} 
                                                             className="form-select input-bg-color-2 border-0 products-name custom-color-2" name="year" id="yearOption"
                                                             value={selectedYear} onChange={handleYearChange}>
@@ -628,7 +627,7 @@ function EditListing() {
                                                 </tr>
                                                 <tr className="single">
                                                     <td className='px-5 pb-2 border-0'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Category <span className="required">*</span></label><br />
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="LISTING_CATEGORY" /> <span className="required">*</span></label><br />
                                                         <select className="form-select input-bg-color-2 border-0 products-name custom-color-2"  
                                                           value={selectedCategory} onChange={handleCategoryChange}>
                                                             <option value="" disabled={!!categoriesDetails}>Choose Category</option>
@@ -638,7 +637,7 @@ function EditListing() {
                                                         </select>
                                                     </td>
                                                     <td colSpan={2} className='px-5 pb-4 border-top-0'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Sub Category</label><br />
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="LISTING_SUBCATEGORY" /></label><br />
                                                         <select
                                                    className="form-select input-bg-color-2 border-0 products-name custom-color-2"
                                                    value={selectedSubcategoryId} // Use selectedSubcategoryId to store the ID
@@ -657,12 +656,12 @@ function EditListing() {
                                                 </tr>
                                                 <tr className="double">
                                                     <td className='px-5 pb-2 pt-4'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Price (€) <span className="required">*</span></label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="LISTING_PRICE" /> <span className="required">*</span></label>
                                                         <input type="text" onChange={handlePriceChange} value={listPrice} 
                                                           className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Listing Price (€)" />
                                                     </td>
                                                     <td className='px-5 pb-2 pt-4'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Quantity <span className="required">*</span></label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="LISTING_QUANTITY" /> <span className="required">*</span></label>
                                                         <input type="text" value={listQuantity} onChange={handleQuantityChange}
                                                           className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Listing Quantity"
                                                           onKeyPress={(e: any) => {
@@ -675,7 +674,7 @@ function EditListing() {
                                                 </tr>
                                                 <tr className="double">
                                                     <td className='px-5 pb-2 border-0'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">On Sale</label><br />
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="ON_SALE" /></label><br />
                                                         <select className="form-select input-bg-color-2 border-0 products-name custom-color-2"
                                                             value={saleOffer} onChange={handleSaleChange}>
                                                                 {saleArray && saleArray.map((sale: any) => (
@@ -720,7 +719,7 @@ function EditListing() {
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2} className='px-5 pb-2 border-0'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Article No <span className="required">*</span></label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="ARTICLE_NUMBER" /> <span className="required">*</span></label>
                                                         <input type="text" onChange={handleArticleChange} 
                                                         value={listArticle}
                                                         className="form-control input-bg-color-2 border-0 products-name custom-color-2" placeholder="Article No" />
@@ -728,7 +727,7 @@ function EditListing() {
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2} className='px-5 pb-4 pt-2 border-0'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Barcode :</label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="BAR_CODE" /> :</label>
                                                             <div style={{ padding: "5px", background: `#ffcf00`, width: "415.7480315px", height: "188.97637795px" }}
                                                                 className='d-flex align-items-center justify-content-center flex-column'
                                                                 ref={componentRef}
@@ -782,14 +781,14 @@ function EditListing() {
                                                               style={{ width: "415.78px" }}
                                                               onClick={printBarcode}
                                                             >
-                                                              Print
+                                                              <FormattedMessage id="PRINT" />
                                                             </button>
                                                         </div>
                                                     </td>
                                                 </tr>
                                                 <tr className="double">
                                                   <td className='px-5 pt-4 pb-2'>
-                                                    <label className="custom-color-2 regularfont products-name pb-2">Listing Featured Image <span className="required">*</span></label>
+                                                    <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="LISTING_FEATURED_IMAGE" /> <span className="required">*</span></label>
                                                     <input className="form-control pt-2 pb-1 choosefile" type="file" id="featuredImages" 
                                                       onChange={handleFeaturedImageChange} ref={inputRef} required 
                                                     />
@@ -808,7 +807,7 @@ function EditListing() {
                                                       ) : null}
                                                   </td>
                                                   <td className='px-5 pt-4 pb-2'>
-                                                    <label className="custom-color-2 regularfont products-name pb-2">Listing Image(s) </label>
+                                                    <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="LISTING_IMAGES" /> </label>
                                                     <input className="form-control pt-2 pb-1 choosefile" type="file" id="galleryImages"
                                                       onChange={handleGalleryImagesChange} multiple disabled={!productImage}  ref={galleryRef} />
                                                     {productGalleryImages && (
@@ -832,7 +831,7 @@ function EditListing() {
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2} className='px-5 pb-2 border-0'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Listing Description <span className="required">*</span></label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="LISTING_DESCRIPTION" /> <span className="required">*</span></label>
                                                         <textarea value={listDescription} onChange={handleDescriptionChange}
                                                           className={`form-control input-bg-color-2 border-0 products-name rounded 
                                                             ${incomplete && !listDescription ? 'required-field' : 'border-0'}`} rows={4}
@@ -844,9 +843,9 @@ function EditListing() {
                                                     <td colSpan={2} className="border-0 px-5">
                                                       {
                                                         clicked ? 
-                                                        <button type="submit" disabled className="place-quote text-white mediumfont products-name rounded border-0 button-bg-color-1 ubo-btn-custom">Saving..</button>
+                                                        <button type="submit" disabled className="place-quote text-white mediumfont products-name rounded border-0 button-bg-color-1 ubo-btn-custom"><FormattedMessage id="SAVING" /></button>
                                                         :
-                                                        <button type="submit" onClick={createNewList} className="place-quote text-white mediumfont products-name rounded border-0 button-bg-color-1 ubo-btn-custom">Save</button>
+                                                        <button type="submit" onClick={createNewList} className="place-quote text-white mediumfont products-name rounded border-0 button-bg-color-1 ubo-btn-custom"><FormattedMessage id="SAVE" /></button>
                                                       }
                                                     </td>
                                                 </tr>
