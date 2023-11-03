@@ -74,13 +74,13 @@ const SellerListSingle = () => {
       const printBarcode = () =>{
         const input = componentRef.current;
         if (input) {
-          const mainPdf = new jsPDF('landscape', 'in', [4, 2], true);
+          const mainPdf = new jsPDF('landscape', 'in', [4.5, 2.5], true);
           html2canvas(input, { logging: true, allowTaint: false, useCORS: true, onclone: function (clonedDoc: any) {
            } }).then((canvas) => {
             const imgData = canvas.toDataURL('image/png');
             const pdfWidth = 2; // 11cm in mm
             const pdfHeight = 4; // 5cm in mm
-            mainPdf.addImage(imgData, 'PNG', 0, 0, 4 , 2 );
+            mainPdf.addImage(imgData, 'PNG', 0, 0, 4.5 , 2.5 );
             // mainPdf.save('invoice.pdf');
             const pdfBlob = mainPdf.output('blob');
             const pdfUrl = URL.createObjectURL(pdfBlob);
@@ -204,21 +204,21 @@ const SellerListSingle = () => {
                                             <div className="qr-image" ref={componentRef}>
                                                 <div style={{ padding: "5px", background: `#ffcf00`, width: "415.7480315px", height: "188.97637795px" }} 
                                                     className='d-flex align-items-center justify-content-center flex-column'>
-                                                    <div className="details d-flex" style={{ width: "100%", fontWeight: "bolder", padding: "0px 10px 0 10px", fontSize: "14px" }}>
+                                                    <div className="details d-flex" style={{ width: "100%", fontWeight: "bolder", padding: "0px 10px 0 10px", fontSize: "16px" }}>
                                                         <div className='d-flex justify-content-between' style={{minWidth: "180px"}}>
                                                             <Qrgenerator qrValue={productData?.attributes?.part_no_barcode_no}/>
                                                         </div>
                                                         <div className='d-flex flex-column'>
                                                             <div>
-                                                                 <div className='text-right'>UBOPARTS</div>
-                                                                 <div className='text-right'>{productData?.attributes?.title.toUpperCase()}</div>
+                                                                 <div className='text-left'>UBOPARTS</div>
+                                                                 <div className='text-left'>{productData?.attributes?.title.toUpperCase()}</div>
                                                             </div>
-                                                            <div className='text-right' style={{minWidth: "110px"}}>
+                                                            <div className='text-left' style={{minWidth: "110px"}}>
                                                                 <div>REK NUMMER : {productData?.attributes?.product_location_warehouse}</div>
                                                                 {/* <div> {productData?.attributes?.product_location_warehouse}</div> */}
                                                             </div>
-                                                            <div className='text-right'>ARTICLE NO {productData?.attributes?.article_number}</div>
-                                                            <div className='text-right'>{productData?.attributes?.make?.data?.attributes?.make_name} {productData?.attributes?.model?.data?.attributes?.model_name} {productData?.attributes?.year?.data?.attributes?.year}</div>
+                                                            <div className='text-left'>ARTICLE NO {productData?.attributes?.article_number}</div>
+                                                            <div className='text-left'>{productData?.attributes?.make?.data?.attributes?.make_name} {productData?.attributes?.model?.data?.attributes?.model_name} {productData?.attributes?.year?.data?.attributes?.year}</div>
                                                         </div>
                                                     </div>
                                                 </div>
