@@ -368,6 +368,8 @@
     "POPULAR":"populaire categorieën",
 
     "SEARCH_BY_CAR_BRAND": "Zoeken op Automerk",
+    "SEARCH_BY" : "Zoek met",
+    "CAR_BRAND" : "Automerk",
     "SEARCH_WITH_PLATE": "Zoeken met kenteken van de auto",
     "NO_RECORD_FOUND": "Geen record gevonden tegen dit kenteken!",
     "NEED_A_PART": "Een specifiek onderdeel nodig",
@@ -446,6 +448,8 @@
     "NOTE": "Opmerking",
 
     "FILL_YOUR_ACCOUNT_INFO": "Vul uw accountgegevens in",
+    "FILL_REQUIRED_FIELDS": "Vul de verplichte velden in",
+    "AGREE_TO_THE_TERMS": "Ga akkoord met de voorwaarden",
     
     "LOGIN": "Log in",
     "LOGIN_DETAILS": "Welkom terug! Voer uw gegevens in",
@@ -493,6 +497,7 @@
   "LISTING_FEATURED_IMAGE": "Uitgelichte afbeelding weergeven",
   "LISTING_IMAGES": "Afbeeldingen weergeven",
   "LISTING_DESCRIPTION": "Beschrijving van vermelding",
+  "DESCRIPTION": "Beschrijving",
   "CREATE_LISTING": "Maak een vermelding",
   "PRINT": "Afdrukken",
   "SAVE": "Redden",
@@ -572,14 +577,58 @@
   "NEW_PASSWORD": "nieuw paswoord",
   "CHANGE_PASSWORD": "Verander wachtwoord",
 
-  "OUR_ADDRESS": "Our Address",
-  "OPENING_HOURS": "Opening Hours",
-  "LEAVE_US_A_MESSGE": "Leave Us a Message",
-  "YOUR_NAME": "Your Name",
-  "SUBJECT": "Subject",
-  "MESSAGE": "Message"
+  "ADDRESS": "Adres",
+  "OUR_ADDRESS": "Ons Adres",
+  "OPENING_HOURS": "Openingstijden",
+  "LEAVE_US_A_MESSAGE": "Laat ons een bericht achter",
+  "YOUR_NAME": "Uw Naam",
+  "SUBJECT": "Onderwerp",
+  "MESSAGE": "Bericht",
+  "SEND": "Versturen",
 
-  
+  "SHOPPING_CART": "Winkelwagen",
+  "TOTAL": "Totaal",
+  "IMAGE": "Afbeelding",
+  "PRODUCT": "Product",
+  "ADD_MORE_ITEMS": "Meer items toevoegen",
+  "CART_TOTAL": "Totaal winkelwagen",
+  "DISCOUNT": "Korting",
+  "SUBTOTAL": "Subtotaal",
+  "PROCEEDING": "Doorgaan",
+  "PROCEED_TO_CHECKOUT": "Doorgaan naar afrekenen",
+
+  "KEY_FEATURES": "Belangrijkste kenmerken",
+  "RELATED_PRODUCTS": "gerelateerde producten",
+
+  "SALES_STATUS": "Verkoopstatus",
+  "MONTH/YEAR": "Maand /  Jaar",
+  "DATE": "Datum",
+  "SALE": "Verkoop(€)",
+  "THIS_MONTH": "Deze maand",
+  "LAST_MONTH": "Vorige maand",
+  "THIS_YEAR": "Dit jaar",
+  "LAST_YEAR": "Afgelopen jaar",
+  "ALL_TIME": "Altijd",
+  "LATEST_ORDERS": "Laatste bestellingen",
+
+  "MODEL": "Model",
+  "WEIGHT": "Gewicht",
+  "CATEGORY": "Categorie",
+  "SUB_CATEGORY": "Subcategorie",
+  "STOCK": "Voorraad",
+  "WAREHOUSE": "Magazijn",
+  "CHECKOUT": "Uitchecken",
+  "BILLING_DETAILS": "Factureringsgegevens",
+  "SHIP_TO_DIFFRENT": "Verzenden naar een ander adres?",
+  "PROCEED_TO_PAYMENT": "Ga door naar betaling",
+  "COMPANY_NAME": "Bedrijfsnaam",
+  "SHIPPING_COST": "Transportkosten",
+  "SUBSCRIBE": "Abonneren",
+  "SEARCH": "Zoekopdracht",
+  "BUYER_DASHBOARD": "Koperdashboard",
+  "SHOP_MANAGER": "Winkelmanager"
+
+
 
   }
   

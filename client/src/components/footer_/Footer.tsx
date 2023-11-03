@@ -135,7 +135,7 @@ function Footer() {
                                             <button type="submit" 
                                                 className="btn regularfont button-bg-color-1 text-white border-0 rounded-lg ubo-btn-subscribe"
                                                 onClick={handleSubscribe}
-                                            >Subscribe</button>
+                                            ><FormattedMessage id="SUBSCRIBE"/></button>
                                         </div>
                                     </div>
                                     <div className="row">

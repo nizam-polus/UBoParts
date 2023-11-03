@@ -629,7 +629,7 @@ function Home() {
                                 <div className="col-12 col-lg-3 d-flex align-items-end mb-3">
                                     <button type="button" onClick={searchProducts} 
                                         className="search boldfont boldfontsize" disabled={showInvaidLicense}
-                                    >Search</button>
+                                    ><FormattedMessage id="SEARCH"/></button>
                                 </div>
                             </div>
                             <div className="row mt-2 ml-2" >
@@ -881,8 +881,8 @@ function Home() {
                 <section className='d-flex align-items-center justify-content-center ubo-brands-slider-wrapper'>
                    <div className='p-4 d-flex flex-column flex-sm-row align-items-center justify-content-center'>
                         <div className='ubo-brands-slider-title'>
-                            <h4><FormattedMessage id="SEARCH_BY_CAR_BRAND"/></h4>
-                            {/* <h4>Search by Car Brand</h4> */}
+                            <span className='h4 d-sm-block'><FormattedMessage id="SEARCH_BY" /> </span>
+                            <span className='h4'><FormattedMessage id="CAR_BRAND" /></span>
                         </div>
                         <div className='d-flex align-items-center'>
                         <div className='ubo-brands-slider'>

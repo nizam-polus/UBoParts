@@ -7,6 +7,7 @@ import APIs from '~/services/apiService';
 import { BASE_URL } from 'configuration';
 import { UserContext } from '../account_/UserContext';
 import { toast } from 'react-toastify';
+import { FormattedMessage } from 'react-intl';
 
 function Cart() {
 
@@ -317,7 +318,7 @@ function Cart() {
                     <section className="card-wrapper">
                         <div className="row">
                             <div className="col text-center pt-2 pb-2">
-                                <span className="semifont bg-image-text custom-color-8 text-center">Shopping Cart</span>
+                                <span className="semifont bg-image-text custom-color-8 text-center"><FormattedMessage id="SHOPPING_CART" /></span>
                             </div>
                         </div>
                         <div className="row mt-2">
@@ -326,12 +327,12 @@ function Cart() {
                                     <table className="table cart-table coulmn-bg-color-1 rounded ">
                                         <tbody>
                                             <tr className="border-bottom ">
-                                                <th className=" p-3 custom-color-3 regularfont boldfontsize text-center border-top-0 lightfotweight col-sm-2">IMAGE</th>
-                                                <th className=" p-3 custom-color-3 regularfont boldfontsize border-top-0 lightfotweight col-sm-5">PRODUCT</th>
-                                                <th className=" p-3 custom-color-3 regularfont boldfontsize text-center border-top-0 lightfotweight col-sm-2">PRICE</th>
-                                                <th className=" p-3 custom-color-3 regularfont boldfontsize text-center border-top-0 lightfotweight col-sm-1">QUANTITY</th>
-                                                <th className=" p-3 custom-color-3 regularfont boldfontsize text-center border-top-0 lightfotweight col-sm-2">TOTAL</th>
-                                                <th className=" pr-3 custom-color-3 regularfont boldfontsize text-center border-top-0 lightfotweight col-sm-2">DELETE</th>
+                                                <th className=" p-3 custom-color-3 regularfont boldfontsize text-center border-top-0 lightfotweight col-sm-2"><FormattedMessage id="IMAGE" /></th>
+                                                <th className=" p-3 custom-color-3 regularfont boldfontsize border-top-0 lightfotweight col-sm-5"><FormattedMessage id="PRODUCT" /></th>
+                                                <th className=" p-3 custom-color-3 regularfont boldfontsize text-center border-top-0 lightfotweight col-sm-2"><FormattedMessage id="PRICE" /></th>
+                                                <th className=" p-3 custom-color-3 regularfont boldfontsize text-center border-top-0 lightfotweight col-sm-1"><FormattedMessage id="QUANTITY" /></th>
+                                                <th className=" p-3 custom-color-3 regularfont boldfontsize text-center border-top-0 lightfotweight col-sm-2"><FormattedMessage id="TOTAL" /></th>
+                                                <th className=" pr-3 custom-color-3 regularfont boldfontsize text-center border-top-0 lightfotweight col-sm-2"><FormattedMessage id="DELETE" /></th>
                                             </tr>
                                             {cartProducts && cartProducts.map((product: any, index: any) => {
                                                 
@@ -407,7 +408,7 @@ function Cart() {
                                                 <td className="p-3" colSpan={2}>
                                                     <Link href={'/shop'}><button type="button"
                                                         className="add-more-rows custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"
-                                                    >Add more items</button></Link>
+                                                    ><FormattedMessage id="ADD_MORE_ITEMS"/></button></Link>
                                                 </td>
                                             </tr>
                                         </tfoot>
@@ -419,17 +420,17 @@ function Cart() {
                                     <table className="cart-total table coulmn-bg-color-1 rounded">
                                         <tbody >
                                             <tr>
-                                                <th className="p-3 custom-color-3 boldfont subtitles-1 border-top-0">Cart Total</th>
+                                                <th className="p-3 custom-color-3 boldfont subtitles-1 border-top-0"><FormattedMessage id="CART_TOTAL" /></th>
                                             </tr>
                                             {totalDiscount != 0 
                                             ?
                                                 <>
                                                     <tr className="border-top">
-                                                        <td className="pb-1 pt-4 pl-3 regularfont placeholderfontsize border-top-0">Price</td>
+                                                        <td className="pb-1 pt-4 pl-3 regularfont placeholderfontsize border-top-0"><FormattedMessage id="PRICE" /></td>
                                                         <td className="pb-1 pt-4  border-top-0 menu_font_size custom-color-3">€{totalCartPrice.toFixed(2)}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td className="pb-1 pt-4 pl-3 regularfont placeholderfontsize border-top-0">Discount</td>
+                                                        <td className="pb-1 pt-4 pl-3 regularfont placeholderfontsize border-top-0"><FormattedMessage id="DISCOUNT" /></td>
                                                         <td className="pb-1 pt-4 border-top-0 menu_font_size custom-color-3">- €{totalDiscount.toFixed(2)}</td>
                                                     </tr>
                                                 </>
@@ -441,7 +442,7 @@ function Cart() {
                                                 <td className="pb-0 pt-0 pl-0 pr-4 regularfont boldfontsize border-top-0"> <hr className="p-0 m-0" /></td>
                                             </tr>
                                             <tr>
-                                                <td className="pb-2 pt-1 pr-0 pl-3 semifont boldfontsize border-top-0"> Subtotal</td>
+                                                <td className="pb-2 pt-1 pr-0 pl-3 semifont boldfontsize border-top-0"> <FormattedMessage id="SUBTOTAL" /></td>
                                                 <td className="pb-2 pt-1 pl-0 semifont boldfontsize border-top-0 custom-color-3">€{(totalCartPrice - totalDiscount).toFixed(2)}</td>
                                             </tr>
                                             <tr><td colSpan={2} className="px-3 pt-3 pb-2 w-100">
@@ -449,12 +450,12 @@ function Cart() {
                                                 clicked ? 
                                                     <button type="button" disabled className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1">
                                                     <button type="button" className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"
-                                                        >Proceeding..</button>
+                                                        ><FormattedMessage id="PROCEEDING" /></button>
                                                     </button>
                                                 :
                                                     <button type="button" onClick={CheckoutFunction} className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1">
                                                     <button type="button" className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"
-                                                        >Proceed to checkout</button>
+                                                        ><FormattedMessage id="PROCEED_TO_CHECKOUT" /></button>
                                                     </button>
                                                 }
                                                

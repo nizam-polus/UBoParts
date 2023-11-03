@@ -219,7 +219,7 @@ function OrderDetails() {
                                                         <span className="custom-color-2  semifont mini-text-2 "><FormattedMessage id="CITY"/> : </span><span className="custom-color-2 regularfont mini-text-2">{orderDetails[0]?.attributes?.city}</span><br />
                                                         <span className="custom-color-2  semifont mini-text-2"><FormattedMessage id="STATE"/> : </span><span className="custom-color-2 regularfont mini-text-2">{orderDetails[0]?.attributes?.state}</span><br />
                                                         <span className="custom-color-2  semifont mini-text-2"><FormattedMessage id="COUNTRY"/> : </span><span className="custom-color-2 regularfont mini-text-2">{orderDetails[0]?.attributes?.country}</span><br />
-                                                        <span className="custom-color-2  semifont mini-text-2"><FormattedMessage id="POSTCODE"/> : </span><span className="custom-color-2 regularfont mini-text-2">{orderDetails[0]?.attributes?.postcode}</span><br />
+                                                        <span className="custom-color-2  semifont mini-text-2"><FormattedMessage id="POST_CODE"/> : </span><span className="custom-color-2 regularfont mini-text-2">{orderDetails[0]?.attributes?.postcode}</span><br />
                                                     </div>
                                                 </div>
                                             </div>
