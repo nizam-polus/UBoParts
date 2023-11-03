@@ -882,7 +882,7 @@ function Create_new_listing() {
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2} className='px-5 pb-2 border-0'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="Listing Description" />
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="Listing_Description" />
                                                             <span className="required"> *</span>
                                                         </label>
                                                         <textarea onChange={handleDescriptionChange} 
@@ -899,7 +899,7 @@ function Create_new_listing() {
                                                         className="place-quote text-white mediumfont products-name rounded border-0 button-bg-color-1 ubo-btn-custom">Creating....</button>
                                                         :
                                                         <button type="submit" onClick={createNewList} 
-                                                        className="place-quote text-white mediumfont products-name rounded border-0 button-bg-color-1 ubo-btn-custom">Create Listing</button>
+                                                        className="place-quote text-white mediumfont products-name rounded border-0 button-bg-color-1 ubo-btn-custom"><FormattedMessage id="CREATE_LISTING" /></button>
                                                         }
                                                     </td>
                                                 </tr>

@@ -3,6 +3,7 @@ import { UserContext } from "../account_/UserContext";
 import APIs from '../../services/apiService';
 import { useRouter } from "next/router";
 import SellerSideBar from "../seller/SellerSideBar";
+import { FormattedMessage } from "react-intl";
 
 function EditShop() {
 
@@ -108,7 +109,7 @@ function EditShop() {
                                                             <tr>
                                                                 <th colSpan={2}
                                                                     className="pt-0 pb-0 px-0 ps-0 custom-color-2 regularfont subtitles fw-normal border-top-0 border-bottom-0"
-                                                                >Edit shop with us <span className="regularfont body-sub-titles ml-sm-3 align-middle font-weight-normal d-inline-block d-sm-inline">Edit your shop information</span></th>
+                                                                ><FormattedMessage id="EDIT_SHOP_WITH_US"/> <span className="regularfont body-sub-titles ml-sm-3 align-middle font-weight-normal d-inline-block d-sm-inline"><FormattedMessage id="EDIT_SHOP_INFORMATION"/></span></th>
 
                                                             </tr>
                                                             <tr>
@@ -119,7 +120,7 @@ function EditShop() {
                                                             </tr>
                                                             <tr className="double">
                                                                 <td >
-                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Account Type <span className="required">*</span></label>
+                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="ACCOUNT_TYPE"/> <span className="required">*</span></label>
                                                                     <select className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.Account_type ? 'required-field' : 'border-0'}`}
                                                                         style={{ height: '3.5rem' }} name="Account_type" value={formData.Account_type}
                                                                         onChange={(e) => handleFormChange(e)}
@@ -130,7 +131,7 @@ function EditShop() {
                                                                     </select>
                                                                 </td>
                                                                 <td>
-                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Commission Amount <span className="required">*</span></label>
+                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="COMMISSION_AMOUNT"/> <span className="required">*</span></label>
                                                                     <input type="text" value={formData.commission_amount}
                                                                         className={`form-control input-bg-color-2 body-sub-titles `}
                                                                         name="commission_amount" placeholder="Commission amount."
@@ -162,7 +163,7 @@ function EditShop() {
                                                             }
                                                             <tr className="single">
                                                                 <td colSpan={2}>
-                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Company or Shop name <span className="required">*</span></label>
+                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="COMPANY_OR_SHOP_NAME"/><span className="required">*</span></label>
                                                                     <input type="text" value={formData.company_name}
                                                                         className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.company_name ? 'required-field' : 'border-0'}`}
                                                                         name="company_name" placeholder="Aw parts corp."
@@ -172,7 +173,7 @@ function EditShop() {
                                                             </tr>
                                                             <tr className="single">
                                                                 <td colSpan={2}>
-                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Account Title <span className="required">*</span></label>
+                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="ACCOUNT_TITLE"/><span className="required">*</span></label>
                                                                     <input type="text" value={formData.Account_title}
                                                                         className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.Account_title ? 'required-field' : 'border-0'}`}
                                                                         name="Account_title" placeholder="Aw parts corp."
@@ -182,7 +183,7 @@ function EditShop() {
                                                             </tr>
                                                             <tr className="double">
                                                                 <td>
-                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Bank Name <span className="required">*</span></label>
+                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="BANK_NAME"/> <span className="required">*</span></label>
                                                                     <input type="text" value={formData.Bank_name}
                                                                         className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.Bank_name ? 'required-field' : 'border-0'}`}
                                                                         name="Bank_name" placeholder="Bank name."
@@ -190,7 +191,7 @@ function EditShop() {
                                                                     />
                                                                 </td>
                                                                 <td>
-                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Iban Number <span className="required">*</span></label>
+                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="IBAN_NO"/><span className="required">*</span></label>
                                                                     <input
                                                                         type="text"
                                                                         value={formData.iban_number}
@@ -211,7 +212,7 @@ function EditShop() {
                                                                         <input type="checkbox" name="agreement" className="width-checkout"
                                                                             onChange={() => setAgreement(!agreement)}
                                                                         />
-                                                                        Accept terms & conditons
+                                                                        <FormattedMessage id="ACCEPT_TERMS_AND_CONDITIONS"/>
                                                                     </label>
                                                                     {(!agreement && incomplete) && <p className="required-text text-danger">Agree to the terms</p>}
                                                                 </td>
@@ -220,7 +221,7 @@ function EditShop() {
                                                                 <td colSpan={2} className="">
                                                                     <button type="submit"
                                                                         className="place-quote text-white mediumfont body-sub-titles-1 rounded-lg border-0 button-bg-color-1 h-auto p-2 ubo-btn-custom"
-                                                                    >Submit</button>
+                                                                    ><FormattedMessage id="SUBMIT"/></button>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
