@@ -324,7 +324,7 @@ function Shop() {
                 quantity: '1',
                 productprice: productData?.attributes?.price,
                 "productWeight": productData?.attributes?.product_weight || 0,
-                "discountPrice": discountAmount(productData?.attributes?.price, productData?.attributes?.sale?.data?.attributes?.discount),
+                "discountPrice": discountAmount(productData?.attributes?.price, productData?.attributes?.sale?.data?.attributes?.discount_percentage_value),
             }
             APIs.getCartData({ customerid: user.id }).then(response => {
                 let productCartItems = response.data.rows;
@@ -736,7 +736,7 @@ function Shop() {
                                                 return (
                                                     <div className="col-12 col-sm-6 col-lg-4  mb-4" key={index}>
                                                     {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product?.attributes?.sale?.data != null)&& (
-                                                        <span  className="sale-tag position-absolute">{product.attributes?.sale?.data?.attributes?.discount}</span>
+                                                        <span  className="sale-tag position-absolute">{product.attributes?.sale?.data?.attributes?.en_discount_text}</span>
                                                     )}
                                                         <div className="latest-prods card card-shadows" style={{height: "100%"}}>
                                                         <AppImage 
@@ -776,7 +776,7 @@ function Shop() {
                                                                     <div className="col-12 d-flex justify-content-between">
                                                                         {
                                                                             (product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product?.attributes?.sale?.data != null) ?
-                                                                                <span className="product-price"><s>€{product?.attributes?.price}</s> €{discountedPrice(product.attributes.price, product.attributes.sale.data.attributes.discount)}</span>
+                                                                                <span className="product-price"><s>€{product?.attributes?.price}</s> €{discountedPrice(product.attributes.price, product.attributes.sale.data.attributes.discount_percentage_value)}</span>
                                                                                 :
                                                                                 <span className="product-price">€{product?.attributes?.price}</span>
                                                                         }

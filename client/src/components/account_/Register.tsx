@@ -83,7 +83,7 @@ function Register(props: any) {
         event.preventDefault();
         setRegFormData({
             ...regformData,
-            [event.target.name]: event.target.value.toLowerCase()
+            [event.target.name]: event.target.value
         });
     };
     
@@ -94,8 +94,8 @@ function Register(props: any) {
         try {
             if (Object.keys(hasError).length === 0 && isSubmitting && agreed) {
                 const userdata = { 
-                    username: regformData.username, 
-                    email: regformData.email, 
+                    username: regformData.username.toLowerCase(), 
+                    email: regformData.email.toLowerCase(), 
                     password: regformData.password, 
                     user_type : 'normal', 
                     isApproved : 'Active',

@@ -72,7 +72,7 @@ function Productsingle() {
                 quantity: quantity,
                 productprice: productData?.attributes?.price,
                 "productWeight": productData?.attributes?.product_weight,
-                "discountPrice": discountAmount(productData?.attributes?.price, productData?.attributes?.sale?.data?.attributes?.discount),
+                "discountPrice": discountAmount(productData?.attributes?.price, productData?.attributes?.sale?.data?.attributes?.discount_percentage_value),
             }
            
             APIs.getCartData({ customerid: user.id }).then(response => {
@@ -228,7 +228,7 @@ function Productsingle() {
                                 <p>
                                     {
                                         (productData.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && productData?.attributes?.sale?.data != null) ?
-                                        <span className="product-price custom-color-3 regularfont boldfontsize"><s>€{productData?.attributes?.price}</s> €{discountedPrice(productData.attributes.price, productData.attributes.sale.data.attributes.discount)}</span>
+                                        <span className="product-price custom-color-3 regularfont boldfontsize"><s>€{productData?.attributes?.price}</s> €{discountedPrice(productData.attributes.price, productData.attributes.sale.data.attributes.discount_percentage_value)}</span>
                                         :
                                         <span className="product-price custom-color-3 regularfont boldfontsize">€{productData?.attributes?.price}</span>
                                     }
@@ -249,7 +249,7 @@ function Productsingle() {
                                         <div className="col-auto">
                                             {
                                                  (productData.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && productData?.attributes?.sale?.data != null) ?
-                                                    <span className="product-price"><s>€{quantity * productData?.attributes?.price}</s> €{discountedPrice(quantity *productData.attributes.price, productData.attributes.sale.data.attributes.discount)}</span>
+                                                    <span className="product-price"><s>€{quantity * productData?.attributes?.price}</s> €{discountedPrice(quantity *productData.attributes.price, productData.attributes.sale.data.attributes.discount_percentage_value)}</span>
                                                     :
                                                     <span className="product-price custom-color-3 regularfont">€{quantity * productData?.attributes?.price}</span>
                                             }
