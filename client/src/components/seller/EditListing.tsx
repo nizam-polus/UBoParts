@@ -509,11 +509,11 @@ function EditListing() {
     const printBarcode = () =>{
       const input = componentRef.current;
       if (input) {
-        const mainPdf = new jsPDF('landscape', 'in', [4, 2], true);
+        const mainPdf = new jsPDF('landscape', 'in', [4, 2.1], true);
         html2canvas(input, { logging: true, allowTaint: false, useCORS: true, onclone: function (clonedDoc: any) {
          } }).then((canvas: any) => {
           const imgData = canvas.toDataURL('image/png');
-          mainPdf.addImage(imgData, 'PNG', 0, 0, 4 , 2 );
+          mainPdf.addImage(imgData, 'PNG', 0, 0, 4 , 2.1 );
           const pdfBlob = mainPdf.output('blob');
           const pdfUrl = URL.createObjectURL(pdfBlob);
           const newWindow : any= window.open(pdfUrl, '_blank', 'width=600,height=800');
@@ -728,15 +728,15 @@ function EditListing() {
                                                 <tr className="single">
                                                     <td colSpan={2} className='px-5 pb-4 pt-2 border-0'>
                                                         <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="BAR_CODE" /> :</label>
-                                                            <div style={{ padding: "5px", background: `#ffcf00`, width: "415.7480315px", height: "188.97637795px" }}
+                                                            <div style={{ padding: "5px", background: `#ffcf00`, width: "450px", height: "190px" }}
                                                                 className='d-flex align-items-center justify-content-center flex-column'
                                                                 ref={componentRef}
                                                                 >
-                                                                <div className="details d-flex" style={{ width: "100%", fontWeight: "bolder", padding: "0px 10px 0 10px", fontSize: "14px" }}>
-                                                                    <div className='d-flex justify-content-between' style={{ minWidth: "180px" }}>
+                                                                <div className="details d-flex" style={{ width: "100%", fontWeight: "bolder", padding: "0px 10px 0 10px", fontSize: "17px" }}>
+                                                                    <div className='d-flex justify-content-between mr-2' style={{ minWidth: "180px" }}>
                                                                         {listBarcode && <Qrgenerator qrValue={listBarcode} />}
                                                                     </div>
-                                                                    <div className='d-flex flex-column' style={{width: "100%"}}>
+                                                                    <div className='d-flex flex-column' style={{width: "100%", letterSpacing: "0.6px"}}>
                                                                         <div>
                                                                             <div>UBOPARTS</div>
                                                                             <div>{listName.toUpperCase()}</div>

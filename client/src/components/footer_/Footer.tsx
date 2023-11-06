@@ -128,7 +128,7 @@ function Footer() {
                                             <input type="email" 
                                                 className=" lightfont form-control h-auto input-bg-color-1 text-white footer-placeholder-font-size rounded-lg border-0" 
                                                 placeholder="Email Address..." name="email" value={email}
-                                                onChange={(e: any) => setEmail(e.target.value)}
+                                                onChange={(e: any) => setEmail(e.target.value.toLowerCase())}
                                             />
                                         </div>
                                         <div className="col-12 col-sm-3 pl-sm-0">
