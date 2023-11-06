@@ -37,7 +37,7 @@ function Login(props: any) {
         event.preventDefault();
         setLoginFormData({
             ...loginformData,
-            [event.target.name]: event.target.value.toLowerCase()
+            [event.target.name]: event.target.value
         });
     }
 
@@ -56,7 +56,7 @@ function Login(props: any) {
             if (loginformData.username && loginformData.password) {
                 setInvalidCred(false);
                 setInvalidInput(false);
-                const userdata = {...{ identifier: loginformData.username, password: loginformData.password }}
+                const userdata = {...{ identifier: loginformData.username.toLowerCase(), password: loginformData.password }}
                 APIs.auth(userdata).then((response: any) => {
                     if (response.data.error && response.data.error.status >= 400 && response.data.error.status <= 403) {
                         setInvalidCred(true);
