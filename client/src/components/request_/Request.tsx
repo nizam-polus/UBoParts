@@ -22,6 +22,8 @@ function Request() {
     });
     const [imageData, setImageData] = useState('');
     const [incomplete, setIncomplete] = useState(false);
+    const [licensePlate, setLicenseplate] = useState("")
+
 
     const checkFormStatus = () => {
         let incomplete = true;
@@ -38,13 +40,19 @@ function Request() {
         setFormData(((prevFormData: any) => ({...prevFormData, [name]: value})));
     }
 
+    const handleFormChangeEmail = (event: any) =>{
+        const { name, value } = event.target;
+        setFormData(((prevFormData: any) => ({...prevFormData, [name]: value.toLowerCase()})));
+    }
+
     const handleImageUpload = (event: any) => {
         const file = event.target.files[0];
         setImageData(file);
     }
 
     const handleLicenseChange = (event: any) => {
-        let licensePlate = event.target.value;
+        let licensePlate = event.target.value.toUpperCase();
+        setLicenseplate(licensePlate)
         formData.plate_number = licensePlate;
         setFormData({...formData});
         setTimeout(() => {
@@ -117,6 +125,7 @@ function Request() {
                                                                 <FormattedMessage id="PLATE_NO"/> <span className="required">*</span>
                                                             </label>
                                                             <input type="text" 
+                                                            value={licensePlate}
                                                                 className={`w-100 form-control input-bg-color-2 body-sub-titles-1 ${incomplete && !formData.plate_number ? 'required-field' : 'border-0'}`}
                                                                 name="plate_number" placeholder="Plate Number" 
                                                                 onChange={handleLicenseChange}
@@ -185,7 +194,7 @@ function Request() {
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles-1 ${incomplete && !formData.email ? 'required-field' : 'border-0'}`}
                                                                 name="email" placeholder="Email Address" 
-                                                                onChange={handleFormChange}
+                                                                onChange={handleFormChangeEmail}
                                                             />
                                                         </td>
                                                         <td>

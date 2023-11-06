@@ -29,6 +29,7 @@ function Dismantle_car() {
     const [imageData, setImageData] = useState('');
     const [countries, setCountries] = useState([]);
     const [incomplete, setIncomplete] = useState(false);
+    const [licensePlate, setLicenseplate] = useState("")
 
     useEffect(() => {
         APIs.getCountries().then(response => {
@@ -53,6 +54,11 @@ function Dismantle_car() {
         setFormData(((prevFormData: any) => ({...prevFormData, [name]: value})));
     }
 
+    const handleFormChangeEmail = (event: any) =>{
+        const { name, value } = event.target;
+        setFormData(((prevFormData: any) => ({...prevFormData, [name]: value.toLowerCase()})));
+    }
+
     const handleCountryChange = (event: any) => {
         let countryId = [Number(event.target.value)];
         setFormData((prevData: any) => ({...prevData, country: countryId}));
@@ -64,7 +70,8 @@ function Dismantle_car() {
     }
 
     const handleLicenseChange = (event: any) => {
-        let licensePlate = event.target.value;
+        let licensePlate = event.target.value.toUpperCase();
+        setLicenseplate(licensePlate)
         formData.plate_number = licensePlate;
         setFormData({...formData});
         setTimeout(() => {
@@ -135,6 +142,7 @@ function Dismantle_car() {
                                                                 <FormattedMessage id="PLATE_NO"/> <span className="required">*</span>
                                                             </label>
                                                             <input type="text" 
+                                                                value={licensePlate}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.plate_number ? 'required-field' : 'border-0'}`}
                                                                 name="plate_number" placeholder="Plate Number" 
                                                                 onChange={handleLicenseChange}
@@ -203,7 +211,7 @@ function Dismantle_car() {
                                                             <input type="text" 
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.email ? 'required-field' : 'border-0'}`}
                                                                 name="email" placeholder="Email Address" 
-                                                                onChange={handleFormChange}
+                                                                onChange={handleFormChangeEmail}
                                                             />
                                                         </td>
                                                         <td>

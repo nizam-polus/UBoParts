@@ -107,7 +107,7 @@ function Contact_us() {
                                             <td className="px-5">
                                                 <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="EMAIL" /> <span className="required">*</span></label>
                                                 <span className="">
-                                                    <input type="text" onChange={(e) => { setEmail(e.target.value) }} 
+                                                    <input type="text" onChange={(e) => { setEmail(e.target.value.toLowerCase()) }} 
                                                         className={`form-control input-bg-color-2 products-name ${incomplete && !email ? 'required-field' : 'border-0'}`} 
                                                         name="email" placeholder="jhon@gmail.com" value={email}
                                                     />

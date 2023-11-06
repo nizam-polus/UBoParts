@@ -587,7 +587,7 @@
   "ADDRESS": "Address",
   "OUR_ADDRESS": "Our Address",
   "OPENING_HOURS": "Opening Hours",
-  "LEAVE_US_A_MESSGE": "Leave Us a Message",
+  "LEAVE_US_A_MESSAGE": "Leave Us a Message",
   "YOUR_NAME": "Your Name",
   "SUBJECT": "Subject",
   "MESSAGE": "Message",
@@ -634,8 +634,17 @@
   "SUBSCRIBE": "Subscribe",
   "SEARCH": "Search",
   "BUYER_DASHBOARD": "Buyer Dashboard",
-  "SHOP_MANAGER": "Shop Manager"
+  "SHOP_MANAGER": "Shop Manager",
 
+
+  "SHOW_LESS": "Show Less",
+  "ADVANCED_SEARCH": "Advanced Search",
+  "RESET_PASSWORD": "Reset Password",
+  "ENTER_YOUR_NEW_PASSWORD": "Enter Your New Password",
+  "PASSWORD_DOESNOT_MATCH": "Password Does Not match",
+  "FORGET_PASSWORD": "Forget Password",
+  "ENTER_REGISTERD_EMAIL_TO": "Enter registerd email to ",
+  "RESET_YOUR_PASSWORD": "reset your passowrd"
   
 
 

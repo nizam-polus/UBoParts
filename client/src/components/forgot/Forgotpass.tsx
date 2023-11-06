@@ -5,6 +5,7 @@ import { IVehicle } from '~/interfaces/vehicle';
 import APIs from '~/services/apiService';
 import { UserContext } from '../account_/UserContext';
 import { toast } from 'react-toastify';
+import { FormattedMessage } from 'react-intl';
 
 interface Props {
     value?: IVehicle | null;
@@ -47,30 +48,30 @@ function Forgotpass(props: Props) {
                     <div className="ac-modal-body">
                         <div className="ac-card login-form">
                             <div className="ac-card-body">
-                                <h3 className="ac-card-title text-center">Forget Password</h3>
-                                <p className="ac-card-sub-title text-center">Enter registered email to <br/>reset your password</p>
+                                <h3 className="ac-card-title text-center"><FormattedMessage id="FORGET_PASSWORD"/></h3>
+                                <p className="ac-card-sub-title text-center"><FormattedMessage id="ENTER_REGISTERD_EMAIL_TO"/> <br/>reset your password</p>
                                 <div className="ac-card-text">
                                     <form action="/action_page.php">
                                         <div className="form-group">
-                                            <label htmlFor="email">Email address</label>
+                                            <label htmlFor="email"><FormattedMessage id="EMAIL_ADDRESS"/></label>
                                             <input type="email" 
                                                 className="form-control" id="email" 
                                                 placeholder="Enter your email" value={email}
-                                                onChange={(e: any) => setEmail(e.target.value)}
+                                                onChange={(e: any) => setEmail(e.target.value.toLowerCase())}
                                             />
                                         </div>
                                         <button type="submit" className="btn btn-default mt-1"
                                             onClick={handleReset}
-                                        >Reset Password</button>
+                                        ><FormattedMessage id="RESET_PASSWORD"/></button>
                                     </form>
                                 </div>
                                 <div className="ac-card-footer mt-2">
                                     <p className="body-sub-titles-1 mediumfont">
-                                        <span className="lightfont">Already registered? </span>
+                                        <span className="lightfont"><FormattedMessage id="ALREADY_REGISTERED"/> </span>
                                         <button type="button" id="forgot_password" 
                                             className="body-sub-titles-1 mediumfont" 
                                             onClick={onClose}
-                                        >Login</button>
+                                        ><FormattedMessage id="LOGIN"/></button>
                                     </p>
                                 </div>
                                 {/* <div className="ac-card-footer text-center mt-2">

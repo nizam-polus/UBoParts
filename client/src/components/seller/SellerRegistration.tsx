@@ -40,6 +40,9 @@ function SellerRegistration() {
     const [cnfrmPassword, setCnfrmPassword] = useState('');
     const [pwdmatch, setPwdmatch] = useState(true);
     const [countries, setCountries] = useState<any>([]);
+    const [newPwdVisible, setNewPwdVisible] = useState(false);
+    const [confrmpwdVisible, setConfrmpwdVisible] = useState(false);
+
 
     useEffect(() => {
         // window.onbeforeunload = function() {
@@ -106,7 +109,7 @@ function SellerRegistration() {
             first_name: formData.first_name,
             last_name: formData.last_name,
             username: formData.username,
-            email: formData.email,
+            email: formData.email.toLowerCase(),
             phone_number: formData.phone_number,
             streetaddress_housenumber: formData.streetaddress_housenumber,
             streetaddress_apartment: formData.streetaddress_apartment,
@@ -236,7 +239,9 @@ function SellerRegistration() {
                                                     <tr className="double">
                                                         <td>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="CREATE_PASSWORD"/>  <span className="required">*</span></label>
-                                                            <input type="password" value={password} disabled={user.id}
+                                                            <div className="position-relative">
+
+                                                            <input type={newPwdVisible ? "text" : "password"} value={password} disabled={user.id}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !password ? 'required-field' : 'border-0'}`}
                                                                 name="password" placeholder="Create Password" 
                                                                 onChange={(e) => {
@@ -244,15 +249,43 @@ function SellerRegistration() {
                                                                     e.target.value.length < 6 && !user.id ? setIncomplete(true) : setIncomplete(false);
                                                                 }}
                                                             />
+                                                            <div className='position-absolute p-3' style={{right: 0, top: 0}}>
+                                                            <span
+                                                                className="password-visibility-toggle"
+                                                                onClick={() => setNewPwdVisible(!newPwdVisible)}
+                                                            >
+                                                                {newPwdVisible ? (
+                                                                    <i className="far fa-eye"></i>
+                                                                    ) : (
+                                                                    <i className="far fa-eye-slash"></i>
+                                                                )}
+                                                            </span>
+                                                            </div>
+                                                            </div>
                                                             {(password.length < 6 && incomplete && !user.id) && <span className="required-text">Password must be at least 6 characters </span>}
                                                         </td>
                                                         <td>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="CONFIRM_PASSWORD"/>  <span className="required">*</span></label>
-                                                            <input type="password" value={cnfrmPassword} disabled={user.id}
+                                                            <div className="position-relative">
+
+                                                            <input type={confrmpwdVisible ? "text" : "password"} value={cnfrmPassword} disabled={user.id}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !cnfrmPassword ? 'required-field' : 'border-0'}`}
                                                                 name="c_password" placeholder="Confirm Password" 
                                                                 onChange={(e) => handlePwdChange(e)}
                                                             />
+                                                            <div className='position-absolute p-3' style={{right: 0, top: 0}}>
+                                                            <span
+                                                                className="password-visibility-toggle"
+                                                                onClick={() => setConfrmpwdVisible(!confrmpwdVisible)}
+                                                            >
+                                                                {confrmpwdVisible ? (
+                                                                    <i className="far fa-eye"></i>
+                                                                    ) : (
+                                                                    <i className="far fa-eye-slash"></i>
+                                                                )}
+                                                            </span>
+                                                            </div>
+                                                            </div>
                                                             {!pwdmatch && !user.id && <span className="required-text">Password does not match</span>}
                                                         </td>
                                                     </tr>

@@ -626,7 +626,17 @@
   "SUBSCRIBE": "Abonneren",
   "SEARCH": "Zoekopdracht",
   "BUYER_DASHBOARD": "Koperdashboard",
-  "SHOP_MANAGER": "Winkelmanager"
+  "SHOP_MANAGER": "Winkelmanager",
+
+
+  "SHOW_LESS": "Minder weergeven",
+  "ADVANCED_SEARCH": "Geavanceerd zoeken",
+  "RESET_PASSWORD": "Wachtwoord resetten",
+  "ENTER_YOUR_NEW_PASSWORD": "Voer uw nieuwe wachtwoord in",
+  "PASSWORD_DOESNOT_MATCH": "Wachtwoord komt niet overeen",
+  "FORGET_PASSWORD": "Wachtwoord vergeten",
+  "ENTER_REGISTERD_EMAIL_TO": "Voer uw geregistreerde e-mail in om ",
+  "RESET_YOUR_PASSWORD": "uw wachtwoord te resetten"
 
 
 

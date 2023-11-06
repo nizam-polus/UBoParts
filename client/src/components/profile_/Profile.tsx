@@ -38,6 +38,8 @@ function Profile() {
     const [profilePicURL, setProfilePicURL] = useState<string>('');
     const [countries, setCountries] = useState<any>([]);
     const [pwdmismatch, setPwdMisMatch] = useState<boolean>(false);
+    const [newPwdVisible, setNewPwdVisible] = useState(false);
+    const [confrmpwdVisible, setConfrmpwdVisible] = useState(false);
 
     useEffect(() => {
         let userId = !user.id ? userdetails?.id : user.id;
@@ -327,24 +329,52 @@ function Profile() {
                                                     <td className="px-5">
                                                         <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="NEW_PASSWORD"/> <span className="required">*</span></label>
                                                         <span className="password-wrapper-field">
-                                                            <input type="password" value={newpwd}
+                                                            <div className='position-relative'>
+                                                            <input type={newPwdVisible ? "text" : "password"} value={newpwd}
                                                                 className={`form-control input-bg-color-2 products-name ${incompletePwd && !newpwd ? ' required-field' : 'border-0' }`} 
                                                                 name="new-password" placeholder="Enter New Password"
                                                                 onChange={(e) => setNewpwd(e.target.value)}
                                                             />
-                                                        </span>
-                                                        
+                                                            <div className='position-absolute p-3' style={{right: 0, top: 0}}>
+                                                            <span
+                                                                className="password-visibility-toggle"
+                                                                onClick={() => setNewPwdVisible(!newPwdVisible)}
+                                                            >
+                                                                {newPwdVisible ? (
+                                                                    <i className="far fa-eye"></i>
+                                                                    ) : (
+                                                                    <i className="far fa-eye-slash"></i>
+                                                                )}
+                                                            </span>
+                                                            </div>
+                                                            </div>
+                                                        </span> 
                                                     </td>
                                                 </tr>
                                                 <tr className="single">
                                                     <td className="px-5 pb-5">
                                                         <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="CONFIRM_PASSWORD"/> <span className="required">*</span></label>
                                                         <span className="password-wrapper-field">
-                                                            <input type="password" value={confrmpwd}
+                                                            <div className='position-relative'>
+
+                                                            <input type={confrmpwdVisible ? "text" : "password"} value={confrmpwd}
                                                                 className={`form-control input-bg-color-2 products-name ${incompletePwd && !confrmpwd ? ' required-field' : 'border-0' }`}
                                                                 name="confirm-password" placeholder="Confirm New Password"
                                                                 onChange={(e) => setConfrmpwd(e.target.value)}
                                                             />
+                                                            <div className='position-absolute p-3' style={{right: 0, top: 0}}>
+                                                            <span
+                                                                className="password-visibility-toggle"
+                                                                onClick={() => setConfrmpwdVisible(!confrmpwdVisible)}
+                                                            >
+                                                                {confrmpwdVisible ? (
+                                                                    <i className="far fa-eye"></i>
+                                                                    ) : (
+                                                                    <i className="far fa-eye-slash"></i>
+                                                                )}
+                                                            </span>
+                                                            </div>
+                                                            </div>
                                                         </span>
                                                     </td>
                                                 </tr>
