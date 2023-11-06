@@ -31,12 +31,13 @@ function Login(props: any) {
     const [invalidCred, setInvalidCred] = useState<boolean>(false);
     const [unverified, setUnverified] = useState<boolean>(false);
     const [rememberMe, setRememberMe] = useState<boolean>(false);
+    const [pwdVisible, setPwdVisible] = useState<boolean>(false);
 
     const onLoginFormDataChange = (event: any) => {
         event.preventDefault();
         setLoginFormData({
             ...loginformData,
-            [event.target.name]: event.target.value 
+            [event.target.name]: event.target.value.toLowerCase()
         });
     }
 
@@ -171,13 +172,27 @@ function Login(props: any) {
                                                 </div>
                                                 <div className="form-group marginb40">
                                                     <label htmlFor="password" className="body-sub-titles-1 mediumfont"><FormattedMessage id="PASSWORD"/></label>
-                                                    <input type="password" 
+                                                    <div className="position-relative">
+                                                    <input type={pwdVisible ? "text" : "password"} 
                                                         className="form-control body-sub-titles-1 mediumfont inputformtxt" 
                                                         id="password" name="password" 
                                                         placeholder="Enter your password" 
                                                         value={loginformData.password} 
                                                         onChange={onLoginFormDataChange}
                                                     />
+                                                     <div className='position-absolute p-3' style={{right: 0, top: 0}}>
+                                                            <span
+                                                                className="password-visibility-toggle"
+                                                                onClick={() => setPwdVisible(!pwdVisible)}
+                                                            >
+                                                                {pwdVisible ? (
+                                                                    <i className="far fa-eye"></i>
+                                                                    ) : (
+                                                                    <i className="far fa-eye-slash"></i>
+                                                                )}
+                                                            </span>
+                                                            </div>
+                                                    </div>
                                                 </div>
                                                 <div className="form-group">
                                                     <input type="checkbox" name="remember_me" 

@@ -522,14 +522,14 @@ function Create_new_listing() {
     const printBarcode = () =>{
         const input = componentRef.current;
         if (input) {
-          const mainPdf = new jsPDF('landscape', 'in', [4.5, 2.5], true);
+          const mainPdf = new jsPDF('landscape', 'in', [4.5, 2.1], true);
           html2canvas(input, { logging: true, allowTaint: false, useCORS: true, onclone: function (clonedDoc: any) {
            } }).then((canvas) => {
             const imgData = canvas.toDataURL('image/png');
-            mainPdf.addImage(imgData, 'PNG', 0, 0, 4.5 , 2.5 );
+            mainPdf.addImage(imgData, 'PNG', 0, 0, 4.5 , 2.1 );
             const pdfBlob = mainPdf.output('blob');
             const pdfUrl = URL.createObjectURL(pdfBlob);
-            const newWindow : any= window.open(pdfUrl, '_blank', 'width=600,height=800');
+            const newWindow : any= window.open(pdfUrl, '_blank', 'width=800,height=800');
             newWindow.print();
             newWindow.onafterprint = function () {
               newWindow.close();
@@ -593,6 +593,7 @@ function Create_new_listing() {
                                                             <FormattedMessage id="PLATE_NUMBER" />
                                                         </label>
                                                         <input type="text" onChange={handleLicenseplateChange} 
+                                                            value={licenseplate}
                                                             className={`form-control input-bg-color-2 border-0 products-name custom-color-2 `} 
                                                             name="last-name" placeholder="Enter Plate Number to Auto Fill form" />
                                                         {showInvaidLicense &&
@@ -780,11 +781,11 @@ function Create_new_listing() {
                                                             <div className='d-flex align-items-center justify-content-center flex-column ubo-barcode-container'
                                                                 ref={componentRef}
                                                                 >
-                                                                <div className="details d-flex flex-column flex-sm-row" style={{ width: "100%", fontWeight: "bolder", padding: "0px 10px 0 10px", fontSize: "16px" }}>
-                                                                    <div className='d-flex justify-content-between' style={{ minWidth: "180px" }}>
+                                                                <div className="details d-flex flex-column flex-sm-row" style={{ width: "100%", fontWeight: "bolder", padding: "0px 10px 0 10px", fontSize: "17px" }}>
+                                                                    <div className='d-flex justify-content-between mr-2' style={{ minWidth: "180px" }}>
                                                                         {listBarcode && <Qrgenerator qrValue={listBarcode} />}
                                                                     </div>
-                                                                    <div className='d-flex flex-column w-100'>
+                                                                    <div className='d-flex flex-column w-100' style={{letterSpacing: "0.6px"}}>
                                                                         <div>
                                                                             <div>UBOPARTS</div>
                                                                             <div>{upperCaseListName}</div>

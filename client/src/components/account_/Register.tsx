@@ -28,6 +28,8 @@ function Register(props: any) {
         confirmpassword: ''
     });
     const [agreed, setAgreed] = useState(false);
+    const [pwdVisible, setPwdVisible] = useState(false);
+    const [confrmpwdVisible, setConfrmpwdVisible] = useState(false);
     
     const validateValues = (inputValues: any) => {
         hasError = {};
@@ -81,7 +83,7 @@ function Register(props: any) {
         event.preventDefault();
         setRegFormData({
             ...regformData,
-            [event.target.name]: event.target.value
+            [event.target.name]: event.target.value.toLowerCase()
         });
     };
     
@@ -189,20 +191,49 @@ function Register(props: any) {
                                         </div>
                                         <div className="form-group marginb40">
                                                         <label htmlFor="password" className="body-sub-titles-1 mediumfont"><FormattedMessage id="PASSWORD"/></label>
-                                                        <input type="password" 
+                                                        <div className="position-relative">
+                                                        <input type={pwdVisible ? "text" : "password"} 
                                                             className="form-control body-sub-titles-1 mediumfont" 
                                                             id="password" name="password" placeholder="Enter your password" 
                                                             value={regformData.password} onChange={onRegFormDataChange}
                                                         />
+                                                        <div className="position-absolute p-3" style={{right: 0, top: 0}}>
+                                                        <span
+                                                                className="password-visibility-toggle"
+                                                                onClick={() => setPwdVisible(!pwdVisible)}
+                                                            >
+                                                                {pwdVisible ? (
+                                                                    <i className="far fa-eye"></i>
+                                                                    ) : (
+                                                                    <i className="far fa-eye-slash"></i>
+                                                                )}
+                                                            </span>
+                                                        </div>
+                                                        </div>
                                                         <p className="form_validerrors">{errors?.password}</p>
                                                     </div>
                                         <div className="form-group marginb40">
                                                         <label htmlFor="password" className="body-sub-titles-1 mediumfont"><FormattedMessage id="CONFIRM_PASSWORD"/></label>
-                                                        <input type="password" 
+                                                        <div className="position-relative">
+
+                                                        <input type={confrmpwdVisible ? "text" : "password"}
                                                             className="form-control body-sub-titles-1 mediumfont" 
                                                             id="confirmpassword" name="confirmpassword" placeholder="Confirm password" 
                                                             value={regformData.confirmpassword} onChange={onRegFormDataChange}
                                                         />
+                                                        <div className='position-absolute p-3' style={{right: 0, top: 0}}>
+                                                            <span
+                                                                className="password-visibility-toggle"
+                                                                onClick={() => setConfrmpwdVisible(!confrmpwdVisible)}
+                                                            >
+                                                                {confrmpwdVisible ? (
+                                                                    <i className="far fa-eye"></i>
+                                                                    ) : (
+                                                                    <i className="far fa-eye-slash"></i>
+                                                                )}
+                                                            </span>
+                                                            </div>
+                                                        </div>
                                                         <p className="form_validerrors">{errors?.confirmpassword}</p>
                                                     </div>
                                         <div className="form-group">
