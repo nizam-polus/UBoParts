@@ -46,7 +46,6 @@ function Productsingle() {
             }
             let productStock = response.data.data.attributes?.stock_count
             let productCategory = response.data.data.attributes?.category.data.attributes.category_name
-            console.log(response.data.data)
            
             setStockCount(productStock)
             setProductData(product);

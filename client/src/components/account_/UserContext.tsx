@@ -12,6 +12,14 @@ interface User {
     setLanguage: React.Dispatch<React.SetStateAction<{}>>
     paymentStatus: any
     setPaymentStatus: React.Dispatch<React.SetStateAction<string>>
+    appliedFilter: boolean
+    setAppliedFilter: React.Dispatch<React.SetStateAction<boolean>>
+    category: any
+    subcategory: any
+    setCategory: React.Dispatch<React.SetStateAction<any>>
+    setSubcategory: React.Dispatch<React.SetStateAction<any>>
+    availableCategories: any
+    setAvailableCategories: React.Dispatch<React.SetStateAction<any>>
 }
 
 const userContext = createContext<User | undefined>(undefined)
@@ -23,6 +31,20 @@ interface providerProps {
 export function UserProvider(props: providerProps) {
 
     const router = useRouter();
+    const unauthRoutes = [
+        '/', 
+        '/homepage', 
+        'shop', 
+        'about_us_', 
+        'request', 
+        'dismantle_car', 
+        'seller-registration', 
+        'products_', 
+        '404', 
+        'email-verification', 
+        'cookie', 
+        'contact_us'
+    ]
 
     let userdetails: any = {}
     if (typeof window !== 'undefined') {
@@ -34,6 +56,10 @@ export function UserProvider(props: providerProps) {
     const [cartCount, setCartCount] = useState<number>(0);
     const [language, setLanguage] = useState<any>({});
     const [paymentStatus, setPaymentStatus] = useState<any>('');
+    const [appliedFilter, setAppliedFilter] = useState<boolean>(false);
+    const [category, setCategory] = useState([]);
+    const [subcategory, setSubcategory] = useState([]);
+    const [availableCategories, setAvailableCategories] = useState([]);
 
     useEffect(() => {
         if (new Date(user?.expiry_date) < new Date()) {
@@ -42,6 +68,10 @@ export function UserProvider(props: providerProps) {
     })
 
     useEffect(() => {
+        // route protection
+        const authenticatedRoute = !(!!unauthRoutes.find((ele) => ele.includes(router.pathname)));
+        authenticatedRoute && router.push('/homepage');
+
         let userdata: any = localStorage.getItem('userdetails');
         let transactionId: any = localStorage.getItem('uid') || '';
         userdata = JSON.parse(userdata);
@@ -80,7 +110,26 @@ export function UserProvider(props: providerProps) {
         saveUser({});
     }
     
-    return <userContext.Provider value={{user, saveUser, cartCount, setCartCount, logout, language, setLanguage, paymentStatus, setPaymentStatus}}>{props.children}</userContext.Provider>
+    return <userContext.Provider 
+        value={{
+            user, 
+            saveUser, 
+            cartCount, 
+            setCartCount, 
+            logout, 
+            language, 
+            setLanguage, 
+            paymentStatus, 
+            setPaymentStatus,
+            appliedFilter,
+            setAppliedFilter,
+            category,
+            subcategory,
+            setCategory,
+            setSubcategory,
+            availableCategories,
+            setAvailableCategories
+        }}>{props.children}</userContext.Provider>
 }
 
 export const UserContext = (): User => {
