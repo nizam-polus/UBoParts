@@ -2115,3 +2115,9 @@ header .bar,
         min-width: 150px;
     }
 }
+@media (max-width: 1199.98px) {
+    .site--desktop-header--classic-five .header {
+    display: grid;
+}
+}
+
