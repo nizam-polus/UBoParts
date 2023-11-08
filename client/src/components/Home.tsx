@@ -182,7 +182,7 @@ function Home() {
     }, []);
 
     useEffect(() =>{
-        if(window.innerWidth < 768){
+        if(window.innerWidth < 1024){
             let makeItemCount = 2
             setMakeItemCount(2)
             APIs.getMakes(makePageNum, makeItemCount).then(response => {
@@ -722,7 +722,7 @@ function Home() {
                              (
                                  categoriesDetail.length > 0 ? categoriesDetail.slice(0, 4).map((item:any, index:any) => {
                                 return (
-                                <div key={index} className="col-12 col-sm-6 col-md-3 my-3 my-md-0">
+                                <div key={index} className="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 my-3 my-lg-0">
                                     <div className="prod-cats card">
                                     {item.attributes.category_image.data ? (
                                             <AppImage style={{height: "270px", objectFit: "contain"}} 
@@ -742,7 +742,7 @@ function Home() {
                             (
                                 saleOffers && saleOffers.slice(0,4).map((product: any, index: any) => {
                                     return (
-                                        <div className="col-12 col-sm-6 col-lg-3 mb-4" key={index}>
+                                        <div className="col-12 col-sm-6 col-lg-4 col-xl-3 mb-4" key={index}>
                                             {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null) && (
                                                 <span  className="sale-tag position-absolute">Sale Live</span>
                                             )}
@@ -810,7 +810,7 @@ function Home() {
                             (
                                 topSellings && topSellings.map((product: any, index: any) => {
                                     return (
-                                        <div className="col-12 col-sm-6 col-lg-3 mb-4" key={index}>
+                                        <div className="col-12 col-sm-6 col-lg-4 col-xl-3 mb-4" key={index}>
                                             {/* {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null) && (
                                                 <span  className="sale-tag position-absolute">Sale Live</span>
                                             )} */}
@@ -879,7 +879,7 @@ function Home() {
                         </div>
                     </section>
                 <section className='d-flex align-items-center justify-content-center ubo-brands-slider-wrapper'>
-                   <div className='p-4 d-flex flex-column flex-sm-row align-items-center justify-content-center'>
+                   <div className='p-4 d-flex flex-column flex-xl-row align-items-center justify-content-center'>
                         <div className='ubo-brands-slider-title'>
                             <span className='h4 d-sm-block'><FormattedMessage id="SEARCH_BY" /> </span>
                             <span className='h4'><FormattedMessage id="CAR_BRAND" /></span>
@@ -922,13 +922,13 @@ function Home() {
                 </section>
                 <section className="latest-products-wrapper">
                         <div className="row mt-5">
-                            <div className="col-12 d-sm-flex justify-content-sm-between ubo-nav-tab">
-                                <div className='col-12 col-sm-auto mb-3 mb-sm-0 text-center text-sm-left'>
+                            <div className="col-12 d-lg-flex justify-content-sm-between ubo-nav-tab">
+                                <div className='col-12 col-lg-auto mb-3 mb-lg-0 text-center text-lg-left'>
                                     <span className="popular_categories body-sub-titles regularfont">
                                        <FormattedMessage id="LATEST_PRODUCTS" />
                                     </span>
                                 </div>
-                                  <div className='d-flex justify-content-between d-sm-block'>
+                                  <div className='d-flex justify-content-between d-lg-block'>
                                     <button
                                         type="button"
                                         className={`saleoffers regularfont body-sub-titles ${selectedItem === 'All' ? 'active' : ''}`}
@@ -975,7 +975,7 @@ function Home() {
                         </div>}
                         {latestItems && latestItems.map((product: any, index: any) => {
                             return (
-                                <div className="col-12 col-sm-6 col-lg-3 mb-4" key={index}>
+                                <div className="col-12 col-sm-6 col-lg-4 col-xl-3 mb-4" key={index}>
                                     {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null) && (
                                         <span  className="sale-tag position-absolute">Sale Live</span>
                                     )}

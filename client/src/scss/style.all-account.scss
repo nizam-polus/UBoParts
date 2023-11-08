@@ -1197,6 +1197,20 @@ tr {
 .hamburger{
     display: none;
 }
+@media screen and (max-width: 1024px){
+header .bar,	
+    .desktop-filter{	
+        display: none;	
+        margin-top: 20px;
+    }	
+    .hamburger{
+        display: flex;
+        align-items: center;
+    }
+    .bar-mobile-myaccount{
+        display: none;
+    }
+}
 .mobile_menu{
     position: absolute;
     width: 50%;
@@ -1330,19 +1344,8 @@ tr {
     }	
     .selling-text{	
         left:35px;	
-    }	
-    header .bar,	
-    .desktop-filter{	
-        display: none;	
-        margin-top: 20px;
-    }	
-    .hamburger{
-        display: flex;
-        align-items: center;
-    }
-    .bar-mobile-myaccount{
-        display: none;
-    }
+    }    
+    
     .responsive-filter{	
         display: block;	
     }	
@@ -1783,6 +1786,32 @@ tr {
     border-radius: 50%;
     border: 3px solid green;
 }
+
+@media screen and (max-width: 1024px){
+    .ubo-brands-slider {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-width: 200px;
+    }
+    .ubo-brands-slider div {
+        width: 80px;
+    }
+    .ubo-brands-slider div img {
+        width: 80px;
+        height: 80px;
+    }
+    .ubo-brands-slider-nav {
+        height: 45px;
+        width: 45px;
+        border-radius: 50%;
+        border: 3px solid green;
+    }
+    .ubo-brands-slider-title {
+        width: auto;
+        margin-bottom: 10px;
+    }
+}
+
 .ubo-nav-tab button {background: transparent;}
 .ubo-dropdown-lang {
     position: absolute;
@@ -1894,28 +1923,28 @@ tr {
     }
     .ubo-btn-mobile {width: 100%;}
     .ubo-btn-subscribe { height: auto;}
-    .ubo-brands-slider {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        min-width: 200px;
-    }
-    .ubo-brands-slider div {
-        width: 80px;
-    }
-    .ubo-brands-slider div img {
-        width: 80px;
-        height: 80px;
-    }
-    .ubo-brands-slider-nav {
-        height: 45px;
-        width: 45px;
-        border-radius: 50%;
-        border: 3px solid green;
-    }
-    .ubo-brands-slider-title {
-        width: auto;
-        margin-bottom: 10px;
-    }
+    // .ubo-brands-slider {
+    //     display: grid;
+    //     grid-template-columns: 1fr 1fr;
+    //     min-width: 200px;
+    // }
+    // .ubo-brands-slider div {
+    //     width: 80px;
+    // }
+    // .ubo-brands-slider div img {
+    //     width: 80px;
+    //     height: 80px;
+    // }
+    // .ubo-brands-slider-nav {
+    //     height: 45px;
+    //     width: 45px;
+    //     border-radius: 50%;
+    //     border: 3px solid green;
+    // }
+    // .ubo-brands-slider-title {
+    //     width: auto;
+    //     margin-bottom: 10px;
+    // }
     .ubo-nav-tab {
         padding: 0;
     }
@@ -1980,4 +2009,62 @@ tr {
 #accountDetails .btn:focus, #newBankAccounts .btn:focus {
     box-shadow: none !important;
   }
+// new header
+.site--desktop-header--classic-five .header, .site--mobile-header--mobile-one .mobile-header {
+    background: transparent !important;
+}
+.site--desktop-header--classic-five .header {
+    grid-template-rows: auto auto !important;
+}
+.ub_login {
+    padding: 6px 24px !important;
+}
+.ubo-acc-container .indicator__button button {
+    margin-right: 40px;
+}
+.ubo-acc-container .indicator__button .indicator__icon {
+    right: 0;
+}
+.site--desktop-header--classic-five .indicator:hover .indicator__button, .site--desktop-header--classic-five .indicator--open .indicator__button {
+    background: transparent;
+}
+.ubo-header-icon img, .ubo-header-icon svg{
+    width: 32px !important;
+    height: 32px !important;
+}
+// * {
+//     border: 1px solid black;
+// }
 
+[dir=ltr] .site--mobile-header--mobile-one .mobile-indicator__counter:before {
+    -webkit-transform: none !important;
+    -moz-transform: none !important;
+    transform: none !important;
+}
+.site--mobile-header--mobile-one .mobile-indicator__counter:before {
+    background-color: #287125;
+    border-radius: 20px;
+    height: 20px;
+    left: -4px !important;
+    padding: 3px 4px;
+    width: 20px;
+    top: -4px;
+}
+.site--mobile-header--mobile-one .mobile-indicator__icon, .site--desktop-header--classic-five .indicator__icon {
+    fill: #fff;
+}
+.site--desktop-header--classic-five .indicator__counter:before {
+    background-color: #287125;
+    bottom: 0;
+    border-radius: 20px;
+    height: 20px;
+    top: -3px !important;
+    width: 20px;
+}
+[dir=ltr] .site--desktop-header--classic-five .indicator__counter:before {
+    left: -3px !important;
+    transform: none;
+}
+.mobile-menu__links ul li {
+    border-bottom: 1px solid #ebebeb;
+}

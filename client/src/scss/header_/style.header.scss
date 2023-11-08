@@ -38,6 +38,7 @@ header {
 .logo {
 	width: 16%;
 }
+.logo img {width: 174px;}
 .bar {
 	ul {
 		list-style: none;
@@ -92,4 +93,7 @@ span.home_count {
 	height: 500px;
 	background-blend-mode: overlay;
 	background-color: #4c4c4c;
+}
+@media screen and (max-width: 768px){
+	.logo img {width: 100px;}
 }
