@@ -122,7 +122,7 @@ function Header_home(props: any) {
     return (
         <>
             {/* new header mobile */}
-            <header className="site__mobile-header">
+            <header className="site__mobile-header d-block d-lg-none">
                 <div className="mobile-header">
                     <div className="container">
                         <div className="mobile-header__body">
@@ -138,16 +138,23 @@ function Header_home(props: any) {
                             </a>
                             <div className="mobile-header__indicators">
                                 <div className="mobile-indicator">
-                                    <a className="mobile-indicator__button">
-                                        <span className="mobile-indicator__icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
-                                                <circle cx="7" cy="17" r="2"></circle>
-                                                <circle cx="15" cy="17" r="2"></circle>
-                                                <path d="M20 4.4V5l-1.8 6.3c-.1.4-.5.7-1 .7H6.7c-.4 0-.8-.3-1-.7L3.3 3.9c-.2-.6-.7-.9-1.2-.9H.4C.2 3 0 2.8 0 2.6V1.4c0-.2.2-.4.4-.4h2.5c1 0 1.8.6 2.1 1.6l.1.4 2.3 6.8c0 .1.2.2.3.2h8.6c.1 0 .3-.1.3-.2l1.3-4.4c0-.2-.2-.4-.4-.4H9.4c-.2 0-.4-.2-.4-.4V3.4c0-.2.2-.4.4-.4h9.2c.8 0 1.4.6 1.4 1.4z"></path>
-                                            </svg>
-                                            <span className="mobile-indicator__counter">1</span>
-                                        </span>
-                                    </a>
+                                    <Link href="/cartpage">
+                                        <a className="mobile-indicator__button">
+                                            <span className="mobile-indicator__icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+                                                    <circle cx="7" cy="17" r="2"></circle>
+                                                    <circle cx="15" cy="17" r="2"></circle>
+                                                    <path d="M20 4.4V5l-1.8 6.3c-.1.4-.5.7-1 .7H6.7c-.4 0-.8-.3-1-.7L3.3 3.9c-.2-.6-.7-.9-1.2-.9H.4C.2 3 0 2.8 0 2.6V1.4c0-.2.2-.4.4-.4h2.5c1 0 1.8.6 2.1 1.6l.1.4 2.3 6.8c0 .1.2.2.3.2h8.6c.1 0 .3-.1.3-.2l1.3-4.4c0-.2-.2-.4-.4-.4H9.4c-.2 0-.4-.2-.4-.4V3.4c0-.2.2-.4.4-.4h9.2c.8 0 1.4.6 1.4 1.4z"></path>
+                                                </svg>
+                                                <span className="mobile-indicator__counter">{cartCount}</span>
+                                            </span>
+                                        </a>
+                                    </Link>
+                                </div>
+                            </div>
+                            <div className="mobile-header__indicators">
+                                <div className="mobile-indicator">
+                                    <Dropdown title={selectedLanguage} items={items} onItemClick={handleItemClick} />
                                 </div>
                             </div>
                         </div>
@@ -156,7 +163,7 @@ function Header_home(props: any) {
             </header>
             {/* new header mobile */}
             {/* new header */}
-            <header className="site__header">
+            <header className="site__header d-none d-lg-block py-0">
                 <div className="header">
                     <div className="header__logo">
                         <a className="logo" onClick={() => router.push("/homepage")}>
@@ -244,11 +251,6 @@ function Header_home(props: any) {
                                     className="indicator__button justify-content-center"
                                     onClick={() => setIsOpen(!isOpen)}
                                 >
-                                    <span className="indicator__icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32">
-                                            <path d="M16 18C9.4 18 4 23.4 4 30H2c0-6.2 4-11.5 9.6-13.3C9.4 15.3 8 12.8 8 10c0-4.4 3.6-8 8-8s8 3.6 8 8c0 2.8-1.5 5.3-3.6 6.7C26 18.5 30 23.8 30 30h-2c0-6.6-5.4-12-12-12zm6-8c0-3.3-2.7-6-6-6s-6 2.7-6 6 2.7 6 6 6 6-2.7 6-6z"></path>
-                                        </svg>
-                                    </span>
                                     {/* <span className="indicator__title">&nbsp;</span>
                                 <span className="indicator__value">
                                     <FormattedMessage id="MY_ACCOUNT" /></span> */}
@@ -333,8 +335,8 @@ function Header_home(props: any) {
                             )}
                             {userToken && (
                                 <div className="indicator__content">
-                                    <div className="account-menu">
-                                        <a className="account-menu__user">
+                                    <div className="account-menu menu-dropdown">
+                                        <a className="account-menu__user menu_font_size regularfont">
                                             <div className="account-menu__user-avatar">
                                                 {user?.profile_image?.url ? (
                                                     <AppImage
@@ -376,7 +378,7 @@ function Header_home(props: any) {
                                             </div>
                                         </a>
                                         <div className="account-menu__divider"></div>
-                                        <ul className="account-menu__links">
+                                        <ul className="account-menu__links menu_font_size regularfont pointer">
                                             <li>
                                                 <a
                                                     onClick={() => {
@@ -388,7 +390,7 @@ function Header_home(props: any) {
                                                         setIsOpen(!isOpen);
                                                     }}
                                                 >
-                                                    Dashboard
+                                                    <FormattedMessage id="DASHBOARD" />
                                                 </a>
                                             </li>
                                             <li>
@@ -398,15 +400,15 @@ function Header_home(props: any) {
                                                         setIsOpen(!isOpen);
                                                     }}
                                                 >
-                                                    Edit Profile
+                                                    <FormattedMessage id="PROFILE" />
                                                 </a>
                                             </li>
                                         </ul>
                                         <div className="account-menu__divider"></div>
-                                        <ul className="account-menu__links">
+                                        <ul className="account-menu__links menu_font_size regularfont pointer">
                                             <li>
                                                 <button type="button" onClick={logout}>
-                                                    Logout
+                                                    <FormattedMessage id="LOGOUT" />
                                                 </button>
                                             </li>
                                         </ul>
@@ -415,8 +417,13 @@ function Header_home(props: any) {
                             )}
                         </div>
                         <div className="indicator indicator--trigger--click">
-                            <a className="indicator__button">
-                                <Link href="/cartpage">
+                            <Link href="/cartpage">
+                            <a
+                                className="indicator__button"
+                                onClick={() => {
+                                    setIsOpen(false);
+                                }}
+                            >
                                     <span className="indicator__icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32">
                                             <circle cx="10.5" cy="27.5" r="2.5"></circle>
@@ -425,8 +432,8 @@ function Header_home(props: any) {
                                         </svg>
                                         {cartCount != 0 ? <span className="indicator__counter">{cartCount}</span> : ""}
                                     </span>
-                                </Link>
                             </a>
+                                </Link>
                         </div>
                         <div className="d-flex align-items-center indicator indicator--trigger--click">
                             <Dropdown title={selectedLanguage} items={items} onItemClick={handleItemClick} />
@@ -456,33 +463,45 @@ function Header_home(props: any) {
                                     <ul>
                                         <li className="menu_font_size regularfont" onClick={showMenuFunction}>
                                             <Link href="/homepage">
-                                                <a><FormattedMessage id="HOME" /></a>
+                                                <a>
+                                                    <FormattedMessage id="HOME" />
+                                                </a>
                                             </Link>
                                         </li>
                                         <li className="menu_font_size regularfont" onClick={showMenuFunction}>
                                             <Link href="/shop">
-                                                <a><FormattedMessage id="SHOP" /></a>
+                                                <a>
+                                                    <FormattedMessage id="SHOP" />
+                                                </a>
                                             </Link>
                                         </li>
                                         <li className="menu_font_size regularfont" onClick={showMenuFunction}>
                                             <Link href="/about_us_">
-                                                <a><FormattedMessage id="ABOUT_US" /></a>
+                                                <a>
+                                                    <FormattedMessage id="ABOUT_US" />
+                                                </a>
                                             </Link>
                                         </li>
                                         <li className="menu_font_size regularfont" onClick={showMenuFunction}>
                                             <Link href="/request">
-                                                <a><FormattedMessage id="REQUEST" /></a>
+                                                <a>
+                                                    <FormattedMessage id="REQUEST" />
+                                                </a>
                                             </Link>
                                         </li>
                                         <li className="menu_font_size regularfont" onClick={showMenuFunction}>
                                             <Link href="/dismantle_car">
-                                                <a><FormattedMessage id="DISMANTLE" /></a>
+                                                <a>
+                                                    <FormattedMessage id="DISMANTLE" />
+                                                </a>
                                             </Link>
                                         </li>
                                         {!userToken && (
                                             <li className="menu_font_size regularfont" onClick={showMenuFunction}>
                                                 <Link href="/seller-registration">
-                                                    <a><FormattedMessage id="START_SELL" /></a>
+                                                    <a>
+                                                        <FormattedMessage id="START_SELL" />
+                                                    </a>
                                                 </Link>
                                             </li>
                                         )}
@@ -515,9 +534,8 @@ function Header_home(props: any) {
                                                                             ? "/seller/dashboard"
                                                                             : "/purchase-history";
                                                                     router.push(route);
-                                                                    setShowMenu(!showMenu);                                                                   
-                                                                }
-                                                            }
+                                                                    setShowMenu(!showMenu);
+                                                                }}
                                                             >
                                                                 <FormattedMessage id="DASHBOARD" />
                                                             </span>
@@ -556,7 +574,7 @@ function Header_home(props: any) {
                 </div>
             </div>
             {/* new mobile menu ends */}
-            <header className="home">
+            <header className="home p-0">
                 {router.pathname == "/request" && (
                     <div className="container">
                         <div className="row d-flex align-items-center header-middle-text pl-5">
