@@ -644,8 +644,9 @@
   "PASSWORD_DOESNOT_MATCH": "Password Does Not match",
   "FORGET_PASSWORD": "Forget Password",
   "ENTER_REGISTERD_EMAIL_TO": "Enter registerd email to ",
-  "RESET_YOUR_PASSWORD": "reset your passowrd"
-  
+  "RESET_YOUR_PASSWORD": "reset your passowrd",
+  "SHOPPING_DETAILS": "Shopping Details",
+  "ADDING_TO_CART": "Adding To Cart"
 
 
 }

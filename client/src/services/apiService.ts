@@ -46,7 +46,7 @@ const APIs = {
 
     searchProducts: (make: string, model: string, year: string, category: string, filter: any, sellerid = '') => {
         return axios.get(
-            BACKEND_URL + `products?populate=*` + `${filter.sort}&pagination[page]=${filter.page}&pagination[pageSize]=18` + 
+            BACKEND_URL + `products?populate=*&` + `${filter.sort}&pagination[page]=${filter.page}&pagination[pageSize]=18` + 
                 `${make && `&filters[$and][0][make][id][$eq]=${make}`}` +
                 `${model && `&filters[$and][1][model][id][$eq]=${model}`}` + 
                 `${year && '&filters[$and][2][year][id][$eq]='+year}${category && `&filters[$and][][category][category_name][$eq]=${category}`}` + 
@@ -120,7 +120,7 @@ const APIs = {
        
     getCountries: () => axios.get(BACKEND_URL + 'countries/', {headers}),
 
-    getMakes: (pageNum: any, itemCount: any) => axios.get(BACKEND_URL + `makes?populate=*&sort[0]=id:asc&pagination[page]=${pageNum}&pagination[pageSize]=${itemCount}`),
+    getMakes: () => axios.get(BACKEND_URL + 'specific-make', {headers}),
 
     paymentUpdate: () => axios.post(BACKEND_URL + 'payment-status-update', {headers}),
 

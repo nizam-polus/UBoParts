@@ -60,7 +60,12 @@ function Shop() {
     
     const router = useRouter();
     const { HomeMakeId } : any = router.query;
+    let local: any;
     
+    if(typeof window !== 'undefined'){
+        local = localStorage.getItem("locale")
+    }
+
     const categoriesArray = (resData: any) => {
         return [...new Set(resData.map((item: any) => ({
                 id: item.id,
@@ -75,6 +80,7 @@ function Shop() {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
+            
             if (HomeMakeId && HomeMakeId !== 'undefined') {
                 localStorage.setItem('makeId', HomeMakeId);
                 localStorage.removeItem('modelId');
@@ -156,8 +162,9 @@ function Shop() {
         return range;
     }
 
-    const searchProducts = (make: any, model: any, year: any, category: any, pageNumber = '1') => {
-        APIs.searchProducts(make, model, year, category, {sort: sortState, page: pageNumber}, sellerId).then((response: any) => {
+    const searchProducts = (make: any, model: any, year: any, category: any, pageNumber = '1', sortData = 'sort[0]=createdAt:desc') => {
+        setSortState(sortData);
+        APIs.searchProducts(make, model, year, category, {sort: sortData, page: pageNumber}, sellerId).then((response: any) => {
             setSearchedProducts(response.data.data);
             let pagination = response.data.meta.pagination
             setPagination(pagination);
@@ -387,9 +394,9 @@ function Shop() {
         if (filterApplied) {
             searchFilter(filterCategory, filterSubcategory, { sort: sortData, page: '1' });
         } else if (selectedMake) {
-            searchProducts(selectedMake, selectedModel, selectedYear, selectedCategory);
+            searchProducts(selectedMake, selectedModel, selectedYear, selectedCategory, undefined, sortData);
         } else {
-            searchProducts('', '', '', '');
+            searchProducts('', '', '', '', undefined, sortData);
         }
     }
 
@@ -456,7 +463,7 @@ function Shop() {
                                             <select disabled={!selectedMake} className="form-select semifont placeholderfontsize" name="model" id="modelOption"
                                                 value={selectedModel} onChange={handleModelChange}
                                             >
-                                                <option value="" disabled={true}>Select Model</option>
+                                                <option value="" disabled={true}>{true ? "Select Model" : "select"}</option>
                                                 {modelArray.map((model: any, index: any) => (
                                                     <option key={index} value={model.id}>{model.model}</option>
                                                 ))}
@@ -645,7 +652,7 @@ function Shop() {
                                                 </div> */}
                                             <div className='text-center mt-4 mini-text-2'>
                                             <button 
-                                                    className='mr-3'
+                                                    className='mr-3 mb-2'
                                                     style={{background: 'none', color:'black', border: '1.7px solid black', padding: '0.3rem 1.4rem'}}
                                                     onClick={(e) => handleClearFilter(e)}
                                                 >
@@ -688,7 +695,9 @@ function Shop() {
                                                 return (
                                                     <div className="col-12 col-sm-12 col-md-6 col-xl-4  mb-4" key={index}>
                                                     {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product?.attributes?.sale?.data != null)&& (
-                                                        <span  className="sale-tag position-absolute">{product.attributes?.sale?.data?.attributes?.en_discount_text}</span>
+                                                      local == "nl" ?   <span  className="sale-tag position-absolute">{product.attributes?.sale?.data?.attributes?.nl_discount_text}</span>
+                                                      :
+                                                      <span  className="sale-tag position-absolute">{product.attributes?.sale?.data?.attributes?.en_discount_text}</span>
                                                     )}
                                                         <div className="latest-prods card card-shadows" style={{height: "100%"}}>
                                                         <AppImage 

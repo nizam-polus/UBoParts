@@ -17,6 +17,12 @@ import { FormattedMessage } from 'react-intl';
 
 function Home() {
 
+    let local: any;
+    
+    if(typeof window !== 'undefined'){
+        local = localStorage.getItem("locale")
+    }
+
     const router: any = useRouter();
     const username = router.query.username;
     const verified = router.query.emailVerified;
@@ -54,13 +60,17 @@ function Home() {
     const [startIndex, setStartIndex] = useState(0)
     const [makeData, setMakeData] = useState<any>([]);
     const [makePageNum, setMakePageNum] = useState(1);
-    const [makeItemCount, setMakeItemCount] = useState(4);
     const [articleNumber, setArticleNumber] = useState<any>('');
     const [selectedHomeContent, setSelectedHomecontent] = useState('category')
     const [openReset, setOpenReset] = useState<boolean>(false);
     const [newpwd, setNewpwd] = useState<string>('');
     const [confrmpwd, setConfrmpwd] = useState<string>('');
     const [mismatch, setMismatch] = useState<boolean>(false);
+    const [pwdVisible, setPwdVisible] = useState(false);
+    const [confrmpwdVisible, setConfrmpwdVisible] = useState(false);
+    const [itemsPerPage, setItemsPerPage] = useState(4)
+
+    const slicedData = makeData.slice(startIndex, startIndex + itemsPerPage);
 
     useEffect(() => {
         if (licenseplate && licenseplate.length > 5) {
@@ -182,18 +192,18 @@ function Home() {
     }, []);
 
     useEffect(() =>{
-        if(window.innerWidth < 1024){
-            let makeItemCount = 2
-            setMakeItemCount(2)
-            APIs.getMakes(makePageNum, makeItemCount).then(response => {
-                setMakeData(response.data.data);
+        if(window.innerWidth < 768){
+            setItemsPerPage(2)
+            APIs.getMakes().then(response => {
+                setMakeData(response.data.rows);
             }).catch(error => {
                 console.error('Error fetching data:', error);
             });
         }else{
-            setMakeItemCount(4)
-            APIs.getMakes(makePageNum, makeItemCount).then(response => {
-                setMakeData(response.data.data);
+            setItemsPerPage(4)
+            APIs.getMakes().then(response => {
+                console.log(response.data.rows)
+                setMakeData(response.data.rows);
             }).catch(error => {
                 console.error('Error fetching data:', error);
             });
@@ -425,16 +435,21 @@ function Home() {
         }
     }
     const handleArrowClick = () => {
-        setMakePageNum(makePageNum + 1)
+        if((startIndex + itemsPerPage ) > makeData.length){
+            console.log("called")
+         setStartIndex(0)
+        }else{
+            setStartIndex(startIndex + itemsPerPage)
+        }
     };
     const handleLeftArrowClick = () => {
-      
-        if (makePageNum == 1) {
-          setMakePageNum(makePageNum)
-        } else {
-          setMakePageNum(makePageNum - 1)
+        if(startIndex == 0){
+            setStartIndex(0)
+        }else{
+            setStartIndex(startIndex - itemsPerPage)
         }
-      };      
+        
+    };      
 
     const handleMakeClick = (HomeMakeId: any) => {
         setArticleNumber('');
@@ -507,24 +522,53 @@ function Home() {
                         <div className="ac-modal-body">
                             <div className="ac-card login-form">
                                 <div className="ac-card-body">
-                                    <h3 className="ac-card-title text-center">Reset Password</h3>
-                                    <p className="ac-card-sub-title text-center">Enter your new password</p>
-                                    {mismatch && <p className='text-center' style={{color: 'rgb(255 102 102)'}}>Password does not match</p>}
+                                    <h3 className="ac-card-title text-center"><FormattedMessage id="RESET_PASSWORD"/></h3>
+                                    <p className="ac-card-sub-title text-center"><FormattedMessage id="ENTER_YOUR_NEW_PASSWORD"/></p>
+                                    {mismatch && <p className='text-center' style={{color: 'rgb(255 102 102)'}}><FormattedMessage id="PASSWORD_DOESNOT_MATCH"/></p>}
                                     <div className="ac-card-text">
                                         <form action="/action_page.php">
                                             <div className="form-group">
                                                 {/* <label htmlFor="newpwd">Email address</label> */}
-                                                <input type="password" 
+                                                <div className="position-relative">
+
+                                                <input type={pwdVisible ? "text" : "password"}
                                                     className="form-control mb-4" id="newpwd" 
                                                     placeholder="New password" value={newpwd}
                                                     onChange={(e: any) => setNewpwd(e.target.value)}
                                                 />
+                                                <div className="position-absolute p-3" style={{right: 0, top: 0}}>
+                                                        <span
+                                                                className="password-visibility-toggle"
+                                                                onClick={() => setPwdVisible(!pwdVisible)}
+                                                            >
+                                                                {pwdVisible ? (
+                                                                    <i className="far fa-eye"></i>
+                                                                    ) : (
+                                                                    <i className="far fa-eye-slash"></i>
+                                                                )}
+                                                            </span>
+                                                        </div>
+                                                </div>
                                                  {/* <label htmlFor="confrmpwd">Email address</label> */}
-                                                <input type="password" 
+                                                 <div className="position-relative">
+                                                <input type={confrmpwdVisible ? "text" : "password"} 
                                                     className="form-control" id="confrmpwd" 
                                                     placeholder="Confirm password" value={confrmpwd}
                                                     onChange={(e: any) => setConfrmpwd(e.target.value)}
                                                 />
+                                                <div className='position-absolute p-3' style={{right: 0, top: 0}}>
+                                                    <span
+                                                        className="password-visibility-toggle"
+                                                        onClick={() => setConfrmpwdVisible(!confrmpwdVisible)}
+                                                    >
+                                                        {confrmpwdVisible ? (
+                                                            <i className="far fa-eye"></i>
+                                                        ) : (
+                                                             <i className="far fa-eye-slash"></i>
+                                                        )}
+                                                    </span>
+                                                </div>
+                                                </div>
                                             </div>
                                             <button type="submit" className="btn btn-default mt-1 mb-4"
                                                 onClick={handleChangePwd}
@@ -549,7 +593,7 @@ function Home() {
                                                 <input type="form-control" value={licenseplate}
                                                     onChange={handleLicenseplateChange} name="plate_number" 
                                                     className="semifont placeholderfontsize" 
-                                                    placeholder="Search with Car's Plate Number" 
+                                                    placeholder={local == "nl" ? "Zoek op kenteken van de auto" : "Search with car's plate number"} 
                                                 />
                                                 {showInvaidLicense &&
                                                     <div className="row mt-2 ml-2" >
@@ -567,7 +611,7 @@ function Home() {
                                         <div className="col">
                                             <div className="form-group">
                                                 <input type="form-control" name="article_number" value={articleNumber}
-                                                    className="semifont placeholderfontsize" placeholder="Search with product Article"
+                                                    className="semifont placeholderfontsize" placeholder={local == "nl" ? "Zoek met productartikel" : "Search with product Article"}
                                                     onChange={handleArticleChange}
                                                 />
                                             </div>
@@ -635,7 +679,7 @@ function Home() {
                             <div className="row mt-2 ml-2" >
                                 <span onClick={toggleAdvancedSearch} style={{ cursor: 'pointer' }} 
                                     className="advanced_search placeholderfontsize regularfont"
-                                >{toggleSearch ? 'Show less' : 'Advanced Search'}</span>
+                                >{toggleSearch ? <FormattedMessage id="SHOW_LESS"/> : <FormattedMessage id="ADVANCED_SEARCH"/>}</span>
                             </div>
                         </form>
                     </section>
@@ -692,18 +736,18 @@ function Home() {
                         </div>
                     </section>
                     <section className="categories-wrapper">
-                        <div className="row mt-5">
+                        <div className="row mt-md-5">
                             <div className="col-12 d-sm-flex justify-content-sm-between ubo-nav-tab">
-                                <div className='col-12 col-sm-auto mb-3 mb-sm-0 text-center text-sm-left pointer'>
-                                    <span onClick={() => setSelectedHomecontent("category")} 
-                                        className={`popular_categories body-sub-titles regularfont ${selectedHomeContent == "category" ? 'active' : ''}`}
+                                <div className='col-12 col-sm-auto mb-3 mb-sm-0 text-center text-sm-left pointer p-0'>
+                                    <button onClick={() => setSelectedHomecontent("category")} 
+                                        className={`saleoffers mobile-full-width regularfont body-sub-titles p-2 ${selectedHomeContent == "category" ? 'active' : ''}`}
                                     >
                                         <FormattedMessage id="POPULAR"/>
-                                    </span>
+                                    </button>
                                 </div>
-                                <div className='d-flex justify-content-between d-sm-block'>
-                                    <button type="button" onClick={() => setSelectedHomecontent("saleOffers")}  className={`saleoffers regularfont body-sub-titles ${selectedHomeContent == "saleOffers" ? 'active' : ''}`}><FormattedMessage id="SALE_OFFERS" /></button>
-                                    <button type="button" onClick={() => setSelectedHomecontent("topSellings")} className={`saleoffers regularfont body-sub-titles ${selectedHomeContent == "topSellings" ? 'active' : ''}`}><FormattedMessage id="TOP_SELLING" /></button>
+                                <div className='d-flex justify-content-between d-sm-block flex-column flex-sm-row mobile-gap'>
+                                    <button type="button" onClick={() => setSelectedHomecontent("saleOffers")}  className={`saleoffers regularfont body-sub-titles p-2 ${selectedHomeContent == "saleOffers" ? 'active' : ''}`}><FormattedMessage id="SALE_OFFERS" /></button>
+                                    <button type="button" onClick={() => setSelectedHomecontent("topSellings")} className={`saleoffers regularfont body-sub-titles p-2 ${selectedHomeContent == "topSellings" ? 'active' : ''}`}><FormattedMessage id="TOP_SELLING" /></button>
                                 </div>
                             </div>
                             <div className="col"></div>
@@ -779,7 +823,7 @@ function Home() {
                                                             (product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null) ?
                                                             <span className="product-price">
                                                                 <s>€{product?.attributes?.price}</s> 
-                                                                €{discountedPrice(product.attributes.price, product.attributes.sale.data.attributes.discount)}
+                                                                €{discountedPrice(product.attributes.price, product.attributes.sale.data.attributes.discount_percentage_value)}
                                                             </span> :
                                                             <span className="product-price">€{product?.attributes?.price}</span>
                                                         }
@@ -886,16 +930,21 @@ function Home() {
                         </div>
                         <div className='d-flex align-items-center'>
                         <div className='ubo-brands-slider'>
-                        {makeData.map((item :any, index:any) => (
+                        {slicedData && slicedData.map((item :any, index:any) => (
                             <div key={index} onClick={() => handleMakeClick(item.id)}>
-                                <img src={item.attributes.make_logo.data ? 
-                                        BASE_URL + item.attributes.make_logo.data.attributes.url : ""} 
+                                <img src={item.make_logo ? 
+                                        BASE_URL + item.make_logo : ""} 
                                     alt="" style={{ cursor: 'pointer', objectFit: "contain" }} 
                                 />
                             </div>
                         ))}
                         </div>
-                        <button className='ubo-brands-slider-nav' onClick={handleLeftArrowClick}>
+                        <button 
+                        disabled={startIndex === 0 ? true : false}
+                        className='ubo-brands-slider-nav'
+                        onClick={handleLeftArrowClick}
+                        style={{cursor: `${startIndex === 0 ? "not-allowed": "pointer"}`}}
+                        >
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     width="20" height="20" fill="currentColor"
                                     className="bi bi-arrow-left" viewBox="0 0 16 16"
@@ -928,31 +977,31 @@ function Home() {
                                        <FormattedMessage id="LATEST_PRODUCTS" />
                                     </span>
                                 </div>
-                                  <div className='d-flex justify-content-between d-lg-block'>
+                                  <div className='d-flex justify-content-between d-sm-block flex-column flex-sm-row mobile-gap'>
                                     <button
                                         type="button"
-                                        className={`saleoffers regularfont body-sub-titles ${selectedItem === 'All' ? 'active' : ''}`}
+                                        className={`saleoffers regularfont body-sub-titles p-2 ${selectedItem === 'All' ? 'active' : ''}`}
                                         onClick={() => handleCategoryClick('All')}
                                     >
                                        <FormattedMessage id="ALL" />
                                     </button>
                                     <button
                                         type="button"
-                                        className={`saleoffers regularfont body-sub-titles ${selectedItem === 'Audio' ? 'active' : ''}`}
+                                        className={`saleoffers regularfont body-sub-titles p-2 ${selectedItem === 'Audio' ? 'active' : ''}`}
                                         onClick={() => handleCategoryClick('Audio')}
                                     >
                                         <FormattedMessage id="AUDIO" />
                                     </button>
                                     <button
                                         type="button"
-                                        className={`saleoffers regularfont body-sub-titles ${selectedItem === 'Lights' ? 'active' : ''}`}
+                                        className={`saleoffers regularfont body-sub-titles p-2 ${selectedItem === 'Lights' ? 'active' : ''}`}
                                         onClick={() => handleCategoryClick('Lights')}
                                     >
                                         <FormattedMessage id="LIGHTS" />
                                     </button>
                                    <button
                                         type="button"
-                                        className={`saleoffers regularfont body-sub-titles ${selectedItem === 'Body Parts ' ? 'active' : ''}`}
+                                        className={`saleoffers regularfont body-sub-titles p-2 ${selectedItem === 'Body Parts ' ? 'active' : ''}`}
                                         onClick={() => handleCategoryClick('Body Parts ')}
                                    >
                                     <FormattedMessage id="BODY_PARTS" />
@@ -1012,7 +1061,7 @@ function Home() {
                                                     (product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null) ?
                                                     <span className="product-price">
                                                         <s>€{product?.attributes?.price}</s> 
-                                                        €{discountedPrice(product.attributes.price, product.attributes.sale.data.attributes.discount)}
+                                                        €{discountedPrice(product.attributes.price, product.attributes.sale.data.attributes.discount_percentage_value)}
                                                     </span> :
                                                     <span className="product-price">€{product?.attributes?.price}</span>
                                                 }

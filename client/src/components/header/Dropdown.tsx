@@ -78,7 +78,7 @@ function Dropdown<T extends IDropdownItem>(props: Props<T>) {
                 </div>
                 
             </button>
-            <div className="topbar__menu-body ubo-dropdown-lang" style={{left: "1px"}}>
+            <div className="topbar__menu-body ubo-dropdown-lang">
                 {items.map((item, index) => (
                     <button
                         key={index}
