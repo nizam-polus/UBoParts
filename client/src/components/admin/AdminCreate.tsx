@@ -413,4 +413,4 @@ return (
         </>
     );
 }
-export default AdminCreate;
+export default AdminCreate

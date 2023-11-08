@@ -1,12 +1,13 @@
 // react
 import Link from 'next/link';
 import AppImage from '../shared/AppImage';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Login from '../account_/Login';
 import Register from '../account_/Register';
 import { FormattedMessage } from 'react-intl';
 import APIs from '~/services/apiService';
 import { toast } from 'react-toastify';
+import { UserContext } from '../account_/UserContext';
 
 function Footer() {
 
@@ -14,6 +15,12 @@ function Footer() {
     const [registerIsOpen, setRegisterIsOpen] = useState<boolean>(false);
     const [loginmodal, setLoginModal] = useState<boolean>(true);
     const [email, setEmail] = useState<string>('');
+    
+    let tokendata : any;  
+
+    if(typeof window !== 'undefined'){
+        tokendata = localStorage.getItem('usertoken');
+    }
 
     const onLoginModalClose = () => {
         setLoginModalIsOpen(false);
@@ -85,7 +92,7 @@ function Footer() {
                                     </Link>
                                 </p>
                                 <p className="regularfont short-labels-1 label-color-1 mb-2">
-                                    <Link href="/cookie">
+                                    <Link href="/policy">
                                     <span className='pointer'><FormattedMessage id="PRIVACY_POLICY"/></span>
                                     </Link>
                                 </p>
@@ -95,7 +102,7 @@ function Footer() {
                                     </Link>
                                 </p>
                                 <p className="regularfont short-labels-1 label-color-1 mb-2">
-                                    <Link href="/advertise-with-us">
+                                    <Link href="/dismantle_car">
                                     <span className='pointer'><FormattedMessage id="ADS_WITH_US"/></span>
                                     </Link>
                                 </p>
@@ -115,9 +122,12 @@ function Footer() {
                                 <p onClick={showRegister} className="regularfont short-labels-1 label-color-1 mb-2">       
                                         Register as a customer                  
                                 </p>
+                                {!tokendata ?
                                 <p onClick={showLoginModal} className="regularfont short-labels-1 label-color-1 mb-2">                                                                 
-                                        Login
+                                    Login
                                 </p>
+                                : ""
+                                }
                             </div>
                             <div className="col">
                                 <p className="boldfontsize regularfont text-white"><FormattedMessage id="NEWS_LETTER" /></p>
@@ -141,7 +151,7 @@ function Footer() {
                                     <div className="row">
                                         <p className="regularfont short-labels-1 label-color-1 mb-2 w-100 px-3 "><FormattedMessage id="FOLLOW_US"/></p>
                                         <div className="col">
-                                            <a href=""><AppImage src="images/instagram.svg"/></a>
+                                            <a href="https://instagram.com/uboparts?igshid=ZDYzNHRzdTdsbTZt"><AppImage src="images/instagram.svg"/></a>
                                         </div>
                                     </div>
                                 </form>

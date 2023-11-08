@@ -46,7 +46,7 @@ const APIs = {
 
     searchProducts: (make: string, model: string, year: string, category: string, filter: any, sellerid = '') => {
         return axios.get(
-            BACKEND_URL + `products?populate=*` + `${filter.sort}&pagination[page]=${filter.page}&pagination[pageSize]=18` + 
+            BACKEND_URL + `products?populate=*&` + `${filter.sort}&pagination[page]=${filter.page}&pagination[pageSize]=18` + 
                 `${make && `&filters[$and][0][make][id][$eq]=${make}`}` +
                 `${model && `&filters[$and][1][model][id][$eq]=${model}`}` + 
                 `${year && '&filters[$and][2][year][id][$eq]='+year}${category && `&filters[$and][][category][category_name][$eq]=${category}`}` + 
@@ -54,7 +54,7 @@ const APIs = {
         )
     },
 
-    searchFilter: (vehicle: any, categories: [], selectedCategories: [], selectedSubcategories: [], price: any, filter: any, sellerid = '') => {
+    searchFilter: (vehicle: any, categories: [], selectedCategories: [], selectedSubcategories: [], filterPrice: boolean, price: any, sortData: any, sellerid = '') => {
         let searchposition = -1, orposition = -1, andposition = 0;
         let filterCategories: any = [];
         const incrementSearchPosition = () => searchposition += 1;
@@ -91,8 +91,8 @@ const APIs = {
         };
 
         return axios.get(
-            BACKEND_URL + `products?populate=*` + `${filter.sort}&pagination[page]=${filter.page}&pagination[pageSize]=18` +
-            `${`&filters[$and][0][price][$between]=${price.min}&filters[$and][0][price][$between]=${price.max}`}` +
+            BACKEND_URL + `products?populate=*` + `${sortData.sort}&pagination[page]=${sortData.page}&pagination[pageSize]=18` +
+            `${filterPrice ? `&filters[$and][0][price][$between]=${price.min}&filters[$and][0][price][$between]=${price.max}` : ''}` +
             `${vehicle.make && `&filters[$and][${incrementAndPosition() + ''}][make][id][$eq]=${vehicle.make}`}` +
             `${vehicle.model && `&filters[$and][${incrementAndPosition() + ''}][model][id][$eq]=${vehicle.model}`}` +
             `${vehicle.year && `&filters[$and][${incrementAndPosition() + ''}][year][id][$eq]=${vehicle.year}`}` +
@@ -109,11 +109,6 @@ const APIs = {
     getCheckAllProducts: (articleNumber: any) => axios.get(BACKEND_URL + 'products?populate=*' + 
                                        `&filters[$and][0][article_number][$eq]=${articleNumber}`, {headers}),
 
-    getAllPaginationProducts: (page = '1', filter = "sort[0]=createdAt:desc", sellerid='') => {
-        return axios.get(BACKEND_URL + `products?${filter}&pagination[page]=${page}&pagination[pageSize]=18&populate=*` + 
-        `${sellerid && '&filters[$and][3][seller_id][$ne]=' + sellerid}`, {headers})
-    },
-
     getAllSellerProducts: (username: any, page="1") => {
         return axios.get(BACKEND_URL + `products?populate=*&filters[$and][][seller][$eq]=${username}` + 
                     `&sort[0]=createdAt:desc&pagination[page]=${page}&pagination[pageSize]=10`, {headers})
@@ -125,7 +120,7 @@ const APIs = {
        
     getCountries: () => axios.get(BACKEND_URL + 'countries/', {headers}),
 
-    getMakes: (pageNum: any, itemCount: any) => axios.get(BACKEND_URL + `makes?populate=*&sort[0]=id:asc&pagination[page]=${pageNum}&pagination[pageSize]=${itemCount}`),
+    getMakes: () => axios.get(BACKEND_URL + 'specific-make', {headers}),
 
     paymentUpdate: () => axios.post(BACKEND_URL + 'payment-status-update', {headers}),
 

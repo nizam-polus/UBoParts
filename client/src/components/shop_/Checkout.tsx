@@ -62,7 +62,7 @@ function Checkout() {
             first_name: user.first_name,
             last_name: user.last_name,
             company: user.company,
-            email: user.email,
+            email: user.email.toLowerCase(),
             phone_number: user.phone_number,
             streetaddress_housenumber: user.streetaddress_housenumber,
             streetaddress_apartment: user.streetaddress_apartment,

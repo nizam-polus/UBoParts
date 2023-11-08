@@ -3,7 +3,7 @@ import AppLink from '~/components/shared/AppLink';
 import { FormattedMessage } from 'react-intl';
 import Link from 'next/link';
 
-function Cookie() {
+function Policy() {
 
     return (
         <> 
@@ -20,14 +20,15 @@ function Cookie() {
                     <section className="about-proffessionals-wrapper mt-4 pt-1 ">
                         <div className="row mt-3 mt-md-3 mt-xl-5">
                             <div className="col-12">
-                                <p className="semifont text-size-3 custom-color-1 text-center pb-3 pt-3"><FormattedMessage id="COOKIE_STATEMENT"/></p>
+                                <p className="semifont text-size-3 custom-color-1 text-center pb-3 pt-3">General Policy UBO</p>
                             </div>
                         </div>
                        
                     </section>
                     <section className="contact-wrapper regular-font coulmn-bg-color-1 mt-5 p-5">
                         <div className='custom-color-2 '>
-                            <h5>1. The use of cookies</h5>
+                            <h3> Information</h3>
+                            <hr />
                             <p>www.uboparts.com uses cookies. A cookie is a small file that is sent along with pages from this website and / or Flash applications and stored by your browser on the hard drive of your computer, mobile phone, smartwatch or tablet. The information stored therein can be sent back to our servers on a subsequent visit.
                             <br />
                             <br />
@@ -133,4 +134,4 @@ function Cookie() {
         </>
     );
 }
-export default Cookie;
+export default Policy;

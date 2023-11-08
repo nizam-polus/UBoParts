@@ -40,6 +40,14 @@ function Login(props: any) {
             [event.target.name]: event.target.value
         });
     }
+    function isUsernameOrEmail(userName: any) {
+        // Simple email validation using a regular expression
+        const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+        if(emailPattern.test(userName)){
+            return userName.toLowerCase()
+        } 
+        return userName
+      }
 
     const onFormSubmit = async (event: any) => {
         event.preventDefault();
@@ -56,7 +64,10 @@ function Login(props: any) {
             if (loginformData.username && loginformData.password) {
                 setInvalidCred(false);
                 setInvalidInput(false);
-                const userdata = {...{ identifier: loginformData.username.toLowerCase(), password: loginformData.password }}
+                const userdata = { 
+                    identifier: isUsernameOrEmail(loginformData.username),
+                    password: loginformData.password 
+                }
                 APIs.auth(userdata).then((response: any) => {
                     if (response.data.error && response.data.error.status >= 400 && response.data.error.status <= 403) {
                         setInvalidCred(true);

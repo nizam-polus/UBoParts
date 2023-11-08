@@ -210,11 +210,11 @@ body {
 }	
 .menu-dropdown{	
     width: 130px;	
-    text-align: center;	
+    // text-align: center;	
     padding: 10px;	
     background: #fff;	
     opacity: 0.6;	
-    border-radius: 0px 0px 20px 20px;	
+    border-radius: 0px 0px 20px 20px !important;	
 }	
 .dropdownitem {	
     padding: 7px;	
@@ -1197,6 +1197,20 @@ tr {
 .hamburger{
     display: none;
 }
+@media screen and (max-width: 1024px){
+header .bar,	
+    .desktop-filter{	
+        display: none;	
+        margin-top: 20px;
+    }	
+    .hamburger{
+        display: flex;
+        align-items: center;
+    }
+    .bar-mobile-myaccount{
+        display: none;
+    }
+}
 .mobile_menu{
     position: absolute;
     width: 50%;
@@ -1330,19 +1344,8 @@ tr {
     }	
     .selling-text{	
         left:35px;	
-    }	
-    header .bar,	
-    .desktop-filter{	
-        display: none;	
-        margin-top: 20px;
-    }	
-    .hamburger{
-        display: flex;
-        align-items: center;
-    }
-    .bar-mobile-myaccount{
-        display: none;
-    }
+    }    
+    
     .responsive-filter{	
         display: block;	
     }	
@@ -1392,6 +1395,12 @@ tr {
         padding-left: 20px;	
         padding-right: 20px;	
     }	
+    .mobile-gap{
+        gap: 15px;
+    }
+    .mobile-full-width{
+        width: 100%;
+    }
     
 }	
 @media screen and (max-width: 480px){	
@@ -1459,6 +1468,12 @@ tr {
     .sub-sub1{	
         font-size: 14px!important;	
     }	
+    .section-inner-padding{
+        padding: 0;
+    }
+    .line-height-1{
+        line-height: 1;
+    }
 }	
 @media screen and (min-width : 1200px){	
     input[type=text], input[type=email], input[type=password] {	
@@ -1520,6 +1535,7 @@ tr {
         min-height: 65vh;	
     }	
 }	
+
 @media screen and (min-width : 1920px){	
     button[type=submit].search {	
         padding: 10px 20px!important;	
@@ -1783,6 +1799,32 @@ tr {
     border-radius: 50%;
     border: 3px solid green;
 }
+
+@media screen and (max-width: 1024px){
+    .ubo-brands-slider {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-width: 200px;
+    }
+    .ubo-brands-slider div {
+        width: 80px;
+    }
+    .ubo-brands-slider div img {
+        width: 80px;
+        height: 80px;
+    }
+    .ubo-brands-slider-nav {
+        height: 45px;
+        width: 45px;
+        border-radius: 50%;
+        border: 3px solid green;
+    }
+    .ubo-brands-slider-title {
+        width: auto;
+        margin-bottom: 10px;
+    }
+}
+
 .ubo-nav-tab button {background: transparent;}
 .ubo-dropdown-lang {
     position: absolute;
@@ -1795,6 +1837,33 @@ tr {
 .ubo-btn-custom {width: 200px;}
 .ubo-barcode-container{ padding: 5px; background: #ffcf00; width: 450px; height: 189px }
 
+// @media screen and (max-width: 1400px) {
+//     .ubo-brands-slider-wrapper {
+//         height: 200px;
+//         margin: 50px 0;
+//         background: #fff;
+//     }
+//     .ubo-brands-slider {
+//         display: grid;
+//         grid-template-columns: 1fr 1fr 1fr 1fr;
+//         min-width: 0;
+//         grid-gap: 30px;
+//         padding-left: 20px;
+//      }
+    
+//     .ubo-brands-slider div {
+//         width: 100px;
+//     }
+    
+//     .ubo-brands-slider-title {
+//         width: 120px;
+//     }
+    
+//     .ubo-brands-slider div img {
+//         width: 120px;
+//         height: 120px;
+//     }
+// }
 @media screen and (max-width: 768px){
     .heading_text{
         font-size: 35px;  
@@ -1894,28 +1963,28 @@ tr {
     }
     .ubo-btn-mobile {width: 100%;}
     .ubo-btn-subscribe { height: auto;}
-    .ubo-brands-slider {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        min-width: 200px;
-    }
-    .ubo-brands-slider div {
-        width: 80px;
-    }
-    .ubo-brands-slider div img {
-        width: 80px;
-        height: 80px;
-    }
-    .ubo-brands-slider-nav {
-        height: 45px;
-        width: 45px;
-        border-radius: 50%;
-        border: 3px solid green;
-    }
-    .ubo-brands-slider-title {
-        width: auto;
-        margin-bottom: 10px;
-    }
+    // .ubo-brands-slider {
+    //     display: grid;
+    //     grid-template-columns: 1fr 1fr;
+    //     min-width: 200px;
+    // }
+    // .ubo-brands-slider div {
+    //     width: 80px;
+    // }
+    // .ubo-brands-slider div img {
+    //     width: 80px;
+    //     height: 80px;
+    // }
+    // .ubo-brands-slider-nav {
+    //     height: 45px;
+    //     width: 45px;
+    //     border-radius: 50%;
+    //     border: 3px solid green;
+    // }
+    // .ubo-brands-slider-title {
+    //     width: auto;
+    //     margin-bottom: 10px;
+    // }
     .ubo-nav-tab {
         padding: 0;
     }
@@ -1980,4 +2049,69 @@ tr {
 #accountDetails .btn:focus, #newBankAccounts .btn:focus {
     box-shadow: none !important;
   }
+// new header
+.site--desktop-header--classic-five .header, .site--mobile-header--mobile-one .mobile-header {
+    background: transparent !important;
+}
+.site--desktop-header--classic-five .header {
+    grid-template-rows: auto auto !important;
+}
+.ub_login {
+    padding: 6px 24px !important;
+}
+.ubo-acc-container .indicator__button button {
+    margin-right: 40px;
+}
+.ubo-acc-container .indicator__button .indicator__icon {
+    right: 0;
+}
+.site--desktop-header--classic-five .indicator:hover .indicator__button, .site--desktop-header--classic-five .indicator--open .indicator__button {
+    background: transparent;
+}
+.ubo-header-icon img, .ubo-header-icon svg{
+    width: 32px !important;
+    height: 32px !important;
+}
 
+[dir=ltr] .site--mobile-header--mobile-one .mobile-indicator__counter:before {
+    -webkit-transform: none !important;
+    -moz-transform: none !important;
+    transform: none !important;
+}
+.site--mobile-header--mobile-one .mobile-indicator__counter:before {
+    background-color: #287125;
+    border-radius: 20px;
+    height: 20px;
+    left: -4px !important;
+    padding: 3px 4px;
+    width: 20px;
+    top: -4px;
+}
+.site--mobile-header--mobile-one .mobile-indicator__icon, .site--desktop-header--classic-five .indicator__icon {
+    fill: #fff;
+}
+.site--desktop-header--classic-five .indicator__counter:before {
+    background-color: #287125;
+    bottom: 0;
+    border-radius: 20px;
+    height: 20px;
+    top: -3px !important;
+    width: 20px;
+}
+[dir=ltr] .site--desktop-header--classic-five .indicator__counter:before {
+    left: -3px !important;
+    transform: none;
+}
+.mobile-menu__links ul li {
+    border-bottom: 1px solid #ebebeb;
+}
+.site--desktop-header--classic-five .header {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+@media screen and (max-width: 320px){
+    .ubo-brands-slider {
+        min-width: 150px;
+    }
+}

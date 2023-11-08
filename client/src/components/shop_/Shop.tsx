@@ -13,7 +13,18 @@ import { FormattedMessage } from 'react-intl';
 
 function Shop() {
     
-    const {user, saveUser, setCartCount} = UserContext();
+    const {
+        user, 
+        setCartCount, 
+        appliedFilter, 
+        setAppliedFilter,
+        category,
+        subcategory,
+        setCategory, 
+        setSubcategory,
+        availableCategories,
+        setAvailableCategories
+    } = UserContext();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [makesArray, setMakesArray] = useState<any>([]);
@@ -31,32 +42,30 @@ function Shop() {
     const [filterToggle, setFiltertoggle] = useState({
         categories: false,
         price: false
-    })
-    const [filterCategory, setFilterCategory] = useState<any>([]);
-    const [filterSubcategory, setFilterSubcategory] = useState<any>([]);
+    });
+    const [filterCategory, setFilterCategory] = useState<any>(category || []);
+    const [filterSubcategory, setFilterSubcategory] = useState<any>(subcategory || []);
     const [openLogin, setOpenLogin] = useState(false);
-    const [addToCartCompleted, setAddToCartCompleted] = useState<boolean>(true)
-    const [itemId, setItemId] = useState<any>('')
-    const [minPrice, setMinPrice] = useState(0)
-    const [maxPrice, setMaxPrice] = useState(1000)
-    const [filterOption, setFilterOption] = useState('Latest');
-    const [pageNumber, setPageNumber] = useState(1)
+    const [addToCartCompleted, setAddToCartCompleted] = useState<boolean>(true);
+    const [itemId, setItemId] = useState<any>('');
+    const [minPrice, setMinPrice] = useState(0);
+    const [maxPrice, setMaxPrice] = useState(1000);
+    const [sortOption, setSortOption] = useState('Latest');
+    const [pageNumber, setPageNumber] = useState(1);
     const [pageCount, setPageCount] = useState();
-    const [sortState, setSortState] = useState("sort[0]=createdAt:desc")
-    const [viewFilter, setViewFilter] = useState(true)
-    const [sellerId, setSellerId] = useState("")
+    const [sortState, setSortState] = useState("sort[0]=createdAt:desc");
+    const [viewFilter, setViewFilter] = useState(true);
+    const [sellerId, setSellerId] = useState("");
+    const [filterApplied, setFilterApplied] = useState<boolean>(false);
     
     const router = useRouter();
     const { HomeMakeId } : any = router.query;
-
-    if (typeof window !== 'undefined') {
-        if (HomeMakeId && HomeMakeId !== 'undefined') {
-            localStorage.setItem('makeId', HomeMakeId);
-            localStorage.removeItem('modelId');
-            localStorage.removeItem('yearId');
-        };
-    }
+    let local: any;
     
+    if(typeof window !== 'undefined'){
+        local = localStorage.getItem("locale")
+    }
+
     const categoriesArray = (resData: any) => {
         return [...new Set(resData.map((item: any) => ({
                 id: item.id,
@@ -70,6 +79,14 @@ function Shop() {
     }
 
     useEffect(() => {
+        if (typeof window !== 'undefined') {
+            
+            if (HomeMakeId && HomeMakeId !== 'undefined') {
+                localStorage.setItem('makeId', HomeMakeId);
+                localStorage.removeItem('modelId');
+                localStorage.removeItem('yearId');
+            };
+        }
         setSellerId(user.user_type == "seller" ? user.id : "")
         setSearchedProducts([]);
         let makeId, modelId, yearId, category, articleNumber;
@@ -86,20 +103,27 @@ function Shop() {
             setSelectedModel(modelId);
             setSelectedYear(yearId);
             setSelectedCategory(category);
-            if (articleNumber) {
+            if (appliedFilter || filterApplied) {
+                let filteredCategory = filterCategory || category;
+                let filteredSubcategory = filterSubcategory || subcategory;
+                console.log(filteredCategory, filteredSubcategory)
+                searchFilter(filteredCategory, filteredSubcategory, {sort: "sort[0]=createdAt:desc", page: 1});
+            } else if (articleNumber) {
                 APIs.getProductUsingArticleNumber(articleNumber).then(response => {
                     setSearchedProducts(response.data.data)
                 })
             } else if (makeId) {
-                searchProducts(makeId, modelId, yearId, category)
+                searchProducts(makeId, modelId, yearId, category);
             } else {
-                // getAllProducts();
+                searchProducts('', '', '', '');
             }
         }).catch((error) => {
             setError(error);
         });
         APIs.getCategories().then((response: any) => {
-            setCategories(categoriesArray(response.data.data));
+            let categories = categoriesArray(response.data.data)
+            setCategories(categories);
+            setAvailableCategories(categories);
             filterToggle.categories = true;
             setFiltertoggle({...filterToggle});
         }).catch((error) => {
@@ -138,8 +162,9 @@ function Shop() {
         return range;
     }
 
-    const searchProducts = (make: any, model: any, year: any, category: any) => {
-        APIs.searchProducts(make, model, year, category, {sort: '&sort[0]=createdAt:desc', page: "1"}, sellerId).then((response: any) => {
+    const searchProducts = (make: any, model: any, year: any, category: any, pageNumber = '1', sortData = 'sort[0]=createdAt:desc') => {
+        setSortState(sortData);
+        APIs.searchProducts(make, model, year, category, {sort: sortData, page: pageNumber}, sellerId).then((response: any) => {
             setSearchedProducts(response.data.data);
             let pagination = response.data.meta.pagination
             setPagination(pagination);
@@ -151,18 +176,28 @@ function Shop() {
         });
     }
 
-    const getAllProducts = () => {
-        APIs.getAllPaginationProducts("1",sortState,sellerId).then(response => {
+    const searchFilter = (filterCategory: [], filterSubcategory: [], sortData: any, make = selectedMake, model = selectedModel, year = selectedYear) => {
+        let filteringcategories = categories.length ? categories : availableCategories;
+        APIs.searchFilter(
+            {make: make, model: model, year: year},
+            filteringcategories,
+            filterCategory,
+            filterSubcategory,
+            filterToggle.price,
+            {min: minPrice, max: maxPrice},
+            sortData,
+            sellerId
+        ).then(response => {
             let pagination = response.data.meta.pagination;
-            setPageCount(response.data.meta.pagination.pageCount)
             setPageRange(pageRangeFinder(pagination.pageCount));
             setPagination(pagination);
-            setSearchedProducts(response.data.data);
-        })
+            setSearchedProducts(response.data.data)
+            setPageCount(response.data.meta.pagination.pageCount)
+        }).catch(err => console.log)
     }
 
     const handleMakeChange = (event: any) => {
-        let makeId = event.target.value
+        let makeId = event.target.value || '';
         getModel(makeId);
         setSelectedMake(event.target.value);
         router.replace('/shop', undefined, {shallow:true});
@@ -170,6 +205,7 @@ function Shop() {
         setSelectedModel('');
         setSelectedYear('');
         setFilterCategory([]);
+        setCategory([]);
         searchProducts(makeId, '', '', '');
         localStorage.removeItem('article');
     };
@@ -188,7 +224,8 @@ function Shop() {
         setSelectedYear(year);
         localStorage.setItem('yearId', year);
         searchProducts(selectedMake, selectedModel, year, '');
-        setFilterCategory([])
+        setFilterCategory([]);
+        setCategory([]);
     };
 
     const handleCategoryChange = (event: any) => {
@@ -196,21 +233,27 @@ function Shop() {
         setSelectedCategory(category);
         localStorage.setItem('category', category);
         searchProducts(selectedMake, selectedModel, selectedYear, category);
-        setFilterCategory([])
+        setFilterCategory([]);
+        setCategory([]);
     };
 
     const clearSearch = (event: any) => {
         event.preventDefault();
-        setSelectedMake('');
-        setSelectedModel('');
-        setSelectedYear('');
-        setSelectedCategory('');
+        router.replace('/shop', undefined, {shallow:true});
         localStorage.removeItem('makeId');
         localStorage.removeItem('modelId');
         localStorage.removeItem('yearId');
         localStorage.removeItem('category');
-        localStorage.removeItem('article')
-        getAllProducts();
+        localStorage.removeItem('article');
+        setSelectedMake('');
+        setSelectedModel('');
+        setSelectedYear('');
+        setSelectedCategory('');
+        if (filterApplied) {
+            searchFilter(filterCategory, filterCategory, {sort: "sort[0]=createdAt:desc", page: 1}, '', '', '');
+        } else {
+            searchProducts('', '', '', '');
+        }
     }
 
     const handleProductClick = (product: any) => {
@@ -238,8 +281,10 @@ function Shop() {
                 })
             });
             setFilterSubcategory(tempFilteredSubcategories);
+            setSubcategory(tempFilteredSubcategories);
         }
         setFilterCategory(filteredCategories);
+        setCategory(filteredCategories);
     }
 
     const handleSubcategoryFilter = (event: any) => {
@@ -251,66 +296,28 @@ function Shop() {
             filteredSubcategories = filteredSubcategories.filter((item: any) => item !== subcategory);
         }
         setFilterSubcategory(filteredSubcategories);
+        setSubcategory(filteredSubcategories);
     }
 
     const handleApplyFilter = (event: any) => {
         event.preventDefault();
-        APIs.searchFilter(
-            {make: selectedMake, model: selectedModel, year: selectedYear}, 
-            categories, filterCategory, 
-            filterSubcategory, 
-            {min: minPrice, max: maxPrice}, 
-            {sort: '&sort[0]=createdAt:desc', page: '1'},
-            sellerId
-        ).then(response => {
-            let pagination = response.data.meta.pagination;
-            setPageRange(pageRangeFinder(pagination.pageCount));
-            setPagination(pagination);
-            setSearchedProducts(response.data.data)
-            setPageCount(response.data.meta.pagination.pageCount)
-        }).catch(err => console.log)
+        setFilterApplied(true);
+        setAppliedFilter(true);
+        searchFilter(filterCategory, filterSubcategory, {sort: sortState, page: '1'});
     }
 
     const handleClearFilter = (event: any) => {
         event.preventDefault();
+        setFilterApplied(false);
+        setAppliedFilter(false);
         setFilterCategory([]);
+        setCategory([]);
         setFilterSubcategory([]);
-        APIs.searchFilter(
-            {make: selectedMake, model: selectedModel, year: selectedYear}, 
-            categories, 
-            [], 
-            [], 
-            {min: 0, max: 1000}, 
-            {sort: '&sort[0]=createdAt:desc', page: '1'}
-        ).then(response => {
-            let pagination = response.data.meta.pagination;
-            setPageRange(pageRangeFinder(pagination.pageCount));
-            setPagination(pagination);
-            setSearchedProducts(response.data.data)
-            setPageCount(response.data.meta.pagination.pageCount)
-        }).catch(err => console.log)
-    }
-
-    const FilterPagination = (pageNum: any) => {
-        // event.preventDefault();
-        APIs.searchFilter(
-            {make: selectedMake, model: selectedModel, year: selectedYear}, 
-            categories, filterCategory, 
-            filterSubcategory, 
-            {min: minPrice, max: maxPrice}, 
-            {sort: sortState, page: pageNum},
-            sellerId
-        ).then(response => {
-            let pagination = response.data.meta.pagination;
-            setPageRange(pageRangeFinder(pagination.pageCount));
-            setPagination(pagination);
-            setSearchedProducts(response.data.data)
-            setPageCount(response.data.meta.pagination.pageCount)
-        }).catch(err => console.log)
+        setSubcategory([]);
+        searchProducts(selectedMake, selectedModel, selectedYear, selectedCategory);
     }
 
     const handleAddToCart = (productData: any) => {
-        
         if (!user || user && !user.id) {
             setOpenLogin(true);
         } else {
@@ -365,10 +372,10 @@ function Shop() {
         }
     }
 
-    const handleFilterChange = (event: any) => {
+    const handleSortChange = (event: any) => {
         let sort = ''
         const selectedOption = event.target.value;
-        setFilterOption(selectedOption);
+        setSortOption(selectedOption);
       
         if (selectedOption === 'Latest') {
           setSortState('&sort[0]=createdAt:desc');
@@ -380,54 +387,18 @@ function Shop() {
           setSortState('&sort[0]=price:asc');
           sort = '&sort[0]=price:asc';
         }
+        filteredProductData(sort);
       };
 
-    useEffect(() => {
-        setSearchedProducts([]);
-        let vehicleDetails = {make: selectedMake, model: selectedModel, year: selectedYear}
-        if (filterCategory.length > 0) {
-          APIs.searchFilter(vehicleDetails, categories, filterCategory, filterSubcategory, { min: minPrice, max: maxPrice }, { sort: sortState, page: '1' }, sellerId)
-            .then((response) => {
-              let pagination = response.data.meta.pagination;
-              setPageRange(pageRangeFinder(pagination.pageCount));
-              setPagination(pagination);
-              setSearchedProducts(response.data.data);
-              setPageCount(response.data.meta.pagination.pageCount);
-            })
-            .catch((err) => console.log(err));
+    const filteredProductData = (sortData: string) => {
+        if (filterApplied) {
+            searchFilter(filterCategory, filterSubcategory, { sort: sortData, page: '1' });
+        } else if (selectedMake) {
+            searchProducts(selectedMake, selectedModel, selectedYear, selectedCategory, undefined, sortData);
         } else {
-            if(selectedMake){
-                APIs.searchProducts(selectedMake, selectedModel, selectedYear, selectedCategory, { sort: sortState, page: '1' }, sellerId)
-                .then((response: any) => {
-                  setSearchedProducts(response.data.data);
-                  let pagination = response.data.meta.pagination;
-                  setPagination(pagination);
-                  setPageRange(pageRangeFinder(pagination.pageCount));
-                  setPageCount(response.data.meta.pagination.pageCount);
-                })
-                .catch((error) => {
-                  setError(error);
-                  setLoading(false);
-                });
-            } else{
-                
-                let articleNumber,makeId, modelId, yearId;
-                articleNumber = localStorage.getItem('article') || '';
-                makeId = localStorage.getItem('makeId') || '';
-                modelId = localStorage.getItem('modelId') || '';
-                yearId = localStorage.getItem('yearId') || '';
-                if(!articleNumber && !makeId && !modelId && !yearId){
-                    APIs.getAllPaginationProducts("1",sortState, user.user_type == "seller" ? user.id : "").then(response => {
-                        let pagination = response.data.meta.pagination;
-                        setPageCount(response.data.meta.pagination.pageCount)
-                        setPageRange(pageRangeFinder(pagination.pageCount));
-                        setPagination(pagination);
-                        setSearchedProducts(response.data.data);
-                    })
-                }
-            }
+            searchProducts('', '', '', '', undefined, sortData);
         }
-      }, [sortState]);
+    }
 
     function discountedPrice(originalPrice: any, discountPercentage: any) {
         const original = parseFloat(originalPrice);
@@ -450,26 +421,14 @@ function Shop() {
         return +discountAmount.toFixed(2); 
     }
 
-
     const loginModalClose = () => {
         setOpenLogin(false);
     };
 
     const handlePageChange = (page:any) =>{
-        if (page >= 1) {
-            // Update the page number here
-            setPageNumber(page);
-        }
-        if(filterCategory){
-            FilterPagination(page)
-            return
-        }
-        // APIs.getAllPaginationProducts(page, sortState, sellerId).then(response => {
-        //     let pagination = response.data.meta.pagination;
-        //     setPageRange(pageRangeFinder(pagination.pageCount));
-        //     setPagination(pagination);
-        //     setSearchedProducts(response.data.data);
-        // })
+        page >= 1 && setPageNumber(page);
+        filterApplied ? 
+            searchFilter(filterCategory, filterSubcategory, {sort: sortState, page: page}) : searchProducts('', '', '', '', page);
     }
 
     return (
@@ -504,7 +463,7 @@ function Shop() {
                                             <select disabled={!selectedMake} className="form-select semifont placeholderfontsize" name="model" id="modelOption"
                                                 value={selectedModel} onChange={handleModelChange}
                                             >
-                                                <option value="" disabled={true}>Select Model</option>
+                                                <option value="" disabled={true}>{true ? "Select Model" : "select"}</option>
                                                 {modelArray.map((model: any, index: any) => (
                                                     <option key={index} value={model.id}>{model.model}</option>
                                                 ))}
@@ -593,7 +552,7 @@ function Shop() {
                                                                     <div>
                                                                         <div className="form-check mb-2" key={idx}>
                                                                             <input type="checkbox" 
-                                                                                className="form-check-input border-0" 
+                                                                                className="form-check-input border-0" checked={!!filterSubcategory.find((ele: any) => ele === subcategory.name)}
                                                                                 id={subcategory.name} name={subcategory.name} value={subcategory.name} 
                                                                                 onChange={(e) => handleSubcategoryFilter(e)}
                                                                                 />
@@ -693,7 +652,7 @@ function Shop() {
                                                 </div> */}
                                             <div className='text-center mt-4 mini-text-2'>
                                             <button 
-                                                    className='mr-3'
+                                                    className='mr-3 mb-2'
                                                     style={{background: 'none', color:'black', border: '1.7px solid black', padding: '0.3rem 1.4rem'}}
                                                     onClick={(e) => handleClearFilter(e)}
                                                 >
@@ -718,8 +677,8 @@ function Shop() {
                                                 <select
                                                     id="filterDropdown"
                                                     className="form-select mb-2 border-0"
-                                                    value={filterOption}
-                                                    onChange={handleFilterChange}
+                                                    value={sortOption}
+                                                    onChange={handleSortChange}
                                                 >
                                                     <option value='Latest'>Latest</option>
                                                     <option value="highToLow">Price: High to Low</option>
@@ -734,9 +693,11 @@ function Shop() {
                                             </div>}
                                             {searchedProducts.map((product: any, index: any) => {
                                                 return (
-                                                    <div className="col-12 col-sm-6 col-lg-4  mb-4" key={index}>
+                                                    <div className="col-12 col-sm-12 col-md-6 col-xl-4  mb-4" key={index}>
                                                     {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product?.attributes?.sale?.data != null)&& (
-                                                        <span  className="sale-tag position-absolute">{product.attributes?.sale?.data?.attributes?.en_discount_text}</span>
+                                                      local == "nl" ?   <span  className="sale-tag position-absolute">{product.attributes?.sale?.data?.attributes?.nl_discount_text}</span>
+                                                      :
+                                                      <span  className="sale-tag position-absolute">{product.attributes?.sale?.data?.attributes?.en_discount_text}</span>
                                                     )}
                                                         <div className="latest-prods card card-shadows" style={{height: "100%"}}>
                                                         <AppImage 
