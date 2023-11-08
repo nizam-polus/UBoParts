@@ -165,7 +165,7 @@ function Header_home(props: any) {
             </header>
             {/* new header mobile */}
             {/* new header */}
-            <header className="site__header d-none d-lg-block">
+            <header className="site__header d-none d-lg-block py-0">
                 <div className="header">
                     <div className="header__logo">
                         <a className="logo" onClick={() => router.push("/homepage")}>
