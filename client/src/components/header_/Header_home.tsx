@@ -131,11 +131,13 @@ function Header_home(props: any) {
                                     <path d="M0 8V6h18v2H0zm0-8h18v2H0V0zm14 14H0v-2h14v2z"></path>
                                 </svg>
                             </button>
+                            <Link href="/homepage">
                             <a className="mobile-header__logo">
                                 <div className="mobile-logo">
                                     <AppImage src="/images/svg/LOGO.svg" width="130" height="20" />
                                 </div>
                             </a>
+                            </Link>
                             <div className="mobile-header__indicators">
                                 <div className="mobile-indicator">
                                     <Link href="/cartpage">
@@ -151,12 +153,15 @@ function Header_home(props: any) {
                                         </a>
                                     </Link>
                                 </div>
-                            </div>
-                            <div className="mobile-header__indicators">
                                 <div className="mobile-indicator">
                                     <Dropdown title={selectedLanguage} items={items} onItemClick={handleItemClick} />
                                 </div>
                             </div>
+                            {/* <div className="mobile-header__indicators">
+                                <div className="mobile-indicator">
+                                    <Dropdown title={selectedLanguage} items={items} onItemClick={handleItemClick} />
+                                </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
@@ -579,7 +584,7 @@ function Header_home(props: any) {
                     <div className="container">
                         <div className="row d-flex align-items-center header-middle-text pl-5">
                             <div className="col box w-100">
-                                <p className="semifont heading_text text-white">
+                                <p className="semifont heading_text text-white" style={{lineHeight: 1}}>
                                     <FormattedMessage id="REQUEST_PART" />
                                     <br /> <FormattedMessage id="WITH_US" />
                                 </p>
@@ -594,9 +599,9 @@ function Header_home(props: any) {
                 )}
                 {router.pathname == "/dismantle_car" && (
                     <div className="container">
-                        <div className="row d-flex align-items-center header-middle-text pl-5 ml-5">
+                        <div className="row d-flex align-items-center header-middle-text pl-5">
                             <div className="col box w-100">
-                                <p className="semifont heading_text text-white">
+                                <p className="semifont heading_text text-white" style={{lineHeight: 1}}>
                                     <FormattedMessage id="DISMANTLE_YOUR" />
                                     <br /> <FormattedMessage id="CAR_WITH_US" />
                                 </p>
@@ -611,9 +616,9 @@ function Header_home(props: any) {
                 )}
                 {router.pathname == "/seller-registration" && (
                     <div className="container">
-                        <div className="row d-flex align-items-center header-middle-text pl-5 ml-5">
+                        <div className="row d-flex align-items-center header-middle-text pl-5">
                             <div className="col box w-100">
-                                <p className="semifont heading_text text-white">
+                                <p className="semifont heading_text text-white" style={{lineHeight: 1}}>
                                     <FormattedMessage id="SELL_QUALITY_PARTS" />
                                     <br /> <FormattedMessage id="WITH_US" />
                                 </p>

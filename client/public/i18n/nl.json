@@ -636,7 +636,9 @@
   "PASSWORD_DOESNOT_MATCH": "Wachtwoord komt niet overeen",
   "FORGET_PASSWORD": "Wachtwoord vergeten",
   "ENTER_REGISTERD_EMAIL_TO": "Voer uw geregistreerde e-mail in om ",
-  "RESET_YOUR_PASSWORD": "uw wachtwoord te resetten"
+  "RESET_YOUR_PASSWORD": "uw wachtwoord te resetten",
+  "SHOPPING_DETAILS": "Verzendgegevens",
+  "ADDING_TO_CART": "Adding To Cart"
 
 
 
