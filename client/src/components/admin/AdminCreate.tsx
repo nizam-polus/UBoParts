@@ -7,7 +7,6 @@ import { BASE_URL } from 'configuration';
 import Link from 'next/dist/client/link';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
-import { withAuth } from '~/utils/withAuth';
 
 function AdminCreate() {
     let userdetails: any;
