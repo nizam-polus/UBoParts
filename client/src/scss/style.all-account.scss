@@ -210,11 +210,11 @@ body {
 }	
 .menu-dropdown{	
     width: 130px;	
-    text-align: center;	
+    // text-align: center;	
     padding: 10px;	
     background: #fff;	
     opacity: 0.6;	
-    border-radius: 0px 0px 20px 20px;	
+    border-radius: 0px 0px 20px 20px !important;	
 }	
 .dropdownitem {	
     padding: 7px;	
@@ -2067,4 +2067,8 @@ header .bar,
 }
 .mobile-menu__links ul li {
     border-bottom: 1px solid #ebebeb;
+}
+.site--desktop-header--classic-five .header {
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }
