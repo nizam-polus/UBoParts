@@ -124,7 +124,7 @@ function Header_home(props: any) {
     return (
         <>
             {/* new header mobile */}
-            <header className="site__mobile-header d-block d-lg-none">
+            <header className="site__mobile-header d-block d-xl-none">
                 <div className="mobile-header">
                     <div className="container">
                         <div className="mobile-header__body">
@@ -165,7 +165,7 @@ function Header_home(props: any) {
             </header>
             {/* new header mobile */}
             {/* new header */}
-            <header className="site__header d-none d-lg-block py-0">
+            <header className="site__header d-none d-xl-block py-0">
                 <div className="header">
                     <div className="header__logo">
                         <a className="logo" onClick={() => router.push("/homepage")}>
