@@ -501,7 +501,7 @@ function EditListing() {
             setError(error);
           });
         }else{
-          toast.error("Fill all fields for Edit list")
+          toast.error(()=>(<FormattedMessage id="FILL_ALL_EDIT" />))
           setClicked(false)
         }
     }

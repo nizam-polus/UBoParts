@@ -514,7 +514,7 @@ function Create_new_listing() {
                     setClicked(false)
                 });
         } else {
-            toast.error("Fill all fields for create new list")
+            toast.error(()=>(<FormattedMessage id="FILL_ALL_CREATE" />))
             setClicked(false)
         }
     }

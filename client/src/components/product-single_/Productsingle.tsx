@@ -327,7 +327,7 @@ function Productsingle() {
                                                     </div>
                                                 </div>
                                                 <div className="col-8 col-md-8 col-lg-12 col-xl-7">
-                                                    {stockCount === 0 ? (
+                                                    {stockCount <= 0 ? (
                                                             <a className="add-to-cart-1 button-bg-color-05 custom-color-7 rounded pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
                                                                 style={{ cursor: 'not-allowed' }}
                                                             >
@@ -420,7 +420,7 @@ function Productsingle() {
                                                                 onClick={() => handleProductClick(product)}    
                                                             />
                                                             {
-                                                            product.attributes.stock_count == 0 &&  
+                                                            product.attributes.stock_count <= 0 &&  
                                                                 <div onClick={() => handleProductClick(product)} className='out-of-stock d-flex position-absolute justify-content-center align-items-center' >
                                                                    <p className='text-out-of-stock mb-0'>OUT OF STOCK</p>
                                                                 </div>

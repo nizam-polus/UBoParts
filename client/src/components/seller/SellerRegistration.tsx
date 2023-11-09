@@ -8,6 +8,57 @@ import { FormattedMessage } from "react-intl";
 
 function SellerRegistration() {
 
+    let locale: any;
+    
+    if(typeof window !== 'undefined'){
+        locale = localStorage.getItem("locale")
+    }
+
+    const placeholderTranslations : any = {
+        nl: {
+            email: 'E-mail',
+            first_name: 'Voornaam',
+            last_name: 'Achternaam',
+            username: 'Gebruikersnaam',
+            phone_number: 'Telefoonnummer',
+            streetaddress_housenumber: 'Straatnaam Huisnummer',
+            streetaddress_apartment: 'Appartement',
+            city: 'Stad',
+            state: 'Provincie',
+            country: 'Land',
+            postcode: 'Postcode',
+            company_name: 'Bedrijfsnaam',
+            Account_type: 'Accounttype',
+            Account_title: 'Accounttitel',
+            Bank_name: 'Banknaam',
+            iban_number: 'IBAN-nummer',
+            password: 'Wachtwoord',
+            kvk_number: 'KvK-nummer',
+            company_btw: 'Bedrijfs-BTW',
+        },
+        en: {
+            email: 'Email',
+            first_name: 'First Name',
+            last_name: 'Last Name',
+            username: 'Username',
+            phone_number: 'Phone Number',
+            streetaddress_housenumber: 'Street Address House Number',
+            streetaddress_apartment: 'Apartment',
+            city: 'City',
+            state: 'State',
+            country: 'Country',
+            postcode: 'Postcode',
+            company_name: 'Company Name',
+            Account_type: 'Account Type',
+            Account_title: 'Account Title',
+            Bank_name: 'Bank Name',
+            iban_number: 'IBAN Number',
+            password: 'Password',
+            kvk_number: 'KvK Number',
+            company_btw: 'Company VAT',
+        }
+    };
+
     const {user, saveUser, language} = UserContext();
     const router = useRouter();
 
@@ -142,7 +193,7 @@ function SellerRegistration() {
                 APIs.register(sellerData).then(response => {
                     localStorage.setItem('usertoken', response.data.jwt);
                     getAndSaveUser(response.data.user.id);
-                    toast.success('Seller registration is successful. Verification email has been sent.')
+                    toast.success(()=>(<FormattedMessage id="SELLER_SUCCESS" />))
                 }).catch(err => {
                     let errMessage = err?.response?.data?.error?.message || 'Something went wrong!';
                     toast.error(errMessage);
@@ -187,7 +238,9 @@ function SellerRegistration() {
                                     <form onSubmit={(e) => handleSubmit(e)}>
                                         <div className="table-responsive">
                                             <table className="table quote-table">
-                                                <tbody>
+                                                {
+                                                    locale &&
+                                                    <tbody>
                                                     <tr>
                                                         <th colSpan={2} 
                                                             className="pt-0 pb-0 px-0 ps-0 custom-color-2 regularfont subtitles fw-normal border-top-0 border-bottom-0"
@@ -205,7 +258,7 @@ function SellerRegistration() {
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="FIRST_NAME"/>  <span className="required">*</span></label>
                                                             <input type="text" value={formData.first_name} disabled={user.first_name}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.first_name ? 'required-field' : 'border-0'}`}
-                                                                name="first_name" placeholder="Mark"
+                                                                name="first_name" placeholder={placeholderTranslations[locale]['first_name']}
                                                                 onChange={(e) => handleFormChange(e)}
                                                             />
                                                         </td>
@@ -213,7 +266,7 @@ function SellerRegistration() {
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="LAST_NAME"/>  <span className="required">*</span></label>
                                                             <input type="text" value={formData.last_name} disabled={user.last_name}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.last_name ? 'required-field' : 'border-0'}`}
-                                                                name="last_name" placeholder="Twain" 
+                                                                name="last_name" placeholder={placeholderTranslations[locale]['last_name']}
                                                                 onChange={(e) => handleFormChange(e)}
                                                             />
                                                         </td>
@@ -231,7 +284,7 @@ function SellerRegistration() {
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="USER_NAME"/>  <span className="required">*</span></label>
                                                             <input type="text" value={formData.username} disabled={user.username}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.username ? 'required-field' : 'border-0'}`}
-                                                                name="username" placeholder="username" 
+                                                                name="username"placeholder={placeholderTranslations[locale]['username']}
                                                                 onChange={(e) => handleFormChange(e)}
                                                             />
                                                         </td>
@@ -243,7 +296,7 @@ function SellerRegistration() {
 
                                                             <input type={newPwdVisible ? "text" : "password"} value={password} disabled={user.id}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !password ? 'required-field' : 'border-0'}`}
-                                                                name="password" placeholder="Create Password" 
+                                                                name="password" placeholder={placeholderTranslations[locale]['password']}
                                                                 onChange={(e) => {
                                                                     setPassword(e.target.value);
                                                                     e.target.value.length < 6 && !user.id ? setIncomplete(true) : setIncomplete(false);
@@ -270,7 +323,7 @@ function SellerRegistration() {
 
                                                             <input type={confrmpwdVisible ? "text" : "password"} value={cnfrmPassword} disabled={user.id}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !cnfrmPassword ? 'required-field' : 'border-0'}`}
-                                                                name="c_password" placeholder="Confirm Password" 
+                                                                name="c_password" placeholder={placeholderTranslations[locale]['password']} 
                                                                 onChange={(e) => handlePwdChange(e)}
                                                             />
                                                             <div className='position-absolute p-3' style={{right: 0, top: 0}}>
@@ -325,7 +378,7 @@ function SellerRegistration() {
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="ACCOUNT_TITLE"/> <span className="required">*</span></label>
                                                             <input type="text" value={formData.Account_title}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.Account_title ? 'required-field' : 'border-0'}`}
-                                                                name="Account_title" placeholder="Account Title." 
+                                                                name="Account_title" placeholder={placeholderTranslations[locale]['Account_title']}
                                                                 onChange={(e) => handleFormChange(e)}
                                                             />
                                                         </td>
@@ -335,7 +388,7 @@ function SellerRegistration() {
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="BANK_NAME"/>  <span className="required">*</span></label>
                                                             <input type="text" value={formData.Bank_name}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.Bank_name ? 'required-field' : 'border-0'}`}
-                                                                name="Bank_name" placeholder="bank Name." 
+                                                                name="Bank_name" placeholder={placeholderTranslations[locale]['Bank_name']} 
                                                                 onChange={(e) => handleFormChange(e)}
                                                             />
                                                         </td>
@@ -349,7 +402,7 @@ function SellerRegistration() {
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.iban_number ? 'required-field' : 'border-0'
                                                                     }`}
                                                                 name="iban_number"
-                                                                placeholder="Iban Number."
+                                                                placeholder={placeholderTranslations[locale]['iban_number']}
                                                                 onChange={(e) => {
                                                                     // Use a regular expression to allow only numeric characters
                                                                     const numericValue = e.target.value
@@ -363,7 +416,7 @@ function SellerRegistration() {
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="COMPANY_OR_SHOP_NAME"/>  <span className="required">*</span></label>
                                                             <input type="text" value={formData.company_name}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.company_name ? 'required-field' : 'border-0'}`}
-                                                                name="company_name" placeholder="shop Name." 
+                                                                name="company_name" placeholder={placeholderTranslations[locale]['company_name']} 
                                                                 onChange={(e) => handleFormChange(e)}
                                                             />
                                                         </td>
@@ -385,7 +438,7 @@ function SellerRegistration() {
                                                                     <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">KVK Chamber of Commerce Number  <span className="required">*</span></label>
                                                                     <input type="text" value={formData.kvk_number}
                                                                         className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.kvk_number ? 'required-field' : 'border-0'}`}
-                                                                        name="kvk_number" placeholder="KVK Number" 
+                                                                        name="kvk_number" placeholder={placeholderTranslations[locale]['kvk_number']} 
                                                                         onChange={(e) => handleFormChange(e)}
                                                                     />
                                                                 </td>
@@ -411,14 +464,14 @@ function SellerRegistration() {
                                                                 <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="STREET_ADDRESS"/>  <span className="required">*</span></label>
                                                                 <input type="text" value={formData.streetaddress_housenumber} disabled={user.streetaddress_housenumber}
                                                                     className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.streetaddress_housenumber ? 'required-field' : 'border-0'}`} 
-                                                                    name="streetaddress_housenumber" placeholder="House number and street name" 
+                                                                    name="streetaddress_housenumber" placeholder={placeholderTranslations[locale]['streetaddress_housenumber']}
                                                                     onChange={(e) => handleFormChange(e)}
                                                                 />
                                                             </div>
                                                             <div>
                                                                 <input type="text" value={formData.streetaddress_apartment} disabled={user.streetaddress_apartment}
                                                                     className="form-control input-bg-color-2 border-0 body-sub-titles" 
-                                                                    name="streetaddress_apartment" placeholder="Apartment, suite, unit etc..." 
+                                                                    name="streetaddress_apartment" placeholder={placeholderTranslations[locale]['streetaddress_apartment']} 
                                                                     onChange={(e) => handleFormChange(e)}
                                                                 />
                                                             </div>
@@ -429,7 +482,7 @@ function SellerRegistration() {
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="CITY"/>  <span className="required">*</span></label>
                                                             <input type="text" value={formData.city} disabled={user.city}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.city ? 'required-field' : 'border-0'}`}
-                                                                name="city" placeholder="City" 
+                                                                name="city" placeholder={placeholderTranslations[locale]['city']} 
                                                                 onChange={(e) => handleFormChange(e)}
                                                             />
                                                         </td>
@@ -439,7 +492,7 @@ function SellerRegistration() {
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="STATE"/>  <span className="required">*</span></label>
                                                             <input type="text" value={formData.state} disabled={user.state}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.state ? 'required-field' : 'border-0'}`}
-                                                                name="state" placeholder="State" 
+                                                                name="state" placeholder={placeholderTranslations[locale]['state']}
                                                                 onChange={(e) => handleFormChange(e)}
                                                             />
                                                         </td>
@@ -449,7 +502,7 @@ function SellerRegistration() {
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="POST_CODE"/>  <span className="required">*</span></label>
                                                             <input type="text" value={formData.postcode} disabled={user.postcode}
                                                                 className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.postcode ? 'required-field' : 'border-0'}`}
-                                                                name="postcode" placeholder="Postcode" 
+                                                                name="postcode" placeholder={placeholderTranslations[locale]['postcode']} 
                                                                 onChange={(e) => handleFormChange(e)}
                                                             />
                                                         </td>
@@ -473,6 +526,7 @@ function SellerRegistration() {
                                                         </td>
                                                     </tr>
                                                 </tbody>
+                                                }
                                             </table>
                                         </div>
                                     </form>

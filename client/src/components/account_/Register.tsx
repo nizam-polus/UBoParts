@@ -42,37 +42,37 @@ function Register(props: any) {
         const isValidLength = /^.{8,16}$/;
 
         if (inputValues.username.length === 0) {
-            hasError.username = "username required";
+            hasError.username = language.value == "nl" ? "Gebruikersnaam verplicht" : "username required";
         }
         if (inputValues.email.length === 0) {
-            hasError.email = "Email is required!";
+            hasError.email = language.value == "nl" ? "E-mail is vereist" : "Email is required!";
         } else if (!regex.test(inputValues.email)) {
-            hasError.email = "This is not a valid email format!";
+            hasError.email = language.value == "nl" ? "Dit is geen geldig e-mailformaat!" : "This is not a valid email format!";
         } 
         
         if (isWhitespace.test(inputValues.password)) {
-            hasError.password = "Password must not contain Whitespaces.";
+            hasError.password = language.value == "nl" ? "Het wachtwoord mag geen spaties bevatten." :  "Password must not contain Whitespaces.";
         } 
         if (!isContainsUppercase.test(inputValues.password)) {
-            hasError.password = "Password must have at least one Uppercase Character.";
+            hasError.password = language.value == "nl" ? "Wachtwoord moet minimaal één hoofdletter bevatten." : "Password must have at least one Uppercase Character.";
         } 
         if (!isContainsLowercase.test(inputValues.password)) {
-            hasError.password = "Password must have at least one Lowercase Character.";
+            hasError.password = language.value == "nl" ? "Wachtwoord moet minimaal één kleine letter bevatten." : "Password must have at least one Lowercase Character.";
         }
         if (!isContainsNumber.test(inputValues.password)) {
-            hasError.password = "Password must contain at least one Digit.";
+            hasError.password = language.value == "nl" ? "Wachtwoord moet minimaal één cijfer bevatten." : "Password must contain at least one Digit.";
         } 
         if (!isContainsSymbol.test(inputValues.password)) {
-            hasError.password = "Password must contain at least one Special Symbol.";
+            hasError.password = language.value == "nl" ? "Het wachtwoord moet minimaal één speciaal symbool bevatten." : "Password must contain at least one Special Symbol.";
         } 
         if (!isValidLength.test(inputValues.password)) {
-            hasError.password = "Password must be 8-16 Characters Long.";
+            hasError.password = language.value == "nl" ? "Wachtwoord moet 8-16 tekens lang zijn." : "Password must be 8-16 Characters Long.";
         } 
         if (inputValues.password !== inputValues.confirmpassword) {
-            hasError.confirmpassword = "Passwords do not match";
+            hasError.confirmpassword = language.value == "nl" ? "Wachtwoorden komen niet overeen" : "Passwords do not match";
         }
         if (!agreed) {
-            hasError.agreement = "Agree to the terms and conditions";
+            hasError.agreement = language.value == "nl" ? "Ga akkoord met de algemene voorwaarden" : "Agree to the terms and conditions";
         }
         isSubmitting = true;
     

@@ -90,7 +90,7 @@ function Login(props: any) {
                                     router.push('/admin_create')
                                 } else if (props.username) {
                                     router.push('/profile_');
-                                    toast.info('Please complete your profile. Ignore if done already.');
+                                    toast.info(() =>(<FormattedMessage id="COMPLETE_PROFILE_LOGIN" />));
                                 } else {
                                     router.push('/homepage');
                                 }
@@ -166,9 +166,9 @@ function Login(props: any) {
                                     <div className="ac-card-body">
                                         <h3 className="ac-card-title text-center bg-image-text semifont"><FormattedMessage id="LOGIN" /></h3>
                                         <p className="ac-card-sub-title text-center body-sub-titles-1 lightfont"><FormattedMessage id="LOGIN_DETAILS" /></p>
-                                        {invalidinput ? <p className='text-center' style={{color: 'rgb(255 102 102)'}}>Please enter your email & password</p> : invalidCred ? 
-                                            <p className='text-center' style={{color: 'rgb(255 102 102)'}}>Invalid credentials</p> :  unverified ?
-                                            <p className='text-center' style={{color: 'rgb(255 102 102)'}}>User not verified. Please verify the user.</p> : undefined}
+                                        {invalidinput ? <p className='text-center' style={{color: 'rgb(255 102 102)'}}><FormattedMessage id="ENTER_EMAIL_PASSWORD"/></p> : invalidCred ? 
+                                            <p className='text-center' style={{color: 'rgb(255 102 102)'}}><FormattedMessage id="INVALID_CRED"/></p> :  unverified ?
+                                            <p className='text-center' style={{color: 'rgb(255 102 102)'}}><FormattedMessage id="VERIFY_USER"/></p> : undefined}
                                         <div className="ac-card-text">
                                             <form action="/action_page.php">
                                                 <div className="form-group marginb40">

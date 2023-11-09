@@ -8,6 +8,7 @@ import { BASE_URL } from 'configuration';
 import { UserContext } from '../account_/UserContext';
 import { toast } from 'react-toastify';
 import { FormattedMessage } from 'react-intl';
+import { withAuth } from '~/utils/withAuth';
 
 function Cart() {
 
@@ -288,16 +289,16 @@ function Cart() {
                             setTotalShippingCost(totalShippingCost);
                         }
                         if (!user.country || !user.postcode){
-                            toast.error(() => <div>Please complete your profile to proceed. <Link href={'/profile_'}>Profile</Link></div>, {autoClose: 4000});
+                            toast.error(() => <div> <FormattedMessage id="COMPLETE_PROFILE"/> <Link href={'/profile_'}>Profile</Link></div>, {autoClose: 4000});
                             setClicked(false);
                             return;
                         }
                         if (!cartProducts.length){
-                            toast.warning("Your cart is Empty");
+                            toast.warning(()=> (<FormattedMessage id="CART_IS_EMPTY" />));
                             router.push("/cartpage");
                             setClicked(false)
                         } else if (!isValidShipping){
-                            toast.error("Product weight or Delivery region is not eligible for shipping.", {autoClose: 4000});
+                            toast.error(() =>(<FormattedMessage id="NOT_DELIVERABLE" />), {autoClose: 4000});
                             setClicked(false)
                             return;
                         } else {
@@ -450,7 +451,7 @@ function Cart() {
                                                 clicked ? 
                                                     <button type="button" disabled className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1">
                                                     <button type="button" className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"
-                                                        ><FormattedMessage id="PROCEEDING" /></button>
+                                                        ><FormattedMessage id="WAIT" /></button>
                                                     </button>
                                                 :
                                                     <button type="button" onClick={CheckoutFunction} className=" w-100 proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1">
