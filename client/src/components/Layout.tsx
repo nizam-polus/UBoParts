@@ -33,6 +33,7 @@ function Layout(props: Props) {
     useEffect(() => {
         const userdetails = localStorage.getItem('usertoken');
         setUserToken(userdetails);
+        console.log(router.pathname)
     },[])
 
     
@@ -57,7 +58,7 @@ function Layout(props: Props) {
                 <header className="site__header">
                     <Header />
                 </header> */}
-                <div className={router.pathname == '/homepage' ? 'home-header' : router.pathname == '/request' ? 'request-header' : 
+                <div className={(router.pathname === '/homepage' || router.pathname === '/') ? 'home-header' : router.pathname == '/request' ? 'request-header' : 
                 router.pathname == '/dismantle_car' ? 'dismantle-header' : router.pathname == '/about_us_' ? 'about-header' : 
                 router.pathname == '/seller-registration' ? 'seller-reg-header' : 'page_header'}>
                     <Header_home userToken={userToken} geUserDetails={geUserDetails} />

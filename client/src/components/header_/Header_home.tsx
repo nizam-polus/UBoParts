@@ -77,6 +77,7 @@ function Header_home(props: any) {
         localStorage.removeItem('usertoken');
         router.push('/homepage');
         localStorage.removeItem('userdetails');
+        localStorage.removeItem('uid');
         setUserToken('');
         setIsLoggedin(false);
         setIsOpen(!isOpen);

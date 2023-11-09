@@ -225,7 +225,7 @@ function Checkout() {
                 APIs.getCartData({ customerid: user.id }).then(response => {
                     let cartData = response.data.rows;
                     if (cartData[0].payment_process === 'true') {
-                        toast.warning("Payment has already been initiated, please complete the payment.");
+                        toast.warning("Payment has already been initiated.");
                         setClicked(false)
                     } else {
                         APIs.cartPayment(checkoutData).then(response => {

@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import APIs from "~/services/apiService";
 
 interface User {
@@ -95,8 +96,9 @@ export function UserProvider(props: providerProps) {
         }
         transactionId && APIs.paymentStatus(transactionId, user.id).then((response: any) => {
             let status = response?.data?.rows?.length ? response.data.rows[0].status : 'failed';
+            (status !== 'completed' || status !== 'cancelled') && toast.info('Your last payment ' + status);
             setPaymentStatus(status);
-        })
+        }).catch(err => console.log(err))
     }, [])
 
     const saveUser = (user: any) => {
@@ -107,6 +109,7 @@ export function UserProvider(props: providerProps) {
         localStorage.removeItem('usertoken');
         router.push('/homepage');
         localStorage.removeItem('userdetails');
+        localStorage.removeItem('uid');
         saveUser({});
     }
     

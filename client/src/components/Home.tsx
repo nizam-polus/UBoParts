@@ -202,7 +202,6 @@ function Home() {
         }else{
             setItemsPerPage(4)
             APIs.getMakes().then(response => {
-                console.log(response.data.rows)
                 setMakeData(response.data.rows);
             }).catch(error => {
                 console.error('Error fetching data:', error);
@@ -436,7 +435,6 @@ function Home() {
     }
     const handleArrowClick = () => {
         if((startIndex + itemsPerPage ) > makeData.length){
-            console.log("called")
          setStartIndex(0)
         }else{
             setStartIndex(startIndex + itemsPerPage)
@@ -495,7 +493,6 @@ function Home() {
         if (confrmpwd && (newpwd === confrmpwd)) {
             setMismatch(false);
             APIs.resetPassword({user_email_id: pwd_reset_id, password: confrmpwd, forgetkey: key, lang: language.value}).then(response => {
-                console.log(response);
                 toast.success(response.data.message);
                 setOpenReset(false);
                 setOpenLogin(true);
