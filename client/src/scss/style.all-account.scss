@@ -1265,6 +1265,7 @@ header .bar,
     }	
     .about-content-wrapper {	
         padding: 20px 50px;	
+        margin-top: -50px !important;
     }	
     input::placeholder {	
         font-size: 12px!important;	
@@ -2122,7 +2123,8 @@ header .bar,
 // }
 
 .ubo-btn-full {
-    background-color: #587E50;	
+    background-color: #587E50;
+    border: none;
     color:#fff;
     text-align: center !important;	
     width: 100%;	
@@ -2135,7 +2137,11 @@ header .bar,
         border: 0px;	
         color:#fff;	
     }	
-   	
-    	
+   	&-outline {
+        @extend .ubo-btn-full;
+        background: transparent;
+        color: #1B1212;
+        border: 1.7px solid #1B1212;
+    }
 }
 

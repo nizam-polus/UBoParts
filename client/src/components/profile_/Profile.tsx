@@ -249,7 +249,7 @@ function Profile() {
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2}>
-                                                        <div className="mb-3 px-sm-3 pt-2">
+                                                        <div className="mb-3 px-xl-3 pt-2">
                                                             <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="STREET_ADDRESS"/> <span className="required">*</span></label>
                                                             <input type="text" value={address_1}
                                                                 className={`form-control input-bg-color-2 products-name ${incomplete && !address_1 ? ' required-field' : 'border-0' }`} 
@@ -257,7 +257,7 @@ function Profile() {
                                                                 onChange={(e) => setAddress_1(e.target.value)}
                                                             />
                                                         </div>
-                                                        <div className='px-sm-3'>
+                                                        <div className='px-xl-3'>
                                                             <input type="text" value={address_2}
                                                                 className="form-control input-bg-color-2 border-0 products-name" 
                                                                 name="apertment" placeholder="Apartment, suite, unit etc..."
