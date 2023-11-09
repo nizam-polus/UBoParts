@@ -134,14 +134,14 @@ function Footer() {
                                 <p className="regularfont short-labels-1 label-color-1 mb-2"><FormattedMessage id="NEWSLETTER_DETAILS"/></p>
                                 <form className="newsletter-signup">
                                     <div className="row g-2 mb-2">
-                                        <div className="col-12 col-sm-9">
+                                        <div className="col-12 col-lg-9">
                                             <input type="email" 
                                                 className=" lightfont form-control h-auto input-bg-color-1 text-white footer-placeholder-font-size rounded-lg border-0" 
                                                 placeholder="Email Address..." name="email" value={email}
                                                 onChange={(e: any) => setEmail(e.target.value.toLowerCase())}
                                             />
                                         </div>
-                                        <div className="col-12 col-sm-3 pl-sm-0">
+                                        <div className="col-12 col-lg-3 pl-lg-0">
                                             <button type="submit" 
                                                 className="btn regularfont button-bg-color-1 text-white border-0 rounded-lg ubo-btn-subscribe"
                                                 onClick={handleSubscribe}

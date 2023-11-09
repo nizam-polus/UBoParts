@@ -53,104 +53,143 @@ function Contact_us() {
     }
 
     return (
-        <> 
-            <div className="main-body pb-2 mb-5 px-0">
+        <>
+            <div className="main-body pb-2 px-0">
                 <div className="container px-4 px-xl-0">
                     <section className="about-proffessionals-wrapper mt-4 pt-1 ">
                         <div className="row mt-3 mt-md-3 mt-xl-5">
                             <div className="col-12">
-                                <p className="semifont text-size-3 custom-color-1 text-center pb-3 pt-3"><FormattedMessage id="CONTACT_US"/></p>
-                            </div>
-                        </div>
-                        <div className="row mt-2 g-3">
-                            <div className="col-12" style={{width: "100%"}}>
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2433.033668564033!2d4.841715912393551!3d52.42418764320198!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c5e2cf31db3269%3A0x5e1e44cfad76c89a!2sZomerdijk%2011%2C%201505%20HW%20Zaandam%2C%20Netherlands!5e0!3m2!1sen!2sin!4v1698324709289!5m2!1sen!2sin" width="100%" height="450" ></iframe>                            
+                                <p className="semifont text-size-3 custom-color-1 text-center pb-3 pt-3">
+                                    <FormattedMessage id="CONTACT_US" />
+                                </p>
                             </div>
                         </div>
                     </section>
-                    <section className="contact-wrapper coulmn-bg-color-1 mt-5 contact-details-section">
-                       <div className='custom-color-2 '>
-                            <div>
-                                <h2 className='font-weight-bold semifont' style={{fontSize: "1.5rem"}}><FormattedMessage id="OUR_ADDRESS" /></h2>
-                                <p className='regularfont pb-5' style={{maxWidth: "350px", fontSize: "18px"}}>
-                                    UboParts, Zomerdijk 11, 1505HW Zaandam, The Netherlands <br></br>
-                                    Email: Info@uboparts.com <br></br>
-                                    Phone Number: +316 334-907-82
-                                </p>
-                            </div>
-                            <div>
-                                <h3 className='font-weight-bold semifont' style={{fontSize: "1.5rem"}}><FormattedMessage id="OPENING_HOURS" /></h3>
-                                <p className='regularfont' style={{maxWidth: "350px", fontSize: "18px"}}>
-                                    Monday to Friday: 8h00-17h00
-                                    Saturday: Closed <br></br>
-                                    Sunday: Closed
-                                </p>
-                            </div>    
-                       </div>
-                       <div>
-                            <div>
-                                <h2 className='text-center semifont'><FormattedMessage id="LEAVE_US_A_MESSAGE" /></h2>
-                            </div>
-                            <div className="table-responsive">
-                                <table className="table  coulmn-bg-color-1 rounded mt-2 rounded-2">
-                                    <tbody>
-                                        <tr className="double">
-                                            <td className="px-5">
-                                                <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="YOUR_NAME" /> <span className="required">*</span></label>
-                                                <span className="">
-                                                    <input type="text" onChange={(e) => setName(e.target.value)} 
-                                                        className={`form-control input-bg-color-2 products-name ${incomplete && !name ? 'required-field' : 'border-0'}`}
-                                                        name="name" placeholder="Jhon cina" value={name}
+                </div>
+            </div>
+            <div className="block mb-5">
+                <div className="container container--max--lg">
+                    <div className="card contacts regularfont">
+                        <div className="contacts__map">
+                            <iframe
+                                title="Google Map"
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2433.033668564033!2d4.841715912393551!3d52.42418764320198!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c5e2cf31db3269%3A0x5e1e44cfad76c89a!2sZomerdijk%2011%2C%201505%20HW%20Zaandam%2C%20Netherlands!5e0!3m2!1sen!2sin!4v1698324709289!5m2!1sen!2sin"
+                                width="100%"
+                                height="450"
+                            ></iframe>
+                        </div>
+                        <div className="card-body card-body--padding--2">
+                            <div className="row">
+                                <div className="col-12 col-lg-6 pb-4 pb-lg-0">
+                                    <div className="mr-1">
+                                        <h4 className="contact-us__header card-title">
+                                            <FormattedMessage id="OUR_ADDRESS" />
+                                        </h4>
+
+                                        <div className="contact-us__address">
+                                            <p>
+                                                UboParts, Zomerdijk 11, 1505HW Zaandam, The Netherlands
+                                                <br />
+                                                Email: Info@uboparts.com
+                                                <br />
+                                                Phone Number: +316 334-907-82
+                                            </p>
+
+                                            <p>
+                                                <strong>
+                                                    <FormattedMessage id="OPENING_HOURS" />
+                                                </strong>
+                                                <br />
+                                                Monday to Friday: 8h00-17h00
+                                                <br />
+                                                Saturday: Closed
+                                                <br />
+                                                Sunday: Closed
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="col-12 col-lg-6">
+                                    <div className="ml-1">
+                                        <h4 className="contact-us__header card-title">
+                                            <FormattedMessage id="LEAVE_US_A_MESSAGE" />
+                                        </h4>
+
+                                        <form>
+                                            <div className="form-row">
+                                                <div className="form-group col-md-6">
+                                                    <label htmlFor="form-name">
+                                                        <FormattedMessage id="YOUR_NAME" />
+                                                    </label>
+                                                    <span className="required">*</span>
+                                                    <input
+                                                        type="text"
+                                                        onChange={(e) => setName(e.target.value)}
+                                                        className={`form-control input-bg-color-2 products-name ${
+                                                            incomplete && !name ? "required-field" : "border-0"
+                                                        }`}
+                                                        name="name"
+                                                        placeholder="Jhon cina"
+                                                        value={name}
                                                     />
-                                                </span>
-                                            </td>
-                                            <td className="px-5">
-                                                <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="EMAIL" /> <span className="required">*</span></label>
-                                                <span className="">
-                                                    <input type="text" onChange={(e) => { setEmail(e.target.value.toLowerCase()) }} 
-                                                        className={`form-control input-bg-color-2 products-name ${incomplete && !email ? 'required-field' : 'border-0'}`} 
-                                                        name="email" placeholder="jhon@gmail.com" value={email}
+                                                </div>
+                                                <div className="form-group col-md-6">
+                                                <label htmlFor="form-name"><FormattedMessage id="EMAIL" /></label>
+                                                    <span className="required">*</span>
+                                                    <input
+                                                        type="text"
+                                                        onChange={(e) => {
+                                                            setEmail(e.target.value.toLowerCase());
+                                                        }}
+                                                        className={`form-control input-bg-color-2 products-name ${
+                                                            incomplete && !email ? "required-field" : "border-0"
+                                                        }`}
+                                                        name="email"
+                                                        placeholder="jhon@gmail.com"
+                                                        value={email}
                                                     />
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        <tr className="single">
-                                            <td className="px-5 pb-3" colSpan={2} style={{borderTop: "none"}}>
-                                                <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="SUBJECT" /> <span className="required">*</span></label>
-                                                <span className="">
-                                                    <input type="text" onChange={(e) => setSubject(e.target.value)} 
-                                                        className={`form-control input-bg-color-2 products-name ${incomplete && !subject ? 'required-field' : 'border-0'}`}
-                                                        name="subject" placeholder="subject.." value={subject}
-                                                    />
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        <tr className="single">
-                                            <td className="px-5 pb-5" colSpan={2} style={{borderTop: "none"}}>
-                                                <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="MESSAGE" /> <span className="required">*</span></label>
-                                                <span className="">
-                                                    <textarea onChange={(e) => setMessage(e.target.value)} 
-                                                        className={`form-control input-bg-color-2 products-name ${incomplete && !message ? 'required-field' : 'border-0'}`}
-                                                        name="message" placeholder="Message..." value={message}
-                                                    />
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        <div className="container">
-                                            <div className="">
-                                                <div className="col">
-                                                    <a style={{ marginLeft: "2rem" }} 
-                                                        className="custom-color-11 button-bg-color-1 lightfont body-sub-titles px-5 pt-3 pb-3  rounded button-color"
-                                                        onClick={handleFormSubmit}
-                                                    ><FormattedMessage id="SEND" /></a>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </tbody>
-                                </table>
+                                            <div className="form-group">
+                                                <FormattedMessage id="SUBJECT" />
+                                                <span className="required">*</span>
+                                                <input
+                                                    type="text"
+                                                    onChange={(e) => setSubject(e.target.value)}
+                                                    className={`form-control input-bg-color-2 products-name ${
+                                                        incomplete && !subject ? "required-field" : "border-0"
+                                                    }`}
+                                                    name="subject"
+                                                    placeholder="subject.."
+                                                    value={subject}
+                                                />
+                                            </div>
+                                            <div className="form-group">
+                                                <FormattedMessage id="MESSAGE" />
+                                                <span className="required">*</span>
+                                                <textarea
+                                                    onChange={(e) => setMessage(e.target.value)}
+                                                    className={`form-control input-bg-color-2 products-name ${
+                                                        incomplete && !message ? "required-field" : "border-0"
+                                                    }`}
+                                                    name="message"
+                                                    placeholder="Message..."
+                                                    value={message}
+                                                />
+                                            </div>
+                                            <a
+                                                className="button-bg-color-1 d-block lightfont pb-3 pt-3 px-5 rounded ubo-btn-full"
+                                                onClick={handleFormSubmit}
+                                            >
+                                                <FormattedMessage id="SEND" />
+                                            </a>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
-                       </div>
-                    </section>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>

@@ -2121,3 +2121,21 @@ header .bar,
 }
 }
 
+.ubo-btn-full {
+    background-color: #587E50;	
+    color:#fff;
+    text-align: center !important;	
+    width: 100%;	
+    &:focus {	
+        border: 0px;	
+        color:#fff;	
+        box-shadow: none!important;	
+    }	
+    &:hover {	
+        border: 0px;	
+        color:#fff;	
+    }	
+   	
+    	
+}
+
