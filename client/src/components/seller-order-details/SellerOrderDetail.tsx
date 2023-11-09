@@ -17,6 +17,7 @@ function SellerOrderDetails() {
     const { user } = UserContext();
     
     const [invoiceId, setInvoiceId] = useState(0)
+    const [status, setStatus] = useState("")
     const [orderDetails, setOrderDetails] = useState<any>([]);
     const [totalDiscount, setTotalDiscount] = useState<any>(0)
     const [total, setTotal] = useState<number>(0);
@@ -31,8 +32,10 @@ function SellerOrderDetails() {
             let customerId = orders[0]?.attributes?.customer_id;
             let invoiceID = orders[0]?.attributes?.invoice_id
             let shippingCost = orders[0]?.attributes?.shipping_cost
+            let status = orders[0]?.attributes?.status
             setInvoiceId(invoiceID)
             setShippingCost(shippingCost)
+            setStatus(status)
             APIs.getSpecificUser(customerId).then(response => {
                 setCustomer(response.data);
                 console.log(response.data)
@@ -100,6 +103,9 @@ function SellerOrderDetails() {
                                             <span className="custom-color-2 boldfont body-sub-titles"><FormattedMessage id="ORDER_DETAILS" />
                                                 <span className="pl-1">#</span>
                                                 <span className=" order-no regularfont body-sub-titles">{orderId}</span>
+                                            </span>
+                                            <span data-value={status} className="badge badge-pill badge-info px-3 py-2 ml-2 ubo-badge">
+                                                        {status}
                                             </span>
                                         </div>
                                     

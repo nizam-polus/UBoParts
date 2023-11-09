@@ -37,6 +37,7 @@ function Header_home(props: any) {
             setSelectedLanguage(storedCaps);
         }else{
             setSelectedLanguage("EN")
+            localStorage.setItem("locale", "en")
         }
         setLocale(storedLocal)
         
@@ -565,8 +566,8 @@ function Header_home(props: any) {
                         <div className="row d-flex align-items-center header-middle-text pl-5">
                             <div className="col box w-100">
                                 <p className="semifont heading_text text-white" style={{lineHeight: 1}}>
-                                    <FormattedMessage id="SELL_QUALITY_PARTS" />
-                                    <br /> <FormattedMessage id="WITH_US" />
+                                    <FormattedMessage id="SELL_CAR_PARTS" />
+                                    <br /> <FormattedMessage id="IN_A_CLICK" />
                                 </p>
                                 <p className="lightfont sub-text-1 text-white">
                                     Browse our expansive selection

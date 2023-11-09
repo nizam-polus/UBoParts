@@ -161,7 +161,7 @@ function Contact_us() {
                                                         incomplete && !subject ? "required-field" : "border-0"
                                                     }`}
                                                     name="subject"
-                                                    placeholder="subject.."
+                                                    placeholder={language.value == 'nl' ? "onderwerp.." : "subject"}
                                                     value={subject}
                                                 />
                                             </div>
@@ -174,7 +174,7 @@ function Contact_us() {
                                                         incomplete && !message ? "required-field" : "border-0"
                                                     }`}
                                                     name="message"
-                                                    placeholder="Message..."
+                                                    placeholder={language.value == 'nl' ? "bericht..." : "Message..."}
                                                     value={message}
                                                 />
                                             </div>

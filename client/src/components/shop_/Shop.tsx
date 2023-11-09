@@ -60,10 +60,10 @@ function Shop() {
     
     const router = useRouter();
     const { HomeMakeId } : any = router.query;
-    let local: any;
+    let locale: any;
     
     if(typeof window !== 'undefined'){
-        local = localStorage.getItem("locale")
+        locale = localStorage.getItem("locale")
     }
 
     const categoriesArray = (resData: any) => {
@@ -349,22 +349,30 @@ function Shop() {
                         APIs.addToCart(cartData).then(response => {
                             toast.success(() => (
                                 <>
-                                    Item successfully added to <Link href={"/cartpage"}>cart</Link>
+                                    <FormattedMessage id="ITEM_ADDED_TO"/><Link href={"/cartpage"}>cart</Link>
                                 </>
                             ));
                             APIs.getCartData({ customerid: user.id }).then(response => {
                                 setCartCount(response.data.rows.length);
                             }).then(()=> setAddToCartCompleted(true));
                         }).catch(err => {
-                            toast.error('Something went wrong while adding to cart!');
+                            toast.error(() =>(
+                                <>
+                                <FormattedMessage id="SOMETHING_WRONG_CART" />
+                                </>
+                            ));
                             setAddToCartCompleted(true)
                         });
                     } else {
                         setAddToCartCompleted(true)
-                        toast.error('Stock exceeded. Cannot add this item to the cart.');
+                        toast.error(() => (
+                            <FormattedMessage id="STOCK_EXCEEDED" />
+                        ));
                     }
                 }).catch(err => {
-                    toast.error('Something went wrong while fetching product information.');
+                    toast.error(() =>{
+                        <FormattedMessage id="SOMETHING_WRONG_FETCHING" />
+                    });
                     setAddToCartCompleted(true)
                 });
             })
@@ -451,7 +459,7 @@ function Shop() {
                                             <select className="form-select semifont placeholderfontsize" name="make" id="makeOption"
                                                 value={selectedMake} onChange={handleMakeChange}
                                             >
-                                                <option value="" disabled={true}>Select Make</option>
+                                                <option value="" disabled={true}>{locale == "nl" ? "Selecteer merk" : "Select Make"}</option>
                                                 {makesArray.map((make: any, index: any) => (
                                                     <option key={index} value={make.id}>{make.make}</option>
                                                 ))}
@@ -463,7 +471,7 @@ function Shop() {
                                             <select disabled={!selectedMake} className="form-select semifont placeholderfontsize" name="model" id="modelOption"
                                                 value={selectedModel} onChange={handleModelChange}
                                             >
-                                                <option value="" disabled={true}>{true ? "Select Model" : "select"}</option>
+                                                <option value="" disabled={true}>{locale == "nl"? "Selecteer Model" : "Select Model"}</option>
                                                 {modelArray.map((model: any, index: any) => (
                                                     <option key={index} value={model.id}>{model.model}</option>
                                                 ))}
@@ -476,7 +484,7 @@ function Shop() {
                                                 className="form-select semifont placeholderfontsize" name="year" id="yearOption"
                                                 value={selectedYear} onChange={handleYearChange}
                                             >
-                                                <option value="" disabled={true}>Select Year</option>
+                                                <option value="" disabled={true}>{locale == "nl"? "Selecteer Jaar" : "Select Year"}</option>
                                                 {yearArray.map((year: any, index: any) => (
                                                     <option key={index} value={year.id}>{year.year}</option>
                                                 ))}
@@ -487,7 +495,7 @@ function Shop() {
                                         <div className="form-group">
                                             <select disabled={!selectedYear} className="form-select semifont placeholderfontsize" name="category" id="categoryOption"
                                                 value={selectedCategory} onChange={handleCategoryChange}>
-                                                <option value="" disabled={true}>Select Category</option>
+                                                <option value="" disabled={true}>{locale == "nl" ? "Selecteer categorie": "Select category"}</option>
                                                 {categories.map((category: any, index: any) => (
                                                     <option key={index} value={category.category_name}>{category.category_name}</option>
                                                 ))}
@@ -695,7 +703,7 @@ function Shop() {
                                                 return (
                                                     <div className="col-12 col-sm-12 col-md-6 col-xl-4  mb-4" key={index}>
                                                     {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product?.attributes?.sale?.data != null)&& (
-                                                      local == "nl" ?   <span  className="sale-tag position-absolute">{product.attributes?.sale?.data?.attributes?.nl_discount_text}</span>
+                                                      locale == "nl" ?   <span  className="sale-tag position-absolute">{product.attributes?.sale?.data?.attributes?.nl_discount_text}</span>
                                                       :
                                                       <span  className="sale-tag position-absolute">{product.attributes?.sale?.data?.attributes?.en_discount_text}</span>
                                                     )}
@@ -703,17 +711,15 @@ function Shop() {
                                                         <AppImage 
                                                                 src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.url} 
                                                                 className="card-img-top img-prod-height pointer "
-                                                                style={{height: '20rem', objectFit: 'contain', borderTopLeftRadius: "30px", borderTopRightRadius: "30px", filter:`${product.attributes.stock_count == 0 ? "blur(3px)" : "none"}`}} 
+                                                                style={{height: '20rem', objectFit: 'contain', borderTopLeftRadius: "30px", borderTopRightRadius: "30px", filter:`${product.attributes.stock_count <= 0 ? "blur(3px)" : "none"}`}} 
                                                                 onClick={() => handleProductClick(product)}    
                                                             />
                                                             {
-                                                            product.attributes.stock_count == 0 &&  
+                                                            product.attributes.stock_count <= 0 &&  
                                                                 <div  onClick={() => handleProductClick(product)} className='out-of-stock d-flex position-absolute justify-content-center align-items-center' >
                                                                    <p className='text-out-of-stock mb-0'><FormattedMessage id="OUT_OF_STOCK"/></p>
                                                                 </div>
-                                                      
                                                              }
-                                                           
                                                             <div className="card-body">
                                                                 <div className="row g-1">
                                                                     <div className="col-12">
@@ -741,7 +747,7 @@ function Shop() {
                                                                                 :
                                                                                 <span className="product-price">€{product?.attributes?.price}</span>
                                                                         }
-                                                                        { product.attributes.stock_count === 0 ? (
+                                                                        { product.attributes.stock_count <= 0 ? (
                                                                           <AppImage
                                                                             src="images/cart-svg.svg"
                                                                             className="pointer add_to_cart"
