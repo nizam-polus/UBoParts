@@ -7,6 +7,51 @@ import { FormattedMessage } from 'react-intl';
 
 function Checkout() {
 
+    const placeholderTranslations : any = {
+        nl: {
+            email: 'E-mail',
+            first_name: 'Voornaam',
+            last_name: 'Achternaam',
+            username: 'Gebruikersnaam',
+            phone_number: 'Telefoonnummer',
+            streetaddress_housenumber: 'Straatnaam Huisnummer',
+            streetaddress_apartment: 'Appartement',
+            city: 'Stad',
+            state: 'Provincie',
+            country: 'Land',
+            postcode: 'Postcode',
+            company_name: 'Bedrijfsnaam',
+            Account_type: 'Accounttype',
+            Account_title: 'Accounttitel',
+            Bank_name: 'Banknaam',
+            iban_number: 'IBAN-nummer',
+            password: 'Wachtwoord',
+            kvk_number: 'KvK-nummer',
+            company_btw: 'Bedrijfs-BTW',
+        },
+        en: {
+            email: 'Email',
+            first_name: 'First Name',
+            last_name: 'Last Name',
+            username: 'Username',
+            phone_number: 'Phone Number',
+            streetaddress_housenumber: 'Street Address House Number',
+            streetaddress_apartment: 'Apartment',
+            city: 'City',
+            state: 'State',
+            country: 'Country',
+            postcode: 'Postcode',
+            company_name: 'Company Name',
+            Account_type: 'Account Type',
+            Account_title: 'Account Title',
+            Bank_name: 'Bank Name',
+            iban_number: 'IBAN Number',
+            password: 'Password',
+            kvk_number: 'KvK Number',
+            company_btw: 'Company VAT',
+        }
+    };
+
     const {user, saveUser, language, setPaymentStatus} = UserContext(); 
     const [checkoutProducts, setCheckoutProducts]: any = useState([]);
     const [total, setTotal]: any = useState(0);
@@ -26,7 +71,7 @@ function Checkout() {
         postcode: ''
     });
     const [differentAddr, setDifferentAddr] = useState(false);
-    const [clicked, setClicked] = useState<boolean>(false)
+    const [clicked, setClicked] = useState<boolean>(true)
     const [shippingData, setShippingData] = useState({
         shippingaddress_country: formData.country,
         shippingaddress_streataddress_housenumber: formData.streetaddress_housenumber,
@@ -144,6 +189,7 @@ function Checkout() {
                                 return total + parseFloat(item.price_details);
                             }, 0);                    
                             setTotalShippingCost(totalShippingCost)
+                            setClicked(false)
                         }
                     });
                 });
@@ -224,9 +270,12 @@ function Checkout() {
                 }
                 APIs.getCartData({ customerid: user.id }).then(response => {
                     let cartData = response.data.rows;
+                    const hasZeroStock = cartData.some((item : any) => item.stock_count <= 0);
                     if (cartData[0].payment_process === 'true') {
-                        toast.warning("Payment has already been initiated, please complete the payment.");
+                        toast.warning(() => ( <FormattedMessage id="PAMENT_INITIATED" /> ));
                         setClicked(false)
+                    } else if(hasZeroStock){
+                        toast.warning(() => ("Some products are out of stock"))
                     } else {
                         APIs.cartPayment(checkoutData).then(response => {
                             if (response.data.redirect_url) {
@@ -261,7 +310,8 @@ function Checkout() {
                                 <form action="">
                                     <div className="table-responsive">
                                         <table className="table checkout-table coulmn-bg-color-1 rounded-lg">
-                                            <tbody>
+                                            {language.value && 
+                                                <tbody>
                                                 <tr className="double ">
                                                     <th colSpan={2} className="p-2 custom-color-3 regularfont subtitles-1 border-bottom border-top-0"><FormattedMessage id="BILLING_DETAILS"/></th>
                                                 </tr>
@@ -271,7 +321,7 @@ function Checkout() {
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="FIRST_NAME"/> <span className="required">*</span></label>
                                                         <input type="text" value={formData.first_name}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.first_name ? 'required-field' : 'border-0' }`} 
-                                                            name="first_name" placeholder="Mark"
+                                                            name="first_name" placeholder={placeholderTranslations[language.value]['first_name']}
                                                             onChange={(e) => handleFormChange(e)}
                                                         />
                                                     </td>
@@ -279,7 +329,7 @@ function Checkout() {
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="LAST_NAME"/> <span className="required">*</span></label>
                                                         <input type="text" value={formData.last_name}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.last_name ? 'required-field' : 'border-0' }`} 
-                                                            name="last_name" placeholder="Twain"
+                                                            name="last_name" placeholder={placeholderTranslations[language.value]['last_name']}
                                                             onChange={(e) => handleFormChange(e)}
                                                         />
                                                     </td>
@@ -289,7 +339,7 @@ function Checkout() {
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="COMPANY_NAME"/> (Optional)</label>
                                                         <input type="text" value={formData.company}
                                                             className="check-form form-control input-bg-color-2 border-0 body-sub-titles" 
-                                                            name="company" placeholder="Company Name"
+                                                            name="company" placeholder={placeholderTranslations[language.value]['company_name']}
                                                             onChange={(e) => handleFormChange(e)}
                                                         />
                                                     </td>
@@ -313,14 +363,14 @@ function Checkout() {
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="STREET_ADDRESS"/> <span className="required">*</span></label>
                                                             <input type="text" value={formData.streetaddress_housenumber}
                                                                 className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.streetaddress_housenumber ? 'required-field' : 'border-0' }`}  
-                                                                name="streetaddress_housenumber" placeholder="House number and street name"
+                                                                name="streetaddress_housenumber" placeholder={placeholderTranslations[language.value]['streetaddress_housenumber']}
                                                                 onChange={(e) => handleFormChange(e)}
                                                             />
                                                         </div>
                                                         <div>
                                                             <input type="text" value={formData.streetaddress_apartment}
                                                                 className="check-form form-control input-bg-color-2 border-0 body-sub-titles" 
-                                                                name="streetaddress_apartment" placeholder="Apartment, suite, unit etc..."
+                                                                name="streetaddress_apartment" placeholder={placeholderTranslations[language.value]['streetaddress_apartment']}
                                                                 onChange={(e) => handleFormChange(e)}
                                                             />
                                                         </div>
@@ -331,7 +381,7 @@ function Checkout() {
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="CITY"/><span className="required">*</span></label>
                                                         <input type="text" value={formData.city}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.city ? 'required-field' : 'border-0' }`} 
-                                                            name="city" placeholder="City"
+                                                            name="city" placeholder={placeholderTranslations[language.value]['city']}
                                                             onChange={(e) => handleFormChange(e)}
                                                         />
                                                     </td>
@@ -341,7 +391,7 @@ function Checkout() {
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="STATE"/> <span className="required">*</span></label>
                                                         <input type="text" value={formData.state}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.state ? 'required-field' : 'border-0' }`} 
-                                                            name="state" placeholder="State"
+                                                            name="state" placeholder={placeholderTranslations[language.value]['state']}
                                                             onChange={(e) => handleFormChange(e)}
                                                         />
                                                     </td>
@@ -351,7 +401,7 @@ function Checkout() {
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="POST_CODE"/> <span className="required">*</span></label>
                                                         <input type="text" value={formData.postcode}
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.postcode ? 'required-field' : 'border-0' }`} 
-                                                            name="postcode" placeholder="Postcode"
+                                                            name="postcode" placeholder={placeholderTranslations[language.value]['postcode']}
                                                             onChange={(e) => handleFormChange(e)}
                                                         />
                                                     </td>
@@ -361,7 +411,7 @@ function Checkout() {
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="EMAIL_ADDRESS"/></label>
                                                         <input type="text" value={formData.email} disabled
                                                             className={`check-form form-control input-bg-color-2 body-sub-titles border-0`} 
-                                                            name="email-address" placeholder="Email Address"    
+                                                            name="email-address" placeholder={placeholderTranslations[language.value]['email']}    
                                                         />
                                                     </td>
                                                     <td>
@@ -373,104 +423,108 @@ function Checkout() {
                                                         />
                                                     </td>
                                                 </tr>
-                                            </tbody>
+                                            </tbody>    
+                                            }
                                         </table>
                                     </div>
                                     <div className="table-responsive">
                                         <table className="table checkout-table coulmn-bg-color-1 rounded-lg">
-                                             <tbody>
-                                                <tr className="single border-bottom">
-                                                    <th colSpan={2} className="p-2 custom-color-3 regularfont subtitles-1 border-top-0"><FormattedMessage id="SHOPPING_DETAILS"/></th>
-                                                </tr>
-                                           
+                                           {
+                                            language.value &&
+                                            <tbody>
+                                            <tr className="single border-bottom">
+                                                <th colSpan={2} className="p-2 custom-color-3 regularfont subtitles-1 border-top-0"><FormattedMessage id="SHOPPING_DETAILS"/></th>
+                                            </tr>
+                                       
+                                            <tr className="single">
+                                                <td colSpan={2} className="d-flex">
+                                                    <label className="ms-3 create-label">
+                                                            <input type="checkbox" name="agreement" className="width-checkout"
+                                                                onClick={(e: any) => {
+                                                                    setDifferentAddr(!differentAddr);
+                                                                    setShippingIncomplete(!differentAddr)
+                                                                }}
+                                                            /> 
+                                                            <FormattedMessage id="SHIP_TO_DIFFRENT"/>
+                                                        </label>
+                                                </td>
+                                            </tr>
+                                            {differentAddr && <>
                                                 <tr className="single">
-                                                    <td colSpan={2} className="d-flex">
-                                                        <label className="ms-3 create-label">
-                                                                <input type="checkbox" name="agreement" className="width-checkout"
-                                                                    onClick={(e: any) => {
-                                                                        setDifferentAddr(!differentAddr);
-                                                                        setShippingIncomplete(!differentAddr)
-                                                                    }}
-                                                                /> 
-                                                                <FormattedMessage id="SHIP_TO_DIFFRENT"/>
-                                                            </label>
+                                                    <td colSpan={2}>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="COUNTRY"/> <span className="required">*</span></label>
+                                                        <select className={`form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_country ? 'required-field' : 'border-0' }`}
+                                                            style={{ height: '3.5rem' }} name="shippingaddress_country" value={shippingData.shippingaddress_country}
+                                                            onChange={(e) => handleShippingAddChange(e)}
+                                                        >
+                                                            <option className="mini-text-2" value="" disabled>Select Country</option>
+                                                            {countries.map((country: any) => (
+                                                                <option key={country.id} value={country.attributes.country}>{country.attributes.country}</option>))}
+                                                        </select>
                                                     </td>
                                                 </tr>
-                                                {differentAddr && <>
-                                                    <tr className="single">
-                                                        <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="COUNTRY"/> <span className="required">*</span></label>
-                                                            <select className={`form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_country ? 'required-field' : 'border-0' }`}
-                                                                style={{ height: '3.5rem' }} name="shippingaddress_country" value={shippingData.shippingaddress_country}
-                                                                onChange={(e) => handleShippingAddChange(e)}
-                                                            >
-                                                                <option className="mini-text-2" value="" disabled>Select Country</option>
-                                                                {countries.map((country: any) => (
-                                                                    <option key={country.id} value={country.attributes.country}>{country.attributes.country}</option>))}
-                                                            </select>
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="single">
-                                                        <td colSpan={2}>
-                                                            <div className="mb-3">
-                                                                <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="STREET_ADDRESS"/> <span className="required">*</span></label>
-                                                                <input type="text" value={shippingData.shippingaddress_streataddress_housenumber}
-                                                                    className={`check-form form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_streataddress_housenumber ? 'required-field' : 'border-0' }`}  
-                                                                    name="shippingaddress_streataddress_housenumber" placeholder="House number and street name"
-                                                                    onChange={(e) => handleShippingAddChange(e)}
-                                                                />
-                                                            </div>
-                                                            <div>
-                                                                <input type="text" value={shippingData.shippingaddress_streataddress_apartment}
-                                                                    className="check-form form-control input-bg-color-2 border-0 body-sub-titles" 
-                                                                    name="shippingaddress_streataddress_apartment" placeholder="Apartment, suite, unit etc..."
-                                                                    onChange={(e) => handleShippingAddChange(e)}
-                                                                />
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="single">
-                                                        <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="CITY"/> <span className="required">*</span></label>
-                                                            <input type="text" value={shippingData.shippingaddress_city}
-                                                                className={`check-form form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_city ? 'required-field' : 'border-0' }`} 
-                                                                name="shippingaddress_city" placeholder="City"
+                                                <tr className="single">
+                                                    <td colSpan={2}>
+                                                        <div className="mb-3">
+                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="STREET_ADDRESS"/> <span className="required">*</span></label>
+                                                            <input type="text" value={shippingData.shippingaddress_streataddress_housenumber}
+                                                                className={`check-form form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_streataddress_housenumber ? 'required-field' : 'border-0' }`}  
+                                                                name="shippingaddress_streataddress_housenumber" placeholder={placeholderTranslations[language.value]['streetaddress_housenumber']}
                                                                 onChange={(e) => handleShippingAddChange(e)}
                                                             />
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="single">
-                                                        <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="STATE"/> <span className="required">*</span></label>
-                                                            <input type="text" value={shippingData.shippingaddress_state}
-                                                                className={`check-form form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_state ? 'required-field' : 'border-0' }`} 
-                                                                name="shippingaddress_state" placeholder="State"
+                                                        </div>
+                                                        <div>
+                                                            <input type="text" value={shippingData.shippingaddress_streataddress_apartment}
+                                                                className="check-form form-control input-bg-color-2 border-0 body-sub-titles" 
+                                                                name="shippingaddress_streataddress_apartment" placeholder={placeholderTranslations[language.value]['streetaddress_apartment']}
                                                                 onChange={(e) => handleShippingAddChange(e)}
                                                             />
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="single">
-                                                        <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="POST_CODE"/> <span className="required">*</span></label>
-                                                            <input type="text" value={shippingData.shippingaddress_postcode}
-                                                                className={`check-form form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_postcode ? 'required-field' : 'border-0' }`} 
-                                                                name="shippingaddress_postcode" placeholder="Postcode"
-                                                                onChange={(e) => handleShippingAddChange(e)}
-                                                            />
-                                                        </td>
-                                                    </tr> 
-                                                    <tr className="single">
-                                                        <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="PHONE_NO"/> <span className="required">*</span></label>
-                                                            <input type="text" value={shippingData.shippingaddress_phonenumber}
-                                                                className={`check-form form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_phonenumber ? 'required-field' : 'border-0' }`} 
-                                                                name="shippingaddress_phonenumber" placeholder="(XXX) XXX-XXXX"
-                                                                onChange={(e) => handleShippingAddChange(e)}
-                                                            />
-                                                        </td>
-                                                    </tr>    
-                                                </>}
-                                            </tbody>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr className="single">
+                                                    <td colSpan={2}>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="CITY"/> <span className="required">*</span></label>
+                                                        <input type="text" value={shippingData.shippingaddress_city}
+                                                            className={`check-form form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_city ? 'required-field' : 'border-0' }`} 
+                                                            name="shippingaddress_city" placeholder={placeholderTranslations[language.value]['city']}
+                                                            onChange={(e) => handleShippingAddChange(e)}
+                                                        />
+                                                    </td>
+                                                </tr>
+                                                <tr className="single">
+                                                    <td colSpan={2}>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="STATE"/> <span className="required">*</span></label>
+                                                        <input type="text" value={shippingData.shippingaddress_state}
+                                                            className={`check-form form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_state ? 'required-field' : 'border-0' }`} 
+                                                            name="shippingaddress_state" placeholder={placeholderTranslations[language.value]['state']}
+                                                            onChange={(e) => handleShippingAddChange(e)}
+                                                        />
+                                                    </td>
+                                                </tr>
+                                                <tr className="single">
+                                                    <td colSpan={2}>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="POST_CODE"/> <span className="required">*</span></label>
+                                                        <input type="text" value={shippingData.shippingaddress_postcode}
+                                                            className={`check-form form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_postcode ? 'required-field' : 'border-0' }`} 
+                                                            name="shippingaddress_postcode" placeholder={placeholderTranslations[language.value]['postcode']}
+                                                            onChange={(e) => handleShippingAddChange(e)}
+                                                        />
+                                                    </td>
+                                                </tr> 
+                                                <tr className="single">
+                                                    <td colSpan={2}>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="PHONE_NO"/> <span className="required">*</span></label>
+                                                        <input type="text" value={shippingData.shippingaddress_phonenumber}
+                                                            className={`check-form form-control input-bg-color-2 body-sub-titles ${shippingIncomplete && !shippingData.shippingaddress_phonenumber ? 'required-field' : 'border-0' }`} 
+                                                            name="shippingaddress_phonenumber" placeholder="(XXX) XXX-XXXX"
+                                                            onChange={(e) => handleShippingAddChange(e)}
+                                                        />
+                                                    </td>
+                                                </tr>    
+                                            </>}
+                                        </tbody>
+                                           }
                                         </table>
                                     </div>
                                 </form>
@@ -528,7 +582,8 @@ function Checkout() {
                                                     <button type="button" 
                                                     disabled
                                                     className="proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"
-                                                    ><FormattedMessage id="PROCEEDING"/>
+                                                    style={{cursor: "not-allowed"}}
+                                                    ><FormattedMessage id="WAIT"/>
                                                     </button>
                                                 :
                                                     <button type="button" disabled={!checkoutProducts?.length}

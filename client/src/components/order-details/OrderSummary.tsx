@@ -35,8 +35,8 @@ function OrderSummary() {
                 <div className="container">
                     <section className="quote-wrapper my-5">
                         <div className="row">
-                            <div className="col-3"></div>
-                            <div className="col-6">
+                            <div className="col-3 d-none d-lg-block"></div>
+                            <div className="col-12 col-lg-6">
                                 <div className="coulmn-bg-color-1 rounded px-3 pb-5 pt-3">
                                     <div className="m-0 pt-3 ml-3">
                                         <div className="row">
@@ -98,7 +98,7 @@ function OrderSummary() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-3"></div>
+                            <div className="col-3 d-none d-lg-block"></div>
                         </div>
                     </section>
                 </div>

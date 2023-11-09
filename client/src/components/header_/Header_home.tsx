@@ -37,6 +37,7 @@ function Header_home(props: any) {
             setSelectedLanguage(storedCaps);
         }else{
             setSelectedLanguage("EN")
+            localStorage.setItem("locale", "en")
         }
         setLocale(storedLocal)
         
@@ -63,6 +64,7 @@ function Header_home(props: any) {
     const [profiledropdown, setProfiledropdown] = useState(false);
     const showLoginModal = () => {
         setLoginModalIsOpen(true);
+        setShowMenu(false);
     };
 
    const onLoginModalClose = () => {
@@ -76,11 +78,13 @@ function Header_home(props: any) {
         localStorage.removeItem('usertoken');
         router.push('/homepage');
         localStorage.removeItem('userdetails');
+        localStorage.removeItem('uid');
         setUserToken('');
         setIsLoggedin(false);
         setIsOpen(!isOpen);
         saveUser({});
-        setIsAdmin(false)
+        setIsAdmin(false);
+        setShowMenu(false);
     };
 
     const handleItemClick = (item : any) => {
@@ -122,7 +126,7 @@ function Header_home(props: any) {
     return (
         <>
             {/* new header mobile */}
-            <header className="site__mobile-header d-block d-lg-none">
+            <header className="site__mobile-header d-block d-xl-none">
                 <div className="mobile-header">
                     <div className="container">
                         <div className="mobile-header__body">
@@ -153,22 +157,17 @@ function Header_home(props: any) {
                                         </a>
                                     </Link>
                                 </div>
-                                <div className="mobile-indicator">
+                                <div className="mobile-indicator ml-2">
                                     <Dropdown title={selectedLanguage} items={items} onItemClick={handleItemClick} />
                                 </div>
                             </div>
-                            {/* <div className="mobile-header__indicators">
-                                <div className="mobile-indicator">
-                                    <Dropdown title={selectedLanguage} items={items} onItemClick={handleItemClick} />
-                                </div>
-                            </div> */}
                         </div>
                     </div>
                 </div>
             </header>
             {/* new header mobile */}
             {/* new header */}
-            <header className="site__header d-none d-lg-block py-0">
+            <header className="site__header d-none d-xl-block py-0">
                 <div className="header">
                     <div className="header__logo">
                         <a className="logo" onClick={() => router.push("/homepage")}>
@@ -223,18 +222,7 @@ function Header_home(props: any) {
                                             </span>
                                         </Link>
                                     </li>
-                                )}
-                                {/* {!userToken && (
-                                    <li className="menu_font_size regularfont">
-                                        <button type="button" onClick={showLoginModal} className="ub_login">
-                                            <span className="pointer">
-                                                <FormattedMessage id="LOGIN" />
-                                            </span>
-                                        </button>
-                                    </li>
-                                )} */}
-                                {/*props.userToken && <li className="menu_font_size regularfont"> 
-                                <a href=""><AppImage src="/images/svg/my-account.svg" className="my-account"/></a></li>*/}
+                                )}                                
                             </ul>
                         </div>
                     </div>
@@ -255,10 +243,7 @@ function Header_home(props: any) {
                                 <a
                                     className="indicator__button justify-content-center"
                                     onClick={() => setIsOpen(!isOpen)}
-                                >
-                                    {/* <span className="indicator__title">&nbsp;</span>
-                                <span className="indicator__value">
-                                    <FormattedMessage id="MY_ACCOUNT" /></span> */}
+                                >                                    
                                     <button
                                         className="btn border-0 menu_font_size regularfont menu-color"
                                         onClick={() => setIsOpen(!isOpen)}
@@ -295,47 +280,7 @@ function Header_home(props: any) {
                                                 />
                                             </svg>
                                         )}
-                                    </span>
-                                    {/* {isOpen && (
-                                            <div className="position-absolute menu-dropdown account-dropdown">
-                                                <div className="dropdownitem">
-                                                    <span
-                                                        className="menu_font_size regularfont pointer"
-                                                        onClick={() => {
-                                                            let route =
-                                                                user.isApproved === "Active" &&
-                                                                user.role.type === "seller"
-                                                                    ? "/seller/dashboard"
-                                                                    : "/purchase-history";
-                                                            router.push(route);
-                                                            setIsOpen(!isOpen);
-                                                        }}
-                                                    >
-                                                        Dashboard
-                                                    </span>
-                                                </div>
-                                                <div className="dropdownitem">
-                                                    <span
-                                                        className="menu_font_size regularfont pointer"
-                                                        onClick={() => {
-                                                            router.push("/profile_");
-                                                            setIsOpen(!isOpen);
-                                                        }}
-                                                    >
-                                                        Profile
-                                                    </span>
-                                                </div>
-                                                <div className="dropdownitem">
-                                                    <span
-                                                        className="menu_font_size regularfont pointer"
-                                                        style={{ zIndex: 2, position: "relative" }}
-                                                        onClick={logout}
-                                                    >
-                                                        Logout
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        )} */}
+                                    </span>                                    
                                 </a>
                             )}
                             {userToken && (
@@ -440,7 +385,9 @@ function Header_home(props: any) {
                             </a>
                                 </Link>
                         </div>
-                        <div className="d-flex align-items-center indicator indicator--trigger--click">
+                        <div className="d-flex align-items-center indicator indicator--trigger--click" onClick={() => {
+                                    setIsOpen(false);
+                                }}>
                             <Dropdown title={selectedLanguage} items={items} onItemClick={handleItemClick} />
                         </div>
                     </div>
@@ -619,8 +566,8 @@ function Header_home(props: any) {
                         <div className="row d-flex align-items-center header-middle-text pl-5">
                             <div className="col box w-100">
                                 <p className="semifont heading_text text-white" style={{lineHeight: 1}}>
-                                    <FormattedMessage id="SELL_QUALITY_PARTS" />
-                                    <br /> <FormattedMessage id="WITH_US" />
+                                    <FormattedMessage id="SELL_CAR_PARTS" />
+                                    <br /> <FormattedMessage id="IN_A_CLICK" />
                                 </p>
                                 <p className="lightfont sub-text-1 text-white">
                                     Browse our expansive selection

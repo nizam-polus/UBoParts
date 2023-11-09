@@ -17,10 +17,10 @@ import { FormattedMessage } from 'react-intl';
 
 function Home() {
 
-    let local: any;
+    let locale: any;
     
     if(typeof window !== 'undefined'){
-        local = localStorage.getItem("locale")
+        locale = localStorage.getItem("locale")
     }
 
     const router: any = useRouter();
@@ -202,7 +202,6 @@ function Home() {
         }else{
             setItemsPerPage(4)
             APIs.getMakes().then(response => {
-                console.log(response.data.rows)
                 setMakeData(response.data.rows);
             }).catch(error => {
                 console.error('Error fetching data:', error);
@@ -436,7 +435,6 @@ function Home() {
     }
     const handleArrowClick = () => {
         if((startIndex + itemsPerPage ) > makeData.length){
-            console.log("called")
          setStartIndex(0)
         }else{
             setStartIndex(startIndex + itemsPerPage)
@@ -495,11 +493,10 @@ function Home() {
         if (confrmpwd && (newpwd === confrmpwd)) {
             setMismatch(false);
             APIs.resetPassword({user_email_id: pwd_reset_id, password: confrmpwd, forgetkey: key, lang: language.value}).then(response => {
-                console.log(response);
                 toast.success(response.data.message);
                 setOpenReset(false);
                 setOpenLogin(true);
-            }).catch(err => toast.error('Something went wrong.'));
+            }).catch(err => toast.error(() => <FormattedMessage id="SOMETHING_WRONG"/>));
         } else {
             setMismatch(true);
         }
@@ -593,7 +590,7 @@ function Home() {
                                                 <input type="form-control" value={licenseplate}
                                                     onChange={handleLicenseplateChange} name="plate_number" 
                                                     className="semifont placeholderfontsize" 
-                                                    placeholder={local == "nl" ? "Zoek op kenteken van de auto" : "Search with car's plate number"} 
+                                                    placeholder={locale == "nl" ? "Zoek op kenteken van de auto" : "Search with car's plate number"} 
                                                 />
                                                 {showInvaidLicense &&
                                                     <div className="row mt-2 ml-2" >
@@ -611,7 +608,7 @@ function Home() {
                                         <div className="col">
                                             <div className="form-group">
                                                 <input type="form-control" name="article_number" value={articleNumber}
-                                                    className="semifont placeholderfontsize" placeholder={local == "nl" ? "Zoek met productartikel" : "Search with product Article"}
+                                                    className="semifont placeholderfontsize" placeholder={locale == "nl" ? "Zoek met productartikel" : "Search with product Article"}
                                                     onChange={handleArticleChange}
                                                 />
                                             </div>

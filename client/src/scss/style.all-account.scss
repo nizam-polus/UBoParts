@@ -213,7 +213,7 @@ body {
     // text-align: center;	
     padding: 10px;	
     background: #fff;	
-    opacity: 0.6;	
+    opacity: 0.8;	
     border-radius: 0px 0px 20px 20px !important;	
 }	
 .dropdownitem {	
@@ -1265,6 +1265,7 @@ header .bar,
     }	
     .about-content-wrapper {	
         padding: 20px 50px;	
+        margin-top: -50px !important;
     }	
     input::placeholder {	
         font-size: 12px!important;	
@@ -2115,3 +2116,39 @@ header .bar,
         min-width: 150px;
     }
 }
+@media (max-width: 1199.98px) {
+    .site--desktop-header--classic-five .header {
+    display: grid;
+}
+}
+span.ubo-badge[data-value="pending"]{
+    background-color: rgb(185, 187, 61);
+}
+span.ubo-badge[data-value="completed"]{
+    background-color: #587E50;
+}
+
+
+.ubo-btn-full {
+    background-color: #587E50;
+    border: none;
+    color:#fff;
+    text-align: center !important;	
+    width: 100%;	
+    &:focus {	
+        border: 0px;	
+        color:#fff;	
+        box-shadow: none!important;	
+    }	
+    &:hover {	
+        border: 0px;	
+        color:#fff;	
+    }	
+   	&-outline {
+        @extend .ubo-btn-full;
+        background: transparent;
+        color: #1B1212;
+        border: 1.7px solid #1B1212;
+    }
+}
+

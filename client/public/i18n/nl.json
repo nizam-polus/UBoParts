@@ -569,6 +569,8 @@
   "FOLLOW_US": "Volg ons op sociale netwerken",
 
   "SELL_QUALITY_PARTS": "Verkoop kwaliteitsonderdelen",
+  "SELL_CAR_PARTS": "Auto-onderdelen verkopen",
+  "IN_A_CLICK": "in één klik",
   "CREATE_PASSWORD": "Maak een wachtwoord",
   "ACCEPT_TERMS_AND_CONDITIONS": "Accepteer algemene voorwaarden",
 
@@ -638,10 +640,31 @@
   "ENTER_REGISTERD_EMAIL_TO": "Voer uw geregistreerde e-mail in om ",
   "RESET_YOUR_PASSWORD": "uw wachtwoord te resetten",
   "SHOPPING_DETAILS": "Verzendgegevens",
-  "ADDING_TO_CART": "Adding To Cart"
+  "ADDING_TO_CART": "Adding To Cart",
 
-
-
+  "SOMETHING_WRONG": "Er is iets misgegaan.",
+  "SOMETHING_WRONG_CART": "Er is iets misgegaan bij het toevoegen aan de winkelwagen.",
+  "SOMETHING_WRONG_FETCHING": "Er is iets misgegaan bij het ophalen van productinformatie.",
+  "STOCK_EXCEEDED": "Voorraad overschreden. Dit item kan niet aan de winkelwagen worden toegevoegd.",
+  "CART": "winkelwagen",
+  "ITEM_ADDED_TO": "Item succesvol toegevoegd aan ",
+  "FORM_SUCCESS": "Formulier succesvol ingediend.",
+  "SELLER_SUCCESS": "Verkoperregistratie is succesvol. Verificatie-e-mail is verzonden.",
+  "FILL_ALL_EDIT": "Vul alle velden in voor bewerken.",
+  "FILL_ALL_CREATE": "Vul alle velden in voor maken.",
+  "PROFILE_SUCCESS": "Profiel succesvol bijgewerkt.",
+  "ERROR_PROFILE": "Fout bij het bijwerken van het profiel. Probeer het later opnieuw.",
+  "SELECT_VALIED_IMAGE": "Selecteer alstublieft een geldig afbeeldingsbestand.",
+  "PASSWORD_SUCCESS": "Wachtwoord succesvol bijgewerkt. Log in met het nieuwe wachtwoord.",
+  "CART_IS_EMPTY": "Uw winkelwagen is leeg.",
+  "NOT_DELIVERABLE": "Productgewicht of bezorgregio komt niet in aanmerking voor verzending.",
+  "COMPLETE_PROFILE": "Vul alstublieft uw profiel in om verder te gaan.",
+  "PAYMENT_INITIATED": "De betaling is al gestart.",
+  "COMPLETE_PROFILE_LOGIN": "Vul alstublieft uw profiel in. Negeer als dit al is gedaan.",
+  "ENTER_EMAIL_PASSWORD": "Voer alstublieft uw e-mail en wachtwoord in.",
+  "INVALID_CRED": "Ongeldige inloggegevens.",
+  "VERIFY_USER": "Gebruiker niet geverifieerd. Verifieer alstublieft de gebruiker.",
+  "WAIT": "Even geduld aub..."
   }
   
   

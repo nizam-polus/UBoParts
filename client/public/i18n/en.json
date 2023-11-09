@@ -577,6 +577,8 @@
   "FOLLOW_US": "Follow us on social networks",
 
   "SELL_QUALITY_PARTS": "Sell Quality Parts ",
+  "SELL_CAR_PARTS": "Sell Car Parts",
+  "IN_A_CLICK": "in a Click",
   "CREATE_PASSWORD": "Create Password",
   "ACCEPT_TERMS_AND_CONDITIONS": "Accept terms & conditons",
   
@@ -646,7 +648,30 @@
   "ENTER_REGISTERD_EMAIL_TO": "Enter registerd email to ",
   "RESET_YOUR_PASSWORD": "reset your passowrd",
   "SHOPPING_DETAILS": "Shopping Details",
-  "ADDING_TO_CART": "Adding To Cart"
+  "ADDING_TO_CART": "Adding To Cart",
 
+  "SOMETHING_WRONG": "Something went wrong.",
+  "SOMETHING_WRONG_CART": "Something went wrong while adding to cart!.",
+  "SOMETHING_WRONG_FETCHING": "Something went wrong while fetching product information.",
+  "STOCK_EXCEEDED": "Stock exceeded. Cannot add this item to the cart.",
+  "CART": "cart",
+  "ITEM_ADDED_TO": "Item successfully added to ",
+  "FORM_SUCCESS": "Form submitted succesfully",
+  "SELLER_SUCCESS": "Seller registration is successful. Verification email has been sent.",
+  "FILL_ALL_EDIT": "Fill all fields for Edit list",
+  "FILL_ALL_CREATE": "Fill all fields for Edit list",
+  "PROFILE_SUCCESS": "Profile updated successfully.",
+  "ERROR_PROFILE": "Error updating profle. Please try again after sometimes.",
+  "SELECT_VALIED_IMAGE": "Please select a valid image file.",
+  "PASSWORD_SUCCESS": "Password updated successfully. Please login with the new password",
+  "CART_IS_EMPTY": "Your cart is Empty",
+  "NOT_DELIVERABLE": "Product weight or Delivery region is not eligible for shipping.",
+  "COMPLETE_PROFILE": "Please complete your profile to proceed.",
+  "PAYMENT_INITIATED": "Payment has already been initiated.",
+  "COMPLETE_PROFILE_LOGIN": "Please complete your profile. Ignore if done already.",
+  "ENTER_EMAIL_PASSWORD": "Please enter your email & password",
+  "INVALID_CRED": "Invalid credentials",
+  "VERIFY_USER": "User not verified. Please verify the user.",
+  "WAIT": "Please wait..."
 
 }

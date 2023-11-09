@@ -5,6 +5,55 @@ import APIs from '~/services/apiService';
 
 function Dismantle_car() {
 
+    let locale: any;
+    
+    if(typeof window !== 'undefined'){
+        locale = localStorage.getItem("locale")
+    }
+
+    const placeholderTranslations : any = {
+        nl: {
+            plate_number: 'Nummerplaat',
+            auto_model: 'Automodel',
+            year: 'Jaar',
+            mark: 'Merk',
+            first_name: 'Voornaam',
+            last_name: 'Achternaam',
+            email: 'E-mail',
+            phone: 'Telefoonnummer',
+            delivery_type: 'Leveringstype',
+            driving_condition: 'Rijconditie',
+            type: 'Type',
+            asking_price: 'Vraagprijs',
+            streetaddress_housenumber: 'Straatnaam Huisnummer',
+            streetaddress_apartment: 'Appartement',
+            city: 'Stad',
+            state: 'Provincie',
+            postcode: 'Postcode',
+            type_here: "Typ hier...",
+        },
+        en: {
+            plate_number: 'Plate Number',
+            auto_model: 'Auto Model',
+            year: 'Year',
+            mark: 'Make',
+            first_name: 'First Name',
+            last_name: 'Last Name',
+            email: 'Email',
+            phone: 'Phone Number',
+            delivery_type: 'Delivery Type',
+            driving_condition: 'Driving Condition',
+            type: 'Type',
+            asking_price: 'Asking Price',
+            streetaddress_housenumber: 'Street Address House Number',
+            streetaddress_apartment: 'Apartment',
+            city: 'City',
+            state: 'State',
+            postcode: 'Postcode',
+            type_here: "Type here...",
+        }
+    };
+
     const [formData, setFormData] = useState<any>({
         plate_number: '',
         auto_model: '',
@@ -101,10 +150,10 @@ function Dismantle_car() {
                     files: imageData
                 }
                 APIs.uploadImageForDismantle(picData).then()
-                toast.success('Form submitted succesfully', {autoClose: 4000})
+                toast.success(()=>( <FormattedMessage id="FORM_SUCCESS" />), {autoClose: 4000})
             }).catch(err => {
                 console.log(err);
-                toast.error('Something went wrong.', {autoClose: 4000});
+                toast.error(()=>( <FormattedMessage id="SOMETHING_WRONG" />), {autoClose: 4000});
             })
         }
     }
@@ -121,317 +170,320 @@ function Dismantle_car() {
                             <div className="col-12">
                                 <div className="quote-inner-wrapper coulmn-bg-color-1 rounded px-3 pt-3 p-sm-5 ps-5 pe-5">
                                     <form>
+                                       {
+                                        locale &&
                                         <div className="table-responsive">
-                                            <table className="table quote-table">
-                                                <tbody>
-                                                    <tr>
-                                                        <th colSpan={2} 
-                                                            className="pt-0 pb-0 px-0 ps-0 custom-color-2 regularfont subtitles fw-normal border-top-0 border-bottom-0"
-                                                        >
-                                                            <FormattedMessage id="DISMANTLE_CAR"/>
-                                                        </th>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colSpan={2} className="pb-4 pt-4 pl-0 semifont boldfontsize border-top-0"> 
-                                                            <hr className="p-0 m-0 " />
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="double">
-                                                        <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
-                                                                <FormattedMessage id="PLATE_NO"/> <span className="required">*</span>
-                                                            </label>
-                                                            <input type="text" 
-                                                                value={licensePlate}
-                                                                className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.plate_number ? 'required-field' : 'border-0'}`}
-                                                                name="plate_number" placeholder="Plate Number" 
-                                                                onChange={handleLicenseChange}
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
-                                                                <FormattedMessage id="AUTO_MODEL"/> <span className="required">*</span>
-                                                            </label>
-                                                            <input type="text" 
-                                                                className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.auto_model ? 'required-field' : 'border-0'}`}
-                                                                name="auto_model" placeholder="Auto Model" value={formData.auto_model}
-                                                                onChange={handleFormChange}
-                                                            />
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="double">
-                                                        <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
-                                                                <FormattedMessage id="YEAR"/> <span className="required">*</span>
-                                                            </label>
-                                                            <input type="text" 
-                                                                className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.year ? 'required-field' : 'border-0'}`}
-                                                                name="year" placeholder="Year" value={formData.year}
-                                                                onChange={handleFormChange}
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
-                                                                <FormattedMessage id="MAKE"/> <span className="required">*</span>
-                                                            </label>
-                                                            <input type="text" 
-                                                                className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.mark ? 'required-field' : 'border-0'}`} 
-                                                                name="mark" placeholder="Make" value={formData.mark}
-                                                                onChange={handleFormChange}
-                                                            />
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="double">
-                                                        <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
-                                                                <FormattedMessage id="FIRST_NAME"/> <span className="required">*</span>
-                                                            </label>
-                                                            <input type="text" 
-                                                                className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.first_name ? 'required-field' : 'border-0'}`} 
-                                                                name="first_name" placeholder="First Name" 
-                                                                onChange={handleFormChange}
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
-                                                                <FormattedMessage id="LAST_NAME"/> <span className="required">*</span>
-                                                            </label>
-                                                            <input type="text" 
-                                                                className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.last_name ? 'required-field' : 'border-0'}`}
-                                                                name="last_name" placeholder="Last Name"
-                                                                onChange={handleFormChange}
-                                                            />
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="double">
-                                                        <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
-                                                                <FormattedMessage id="EMAIL_ADDRESS"/> <span className="required">*</span>
-                                                            </label>
-                                                            <input type="text" 
-                                                                className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.email ? 'required-field' : 'border-0'}`}
-                                                                name="email" placeholder="Email Address" 
-                                                                onChange={handleFormChangeEmail}
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
-                                                                <FormattedMessage id="PHONE"/> <span className="required">*</span>
-                                                            </label>
-                                                            <input type="text" 
-                                                                className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.phone ? 'required-field' : 'border-0'}`}
-                                                                name="phone" placeholder="(XXX) XXX-XXXX" 
-                                                                onChange={handleFormChange}
-                                                            />
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="double">
-                                                        <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
-                                                                <FormattedMessage id="DELIVERY_TYPE"/> <span className="required">*</span>
-                                                            </label>
-                                                            <fieldset>
-                                                                <div className="position-relative d-flex">
-                                                                    <span>
-                                                                        <input type="radio" 
-                                                                            name="delivery_type" id="driving_type_delivery" value={'Delivery'}
-                                                                            onChange={handleFormChange}
-                                                                        />
-                                                                        <label htmlFor="driving_type_pickup" className="rounded"></label>
-                                                                    </span>
-                                                                    <span className="regularfont pl-2"><FormattedMessage id="DELIVERY"/></span>
-                                                                </div>
-                                                                <div className="position-relative d-flex">
-                                                                    <span>
-                                                                        <input type="radio" 
-                                                                            name="delivery_type" id="driving_type_pickup" value={'Pickup'}
-                                                                            onChange={handleFormChange}
-                                                                        />
-                                                                        <label htmlFor="driving_type_pickup" className="rounded"></label>
-                                                                    </span>
-                                                                    <span className="regularfont pl-2"><FormattedMessage id="PICKUP"/></span>
-                                                                </div>
-                                                            </fieldset>
-                                                        </td>
-                                                        <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
-                                                                <FormattedMessage id="DRIVING_CONDITION"/> <span className="required">*</span>
-                                                            </label>
-                                                            <fieldset>
-                                                                <div className="position-relative d-flex">
-                                                                    <span>
-                                                                        <input type="radio" 
-                                                                            name="driving_condition" id="driving_condition_pickup" value={'Drivable'}
-                                                                            onChange={handleFormChange}
-                                                                        />
-                                                                        <label htmlFor="driving_type_pickup" className="rounded"></label>
-                                                                    </span>
-                                                                    <span className="regularfont pl-2"><FormattedMessage id="DRIVABLE"/></span>
-                                                                </div>
-                                                                <div className="position-relative d-flex">
-                                                                    <span>
-                                                                        <input type="radio" 
-                                                                            name="driving_condition" id="driving_condition_pickup" value={'Not Drivable'}
-                                                                            onChange={handleFormChange}
-                                                                        />
-                                                                        <label htmlFor="driving_type_pickup" className="rounded"></label>
-                                                                    </span>
-                                                                    <span className="regularfont pl-2"><FormattedMessage id="NOT_DRIVABLE"/></span>
-                                                                </div>
-                                                            </fieldset>
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="double">
-                                                        <td>
+                                        <table className="table quote-table">
+                                            <tbody>
+                                                <tr>
+                                                    <th colSpan={2} 
+                                                        className="pt-0 pb-0 px-0 ps-0 custom-color-2 regularfont subtitles fw-normal border-top-0 border-bottom-0"
+                                                    >
+                                                        <FormattedMessage id="DISMANTLE_CAR"/>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <td colSpan={2} className="pb-4 pt-4 pl-0 semifont boldfontsize border-top-0"> 
+                                                        <hr className="p-0 m-0 " />
+                                                    </td>
+                                                </tr>
+                                                <tr className="double">
+                                                    <td>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
-                                                            <FormattedMessage id="TYPE" /> <span className="required">*</span>
+                                                            <FormattedMessage id="PLATE_NO"/> <span className="required">*</span>
                                                         </label>
-                                                            <fieldset>
-                                                                <div className="position-relative d-flex" >
-                                                                    <span>
-                                                                        <input type="radio" 
-                                                                            name="type" id="catalyser_type_imitation" value={'Catalyser'}
-                                                                            onChange={handleFormChange}
-                                                                        />
-                                                                        <label htmlFor="driving_type_pickup" className="rounded"></label>
-                                                                    </span>
-                                                                    <span className="regularfont pl-2"><FormattedMessage id="CATALYSER" /></span>
-                                                                </div>
-                                                                <div className="position-relative d-flex" >
-                                                                    <span>
-                                                                        <input type="radio" 
-                                                                            name="type" id="catalyser_type_imitation" value={'Imitation'}
-                                                                            onChange={handleFormChange}
-                                                                        />
-                                                                        <label htmlFor="driving_type_pickup" className="rounded"></label>
-                                                                    </span>
-                                                                    <span className="regularfont pl-2"><FormattedMessage id="IMITATION"/></span>
-                                                                </div>
-                                                                <div className="position-relative d-flex">
-                                                                    <span>
-                                                                        <input type="radio" 
-                                                                            name="type" id="catalyser_type_original" value={'Original'}
-                                                                            onChange={handleFormChange}
-                                                                        />
-                                                                        <label htmlFor="driving_type_pickup" className="rounded"></label>
-                                                                    </span>
-                                                                    <span className="regularfont pl-2"><FormattedMessage id="ORIGINAL" /></span>
-                                                                </div>
-                                                            </fieldset>
-                                                        </td>
-                                                        <td>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2 ">
-                                                                <FormattedMessage id="ASKING_PRICE"/> <span className="required">*</span>
-                                                            </label>
-                                                            <input type="number" 
-                                                                className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.asking_price ? 'required-field' : 'border-0'}`} 
-                                                                name="asking_price" placeholder="Asking Price (€)" 
-                                                                onChange={handleFormChange}
-                                                            />
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="double">
-                                                        <td>
-                                                            <label className={`body-sub-titles`}>
-                                                                <FormattedMessage id="CAR_IMAGE"/> <span className="required">*</span>
-                                                            </label>
-                                                            <input className={`form-control p-2 choosefile ${incomplete && !imageData ? 'required-field' : 'border-0'}`} 
-                                                                type="file" id="formFile" name='car_image'
-                                                                onChange={handleImageUpload} 
-                                                            />
-                                                        </td>
-                                                        <td></td>
-                                                    </tr>
-                                                    <tr className="single">
-                                                        <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
-                                                                <FormattedMessage id="COUNTRY" /> <span className="required">*</span>
-                                                            </label>
-                                                            <select className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.country.length ? 'required-field' : 'border-0'}`}
-                                                                style={{height: '3.5rem'}} name="country" value={formData.country}
-                                                                onChange={(e) => handleCountryChange(e)}
-                                                            >
-                                                                <option className="mini-text-2" value="" disabled>Select Country</option>
-                                                                {countries.map((country: any) => (
-                                                                <option key={country.id} value={country.id}>{country.attributes.country}</option>))}
-                                                            </select>
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="single">
-                                                        <td colSpan={2}>
-                                                            <div className="mb-3">
-                                                                <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
-                                                                    <FormattedMessage id="STREET_ADDRESS"/> <span className="required">*</span>
-                                                                </label>
-                                                                <input type="text" className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.streetaddress_housenumber ? 'required-field' : 'border-0'}`}
-                                                                    name="streetaddress_housenumber" placeholder="House number and street name" 
-                                                                    onChange={handleFormChange}
-                                                                />
+                                                        <input type="text" 
+                                                            value={licensePlate}
+                                                            className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.plate_number ? 'required-field' : 'border-0'}`}
+                                                            name="plate_number" placeholder={placeholderTranslations[locale]['plate_number']}
+                                                            onChange={handleLicenseChange}
+                                                        />
+                                                    </td>
+                                                    <td>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                            <FormattedMessage id="AUTO_MODEL"/> <span className="required">*</span>
+                                                        </label>
+                                                        <input type="text" 
+                                                            className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.auto_model ? 'required-field' : 'border-0'}`}
+                                                            name="auto_model" placeholder={placeholderTranslations[locale]['auto_model']} value={formData.auto_model}
+                                                            onChange={handleFormChange}
+                                                        />
+                                                    </td>
+                                                </tr>
+                                                <tr className="double">
+                                                    <td>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                            <FormattedMessage id="YEAR"/> <span className="required">*</span>
+                                                        </label>
+                                                        <input type="text" 
+                                                            className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.year ? 'required-field' : 'border-0'}`}
+                                                            name="year" placeholder={placeholderTranslations[locale]['year']} value={formData.year}
+                                                            onChange={handleFormChange}
+                                                        />
+                                                    </td>
+                                                    <td>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                            <FormattedMessage id="MAKE"/> <span className="required">*</span>
+                                                        </label>
+                                                        <input type="text" 
+                                                            className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.mark ? 'required-field' : 'border-0'}`} 
+                                                            name="mark" placeholder={placeholderTranslations[locale]['mark']} value={formData.mark}
+                                                            onChange={handleFormChange}
+                                                        />
+                                                    </td>
+                                                </tr>
+                                                <tr className="double">
+                                                    <td>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                            <FormattedMessage id="FIRST_NAME"/> <span className="required">*</span>
+                                                        </label>
+                                                        <input type="text" 
+                                                            className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.first_name ? 'required-field' : 'border-0'}`} 
+                                                            name="first_name" placeholder={placeholderTranslations[locale]['first_name']}
+                                                            onChange={handleFormChange}
+                                                        />
+                                                    </td>
+                                                    <td>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                            <FormattedMessage id="LAST_NAME"/> <span className="required">*</span>
+                                                        </label>
+                                                        <input type="text" 
+                                                            className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.last_name ? 'required-field' : 'border-0'}`}
+                                                            name="last_name" placeholder={placeholderTranslations[locale]['last_name']}
+                                                            onChange={handleFormChange}
+                                                        />
+                                                    </td>
+                                                </tr>
+                                                <tr className="double">
+                                                    <td>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                            <FormattedMessage id="EMAIL_ADDRESS"/> <span className="required">*</span>
+                                                        </label>
+                                                        <input type="text" 
+                                                            className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.email ? 'required-field' : 'border-0'}`}
+                                                            name="email" placeholder={placeholderTranslations[locale]['email']}
+                                                            onChange={handleFormChangeEmail}
+                                                        />
+                                                    </td>
+                                                    <td>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                            <FormattedMessage id="PHONE"/> <span className="required">*</span>
+                                                        </label>
+                                                        <input type="text" 
+                                                            className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.phone ? 'required-field' : 'border-0'}`}
+                                                            name="phone" placeholder="(XXX) XXX-XXXX" 
+                                                            onChange={handleFormChange}
+                                                        />
+                                                    </td>
+                                                </tr>
+                                                <tr className="double">
+                                                    <td>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                            <FormattedMessage id="DELIVERY_TYPE"/> <span className="required">*</span>
+                                                        </label>
+                                                        <fieldset>
+                                                            <div className="position-relative d-flex">
+                                                                <span>
+                                                                    <input type="radio" 
+                                                                        name="delivery_type" id="driving_type_delivery" value={'Delivery'}
+                                                                        onChange={handleFormChange}
+                                                                    />
+                                                                    <label htmlFor="driving_type_pickup" className="rounded"></label>
+                                                                </span>
+                                                                <span className="regularfont pl-2"><FormattedMessage id="DELIVERY"/></span>
                                                             </div>
-                                                            <div>
-                                                                <input type="text" className="form-control input-bg-color-2 border-0 body-sub-titles" 
-                                                                    name="streetaddress_apartment" placeholder="Apartment, suite, unit etc..." 
-                                                                    onChange={handleFormChange}
-                                                                />
+                                                            <div className="position-relative d-flex">
+                                                                <span>
+                                                                    <input type="radio" 
+                                                                        name="delivery_type" id="driving_type_pickup" value={'Pickup'}
+                                                                        onChange={handleFormChange}
+                                                                    />
+                                                                    <label htmlFor="driving_type_pickup" className="rounded"></label>
+                                                                </span>
+                                                                <span className="regularfont pl-2"><FormattedMessage id="PICKUP"/></span>
                                                             </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="single">
-                                                        <td colSpan={2}>
+                                                        </fieldset>
+                                                    </td>
+                                                    <td>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                            <FormattedMessage id="DRIVING_CONDITION"/> <span className="required">*</span>
+                                                        </label>
+                                                        <fieldset>
+                                                            <div className="position-relative d-flex">
+                                                                <span>
+                                                                    <input type="radio" 
+                                                                        name="driving_condition" id="driving_condition_pickup" value={'Drivable'}
+                                                                        onChange={handleFormChange}
+                                                                    />
+                                                                    <label htmlFor="driving_type_pickup" className="rounded"></label>
+                                                                </span>
+                                                                <span className="regularfont pl-2"><FormattedMessage id="DRIVABLE"/></span>
+                                                            </div>
+                                                            <div className="position-relative d-flex">
+                                                                <span>
+                                                                    <input type="radio" 
+                                                                        name="driving_condition" id="driving_condition_pickup" value={'Not Drivable'}
+                                                                        onChange={handleFormChange}
+                                                                    />
+                                                                    <label htmlFor="driving_type_pickup" className="rounded"></label>
+                                                                </span>
+                                                                <span className="regularfont pl-2"><FormattedMessage id="NOT_DRIVABLE"/></span>
+                                                            </div>
+                                                        </fieldset>
+                                                    </td>
+                                                </tr>
+                                                <tr className="double">
+                                                    <td>
+                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                        <FormattedMessage id="TYPE" /> <span className="required">*</span>
+                                                    </label>
+                                                        <fieldset>
+                                                            <div className="position-relative d-flex" >
+                                                                <span>
+                                                                    <input type="radio" 
+                                                                        name="type" id="catalyser_type_imitation" value={'Catalyser'}
+                                                                        onChange={handleFormChange}
+                                                                    />
+                                                                    <label htmlFor="driving_type_pickup" className="rounded"></label>
+                                                                </span>
+                                                                <span className="regularfont pl-2"><FormattedMessage id="CATALYSER" /></span>
+                                                            </div>
+                                                            <div className="position-relative d-flex" >
+                                                                <span>
+                                                                    <input type="radio" 
+                                                                        name="type" id="catalyser_type_imitation" value={'Imitation'}
+                                                                        onChange={handleFormChange}
+                                                                    />
+                                                                    <label htmlFor="driving_type_pickup" className="rounded"></label>
+                                                                </span>
+                                                                <span className="regularfont pl-2"><FormattedMessage id="IMITATION"/></span>
+                                                            </div>
+                                                            <div className="position-relative d-flex">
+                                                                <span>
+                                                                    <input type="radio" 
+                                                                        name="type" id="catalyser_type_original" value={'Original'}
+                                                                        onChange={handleFormChange}
+                                                                    />
+                                                                    <label htmlFor="driving_type_pickup" className="rounded"></label>
+                                                                </span>
+                                                                <span className="regularfont pl-2"><FormattedMessage id="ORIGINAL" /></span>
+                                                            </div>
+                                                        </fieldset>
+                                                    </td>
+                                                    <td>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2 ">
+                                                            <FormattedMessage id="ASKING_PRICE"/> <span className="required">*</span>
+                                                        </label>
+                                                        <input type="number" 
+                                                            className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.asking_price ? 'required-field' : 'border-0'}`} 
+                                                            name="asking_price" placeholder={placeholderTranslations[locale]['asking_price']} 
+                                                            onChange={handleFormChange}
+                                                        />
+                                                    </td>
+                                                </tr>
+                                                <tr className="double">
+                                                    <td>
+                                                        <label className={`body-sub-titles`}>
+                                                            <FormattedMessage id="CAR_IMAGE"/> <span className="required">*</span>
+                                                        </label>
+                                                        <input className={`form-control p-2 choosefile ${incomplete && !imageData ? 'required-field' : 'border-0'}`} 
+                                                            type="file" id="formFile" name='car_image'
+                                                            onChange={handleImageUpload} 
+                                                        />
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr className="single">
+                                                    <td colSpan={2}>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                            <FormattedMessage id="COUNTRY" /> <span className="required">*</span>
+                                                        </label>
+                                                        <select className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.country.length ? 'required-field' : 'border-0'}`}
+                                                            style={{height: '3.5rem'}} name="country" value={formData.country}
+                                                            onChange={(e) => handleCountryChange(e)}
+                                                        >
+                                                            <option className="mini-text-2" value="" disabled>Select Country</option>
+                                                            {countries.map((country: any) => (
+                                                            <option key={country.id} value={country.id}>{country.attributes.country}</option>))}
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr className="single">
+                                                    <td colSpan={2}>
+                                                        <div className="mb-3">
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
-                                                                <FormattedMessage id="CITY"/> <span className="required">*</span>
+                                                                <FormattedMessage id="STREET_ADDRESS"/> <span className="required">*</span>
                                                             </label>
-                                                            <input type="text" className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.city ? 'required-field' : 'border-0'}`} 
-                                                                name="city" placeholder="City" 
+                                                            <input type="text" className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.streetaddress_housenumber ? 'required-field' : 'border-0'}`}
+                                                                name="streetaddress_housenumber" placeholder={placeholderTranslations[locale]['streetaddress_housenumber']} 
                                                                 onChange={handleFormChange}
                                                             />
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="single">
-                                                        <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
-                                                                <FormattedMessage id="STATE" /> <span className="required">*</span>
-                                                            </label>
-                                                            <input type="text" className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.state ? 'required-field' : 'border-0'}`}
-                                                                name="state" placeholder="State" 
+                                                        </div>
+                                                        <div>
+                                                            <input type="text" className="form-control input-bg-color-2 border-0 body-sub-titles" 
+                                                                name="streetaddress_apartment" placeholder={placeholderTranslations[locale]['streetaddress_apartment']}
                                                                 onChange={handleFormChange}
                                                             />
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="single">
-                                                        <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
-                                                                <FormattedMessage id="POST_CODE" /> <span className="required">*</span>
-                                                            </label>
-                                                            <input type="text" className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.postcode ? 'required-field' : 'border-0'}`}
-                                                                name="postcode" placeholder="Postcode" 
-                                                                onChange={handleFormChange}
-                                                            />
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="single">
-                                                        <td colSpan={2}>
-                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
-                                                                <FormattedMessage id="NOTE"/> <span className="required">*</span>
-                                                            </label>
-                                                            <textarea placeholder="Type here..." name='note'
-                                                                className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.note ? 'required-field' : 'border-0'}`} 
-                                                                rows={4}
-                                                                onChange={handleFormChange}
-                                                            ></textarea>
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="single">
-                                                        <td colSpan={2} className="">
-                                                            <button type="submit" 
-                                                                className="place-quote text-white mediumfont body-sub-titles-1 rounded-lg border-0 button-bg-color-1 h-auto p-2 ubo-btn-custom"
-                                                                onClick={handleDismantleSubmit}
-                                                            ><FormattedMessage id="SUBMIT"/></button>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr className="single">
+                                                    <td colSpan={2}>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                            <FormattedMessage id="CITY"/> <span className="required">*</span>
+                                                        </label>
+                                                        <input type="text" className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.city ? 'required-field' : 'border-0'}`} 
+                                                            name="city" placeholder={placeholderTranslations[locale]['city']} 
+                                                            onChange={handleFormChange}
+                                                        />
+                                                    </td>
+                                                </tr>
+                                                <tr className="single">
+                                                    <td colSpan={2}>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                            <FormattedMessage id="STATE" /> <span className="required">*</span>
+                                                        </label>
+                                                        <input type="text" className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.state ? 'required-field' : 'border-0'}`}
+                                                            name="state" placeholder={placeholderTranslations[locale]['state']}
+                                                            onChange={handleFormChange}
+                                                        />
+                                                    </td>
+                                                </tr>
+                                                <tr className="single">
+                                                    <td colSpan={2}>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                            <FormattedMessage id="POST_CODE" /> <span className="required">*</span>
+                                                        </label>
+                                                        <input type="text" className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.postcode ? 'required-field' : 'border-0'}`}
+                                                            name="postcode" placeholder={placeholderTranslations[locale]['postcode']}
+                                                            onChange={handleFormChange}
+                                                        />
+                                                    </td>
+                                                </tr>
+                                                <tr className="single">
+                                                    <td colSpan={2}>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                            <FormattedMessage id="NOTE"/> <span className="required">*</span>
+                                                        </label>
+                                                        <textarea placeholder={placeholderTranslations[locale]['type_here']} name='note'
+                                                            className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.note ? 'required-field' : 'border-0'}`} 
+                                                            rows={4}
+                                                            onChange={handleFormChange}
+                                                        ></textarea>
+                                                    </td>
+                                                </tr>
+                                                <tr className="single">
+                                                    <td colSpan={2} className="">
+                                                        <button type="submit" 
+                                                            className="place-quote text-white mediumfont body-sub-titles-1 rounded-lg border-0 button-bg-color-1 h-auto p-2 ubo-btn-custom"
+                                                            onClick={handleDismantleSubmit}
+                                                        ><FormattedMessage id="SUBMIT"/></button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                       }
                                     </form>
                                 </div>
                             </div>

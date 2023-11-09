@@ -42,3 +42,4 @@ export function isEmptyList(navigation: INavigation): boolean {
         || (navigation.type === 'cursor' && navigation.startCursor === null && navigation.endCursor === null)
     );
 }
+
