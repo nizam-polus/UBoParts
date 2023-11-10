@@ -12,7 +12,7 @@ import { withAuth } from '~/utils/withAuth';
 
 function Cart() {
 
-    const { user, saveUser, setCartCount } = UserContext();
+    const { user, saveUser, setCartCount, language } = UserContext();
     const [cartProducts, setCartProducts] = useState<any>([]);
     const [totalCartPrice, setTotal] = useState(0);
     const [totalDiscount, setTotalDiscount] = useState(0)
@@ -177,6 +177,7 @@ function Cart() {
             productprice: product.price,
             "productWeight": product?.product_weight,
             "discountPrice": discountAmount(product.price,product.discount_percentage_value),
+            "lang": language.value,
         }).then(response => {
             if (response.data.error) {
                 setIsError(prevErrors => ({
@@ -462,7 +463,7 @@ function Cart() {
                                                
                                             </td></tr>
                                             <tr>
-                                                <td className="advanced_search pb-2 pt-0 pr-0 pl-4 semifont mini-text-1 border-top-0">* Shipping cost will be extra</td>
+                                                <td className="advanced_search pb-2 pt-0 pr-0 pl-4 semifont mini-text-1 border-top-0">* <FormattedMessage id="SHIPPING_COST_EXTRA"/></td>
                                             </tr>
                                         </tbody>
                                     </table>

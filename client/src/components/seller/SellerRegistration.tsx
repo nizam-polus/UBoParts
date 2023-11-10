@@ -339,7 +339,7 @@ function SellerRegistration() {
                                                             </span>
                                                             </div>
                                                             </div>
-                                                            {!pwdmatch && !user.id && <span className="required-text">Password does not match</span>}
+                                                            {!pwdmatch && !user.id && <span className="required-text"><FormattedMessage id="PASSWORD_NOT_MATCH"/></span>}
                                                         </td>
                                                     </tr>
                                                     <tr className="single">
@@ -367,9 +367,9 @@ function SellerRegistration() {
                                                                 style={{height: '3.5rem'}} name="Account_type" value={formData.Account_type}
                                                                 onChange={(e) => handleFormChange(e)}
                                                             >
-                                                                <option value='' disabled>Select an account type</option>
-                                                                <option value="Individual">Individual</option>
-                                                                <option value="Business">Business/Company</option>
+                                                                <option value='' disabled>{locale == "nl" ? "Selecteer een accounttype" :"Select an account type"}</option>
+                                                                <option value="Individual">{locale == "nl" ? "Individueel" :"Individual"}</option>
+                                                                <option value="Business">{locale == "nl" ? "Bedrijf" :"Business/Company"}</option>
                                                             </select>
                                                         </td>
                                                     </tr>
@@ -425,7 +425,7 @@ function SellerRegistration() {
                                                         <>
                                                             <tr className="single">
                                                                 <td colSpan={2}>
-                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Company BTW # (Optional)</label>
+                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">{locale == "nl" ? "Bedrijf BTW # (Optioneel)" : "Company BTW # (Optional)"}</label>
                                                                     <input type="text" value={formData.company_btw}
                                                                         className="form-control input-bg-color-2 border-0 body-sub-titles" 
                                                                         name="company_btw" placeholder="Example: 32165421" 
@@ -435,7 +435,7 @@ function SellerRegistration() {
                                                             </tr>
                                                             <tr className="single">
                                                                 <td colSpan={2}>
-                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">KVK Chamber of Commerce Number  <span className="required">*</span></label>
+                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">{locale == "nl" ? "KVK Kamer van Koophandel Nummer" : "KVK Chamber of Commerce Number"}  <span className="required">*</span></label>
                                                                     <input type="text" value={formData.kvk_number}
                                                                         className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.kvk_number ? 'required-field' : 'border-0'}`}
                                                                         name="kvk_number" placeholder={placeholderTranslations[locale]['kvk_number']} 
@@ -452,7 +452,7 @@ function SellerRegistration() {
                                                                 style={{height: '3.5rem'}} name="country" value={formData.country}
                                                                 onChange={(e) => handleFormChange(e)} disabled={user.country}
                                                             >
-                                                                <option className="mini-text-2" value="" disabled>Select Country</option>
+                                                                <option className="mini-text-2" value="" disabled>{locale == "nl" ? "Selecteer land" : "Select country"}</option>
                                                                 {countries.map((country: any) => (
                                                                 <option key={country.id} value={country.attributes.country}>{country.attributes.country}</option>))}
                                                             </select>

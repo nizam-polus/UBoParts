@@ -664,7 +664,14 @@
   "ENTER_EMAIL_PASSWORD": "Voer alstublieft uw e-mail en wachtwoord in.",
   "INVALID_CRED": "Ongeldige inloggegevens.",
   "VERIFY_USER": "Gebruiker niet geverifieerd. Verifieer alstublieft de gebruiker.",
-  "WAIT": "Even geduld aub..."
+  "SHIPPING_COST_EXTRA": "Verzendkosten zullen extra zijn",
+  "WAIT": "Even geduld aub...",
+  "MENU": "Menu",
+  "PASSWORD_CONDITION": "Wachtwoord moet tenminste 6 tekens bevatten",
+  "PASSWORD_NOT_MATCH": "Wachtwoord komt niet overeen",
+  "LATEST": "Nieuwste",
+    "PRICE_H_L": "Prijs: Hoog naar Laag",
+    "PRICE_L_H": "Prijs: Laag naar Hoog"
   }
   
   

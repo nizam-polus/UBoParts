@@ -519,7 +519,7 @@ function Shop() {
                     <section className="categories-wrapper section-inner-padding">
                         <div className="row mt-5">
                             <div className="col-12 d-lg-flex justify-content-between">
-                                <div><span className="custom-color-2 mediumfont bg-image-text">Explore</span>
+                                <div><span className="custom-color-2 mediumfont bg-image-text">{locale == "nl" ? "Ontdekken" : "Explore"}</span>
                                 </div>
                             </div>
                             <div className="col-12 mt-5">
@@ -688,9 +688,9 @@ function Shop() {
                                                     value={sortOption}
                                                     onChange={handleSortChange}
                                                 >
-                                                    <option value='Latest'>Latest</option>
-                                                    <option value="highToLow">Price: High to Low</option>
-                                                    <option value="lowToHigh">Price: Low to High</option>
+                                                    <option value='Latest'>{locale == "nl" ? "Nieuwste" : "Latest"}</option>
+                                                    <option value="highToLow">{locale == "nl" ? "Prijs: Hoog naar Laag" : "Price: High to Low"}</option>
+                                                    <option value="lowToHigh">{locale == "nl" ? "Prijs: Laag naar Hoog" : "Price: Low to High"}</option>
                                                     {/* Add more filter options as needed */}
                                                 </select>
                                             </div>

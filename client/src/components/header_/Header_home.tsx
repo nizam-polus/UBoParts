@@ -136,14 +136,16 @@ function Header_home(props: any) {
                                 </svg>
                             </button>
                             <Link href="/homepage">
-                            <a className="mobile-header__logo">
-                                <div className="mobile-logo">
-                                    <AppImage src="/images/svg/LOGO.svg" width="130" height="20" />
-                                </div>
-                            </a>
+                                <a className="mobile-header__logo">
+                                    <div className="mobile-logo">
+                                        <AppImage src="/images/svg/LOGO.svg" width="130" height="20" />
+                                    </div>
+                                </a>
                             </Link>
                             <div className="mobile-header__indicators">
                                 <div className="mobile-indicator">
+                                {userToken && (
+                                isAdmin ? "" : (
                                     <Link href="/cartpage">
                                         <a className="mobile-indicator__button">
                                             <span className="mobile-indicator__icon">
@@ -156,6 +158,8 @@ function Header_home(props: any) {
                                             </span>
                                         </a>
                                     </Link>
+                                )
+                                )}
                                 </div>
                                 <div className="mobile-indicator ml-2">
                                     <Dropdown title={selectedLanguage} items={items} onItemClick={handleItemClick} />
@@ -178,7 +182,7 @@ function Header_home(props: any) {
                     </div>
                     <div className="header__search">
                         <div className="search bar">
-                            <ul style={{ display: `${isAdmin ? "none" : ""}` }}>
+                            <ul className={"menu_font_size regularfont" + (isAdmin ? " d-none" : "")}>
                                 <li className="menu_font_size regularfont" onClick={() => setIsOpen(false)}>
                                     <Link href="/homepage">
                                         <span className="pointer">
@@ -222,14 +226,14 @@ function Header_home(props: any) {
                                             </span>
                                         </Link>
                                     </li>
-                                )}                                
+                                )}
                             </ul>
                         </div>
                     </div>
                     <div className="header__indicators">
                         <div
                             className={
-                                "d-flex align-items-center indicator indicator--trigger--click ubo-acc-container" +
+                                "d-flex align-items-center indicator indicator--trigger--click ubo-acc-container mr-4" +
                                 (!!isOpen ? " indicator--open" : "")
                             }
                         >
@@ -243,7 +247,7 @@ function Header_home(props: any) {
                                 <a
                                     className="indicator__button justify-content-center"
                                     onClick={() => setIsOpen(!isOpen)}
-                                >                                    
+                                >
                                     <button
                                         className="btn border-0 menu_font_size regularfont menu-color"
                                         onClick={() => setIsOpen(!isOpen)}
@@ -280,7 +284,7 @@ function Header_home(props: any) {
                                                 />
                                             </svg>
                                         )}
-                                    </span>                                    
+                                    </span>
                                 </a>
                             )}
                             {userToken && (
@@ -322,7 +326,7 @@ function Header_home(props: any) {
                                             </div>
                                             <div className="account-menu__user-info">
                                                 <div className=" account-menu__user-name">
-                                                    {user.first_name + " " + user.last_name}
+                                                    {(user.role.type !== "admin") && user.first_name + " " + user.last_name}
                                                 </div>
                                                 <div className=" account-menu__user-email">{user.username}</div>
                                             </div>
@@ -366,28 +370,42 @@ function Header_home(props: any) {
                                 </div>
                             )}
                         </div>
+
                         <div className="indicator indicator--trigger--click">
-                            <Link href="/cartpage">
-                            <a
-                                className="indicator__button"
-                                onClick={() => {
-                                    setIsOpen(false);
-                                }}
-                            >
-                                    <span className="indicator__icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32">
-                                            <circle cx="10.5" cy="27.5" r="2.5"></circle>
-                                            <circle cx="23.5" cy="27.5" r="2.5"></circle>
-                                            <path d="M26.4 21H11.2c-1.2 0-2.2-.8-2.4-1.9L5.4 4.8c-.1-.5-.5-.8-1-.8H1c-.6 0-1-.4-1-1s.4-1 1-1h3.4C5.8 2 7 3 7.3 4.3l3.4 14.3c.1.2.3.4.5.4h15.2c.2 0 .4-.1.5-.4l3.1-10c.1-.2 0-.4-.1-.4-.1-.1-.2-.2-.4-.2H14c-.6 0-1-.4-1-1s.4-1 1-1h15.5c.8 0 1.5.4 2 1s.6 1.5.4 2.2l-3.1 10c-.3 1.1-1.3 1.8-2.4 1.8z"></path>
-                                        </svg>
-                                        {cartCount != 0 ? <span className="indicator__counter">{cartCount}</span> : ""}
-                                    </span>
-                            </a>
+                        {userToken && (
+                                isAdmin ? "" : (
+
+                                <Link href="/cartpage">
+                                    <a
+                                        className="indicator__button"
+                                        onClick={() => {
+                                            setIsOpen(false);
+                                        }}
+                                    >
+                                        <span className="indicator__icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32">
+                                                <circle cx="10.5" cy="27.5" r="2.5"></circle>
+                                                <circle cx="23.5" cy="27.5" r="2.5"></circle>
+                                                <path d="M26.4 21H11.2c-1.2 0-2.2-.8-2.4-1.9L5.4 4.8c-.1-.5-.5-.8-1-.8H1c-.6 0-1-.4-1-1s.4-1 1-1h3.4C5.8 2 7 3 7.3 4.3l3.4 14.3c.1.2.3.4.5.4h15.2c.2 0 .4-.1.5-.4l3.1-10c.1-.2 0-.4-.1-.4-.1-.1-.2-.2-.4-.2H14c-.6 0-1-.4-1-1s.4-1 1-1h15.5c.8 0 1.5.4 2 1s.6 1.5.4 2.2l-3.1 10c-.3 1.1-1.3 1.8-2.4 1.8z"></path>
+                                            </svg>
+                                            {cartCount != 0 ? (
+                                                <span className="indicator__counter">{cartCount}</span>
+                                            ) : (
+                                                ""
+                                            )}
+                                        </span>
+                                    </a>
                                 </Link>
+                                )
+                        )}
                         </div>
-                        <div className="d-flex align-items-center indicator indicator--trigger--click" onClick={() => {
-                                    setIsOpen(false);
-                                }}>
+
+                        <div
+                            className="d-flex align-items-center indicator indicator--trigger--click"
+                            onClick={() => {
+                                setIsOpen(false);
+                            }}
+                        >
                             <Dropdown title={selectedLanguage} items={items} onItemClick={handleItemClick} />
                         </div>
                     </div>
@@ -407,41 +425,41 @@ function Header_home(props: any) {
                     <div className="mobile-menu__conveyor" style={{ transform: "translateX(-0%)" }}>
                         <div className="mobile-menu__panel" style={{ transform: "translateX(0%)" }}>
                             <div className="mobile-menu__panel-header">
-                                <div className="mobile-menu__panel-title">Menu</div>
+                                <div className="mobile-menu__panel-title"><FormattedMessage id="MENU" /></div>
                             </div>
                             <div className="mobile-menu__panel-body">
                                 <div className="mobile-menu__divider"></div>
                                 <div className="mobile-menu__links">
                                     <ul>
-                                        <li className="menu_font_size regularfont" onClick={showMenuFunction}>
+                                        <li className={"menu_font_size regularfont" + (isAdmin ? " d-none" : "")} onClick={showMenuFunction} >
                                             <Link href="/homepage">
                                                 <a>
                                                     <FormattedMessage id="HOME" />
                                                 </a>
                                             </Link>
                                         </li>
-                                        <li className="menu_font_size regularfont" onClick={showMenuFunction}>
+                                        <li className={"menu_font_size regularfont" + (isAdmin ? " d-none" : "")} onClick={showMenuFunction} >
                                             <Link href="/shop">
                                                 <a>
                                                     <FormattedMessage id="SHOP" />
                                                 </a>
                                             </Link>
                                         </li>
-                                        <li className="menu_font_size regularfont" onClick={showMenuFunction}>
+                                        <li className={"menu_font_size regularfont" + (isAdmin ? " d-none" : "")} onClick={showMenuFunction} >
                                             <Link href="/about_us_">
                                                 <a>
                                                     <FormattedMessage id="ABOUT_US" />
                                                 </a>
                                             </Link>
                                         </li>
-                                        <li className="menu_font_size regularfont" onClick={showMenuFunction}>
+                                        <li className={"menu_font_size regularfont" + (isAdmin ? " d-none" : "")} onClick={showMenuFunction} >
                                             <Link href="/request">
                                                 <a>
                                                     <FormattedMessage id="REQUEST" />
                                                 </a>
                                             </Link>
                                         </li>
-                                        <li className="menu_font_size regularfont" onClick={showMenuFunction}>
+                                        <li className={"menu_font_size regularfont" + (isAdmin ? " d-none" : "")} onClick={showMenuFunction} >
                                             <Link href="/dismantle_car">
                                                 <a>
                                                     <FormattedMessage id="DISMANTLE" />
@@ -449,7 +467,7 @@ function Header_home(props: any) {
                                             </Link>
                                         </li>
                                         {!userToken && (
-                                            <li className="menu_font_size regularfont" onClick={showMenuFunction}>
+                                            <li className={"menu_font_size regularfont" + (isAdmin ? " d-none" : "")} onClick={showMenuFunction} >
                                                 <Link href="/seller-registration">
                                                     <a>
                                                         <FormattedMessage id="START_SELL" />
@@ -531,7 +549,7 @@ function Header_home(props: any) {
                     <div className="container">
                         <div className="row d-flex align-items-center header-middle-text pl-5">
                             <div className="col box w-100">
-                                <p className="semifont heading_text text-white" style={{lineHeight: 1}}>
+                                <p className="semifont heading_text text-white" style={{ lineHeight: 1 }}>
                                     <FormattedMessage id="REQUEST_PART" />
                                     <br /> <FormattedMessage id="WITH_US" />
                                 </p>
@@ -548,7 +566,7 @@ function Header_home(props: any) {
                     <div className="container">
                         <div className="row d-flex align-items-center header-middle-text pl-5">
                             <div className="col box w-100">
-                                <p className="semifont heading_text text-white" style={{lineHeight: 1}}>
+                                <p className="semifont heading_text text-white" style={{ lineHeight: 1 }}>
                                     <FormattedMessage id="DISMANTLE_YOUR" />
                                     <br /> <FormattedMessage id="CAR_WITH_US" />
                                 </p>
@@ -565,7 +583,7 @@ function Header_home(props: any) {
                     <div className="container">
                         <div className="row d-flex align-items-center header-middle-text pl-5">
                             <div className="col box w-100">
-                                <p className="semifont heading_text text-white" style={{lineHeight: 1}}>
+                                <p className="semifont heading_text text-white" style={{ lineHeight: 1 }}>
                                     <FormattedMessage id="SELL_CAR_PARTS" />
                                     <br /> <FormattedMessage id="IN_A_CLICK" />
                                 </p>
