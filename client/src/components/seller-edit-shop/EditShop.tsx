@@ -10,6 +10,11 @@ function EditShop() {
     const { user, saveUser } = UserContext();
     const router = useRouter();
     console.log(user)
+    let locale: any;
+    
+    if(typeof window !== 'undefined'){
+        locale = localStorage.getItem("locale")
+    }
 
     const [formData, setFormData] = useState({
         user_type: "seller",
@@ -105,126 +110,129 @@ function EditShop() {
                                             <form onSubmit={(e) => handleSubmit(e)}>
                                                 <div className="table-responsive">
                                                     <table className="table quote-table">
+                                                     {
+                                                        locale &&
                                                         <tbody>
-                                                            <tr>
-                                                                <th colSpan={2}
-                                                                    className="pt-0 pb-0 px-0 ps-0 custom-color-2 regularfont subtitles fw-normal border-top-0 border-bottom-0"
-                                                                ><FormattedMessage id="EDIT_SHOP_WITH_US"/> <span className="regularfont body-sub-titles ml-sm-3 align-middle font-weight-normal d-inline-block d-sm-inline"><FormattedMessage id="EDIT_SHOP_INFORMATION"/></span></th>
+                                                        <tr>
+                                                            <th colSpan={2}
+                                                                className="pt-0 pb-0 px-0 ps-0 custom-color-2 regularfont subtitles fw-normal border-top-0 border-bottom-0"
+                                                            ><FormattedMessage id="EDIT_SHOP_WITH_US"/> <span className="regularfont body-sub-titles ml-sm-3 align-middle font-weight-normal d-inline-block d-sm-inline"><FormattedMessage id="EDIT_SHOP_INFORMATION"/></span></th>
 
-                                                            </tr>
-                                                            <tr>
-                                                                <td colSpan={2}
-                                                                    className="pb-4 pt-4 pl-0 semifont boldfontsize border-top-0">
-                                                                    <hr className="p-0 m-0 " />
-                                                                </td>
-                                                            </tr>
-                                                            <tr className="double">
-                                                                <td >
-                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="ACCOUNT_TYPE"/> <span className="required">*</span></label>
-                                                                    <select className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.Account_type ? 'required-field' : 'border-0'}`}
-                                                                        style={{ height: '3.5rem' }} name="Account_type" value={formData.Account_type}
-                                                                        onChange={(e) => handleFormChange(e)}
-                                                                    >
-                                                                        <option value='' disabled>Select an account type</option>
-                                                                        <option value="Individual">Individual</option>
-                                                                        <option value="Business">Business/Company</option>
-                                                                    </select>
-                                                                </td>
-                                                                <td>
-                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="COMMISSION_AMOUNT"/> <span className="required">*</span></label>
-                                                                    <input type="text" value={formData.commission_amount}
-                                                                        className={`form-control input-bg-color-2 body-sub-titles `}
-                                                                        name="commission_amount" placeholder="Commission amount."
-                                                                        readOnly
-                                                                    />
-                                                                </td>
-                                                            </tr>
-                                                            {formData.Account_type === 'Business' &&
-                                                                <>
-                                                                    <tr className="double">
-                                                                        <td>
-                                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">Company BTW # (Optional)</label>
-                                                                            <input type="text" value={formData.company_btw}
-                                                                                className="form-control input-bg-color-2 border-0 body-sub-titles"
-                                                                                name="company_btw" placeholder="Example: 32165421"
-                                                                                onChange={(e) => handleFormChange(e)}
-                                                                            />
-                                                                        </td>
-                                                                        <td >
-                                                                            <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">KVK Chamber of Commerce Number</label>
-                                                                            <input type="text" value={formData.kvk_number}
-                                                                                className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.kvk_number ? 'required-field' : 'border-0'}`}
-                                                                                name="kvk_number" placeholder="KVK Number"
-                                                                                onChange={(e) => handleFormChange(e)}
-                                                                            />
-                                                                        </td>
-                                                                    </tr>
-                                                                </>
-                                                            }
-                                                            <tr className="single">
-                                                                <td colSpan={2}>
-                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="COMPANY_OR_SHOP_NAME"/><span className="required">*</span></label>
-                                                                    <input type="text" value={formData.company_name}
-                                                                        className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.company_name ? 'required-field' : 'border-0'}`}
-                                                                        name="company_name" placeholder="Aw parts corp."
-                                                                        onChange={(e) => handleFormChange(e)}
-                                                                    />
-                                                                </td>
-                                                            </tr>
-                                                            <tr className="single">
-                                                                <td colSpan={2}>
-                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="ACCOUNT_TITLE"/><span className="required">*</span></label>
-                                                                    <input type="text" value={formData.Account_title}
-                                                                        className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.Account_title ? 'required-field' : 'border-0'}`}
-                                                                        name="Account_title" placeholder="Aw parts corp."
-                                                                        onChange={(e) => handleFormChange(e)}
-                                                                    />
-                                                                </td>
-                                                            </tr>
-                                                            <tr className="double">
-                                                                <td>
-                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="BANK_NAME"/> <span className="required">*</span></label>
-                                                                    <input type="text" value={formData.Bank_name}
-                                                                        className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.Bank_name ? 'required-field' : 'border-0'}`}
-                                                                        name="Bank_name" placeholder="Bank name."
-                                                                        onChange={(e) => handleFormChange(e)}
-                                                                    />
-                                                                </td>
-                                                                <td>
-                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="IBAN_NO"/><span className="required">*</span></label>
-                                                                    <input
-                                                                        type="text"
-                                                                        value={formData.iban_number}
-                                                                        className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.iban_number ? 'required-field' : 'border-0'
-                                                                            }`}
-                                                                        name="iban_number"
-                                                                        placeholder="Iban number."
-                                                                        onChange={(e) => {
-                                                                            const newValue = e.target.value
-                                                                            handleFormChange({ target: { name: 'iban_number', value: newValue } });
-                                                                        }}
-                                                                    />
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 ">
-                                                                        <input type="checkbox" name="agreement" className="width-checkout"
-                                                                            onChange={() => setAgreement(!agreement)}
+                                                        </tr>
+                                                        <tr>
+                                                            <td colSpan={2}
+                                                                className="pb-4 pt-4 pl-0 semifont boldfontsize border-top-0">
+                                                                <hr className="p-0 m-0 " />
+                                                            </td>
+                                                        </tr>
+                                                        <tr className="double">
+                                                            <td >
+                                                                <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="ACCOUNT_TYPE"/> <span className="required">*</span></label>
+                                                                <select className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.Account_type ? 'required-field' : 'border-0'}`}
+                                                                    style={{ height: '3.5rem' }} name="Account_type" value={formData.Account_type}
+                                                                    onChange={(e) => handleFormChange(e)}
+                                                                >
+                                                                    <option value='' disabled>{locale == "nl" ? "Selecteer een accounttype" :"Select an account type"}</option>
+                                                                    <option value="Individual">{locale == "nl" ? "Individueel" :"Individual"}</option>
+                                                                    <option value="Business">{locale == "nl" ? "Bedrijf" :"Business/Company"}</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                {/* <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="COMMISSION_AMOUNT"/> <span className="required">*</span></label>
+                                                                <input type="text" value={formData.commission_amount}
+                                                                    className={`form-control input-bg-color-2 body-sub-titles `}
+                                                                    name="commission_amount" placeholder="Commission amount."
+                                                                    readOnly
+                                                                /> */}
+                                                            </td>
+                                                        </tr>
+                                                        {formData.Account_type === 'Business' &&
+                                                            <>
+                                                                <tr className="double">
+                                                                    <td>
+                                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">{locale == "nl" ? "Bedrijf BTW # (Optioneel)" : "Company BTW # (Optional)"}</label>
+                                                                        <input type="text" value={formData.company_btw}
+                                                                            className="form-control input-bg-color-2 border-0 body-sub-titles"
+                                                                            name="company_btw" placeholder="Example: 32165421"
+                                                                            onChange={(e) => handleFormChange(e)}
                                                                         />
-                                                                        <FormattedMessage id="ACCEPT_TERMS_AND_CONDITIONS"/>
-                                                                    </label>
-                                                                    {(!agreement && incomplete) && <p className="required-text text-danger"><FormattedMessage id="AGREE_TO_THE_TERMS" /></p>}
-                                                                </td>
-                                                            </tr>
-                                                            <tr className="single">
-                                                                <td colSpan={2} className="">
-                                                                    <button type="submit"
-                                                                        className="place-quote text-white mediumfont body-sub-titles-1 rounded-lg border-0 button-bg-color-1 h-auto p-2 ubo-btn-custom"
-                                                                    ><FormattedMessage id="SUBMIT"/></button>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
+                                                                    </td>
+                                                                    <td >
+                                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">{locale == "nl" ? "KVK Kamer van Koophandel Nummer" : "KVK Chamber of Commerce Number"} </label>
+                                                                        <input type="text" value={formData.kvk_number}
+                                                                            className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.kvk_number ? 'required-field' : 'border-0'}`}
+                                                                            name="kvk_number" placeholder="KVK Number"
+                                                                            onChange={(e) => handleFormChange(e)}
+                                                                        />
+                                                                    </td>
+                                                                </tr>
+                                                            </>
+                                                        }
+                                                        <tr className="single">
+                                                            <td colSpan={2}>
+                                                                <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="COMPANY_OR_SHOP_NAME"/><span className="required">*</span></label>
+                                                                <input type="text" value={formData.company_name}
+                                                                    className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.company_name ? 'required-field' : 'border-0'}`}
+                                                                    name="company_name" placeholder="Aw parts corp."
+                                                                    onChange={(e) => handleFormChange(e)}
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                        <tr className="single">
+                                                            <td colSpan={2}>
+                                                                <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="ACCOUNT_TITLE"/><span className="required">*</span></label>
+                                                                <input type="text" value={formData.Account_title}
+                                                                    className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.Account_title ? 'required-field' : 'border-0'}`}
+                                                                    name="Account_title" placeholder="Aw parts corp."
+                                                                    onChange={(e) => handleFormChange(e)}
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                        <tr className="double">
+                                                            <td>
+                                                                <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="BANK_NAME"/> <span className="required">*</span></label>
+                                                                <input type="text" value={formData.Bank_name}
+                                                                    className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.Bank_name ? 'required-field' : 'border-0'}`}
+                                                                    name="Bank_name" placeholder="Bank name."
+                                                                    onChange={(e) => handleFormChange(e)}
+                                                                />
+                                                            </td>
+                                                            <td>
+                                                                <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="IBAN_NO"/><span className="required">*</span></label>
+                                                                <input
+                                                                    type="text"
+                                                                    value={formData.iban_number}
+                                                                    className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.iban_number ? 'required-field' : 'border-0'
+                                                                        }`}
+                                                                    name="iban_number"
+                                                                    placeholder="Iban number."
+                                                                    onChange={(e) => {
+                                                                        const newValue = e.target.value
+                                                                        handleFormChange({ target: { name: 'iban_number', value: newValue } });
+                                                                    }}
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <label className="custom-color-2 regularfont body-sub-titles-1 ">
+                                                                    <input type="checkbox" name="agreement" className="width-checkout"
+                                                                        onChange={() => setAgreement(!agreement)}
+                                                                    />
+                                                                    <FormattedMessage id="ACCEPT_TERMS_AND_CONDITIONS"/>
+                                                                </label>
+                                                                {(!agreement && incomplete) && <p className="required-text text-danger"><FormattedMessage id="AGREE_TO_THE_TERMS" /></p>}
+                                                            </td>
+                                                        </tr>
+                                                        <tr className="single">
+                                                            <td colSpan={2} className="">
+                                                                <button type="submit"
+                                                                    className="place-quote text-white mediumfont body-sub-titles-1 rounded-lg border-0 button-bg-color-1 h-auto p-2 ubo-btn-custom"
+                                                                ><FormattedMessage id="SUBMIT"/></button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                     }
                                                     </table>
                                                 </div>
                                             </form>

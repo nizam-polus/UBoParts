@@ -402,7 +402,7 @@ function Dismantle_car() {
                                                             style={{height: '3.5rem'}} name="country" value={formData.country}
                                                             onChange={(e) => handleCountryChange(e)}
                                                         >
-                                                            <option className="mini-text-2" value="" disabled>Select Country</option>
+                                                            <option className="mini-text-2" value="" disabled>{locale == "nl" ? "Selecteer land" : "Select country"}</option>
                                                             {countries.map((country: any) => (
                                                             <option key={country.id} value={country.id}>{country.attributes.country}</option>))}
                                                         </select>

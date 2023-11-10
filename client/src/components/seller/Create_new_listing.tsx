@@ -64,6 +64,37 @@ function Create_new_listing() {
     const upperCaseListName = listName.toUpperCase();
     const componentRef:any = useRef();
 
+    let locale: any;
+    
+    if(typeof window !== 'undefined'){
+        locale = localStorage.getItem("locale")
+    }
+
+    const placeholderTranslations : any = {
+        nl: {
+            listName: "24 Inch Band voor Mustang",
+            plate_number: 'Voer het kenteken in om het formulier automatisch in te vullen',
+            price: 'Lijstprijs (€)',
+            quantity: 'Aantal vermeldingen',
+            weight: 'Gewicht in KG',
+            article: 'Artikelnummer',
+            location: 'Locatie van onderdeel',
+            description: 'Omschrijving',
+            type: "Typ hier..."
+        },
+        en: {
+            listName: "24 Inch Tyre for Mustang",
+            plate_number: 'Enter Plate Number to Auto Fill form',
+            price: 'Listing Price (€)',
+            quantity: 'Listing Quantity',
+            weight: 'weight in KG',
+            article: 'Article No',
+            location: 'Location of Part',
+            description: 'Description',
+            type: "Type here..."
+        }
+    };
+
     useEffect(() => {
         let userDetails: any = localStorage.getItem("userdetails")
         const userDetailsJSON = JSON.parse(userDetails);
@@ -438,6 +469,7 @@ function Create_new_listing() {
                 "data": {
                     "title": listName,
                     "cardetail": [],
+                    "platenumber": licenseplate,
                     "make": [Number(selectedMake)],
                     "model": [Number(selectedModel)],
                     "year": [Number(selectedYear)],
@@ -548,7 +580,8 @@ function Create_new_listing() {
                                 <div className="coulmn-bg-color-1 rounded">
                                     <div className="table-responsive pt-3 pb-3 overflow-hidden">
                                         <table className="table profile-table-1 coulmn-bg-color-1 rounded">
-                                            <tbody className="double">
+                                            {locale && 
+                                                <tbody className="double">
                                                 <tr>
                                                     <th colSpan={2} 
                                                         className="px-5 pb-1 ps-0 custom-color-3  regularfont body-sub-titles border-bottom border-top-0">
@@ -566,7 +599,8 @@ function Create_new_listing() {
                                                         ? 
                                                         'required-field' 
                                                         : 
-                                                        'border-0'}`} name="first-name" placeholder="24 Inch Tyre for Mustang" required />
+                                                        'border-0'}`} name="first-name"
+                                                        placeholder={placeholderTranslations[locale]['listName']} required />
                                                         <ul style={{ display: "contents" }}>
                                                             {parts.length > 0 && inputValue.length >= 2 && !selectedItem && (
 
@@ -595,10 +629,10 @@ function Create_new_listing() {
                                                         <input type="text" onChange={handleLicenseplateChange} 
                                                             value={licenseplate}
                                                             className={`form-control input-bg-color-2 border-0 products-name custom-color-2 `} 
-                                                            name="last-name" placeholder="Enter Plate Number to Auto Fill form" />
+                                                            name="last-name" placeholder={placeholderTranslations[locale]['plate_number']} />
                                                         {showInvaidLicense &&
                                                             <div className="row mt-2 ml-2" >
-                                                                <span className="advanced_search placeholderfontsize regularfont">No Record Found Against this Plate Number!</span>
+                                                                <span className="advanced_search placeholderfontsize regularfont"><FormattedMessage id="NO_RECORD_FOUND"/></span>
                                                             </div>
                                                         }
                                                     </td>
@@ -611,7 +645,7 @@ function Create_new_listing() {
                                                         </label><br />
                                                         <select className={`form-select input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !selectedMake ? 'required-field' : 'border-0'}`} name="make" id="makeOption"
                                                             value={selectedMake} onChange={handleMakeChange}>
-                                                            <option value="" disabled={true}>Select Make</option>
+                                                            <option value="" disabled={true}>{locale == "nl" ? "Selecteer merk" : "Select Make"}</option>
                                                             {makesArray && makesArray.map((make: any, index: any) => (
                                                                 <option key={index} value={make.id}>{make.make}</option>
                                                             ))}
@@ -624,7 +658,7 @@ function Create_new_listing() {
                                                             className="required">*</span></label><br />
                                                         <select disabled={!selectedMake} className={`form-select input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !selectedModel ? 'required-field' : 'border-0'}`} name="model" id="modelOption"
                                                             value={selectedModel} onChange={handleModelChange}>
-                                                            <option value="" disabled={!selectedMake}>Select Model</option>
+                                                            <option value="" disabled={!selectedMake}>{locale == "nl"? "Selecteer Model" : "Select Model"}</option>
                                                             {modelArray && modelArray.map((model: any, index: any) => (
                                                                 <option key={index} value={model.id}>{model.model}</option>
                                                             ))}
@@ -640,7 +674,7 @@ function Create_new_listing() {
                                                             className={`form-select input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !selectedYear ? 'required-field' : 'border-0'}`} 
                                                             name="year" id="yearOption"
                                                             value={selectedYear} onChange={handleYearChange}>
-                                                            <option value="" disabled={!selectedModel}>Select Year</option>
+                                                            <option value="" disabled={!selectedModel}>{locale == "nl"? "Selecteer Jaar" : "Select Year"}</option>
                                                             {yearArray && yearArray.map((year: any, index: any) => (
                                                                 <option key={index} value={year.id}>{year.year}</option>
                                                             ))}
@@ -658,7 +692,7 @@ function Create_new_listing() {
                                                         <select className={`form-select input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !selectedCategory ? 'required-field' : 'border-0'}`}  
                                                             value={selectedCategory} onChange={handleCategoryChange}
                                                         >
-                                                            <option value="" disabled={!!categoriesDetails}>Choose Category</option>
+                                                            <option value="" disabled={!!categoriesDetails}>{locale == "nl" ? "Selecteer categorie": "Select category"}</option>
                                                             {categoriesDetails && categoriesDetails.map((category: any, index: any) => (
                                                                 <option key={index} value={category}>{category}</option>
                                                             ))}
@@ -675,7 +709,7 @@ function Create_new_listing() {
                                                             onChange={(e) => setSelectedSubcategoryId(e.target.value)}
                                                             disabled={!subcategories || subcategories.length === 0}
                                                         >
-                                                            <option value="">Choose Sub Category</option>
+                                                            <option value="">{locale == "nl" ? "Selecteer subcategorie": "Select subcategory"}</option>
                                                             {subcategories &&
                                                                 subcategories.map((subcategory: any, index: any) => (
                                                                     <option key={index} value={subcategory.id}>
@@ -693,7 +727,7 @@ function Create_new_listing() {
                                                         <input type="text" onChange={handlePriceChange} value={listPrice} 
                                                             className={`form-control input-bg-color-2 border-0 products-name custom-color-2 
                                                             ${incomplete && !listPrice ? 'required-field' : 'border-0'}`} 
-                                                            placeholder="Listing Price (€)"
+                                                            placeholder={placeholderTranslations[locale]['price']}
                                                          />
                                                     </td>
                                                     <td className='px-5 pb-2 pt-4'>
@@ -702,7 +736,7 @@ function Create_new_listing() {
                                                             <span className="required">*</span></label>
                                                         <input type="text" onChange={handleQuantityChange} 
                                                             className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listQuantity ? 'required-field' : 'border-0'}`}
-                                                            placeholder="Listing Quantity"
+                                                            placeholder={placeholderTranslations[locale]['quantity']}
                                                             value={listQuantity}
                                                             onKeyPress={(e: any) => {
                                                                 if (e.key === '0' && e.target.value === '') {
@@ -720,7 +754,7 @@ function Create_new_listing() {
                                                         </label>
                                                         <input type="text" onChange={handleWeightChange}
                                                             className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listWeight ? 'required-field' : 'border-0'}`}
-                                                            placeholder="weight in KG"
+                                                            placeholder={placeholderTranslations[locale]['weight']}
                                                         />
                                                     </td>
                                                     <td className='px-5 pb-2 pt-4'>
@@ -730,7 +764,7 @@ function Create_new_listing() {
                                                         </label>
                                                         <input type="text" onChange={handleArticleChange} 
                                                             className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !listArticle ? 'required-field' : 'border-0'}`}
-                                                            placeholder="Article No" 
+                                                            placeholder={placeholderTranslations[locale]['article']} 
                                                         />
                                                     </td>
                                                 </tr>
@@ -742,7 +776,7 @@ function Create_new_listing() {
                                                         <select className="form-select input-bg-color-2 border-0 products-name custom-color-2"
                                                             value={saleOffer} onChange={handleSaleChange}>
                                                                 {saleArray && saleArray.map((sale: any) => (
-                                                                <option key={sale.id} value={sale.id}>{sale.attributes.discount}</option>))}
+                                                                <option key={sale.id} value={sale.id}>{locale == "nl" ? sale.attributes.nl_discount_text : sale.attributes.en_discount_text}</option>))}
                                                         </select>  
                                                     </td>
                                                     <td className='px-5 pb-2 border-0 d-flex' style={{ gap: "10px" }}>
@@ -770,14 +804,14 @@ function Create_new_listing() {
                                                             </label>
                                                             <input type="text" onChange={handleLocationChange} 
                                                                 className={`form-control input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !locationNo ? 'required-field' : 'border-0'}`} 
-                                                                style={{height: "2.3rem"}} placeholder="Location of Part" 
+                                                                style={{height: "2.3rem"}} placeholder={placeholderTranslations[locale]['location']}  
                                                             />
                                                         </div>
                                                     </td>
                                                 </tr>
                                                 <tr className="single">
                                                     <td colSpan={2} className='px-5 pb-4 pt-2 border-0'>
-                                                        <label className="custom-color-2 regularfont products-name pb-2">Barcode :</label>
+                                                        <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="BAR_CODE" /> :</label>
                                                             <div className='d-flex align-items-center justify-content-center flex-column ubo-barcode-container'
                                                                 ref={componentRef}
                                                                 >
@@ -840,7 +874,7 @@ function Create_new_listing() {
                                                                 type="button"
                                                                 className="edit rounded button-bg-color-1 text-white boldfont mini-text-1 custom-border-2 p-2 my-2 ubo-btn-custom"
                                                             >
-                                                                Print
+                                                               <FormattedMessage id="PRINT" />
                                                             </button>
                                                         </div>
                                                         {/* <div><button onClick={printBarcode}>print</button></div> */}
@@ -889,6 +923,7 @@ function Create_new_listing() {
                                                         <textarea onChange={handleDescriptionChange} 
                                                             className={`form-control input-bg-color-2 border-0 products-name rounded 
                                                             ${incomplete && !listDescription ? 'required-field' : 'border-0'}`} rows={4}
+                                                            placeholder={placeholderTranslations[locale]['type']} 
                                                             required
                                                         >
                                                         </textarea>
@@ -905,6 +940,7 @@ function Create_new_listing() {
                                                     </td>
                                                 </tr>
                                             </tbody>
+                                            }
                                         </table>
                                     </div>
                                 </div>
