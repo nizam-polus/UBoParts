@@ -581,7 +581,8 @@ function Home() {
             <div className="main-body pb-5 mb-5">
                 <div className="container">
                     <section className="section-search-wrapper">
-                        <form action="" className="search-wrapper">
+                        {locale && 
+                            <form action="" className="search-wrapper">
                             <div className="row g-5 flex-column flex-lg-row">
                                 <div className="col">
                                     <div className="row g-2 flex-column flex-lg-row">
@@ -619,7 +620,7 @@ function Home() {
                                             <div className="form-group">
                                                 <select className="form-select semifont placeholderfontsize" name="make" id="makeOption"
                                                     value={selectedMake} onChange={handleMakeChange}>
-                                                    <option value="" disabled={true}>Select Make</option>
+                                                    <option value="" disabled={true}>{locale == "nl" ? "Selecteer merk" : "Select Make"}</option>
                                                     {makesArray.map((make: any, index: any) => (
                                                         <option key={index} value={make.id}>{make.make}</option>
                                                     ))}
@@ -632,7 +633,7 @@ function Home() {
                                                     className="form-select semifont placeholderfontsize" name="model" id="modelOption"
                                                     value={selectedModel} onChange={handleModelChange}
                                                 >
-                                                    <option value="" disabled={true}>Select Model</option>
+                                                    <option value="" disabled={true}>{locale == "nl"? "Selecteer Model" : "Select Model"}</option>
                                                     {modelArray.map((model: any, index: any) => (
                                                         <option key={index} value={model.id}>{model.model}</option>
                                                     ))}
@@ -645,7 +646,7 @@ function Home() {
                                                     className="form-select semifont placeholderfontsize" name="year" id="yearOption"
                                                     value={selectedYear} onChange={handleYearChange}
                                                 >
-                                                    <option value="" disabled={true}>Select Year</option>
+                                                    <option value="" disabled={true}>{locale == "nl"? "Selecteer Jaar" : "Select Year"}</option>
                                                     {yearArray.map((year: any, index: any) => (
                                                         <option key={index} value={year.id}>{year.year}</option>
                                                     ))}
@@ -658,7 +659,7 @@ function Home() {
                                                     className="form-select semifont placeholderfontsize" name="category" id="categoryOption"
                                                     value={selectedCategory} onChange={handleCategoryChange}
                                                 >
-                                                    <option value="" disabled={true}>Select Category</option>
+                                                    <option value="" disabled={true}>{locale == "nl" ? "Selecteer categorie": "Select category"}</option>
                                                     {categories.map((category: any, index: any) => (
                                                         <option key={index} value={category}>{category}</option>
                                                     ))}
@@ -679,6 +680,8 @@ function Home() {
                                 >{toggleSearch ? <FormattedMessage id="SHOW_LESS"/> : <FormattedMessage id="ADVANCED_SEARCH"/>}</span>
                             </div>
                         </form>
+                        }
+                        
                     </section>
                     <section className="latest-products-second-wrapper mt-5 mb-5">
                         {searched && <span className="popular_categories body-sub-titles regularfont">

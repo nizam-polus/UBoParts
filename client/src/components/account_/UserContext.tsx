@@ -74,6 +74,8 @@ export function UserProvider(props: providerProps) {
         authenticatedRoute && router.push('/homepage');
 
         let userdata: any = localStorage.getItem('userdetails');
+        let usertoken: any = localStorage.getItem('usertoken');
+        (!userdata || !usertoken) && localStorage.removeItem('uid');
         let transactionId: any = localStorage.getItem('uid') || '';
         userdata = JSON.parse(userdata);
         if (new Date(userdata?.expiry_date) < new Date()) {

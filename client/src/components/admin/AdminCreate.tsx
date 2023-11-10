@@ -40,12 +40,15 @@ function AdminCreate() {
             console.log(res.data)
             setAdminDetails(res.data)
             setAdminRequirements(res.data.compliance_requirements)
-            setAccountNumber(res?.data?.new_accounts[0]?.account.account_iban)
-            setAccountName(res?.data?.new_accounts[0]?.account.account_name)
-            setVerificationURL(res.data.new_accounts[0]?.verification_url)
-            setUid(res?.data?.new_accounts[0]?.uid)
-            localStorage.setItem('admin_uid', res?.data?.new_accounts[0]?.uid);
-            console.log(res?.data?.new_accounts[0]?.uid)
+            if(res?.data?.new_accounts){
+                setAccountNumber(res?.data?.new_accounts[0]?.account.account_iban)
+                setAccountName(res?.data?.new_accounts[0]?.account.account_name)
+                setVerificationURL(res.data.new_accounts[0]?.verification_url)
+                setUid(res?.data?.new_accounts[0]?.uid)
+                localStorage.setItem('admin_uid', res?.data?.new_accounts[0]?.uid);
+                console.log(res?.data?.new_accounts[0]?.uid)
+            }
+           
         })
     }, [])
 

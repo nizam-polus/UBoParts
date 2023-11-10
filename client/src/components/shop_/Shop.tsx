@@ -519,7 +519,7 @@ function Shop() {
                     <section className="categories-wrapper section-inner-padding">
                         <div className="row mt-5">
                             <div className="col-12 d-lg-flex justify-content-between">
-                                <div><span className="custom-color-2 mediumfont bg-image-text">Explore</span>
+                                <div><span className="custom-color-2 mediumfont bg-image-text">{locale == "nl" ? "Ontdekken" : "Explore"}</span>
                                 </div>
                             </div>
                             <div className="col-12 mt-5">

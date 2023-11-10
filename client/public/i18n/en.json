@@ -672,6 +672,9 @@
   "ENTER_EMAIL_PASSWORD": "Please enter your email & password",
   "INVALID_CRED": "Invalid credentials",
   "VERIFY_USER": "User not verified. Please verify the user.",
-  "WAIT": "Please wait..."
-
+  "SHIPPING_COST_EXTRA": "Shipping cost will be extra",
+  "WAIT": "Please wait...",
+  "MENU": "Menu",
+  "PASSWORD_CONDITION": "Password must be at least 6 characters",
+  "PASSWORD_NOT_MATCH": "Password does not match"
 }
