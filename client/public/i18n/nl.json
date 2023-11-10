@@ -668,7 +668,10 @@
   "WAIT": "Even geduld aub...",
   "MENU": "Menu",
   "PASSWORD_CONDITION": "Wachtwoord moet tenminste 6 tekens bevatten",
-  "PASSWORD_NOT_MATCH": "Wachtwoord komt niet overeen"
+  "PASSWORD_NOT_MATCH": "Wachtwoord komt niet overeen",
+  "LATEST": "Nieuwste",
+    "PRICE_H_L": "Prijs: Hoog naar Laag",
+    "PRICE_L_H": "Prijs: Laag naar Hoog"
   }
   
   
