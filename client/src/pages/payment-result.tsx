@@ -55,7 +55,7 @@ function PaymentResult() {
                             break;
                     }
                 }
-            })
+            }).catch(err => console.log(err));
         }, 1000 * 10);
 
         let timer = setInterval(() => {
@@ -93,7 +93,7 @@ function PaymentResult() {
         }
         APIs.getCartData({ customerid: user.id }).then(response => {
             setCartCount(response.data.rows.length);
-        })
+        }).catch(err => console.log(err));
         transactionId && APIs.getOrderWithTransactionid(transactionId).then((response: any) => {
             let OrderProducts = response.data.data;
             OrderProducts.length && setShippingCost(OrderProducts[0]?.attributes?.shipping_cost)
@@ -108,7 +108,7 @@ function PaymentResult() {
                 setTotal(total);
                 setTotalDiscount(totalDiscount)
             }
-        });
+        }).catch(err => console.log(err));
     }
 
     return (
