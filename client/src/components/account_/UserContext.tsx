@@ -69,12 +69,13 @@ export function UserProvider(props: providerProps) {
     })
 
     useEffect(() => {
-        // route protection
-        const authenticatedRoute = !(!!unauthRoutes.find((ele) => ele.includes(router.pathname)));
-        authenticatedRoute && router.push('/homepage');
-
         let userdata: any = localStorage.getItem('userdetails');
         let usertoken: any = localStorage.getItem('usertoken');
+        
+        // route protection
+        const authenticatedRoute = !(!!unauthRoutes.find((ele) => ele.includes(router.pathname)));
+        (authenticatedRoute && !userdata && !usertoken) && router.push('/homepage');
+
         (!userdata || !usertoken) && localStorage.removeItem('uid');
         let transactionId: any = localStorage.getItem('uid') || '';
         userdata = JSON.parse(userdata);
@@ -98,7 +99,10 @@ export function UserProvider(props: providerProps) {
         }
         transactionId && APIs.paymentStatus(transactionId, user.id).then((response: any) => {
             let status = response?.data?.rows?.length ? response.data.rows[0].status : 'failed';
-            (status !== 'completed' || status !== 'cancelled') && toast.info('Your last payment ' + status);
+            if (status === 'expired') {
+                toast.info('Your last payment expired');
+                localStorage.removeItem('uid');
+            }
             setPaymentStatus(status);
         }).catch(err => console.log(err))
     }, [])
