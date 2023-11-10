@@ -676,5 +676,8 @@
   "WAIT": "Please wait...",
   "MENU": "Menu",
   "PASSWORD_CONDITION": "Password must be at least 6 characters",
-  "PASSWORD_NOT_MATCH": "Password does not match"
+  "PASSWORD_NOT_MATCH": "Password does not match",
+  "LATEST": "Latest",
+  "PRICE_H_L": "Price: High to Low",
+  "PRICE_L_H": "Price: Low to High"
 }

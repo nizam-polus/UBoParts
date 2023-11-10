@@ -688,9 +688,9 @@ function Shop() {
                                                     value={sortOption}
                                                     onChange={handleSortChange}
                                                 >
-                                                    <option value='Latest'>Latest</option>
-                                                    <option value="highToLow">Price: High to Low</option>
-                                                    <option value="lowToHigh">Price: Low to High</option>
+                                                    <option value='Latest'>{locale == "nl" ? "Nieuwste" : "Latest"}</option>
+                                                    <option value="highToLow">{locale == "nl" ? "Prijs: Hoog naar Laag" : "Price: High to Low"}</option>
+                                                    <option value="lowToHigh">{locale == "nl" ? "Prijs: Laag naar Hoog" : "Price: Low to High"}</option>
                                                     {/* Add more filter options as needed */}
                                                 </select>
                                             </div>
