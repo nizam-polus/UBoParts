@@ -99,13 +99,13 @@ function Header_home(props: any) {
         {
             title: "Dutch",
             value: "nl",
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Flag_of_the_Netherlands.svg/800px-Flag_of_the_Netherlands.svg.png",
+            image: "images/languages/netherlands.svg",
             TitleShort: "NL"
         },
         {
             title: "English",
             value: "en",
-            image: "https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg",
+            image: "images/languages/united-kingdom.svg",
             TitleShort: "EN"
         }
     ]
