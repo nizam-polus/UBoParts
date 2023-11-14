@@ -196,7 +196,7 @@ const APIs = {
 
     getShippingCost: (data: any) => ds.post(BACKEND_URL + 'shipping-cost', data),
 
-    getAdminStatus: () => axios.get(BACKEND_URL + 'merchant-profile-data'),
+    getAdminStatus: () => ds.get(BACKEND_URL + 'merchant-profile-data'),
 
     getAccountStatus: (data: any) => ds.post(BACKEND_URL + "merchant-specific-bank-details", data)
 }
