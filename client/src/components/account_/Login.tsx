@@ -77,7 +77,7 @@ function Login(props: any) {
                         let userdetails = response.data.user;
                         setUnverified(false);
                         localStorage.setItem('usertoken', JSON.stringify(response.data.jwt));
-                        APIs.getSpecificUser(userdetails.id).then((response: any) => {
+                        APIs.getSpecificUser(userdetails.id).then(() => {
                             let loginData = {
                                 login_date: loginDate,
                                 expiry_date: expiryDate
@@ -86,8 +86,8 @@ function Login(props: any) {
                                 let userData = userRes.data;
                                 localStorage.setItem('userdetails', JSON.stringify(userData));
                                 saveUser(userData);
-                                if(userRes.data.role.type == "admin" && userRes.data.user_type == "admin" ){
-                                    router.push('/admin_create')
+                                if(userRes?.data?.role?.type == "admin" && userRes.data.user_type == "admin" ){
+                                    router.push('/admin')
                                 } else if (props.username) {
                                     router.push('/profile_');
                                     toast.info(() =>(<FormattedMessage id="COMPLETE_PROFILE_LOGIN" />));

@@ -349,7 +349,7 @@ function Shop() {
                         APIs.addToCart(cartData).then(response => {
                             toast.success(() => (
                                 <>
-                                    <FormattedMessage id="ITEM_ADDED_TO"/><Link href={"/cartpage"}>cart</Link>
+                                    <FormattedMessage id="ITEM_ADDED_TO"/><Link href={"/cartpage"}>{locale == "nl" ? "Winkelwagen" : "cart"}</Link>
                                 </>
                             ));
                             APIs.getCartData({ customerid: user.id }).then(response => {

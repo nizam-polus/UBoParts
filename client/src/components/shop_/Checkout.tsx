@@ -272,10 +272,10 @@ function Checkout() {
                     let cartData = response.data.rows;
                     const hasZeroStock = cartData.some((item : any) => item.stock_count <= 0);
                     if (cartData[0].payment_process === 'true') {
-                        toast.warning(() => ( <FormattedMessage id="PAMENT_INITIATED" /> ));
+                        toast.warning(() => ( <FormattedMessage id="PAYMENT_INITIATED" /> ));
                         setClicked(false)
                     } else if(hasZeroStock){
-                        toast.warning(() => ("Some products are out of stock"))
+                        toast.warning(() => (<FormattedMessage id="SOME_OUT_OF_STOCK" />))
                     } else {
                         APIs.cartPayment(checkoutData).then(response => {
                             if (response.data.redirect_url) {

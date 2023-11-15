@@ -577,8 +577,8 @@
   "FOLLOW_US": "Follow us on social networks",
 
   "SELL_QUALITY_PARTS": "Sell Quality Parts ",
-  "SELL_CAR_PARTS": "Sell Car Parts",
-  "IN_A_CLICK": "in a Click",
+  "SELL_CAR_PARTS": "A Few Clicks to",
+  "IN_A_CLICK": "Sell Your Parts",
   "CREATE_PASSWORD": "Create Password",
   "ACCEPT_TERMS_AND_CONDITIONS": "Accept terms & conditons",
   
@@ -668,6 +668,7 @@
   "NOT_DELIVERABLE": "Product weight or Delivery region is not eligible for shipping.",
   "COMPLETE_PROFILE": "Please complete your profile to proceed.",
   "PAYMENT_INITIATED": "Payment has already been initiated.",
+  "SOME_OUT_OF_STOCK": "Some products are out of stock",
   "COMPLETE_PROFILE_LOGIN": "Please complete your profile. Ignore if done already.",
   "ENTER_EMAIL_PASSWORD": "Please enter your email & password",
   "INVALID_CRED": "Invalid credentials",
@@ -679,5 +680,27 @@
   "PASSWORD_NOT_MATCH": "Password does not match",
   "LATEST": "Latest",
   "PRICE_H_L": "Price: High to Low",
-  "PRICE_L_H": "Price: Low to High"
+  "PRICE_L_H": "Price: Low to High",
+  "ORDER_SUMMARY": "Order Summary",
+  "ORDER_PLACED_SUCCESS" : "Order placed successfully",
+  "PAYMENT_TRANSACTION": "Payment transaction",
+  "REDIRECT_TO_HOME": "You will be redirected to homepage.",
+  "PAYMENT_TRANSACTION_PENDING": "Payment transaction is pending...",
+  "REQUEST_PROCESSED": "Your request is being processed ...",
+
+  
+  "SELL_DESCRIPTION_1": "Streamline your selling experience with just a few clicks.",
+  "SELL_DESCRIPTION_2": "Sell your parts effortlessly and efficiently.",
+  "DISMANTLE_TITLE": "Whole car sale?",
+  "DISMANTLE_TITLE_2": "We pick up your car in 24 hours",
+
+  "DISMANTLE_DESCRIPTION_1": "Effortless car selling, hassle-free experience.",
+  "DISMANTLE_DESCRIPTION_2": "We'll collect your vehicle within 24 hours for a seamless process.",
+
+  "REQUEST_DESCRIPTION_1": "Order now for an enhanced driving experience and reliable on-road performance.",
+  "REQUEST_DESCRIPTION_2": "Trust us for the best quality and fast delivery.",
+  "ACCOUNT": "Account"
+
+
+
 }
