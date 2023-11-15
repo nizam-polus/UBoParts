@@ -2,7 +2,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Modal } from 'reactstrap';
 import AppImage from '../shared/AppImage';
-import Header_logged_in from '../header_/Header-logged-in';
 import Footer from '../footer_/Footer';
 import { useRouter } from 'next/router';
 import Link from 'next/dist/client/link';
@@ -16,6 +15,12 @@ import Login from '../account_/Login';
 import { FormattedMessage } from 'react-intl';
 
 function Productsingle() {
+
+    let locale: any;
+    
+    if(typeof window !== 'undefined'){
+        locale = localStorage.getItem("locale")
+    }
 
     const {user, saveUser, cartCount, setCartCount} = UserContext();
     const router = useRouter();
@@ -93,27 +98,43 @@ function Productsingle() {
                         APIs.addToCart(cartData).then(response => {
                             toast.success(() => (
                                 <>
-                                    Item successfully added to <Link href={"/cartpage"}>cart</Link>
+                                    <FormattedMessage id="ITEM_ADDED_TO"/><Link href={"/cartpage"}>{locale == "nl" ? "Winkelwagen" : "cart"}</Link>
                                 </>
                             ));
                             APIs.getCartData({ customerid: user.id }).then(response => {
                                 setCartCount(response.data.rows.length);
                             }).then(() => setAddToCartCompleted(true));
                         }).catch(err => {
-                            toast.error('Something went wrong while adding to cart!');
+                            toast.error(() => (
+                                <>
+                                <FormattedMessage id="SOMETHING_WRONG_CART" />
+                                </>
+                            ));
                             setAddToCartCompleted(true)
                         });
                     } else {
                         // Quantity exceeds stock limit, display a toast message
-                        toast.error('Stock exceeded. Cannot add this item to the cart.');
+                        toast.error(() => (
+                            <>
+                            <FormattedMessage id="STOCK_EXCEEDED" />
+                            </>
+                        ));
                         setAddToCartCompleted(true)
                     }
                 }).catch(err => {
-                    toast.error('Something went wrong while fetching product information.');
+                    toast.error(() => (
+                        <>
+                        <FormattedMessage id="SOMETHING_WRONG_FETCHING" />
+                        </>
+                    ));
                     setAddToCartCompleted(true)
                 });
             }).catch(err => {
-                toast.error('Something went wrong!')
+                toast.error(() => (
+                    <>
+                    <FormattedMessage id="SOMETHING_WRONG" />
+                    </>
+                ));
                 setAddToCartCompleted(true)
             })
         }

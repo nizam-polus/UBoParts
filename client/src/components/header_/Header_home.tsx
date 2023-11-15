@@ -43,6 +43,12 @@ function Header_home(props: any) {
         
     }, []);
 
+    useEffect(() =>{
+       APIs.getSpecificUser(user.id).then((res) =>{
+        saveUser(res.data)
+       })
+    },[userToken])
+
     useEffect(() => {
         const tokendata = localStorage.getItem('usertoken');
         setUserToken(tokendata);  
@@ -326,7 +332,7 @@ function Header_home(props: any) {
                                             </div>
                                             <div className="account-menu__user-info">
                                                 <div className=" account-menu__user-name">
-                                                    {(user.role.type !== "admin") && user.first_name + " " + user.last_name}
+                                                    {(user?.role?.type !== "admin") && user.first_name + " " + user.last_name}
                                                 </div>
                                                 <div className=" account-menu__user-email">{user.username}</div>
                                             </div>
@@ -554,9 +560,8 @@ function Header_home(props: any) {
                                     <br /> <FormattedMessage id="WITH_US" />
                                 </p>
                                 <p className="lightfont sub-text-1 text-white">
-                                    Browse our expansive selection
-                                    <br /> featuring hundreds of brands and
-                                    <br /> tens of thousands of quality parts.
+                                    <FormattedMessage id="REQUEST_DESCRIPTION_1" />
+                                    <br /> <FormattedMessage id="REQUEST_DESCRIPTION_2" />
                                 </p>
                             </div>
                         </div>
@@ -567,13 +572,13 @@ function Header_home(props: any) {
                         <div className="row d-flex align-items-center header-middle-text pl-5">
                             <div className="col box w-100">
                                 <p className="semifont heading_text text-white" style={{ lineHeight: 1 }}>
-                                    <FormattedMessage id="DISMANTLE_YOUR" />
-                                    <br /> <FormattedMessage id="CAR_WITH_US" />
+                                    <FormattedMessage id="DISMANTLE_TITLE" />
+                                    <br /> <FormattedMessage id="DISMANTLE_TITLE_2" />
                                 </p>
                                 <p className="lightfont sub-text-1 text-white">
-                                    Browse our expansive selection
-                                    <br /> featuring hundreds of brands and
-                                    <br /> tens of thousands of quality parts.
+                                    <FormattedMessage id="DISMANTLE_DESCRIPTION_1" />
+                                    <br /><FormattedMessage id="DISMANTLE_DESCRIPTION_2" />
+                                    <br /> 
                                 </p>
                             </div>
                         </div>
@@ -588,9 +593,8 @@ function Header_home(props: any) {
                                     <br /> <FormattedMessage id="IN_A_CLICK" />
                                 </p>
                                 <p className="lightfont sub-text-1 text-white">
-                                    Browse our expansive selection
-                                    <br /> featuring hundreds of brands and
-                                    <br /> tens of thousands of quality parts.
+                                    <FormattedMessage id="SELL_DESCRIPTION_1"/>
+                                    <br />  <FormattedMessage id="SELL_DESCRIPTION_2"/>
                                 </p>
                             </div>
                         </div>

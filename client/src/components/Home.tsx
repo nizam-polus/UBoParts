@@ -1,7 +1,6 @@
 // react
 import React, { useCallback, useEffect, useState } from 'react';
 import { Modal } from 'reactstrap';
-import { IVehicle } from '~/interfaces/vehicle';
 import Image from 'next/image'
 import Link from 'next/link';
 import AppImage from './shared/AppImage';

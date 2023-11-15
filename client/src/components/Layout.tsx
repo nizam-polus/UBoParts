@@ -5,10 +5,8 @@ import classNames from 'classnames';
 import { ToastContainer } from 'react-toastify';
 // application
 import Footer from '~/components/footer_/Footer';
-import Header from '~/components/header/Header';
 import MobileHeader from '~/components/mobile/MobileHeader';
 import MobileMenu from '~/components/mobile/MobileMenu';
-import Quickview from '~/components/shared/Quickview';
 import { useOptions } from '~/store/options/optionsHooks';
 import Forgotpass from './forgot/Forgotpass';
 import Login from './account_/Login';
@@ -75,7 +73,7 @@ function Layout(props: Props) {
 
             <MobileMenu />
 
-            <Quickview />
+            {/* <Quickview /> */}
             <Forgotpass />
             <Login />
             
