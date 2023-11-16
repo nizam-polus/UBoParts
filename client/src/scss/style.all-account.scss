@@ -2122,12 +2122,38 @@ header .bar,
 }
 }
 span.ubo-badge[data-value="pending"]{
-    background-color: rgb(185, 187, 61);
+        color: #212529;
+        background-color: #ffc107;
+        border-color: #ffc107;
 }
 span.ubo-badge[data-value="completed"]{
     background-color: #587E50;
 }
-
+span.ubo-badge[data-value="expired"]{
+    background-color: #dc3545;
+}
+span.ubo-badge[data-value="chargeback"]{
+    background-color: #007bff;
+}
+span.ubo-badge[data-value="refunded"]{
+    background-color: #007bff;
+}
+span.ubo-badge[data-value="failed"]{
+    background-color: #dc3545;
+}
+span.ubo-badge[data-value="planned"]{
+    color: #212529;
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+span.ubo-badge[data-value="reserved"]{
+    color: #212529;
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+span.ubo-badge[data-value="cancelled"]{
+    background-color: #dc3545;
+}
 
 .ubo-btn-full {
     background-color: #587E50;
