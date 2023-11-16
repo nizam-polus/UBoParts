@@ -7,6 +7,7 @@ import { BASE_URL } from 'configuration';
 import Link from 'next/dist/client/link';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
+import AdminSideBar from './AdminSidebar';
 
 function AdminCreate() {
     let userdetails: any;
@@ -83,7 +84,7 @@ function AdminCreate() {
                             </div>
                         </div>
                         <div className="row mt-3 ">
-                            <div className="col-12 col-md-12 col-xl-3">
+                            {/* <div className="col-12 col-md-12 col-xl-3">
                                 <div className="profile-image-wrapper coulmn-bg-color-1 rounded-2 p-5 pb-2 text-center">
                                     <AppImage
                                         src={BASE_URL + (profilePicURL || "/images/img/dummy-profile.png")}
@@ -108,10 +109,8 @@ function AdminCreate() {
                                         {user.username}
                                     </p>
                                 </div>
-                                {/* {user.isApproved === 'Active' && user.user_type !== 'seller' && <div className='text-center mt-3'>
-                                    <Link href={'/seller-registration'}><a style={{textDecoration: 'underline', color: 'red'}}>Want to become a Seller?</a></Link>
-                                </div>} */}
-                            </div>
+                            </div> */}
+                            <AdminSideBar/>
                             <div className="col-12 col-md-12 col-xl-9 mt-4 mt-xl-0 mt-md-4">
                                 <div className="table-responsive">
                                     <table className="table profile-table-1 coulmn-bg-color-1 rounded-2">
@@ -148,7 +147,7 @@ function AdminCreate() {
                                             <tr className="single">
                                                 <td colSpan={2}>
                                                     <div className="mb-3 px-sm-3 pt-2">
-                                                        <h3>Outstanding Compliance Requirements</h3>
+                                                        <h3>Outstanding merchant compliance requirements</h3>
                                                     </div>
                                                     <div className="px-sm-3">
                                                         <ul>
