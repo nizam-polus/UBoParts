@@ -49,6 +49,14 @@ function PaymentResult() {
                             setStatus('expired');
                             setPaymentStatus('expired')
                             break;
+                        case 'planned' :
+                            setStatus("planned")
+                            paymentRefundFunction()
+                            break;
+                        case 'reserved' :
+                            setStatus("reserved");
+                            paymentRefundFunction()
+                            break;
                         default:
                             setPath('/homepage');
                             setStatus(status);
@@ -87,6 +95,23 @@ function PaymentResult() {
         }, 1000 * 60 * 60);
     }, [status])
 
+    const paymentRefundFunction = () =>{
+        let transactionId;
+        if (typeof window !== 'undefined') {
+            transactionId = localStorage.getItem('uid') || '';
+        }
+        APIs.paymentRefund({
+            "transactionUid": transactionId
+        }).then((res) =>{
+            console.log(res)
+            toast.success(res)
+        }).catch((err) =>{
+            console.log(err)
+            toast.error(err)
+        })
+
+    }
+
     const getOrderDetails = () => {
         let transactionId;
         if (typeof window !== 'undefined') {
@@ -111,6 +136,7 @@ function PaymentResult() {
             }
         }).catch(err => console.log(err));
     }
+    console.log(status)
 
     return (
         <>
@@ -122,14 +148,14 @@ function PaymentResult() {
                     </h4>
                 </div> : status === 'pending' ? 
                 <div style={{textAlign: 'center', position: 'relative', marginTop: '5%'}} className="mb-4">
-                    <h2 className="" >{<FormattedMessage id="PAYMENT_TRANSACTION_PENDING" />}</h2>
+                    <h2 className="" ><FormattedMessage id="PAYMENT_TRANSACTION_PENDING" /></h2>
                     <h4>
                         {`${Math.floor(time / 60)}`.padStart(2, '0')}:{`${time % 60}`.padStart(2, '0')}
                     </h4>
                 </div> : 
                 <div style={{textAlign: 'center', position: 'relative', marginTop: '5%'}} className="mb-4">
                     {status === 'completed' && <i className="fa fa-check-circle pb-2" style={{fontSize: '3rem', color: '#587E50'}}></i>}
-                    <h2 className="" >{status === 'completed' ? <FormattedMessage id="ORDER_PLACED_SUCCESS" /> : <FormattedMessage id="PAYMENT_TRANSACTION" /> + status }</h2>
+                    <h2 className="" >{status === 'completed' ? <FormattedMessage id="ORDER_PLACED_SUCCESS" /> : "Payment " + status }</h2>
                     <p>{ status !== 'completed' && <FormattedMessage id="REDIRECT_TO_HOME" /> }</p>
                 </div>
             }

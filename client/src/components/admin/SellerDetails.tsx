@@ -48,7 +48,8 @@ function SellerDetails() {
         setOpenSellerId(openSellerId === sellerId ? null : sellerId);
         steMerchantId(id)
         if(!id){
-            toast.warning("There is no data available")
+            // toast.warning("There is no data available")
+            console.log("there is no mechant_id")
         }else{
             APIs.getMerchantStatus({
                 "merchantUid": id
@@ -75,22 +76,18 @@ function SellerDetails() {
             toast.error("some Error Occuerd")
             break;
         case "contact":
-            // Call API with the required parameters for contact.verification
             APIs.approveContact({
                 "merchantUid": id,
                 "contactUid": obj_Uid, // Assuming contactUid is relevant
-                // Additional parameters specific to contact.verification
             });
             break;
         case "ubo":
-            // Call API with the required parameters for ubo.required
             APIs.approveUbo({
                 "merchantUid": id,
                 "ubotUid": obj_Uid
             });
             break;
         case "bank_account":
-            // Call API with the required parameters for bank_account.verification
             APIs.approveAccount({
                 "merchantUid": id,
                 "bankUid": obj_Uid
@@ -179,7 +176,7 @@ function SellerDetails() {
                                                                 <label className="custom-color-2 regularfont products-name pb-2">
                                                                     Merchant Compliance Status
                                                                 </label>
-                                                                <span className="badge badge-pill badge-info px-3 py-2 ml-2">
+                                                                <span className={`badge badge-pill ${sellerAccountData?.compliance_status == "verified" ? "badge-success" : "badge-danger"} px-3 py-2 ml-2`}>
                                                                     {" "}
                                                                     {sellerAccountData && sellerAccountData.compliance_status}
                                                                 </span>
@@ -198,7 +195,7 @@ function SellerDetails() {
                                                                                     console.log(item.object_type);
                                                                                     return (
                                                                                         <li key={index} className='mt-3 mb-3'>
-                                                                                            {item.type.match(/^(.*?)\.required$/)} :{" "}
+                                                                                            {item.type.replace(/\.required$/, '')} :{" "}
                                                                                             <span className={`badge badge-pill ${item.status == "unverified" ? "badge-danger" : "badge-warning"} ml-2`}>
                                                                                                 {" "}
                                                                                                 {item.status}
