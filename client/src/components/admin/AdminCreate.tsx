@@ -138,7 +138,7 @@ function AdminCreate() {
                                                     <label className="custom-color-2 regularfont products-name pb-2">
                                                         Merchant Compliance Status
                                                     </label>
-                                                    <span className="badge badge-pill badge-info px-3 py-2 ml-2">
+                                                    <span className={`badge badge-pill ${adminDetails.compliance_status == "verified" ? "badge-success" : "badge-info"} px-3 py-2 ml-2`}>
                                                         {" "}
                                                         {adminDetails.compliance_status}
                                                     </span>
@@ -152,7 +152,7 @@ function AdminCreate() {
                                                     <div className="px-sm-3">
                                                         <ul>
                                                             <div>
-                                                                {adminRequirements &&
+                                                                {adminRequirements.length ?
                                                                     adminRequirements.map((item: any, index: any) => {
                                                                         console.log(item.object_type);
                                                                         return (
@@ -164,7 +164,7 @@ function AdminCreate() {
                                                                                 </span>
                                                                             </li>
                                                                         );
-                                                                    })}
+                                                                    }) : "Nil"}
                                                             </div>
                                                         </ul>
                                                     </div>
@@ -270,26 +270,24 @@ function AdminCreate() {
                                         </div>
                                     </div>
                                 </div>
-
-
                                 <div className="accordion rounded-2 mt-2" id="newBankAccounts">
-  <div className="card">
-    <div className="card-header" id="headingOne">
-      <h2 className="mb-0">
-        <button className="btn btn-link btn-block text-left" type="button" onClick={() => toggleChangeBankAccountView()} data-toggle="collapse" data-target="#changeBankAccountView" aria-expanded="true" aria-controls="changeBankAccountView">
-        New Account(s)
-        </button>
-      </h2>
-    </div>
+                                    <div className="card">
+                                        <div className="card-header" id="headingOne">
+                                            <h2 className="mb-0">
+                                                <button className="btn btn-link btn-block text-left" type="button" onClick={() => toggleChangeBankAccountView()} data-toggle="collapse" data-target="#changeBankAccountView" aria-expanded="true" aria-controls="changeBankAccountView">
+                                                    New Account(s)
+                                                </button>
+                                            </h2>
+                                        </div>
 
-    <div id="changeBankAccountView" className="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-      <div className="card-body">
+                                        <div id="changeBankAccountView" className="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                            <div className="card-body">
 
-        {adminDetails?.new_accounts && adminDetails?.new_accounts.map((account: any, index: any) => {
-return (    
-    // <li className="list-group-item"><Link href={account.verification_url}>Change Account</Link></li>
+                                                {adminDetails?.new_accounts && adminDetails?.new_accounts.map((account: any, index: any) => {
+                                                    return (
+                                                        // <li className="list-group-item"><Link href={account.verification_url}>Change Account</Link></li>
 
-    <div className="table-responsive" key={index}>
+                                                        <div className="table-responsive" key={index}>
                                                                     <table className="table profile-table-1 coulmn-bg-color-1 rounded-2 mt-2 border-bottom">
                                                                         <tbody>
                                                                             <tr>

@@ -149,6 +149,8 @@ const APIs = {
 
     getSellerAccount: (data: any) => axios.post(BACKEND_URL + "seller-merchant-account", data, {headers}),
 
+    paymentRefund: (data: any) => axios.post(BACKEND_URL + "refund-amount", data, {headers}),
+
 
         /* ---------------- jwt token based apis ----------------- */
 
@@ -210,7 +212,7 @@ const APIs = {
 
     approveContact: (data: any) => ds.post(BACKEND_URL + "approve-contact", data),
 
-    approveUbo: (data: any) => ds.post(BACKEND_URL + "approve-ubo", data),
+    approveUbo: (data: any) => ds.post(BACKEND_URL + "approve-ubo", data)
 
 }
 

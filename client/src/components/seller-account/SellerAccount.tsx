@@ -130,10 +130,9 @@ function SellerAccount() {
                                                             <div>
                                                                 {merchantRequirements &&
                                                                     merchantRequirements.map((item: any, index: any) => {
-                                                                        console.log(item.object_type);
                                                                         return (
                                                                             <li>
-                                                                                {item.object_type} :{" "}
+                                                                                {item.type.replace(/\.required$/, '')} :{" "}
                                                                                 <span className="badge badge-pill badge-info ml-2">
                                                                                     {" "}
                                                                                     {item.status}
