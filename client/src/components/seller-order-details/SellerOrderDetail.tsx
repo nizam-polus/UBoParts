@@ -92,7 +92,8 @@ function SellerOrderDetails() {
 
       const paymentRefundFunction = () =>{
         APIs.paymentRefund({
-            "transactionUid": transactionId
+            "transactionUid": transactionId,
+            "payoutDescription": "Your transaction refunded due to technical reasons"
         }).then((res) =>{
             console.log(res)
             toast.success("refunded")

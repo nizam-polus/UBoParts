@@ -69,7 +69,7 @@ function OrderHistory() {
                                                             <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">
                                                                 {new Date(order?.created_at).toDateString().substring(4)}
                                                             </td>
-                                                            <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">{order?.status}</td>
+                                                            <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">{order?.status == "chargeback" ? "refunded" : order?.status}</td>
                                                         </tr>
                                                     )
                                                 })
