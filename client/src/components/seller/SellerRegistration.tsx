@@ -192,7 +192,6 @@ function SellerRegistration() {
                 sellerData.password = cnfrmPassword;
 
                 APIs.register(sellerData).then(response => {
-                    debugger
                     APIs.getSellerAccount({
                         "country_iso": formData.country == "uk" ? "GBR" : "NLD",
                         "email": formData.email.toLowerCase(),

@@ -70,14 +70,31 @@ function AccountResult() {
     // }, [])
 
     useEffect(() =>{
-        let adminUID = localStorage.getItem("admin_uid");
+       let userDetails : any =  localStorage.getItem("userdetails")
+       userDetails = JSON.parse(userDetails)
+       let role = userDetails?.role?.type
+       if(role == "selller"){
+        let bankUID = localStorage.getItem("bank_uid")
+        console.log(user)
         APIs.getAccountStatus({
-            "bank_account_uid": adminUID
+            "bank_account_uid": bankUID
         }).then((res) =>{
+            router.push("/")
             console.log(res)
             setStatus(res.data.status)
         })
-
+       }else{
+        let adminUID = localStorage.getItem("admin_uid");
+        console.log(user)
+        APIs.getAccountStatus({
+            "bank_account_uid": adminUID
+        }).then((res) =>{
+            router.push("/")
+            console.log(res)
+            setStatus(res.data.status)
+        })
+       }
+       
     },[])
 
     // useEffect(() => {
@@ -142,7 +159,7 @@ function AccountResult() {
                             </h1>
                             <div className="order-success__subtitle">
                                 {/* <FormattedMessage id="HEADER_ORDER_SUCCESS_SUBTITLE" /> */}
-                                Your account status is {status}
+                                Your account status is processing...
                             </div>
                             <div className="order-success__actions">
                                 {/* <AppLink href={url.home()} className="btn btn-sm btn-secondary">

@@ -46,6 +46,16 @@ function SellerAccount() {
                 console.log(res.data)
                 setMerchantAccountDetails(res.data)
                 setMerchantRequirements(res.data.compliance_requirements)
+                const bankVerification = res.data.compliance_requirements.find(
+                    (requirement : any) => requirement.type === 'bank_account.verification.required'
+                );
+                
+                if (bankVerification) {
+                    const bankUid = bankVerification.object_uid;
+                    // Set the bank_uid to localStorage
+                    localStorage.setItem('bank_uid', bankUid);
+                }
+                
                 if (res?.data?.new_accounts) {
                     setAccountNumber(res?.data?.new_accounts[0]?.account.account_iban)
                     setAccountName(res?.data?.new_accounts[0]?.account.account_name)
