@@ -68,7 +68,7 @@ function PurchaseHistory() {
                                                                 {new Date(order?.created_at).toDateString().substring(4)}
                                                             </td>
                                                             <td className="custom-color-2 lightfont placeholderfontsize border-0 ps-3 pb-3 pt-3 align-middle">
-                                                                {order?.status}
+                                                            {order?.status == "chargeback" ? "refunded" : order?.status}
                                                             </td>
                                                         </tr>
                                                     )}) : <div className="d-flex align-items-center justify-content-center p-5">{emptyText}</div>

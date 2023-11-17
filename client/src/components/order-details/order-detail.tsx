@@ -101,7 +101,7 @@ function OrderDetails() {
                                             <span className=" order-no regularfont body-sub-titles">{orderId}</span>
                                         </span>
                                         <span data-value={status} className="badge badge-pill badge-info px-3 py-2 ml-2 ubo-badge">
-                                                        {status}
+                                                        {status == "chargeback" ? "refunded"  : status}
                                             </span>
                                     </div>
                                    
@@ -130,7 +130,7 @@ function OrderDetails() {
                                                                 <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3"><FormattedMessage id="INVOICE_NO"/></th>
                                                             </tr>
                                                             <tr>
-                                                                <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3"><FormattedMessage id="SHIPPING"/></th>
+                                                                <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3"><FormattedMessage id="SHIPPING_COST"/></th>
                                                             </tr>
                                                             <tr>
                                                                 <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3"><FormattedMessage id="ORDER_TOTAL"/></th>
