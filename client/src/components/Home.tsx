@@ -1,7 +1,6 @@
 // react
 import React, { useCallback, useEffect, useState } from 'react';
 import { Modal } from 'reactstrap';
-import { IVehicle } from '~/interfaces/vehicle';
 import Image from 'next/image'
 import Link from 'next/link';
 import AppImage from './shared/AppImage';
@@ -14,6 +13,9 @@ import { BASE_URL } from 'configuration';
 import { UserContext } from './account_/UserContext';
 import { toast } from 'react-toastify';
 import { FormattedMessage } from 'react-intl';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 function Home() {
 
@@ -71,6 +73,22 @@ function Home() {
     const [itemsPerPage, setItemsPerPage] = useState(4)
 
     const slicedData = makeData.slice(startIndex, startIndex + itemsPerPage);
+
+    const settings = {
+        dots: false,
+        infinite: true,
+        speed: 400,
+        autoplay: true,
+        slidesToShow: 5,
+        slidesToScroll: 1,
+        nextArrow: <div><span className='arrow'></span></div>,
+        responsive: [
+            { breakpoint: 1399, settings: { slidesToShow: 4, slidesToScroll: 1 } },
+            { breakpoint: 968, settings: { slidesToShow: 3, slidesToScroll: 1 } },
+            { breakpoint: 767, settings: { slidesToShow: 2, slidesToScroll: 1 } },
+            { breakpoint: 480, settings: { slidesToShow: 1, slidesToScroll: 1 } },
+        ],
+      };
 
     useEffect(() => {
         if (licenseplate && licenseplate.length > 5) {
@@ -503,15 +521,8 @@ function Home() {
     }
     return (
         <>
-            <Forgotpass
-                isOpen={forgotPasswordPickerIsOpen}
-                onClose={onForgotPasswordClose}
-            />
-            <Login
-                username={username}
-                isOpen={openLogin}
-                onClose={onLoginModalClose}
-            />
+            <Forgotpass isOpen={forgotPasswordPickerIsOpen} onClose={onForgotPasswordClose} />
+            <Login username={username} isOpen={openLogin} onClose={onLoginModalClose} />
             {/* New password modal */}
             <Modal isOpen={openReset} centered className="ac-modal">
                 <div id="forgotmodal">
@@ -519,57 +530,74 @@ function Home() {
                         <div className="ac-modal-body">
                             <div className="ac-card login-form">
                                 <div className="ac-card-body">
-                                    <h3 className="ac-card-title text-center"><FormattedMessage id="RESET_PASSWORD"/></h3>
-                                    <p className="ac-card-sub-title text-center"><FormattedMessage id="ENTER_YOUR_NEW_PASSWORD"/></p>
-                                    {mismatch && <p className='text-center' style={{color: 'rgb(255 102 102)'}}><FormattedMessage id="PASSWORD_DOESNOT_MATCH"/></p>}
+                                    <h3 className="ac-card-title text-center">
+                                        <FormattedMessage id="RESET_PASSWORD" />
+                                    </h3>
+                                    <p className="ac-card-sub-title text-center">
+                                        <FormattedMessage id="ENTER_YOUR_NEW_PASSWORD" />
+                                    </p>
+                                    {mismatch && (
+                                        <p className="text-center" style={{ color: "rgb(255 102 102)" }}>
+                                            <FormattedMessage id="PASSWORD_DOESNOT_MATCH" />
+                                        </p>
+                                    )}
                                     <div className="ac-card-text">
                                         <form action="/action_page.php">
                                             <div className="form-group">
                                                 {/* <label htmlFor="newpwd">Email address</label> */}
                                                 <div className="position-relative">
-
-                                                <input type={pwdVisible ? "text" : "password"}
-                                                    className="form-control mb-4" id="newpwd" 
-                                                    placeholder="New password" value={newpwd}
-                                                    onChange={(e: any) => setNewpwd(e.target.value)}
-                                                />
-                                                <div className="position-absolute p-3" style={{right: 0, top: 0}}>
+                                                    <input
+                                                        type={pwdVisible ? "text" : "password"}
+                                                        className="form-control mb-4"
+                                                        id="newpwd"
+                                                        placeholder="New password"
+                                                        value={newpwd}
+                                                        onChange={(e: any) => setNewpwd(e.target.value)}
+                                                    />
+                                                    <div className="position-absolute p-3" style={{ right: 0, top: 0 }}>
                                                         <span
-                                                                className="password-visibility-toggle"
-                                                                onClick={() => setPwdVisible(!pwdVisible)}
-                                                            >
-                                                                {pwdVisible ? (
-                                                                    <i className="far fa-eye"></i>
-                                                                    ) : (
-                                                                    <i className="far fa-eye-slash"></i>
-                                                                )}
-                                                            </span>
-                                                        </div>
+                                                            className="password-visibility-toggle"
+                                                            onClick={() => setPwdVisible(!pwdVisible)}
+                                                        >
+                                                            {pwdVisible ? (
+                                                                <i className="far fa-eye"></i>
+                                                            ) : (
+                                                                <i className="far fa-eye-slash"></i>
+                                                            )}
+                                                        </span>
+                                                    </div>
                                                 </div>
-                                                 {/* <label htmlFor="confrmpwd">Email address</label> */}
-                                                 <div className="position-relative">
-                                                <input type={confrmpwdVisible ? "text" : "password"} 
-                                                    className="form-control" id="confrmpwd" 
-                                                    placeholder="Confirm password" value={confrmpwd}
-                                                    onChange={(e: any) => setConfrmpwd(e.target.value)}
-                                                />
-                                                <div className='position-absolute p-3' style={{right: 0, top: 0}}>
-                                                    <span
-                                                        className="password-visibility-toggle"
-                                                        onClick={() => setConfrmpwdVisible(!confrmpwdVisible)}
-                                                    >
-                                                        {confrmpwdVisible ? (
-                                                            <i className="far fa-eye"></i>
-                                                        ) : (
-                                                             <i className="far fa-eye-slash"></i>
-                                                        )}
-                                                    </span>
-                                                </div>
+                                                {/* <label htmlFor="confrmpwd">Email address</label> */}
+                                                <div className="position-relative">
+                                                    <input
+                                                        type={confrmpwdVisible ? "text" : "password"}
+                                                        className="form-control"
+                                                        id="confrmpwd"
+                                                        placeholder="Confirm password"
+                                                        value={confrmpwd}
+                                                        onChange={(e: any) => setConfrmpwd(e.target.value)}
+                                                    />
+                                                    <div className="position-absolute p-3" style={{ right: 0, top: 0 }}>
+                                                        <span
+                                                            className="password-visibility-toggle"
+                                                            onClick={() => setConfrmpwdVisible(!confrmpwdVisible)}
+                                                        >
+                                                            {confrmpwdVisible ? (
+                                                                <i className="far fa-eye"></i>
+                                                            ) : (
+                                                                <i className="far fa-eye-slash"></i>
+                                                            )}
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <button type="submit" className="btn btn-default mt-1 mb-4"
+                                            <button
+                                                type="submit"
+                                                className="btn btn-default mt-1 mb-4"
                                                 onClick={handleChangePwd}
-                                            >Change Password</button>
+                                            >
+                                                Change Password
+                                            </button>
                                         </form>
                                     </div>
                                 </div>
@@ -581,154 +609,243 @@ function Home() {
             <div className="main-body pb-5 mb-5">
                 <div className="container">
                     <section className="section-search-wrapper">
-                        {locale && 
+                        {locale && (
                             <form action="" className="search-wrapper">
-                            <div className="row g-5 flex-column flex-lg-row">
-                                <div className="col">
-                                    <div className="row g-2 flex-column flex-lg-row">
-                                        <div className="col">
-                                            <div className="form-group">
-                                                <input type="form-control" value={licenseplate}
-                                                    onChange={handleLicenseplateChange} name="plate_number" 
-                                                    className="semifont placeholderfontsize" 
-                                                    placeholder={locale == "nl" ? "Zoek op kenteken van de auto" : "Search with car's plate number"} 
-                                                />
-                                                {showInvaidLicense &&
-                                                    <div className="row mt-2 ml-2" >
-                                                        <span className="advanced_search placeholderfontsize regularfont"
+                                <div className="row g-5 flex-column flex-lg-row">
+                                    <div className="col">
+                                        <div className="row g-2 flex-column flex-lg-row">
+                                            <div className="col">
+                                                <div className="form-group">
+                                                    <input
+                                                        type="form-control"
+                                                        value={licenseplate}
+                                                        onChange={handleLicenseplateChange}
+                                                        name="plate_number"
+                                                        className="semifont placeholderfontsize"
+                                                        placeholder={
+                                                            locale == "nl"
+                                                                ? "Zoek op kenteken van de auto"
+                                                                : "Search with car's plate number"
+                                                        }
+                                                    />
+                                                    {showInvaidLicense && (
+                                                        <div className="row mt-2 ml-2">
+                                                            <span className="advanced_search placeholderfontsize regularfont">
+                                                                <FormattedMessage id="NO_RECORD_FOUND" />
+                                                            </span>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            <div className="col-auto or_block">
+                                                <span className="or_label semifont placeholderfontsize field3">or</span>
+                                            </div>
+                                            <div className="col">
+                                                <div className="form-group">
+                                                    <input
+                                                        type="form-control"
+                                                        name="article_number"
+                                                        value={articleNumber}
+                                                        className="semifont placeholderfontsize"
+                                                        placeholder={
+                                                            locale == "nl"
+                                                                ? "Zoek met productartikel"
+                                                                : "Search with product Article"
+                                                        }
+                                                        onChange={handleArticleChange}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {toggleSearch && (
+                                            <div className="row g-4 flex-column flex-lg-row mt-2">
+                                                <div className="col">
+                                                    <div className="form-group">
+                                                        <select
+                                                            className="form-select semifont placeholderfontsize"
+                                                            name="make"
+                                                            id="makeOption"
+                                                            value={selectedMake}
+                                                            onChange={handleMakeChange}
                                                         >
-                                                        <FormattedMessage id="NO_RECORD_FOUND"/>
-                                                        </span>
+                                                            <option value="" disabled={true}>
+                                                                {locale == "nl" ? "Selecteer merk" : "Select Make"}
+                                                            </option>
+                                                            {makesArray.map((make: any, index: any) => (
+                                                                <option key={index} value={make.id}>
+                                                                    {make.make}
+                                                                </option>
+                                                            ))}
+                                                        </select>
                                                     </div>
-                                                }
+                                                </div>
+                                                <div className="col">
+                                                    <div className="form-group">
+                                                        <select
+                                                            disabled={!selectedMake}
+                                                            className="form-select semifont placeholderfontsize"
+                                                            name="model"
+                                                            id="modelOption"
+                                                            value={selectedModel}
+                                                            onChange={handleModelChange}
+                                                        >
+                                                            <option value="" disabled={true}>
+                                                                {locale == "nl" ? "Selecteer Model" : "Select Model"}
+                                                            </option>
+                                                            {modelArray.map((model: any, index: any) => (
+                                                                <option key={index} value={model.id}>
+                                                                    {model.model}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div className="col">
+                                                    <div className="form-group">
+                                                        <select
+                                                            disabled={
+                                                                !selectedModel ||
+                                                                (yearArray && yearArray.length && !yearArray[0].year)
+                                                            }
+                                                            className="form-select semifont placeholderfontsize"
+                                                            name="year"
+                                                            id="yearOption"
+                                                            value={selectedYear}
+                                                            onChange={handleYearChange}
+                                                        >
+                                                            <option value="" disabled={true}>
+                                                                {locale == "nl" ? "Selecteer Jaar" : "Select Year"}
+                                                            </option>
+                                                            {yearArray.map((year: any, index: any) => (
+                                                                <option key={index} value={year.id}>
+                                                                    {year.year}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div className="col">
+                                                    <div className="form-group">
+                                                        <select
+                                                            disabled={!selectedYear}
+                                                            className="form-select semifont placeholderfontsize"
+                                                            name="category"
+                                                            id="categoryOption"
+                                                            value={selectedCategory}
+                                                            onChange={handleCategoryChange}
+                                                        >
+                                                            <option value="" disabled={true}>
+                                                                {locale == "nl"
+                                                                    ? "Selecteer categorie"
+                                                                    : "Select category"}
+                                                            </option>
+                                                            {categories.map((category: any, index: any) => (
+                                                                <option key={index} value={category}>
+                                                                    {category}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="col-auto or_block">
-                                            <span className="or_label semifont placeholderfontsize field3">or</span>
-                                        </div>
-                                        <div className="col">
-                                            <div className="form-group">
-                                                <input type="form-control" name="article_number" value={articleNumber}
-                                                    className="semifont placeholderfontsize" placeholder={locale == "nl" ? "Zoek met productartikel" : "Search with product Article"}
-                                                    onChange={handleArticleChange}
-                                                />
-                                            </div>
-                                        </div>
+                                        )}
                                     </div>
-                                    {toggleSearch && <div className="row g-4 flex-column flex-lg-row mt-2">
-                                        <div className="col">
-                                            <div className="form-group">
-                                                <select className="form-select semifont placeholderfontsize" name="make" id="makeOption"
-                                                    value={selectedMake} onChange={handleMakeChange}>
-                                                    <option value="" disabled={true}>{locale == "nl" ? "Selecteer merk" : "Select Make"}</option>
-                                                    {makesArray.map((make: any, index: any) => (
-                                                        <option key={index} value={make.id}>{make.make}</option>
-                                                    ))}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div className="col">
-                                            <div className="form-group">
-                                                <select disabled={!selectedMake} 
-                                                    className="form-select semifont placeholderfontsize" name="model" id="modelOption"
-                                                    value={selectedModel} onChange={handleModelChange}
-                                                >
-                                                    <option value="" disabled={true}>{locale == "nl"? "Selecteer Model" : "Select Model"}</option>
-                                                    {modelArray.map((model: any, index: any) => (
-                                                        <option key={index} value={model.id}>{model.model}</option>
-                                                    ))}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div className="col">
-                                            <div className="form-group">
-                                                <select disabled={!selectedModel || (yearArray && yearArray.length && !yearArray[0].year)}
-                                                    className="form-select semifont placeholderfontsize" name="year" id="yearOption"
-                                                    value={selectedYear} onChange={handleYearChange}
-                                                >
-                                                    <option value="" disabled={true}>{locale == "nl"? "Selecteer Jaar" : "Select Year"}</option>
-                                                    {yearArray.map((year: any, index: any) => (
-                                                        <option key={index} value={year.id}>{year.year}</option>
-                                                    ))}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div className="col">
-                                            <div className="form-group">
-                                                <select disabled={!selectedYear} 
-                                                    className="form-select semifont placeholderfontsize" name="category" id="categoryOption"
-                                                    value={selectedCategory} onChange={handleCategoryChange}
-                                                >
-                                                    <option value="" disabled={true}>{locale == "nl" ? "Selecteer categorie": "Select category"}</option>
-                                                    {categories.map((category: any, index: any) => (
-                                                        <option key={index} value={category}>{category}</option>
-                                                    ))}
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>}
+                                    <div className="col-12 col-lg-3 d-flex align-items-end mb-3">
+                                        <button
+                                            type="button"
+                                            onClick={searchProducts}
+                                            className="search boldfont boldfontsize"
+                                            disabled={showInvaidLicense}
+                                        >
+                                            <FormattedMessage id="SEARCH" />
+                                        </button>
+                                    </div>
                                 </div>
-                                <div className="col-12 col-lg-3 d-flex align-items-end mb-3">
-                                    <button type="button" onClick={searchProducts} 
-                                        className="search boldfont boldfontsize" disabled={showInvaidLicense}
-                                    ><FormattedMessage id="SEARCH"/></button>
+                                <div className="row mt-2 ml-2">
+                                    <span
+                                        onClick={toggleAdvancedSearch}
+                                        style={{ cursor: "pointer" }}
+                                        className="advanced_search placeholderfontsize regularfont"
+                                    >
+                                        {toggleSearch ? (
+                                            <FormattedMessage id="SHOW_LESS" />
+                                        ) : (
+                                            <FormattedMessage id="ADVANCED_SEARCH" />
+                                        )}
+                                    </span>
                                 </div>
-                            </div>
-                            <div className="row mt-2 ml-2" >
-                                <span onClick={toggleAdvancedSearch} style={{ cursor: 'pointer' }} 
-                                    className="advanced_search placeholderfontsize regularfont"
-                                >{toggleSearch ? <FormattedMessage id="SHOW_LESS"/> : <FormattedMessage id="ADVANCED_SEARCH"/>}</span>
-                            </div>
-                        </form>
-                        }
-                        
+                            </form>
+                        )}
                     </section>
                     <section className="latest-products-second-wrapper mt-5 mb-5">
-                        {searched && <span className="popular_categories body-sub-titles regularfont">
-                            All {selectedMake} Products</span>}
+                        {searched && (
+                            <span className="popular_categories body-sub-titles regularfont">
+                                All {selectedMake} Products
+                            </span>
+                        )}
                         <div className="row mt-5 mt-lg-4 mt-xxl-5 g-4">
                             {searchedProducts.map((product: any, index: any) => {
                                 return (
                                     <div className="col-6 col-md-3" key={index}>
-                                            <Link href={`/products_/${product?.id}`}>
-                                        <div className="latest-prods card">
-                                                <AppImage 
-                                                    src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
-                                                    className="card-img-top" 
+                                        <Link href={`/products_/${product?.id}`}>
+                                            <div className="latest-prods card">
+                                                <AppImage
+                                                    src={
+                                                        BASE_URL +
+                                                        product?.attributes?.product_image?.data?.attributes?.formats
+                                                            ?.medium?.url
+                                                    }
+                                                    className="card-img-top"
                                                 />
                                                 <div className="card-body">
                                                     <div className="row g-1">
                                                         <div className="col-12">
-                                                            <span className="article-number regularfont mini-text"
-                                                                >Article #{product?.attributes?.article_number}</span>
+                                                            <span className="article-number regularfont mini-text">
+                                                                Article #{product?.attributes?.article_number}
+                                                            </span>
                                                         </div>
                                                         <div className="col-12">
-                                                            <span className="product-name regularfont">{product?.attributes?.title}</span>
+                                                            <span className="product-name regularfont">
+                                                                {product?.attributes?.title}
+                                                            </span>
                                                         </div>
                                                         <div className="col-12 d-flex justify-content-between">
-                                                            <span className="product-price">€{product?.attributes?.price}</span>
+                                                            <span className="product-price">
+                                                                €{product?.attributes?.price}
+                                                            </span>
                                                             <i className="fa fa-shopping-cart body-sub-titles"></i>
                                                         </div>
                                                     </div>
                                                 </div>
-                                        </div>
-                                            </Link>
-                                    </div>)
+                                            </div>
+                                        </Link>
+                                    </div>
+                                );
                             })}
                         </div>
                     </section>
                     <section className="cards-wrapper">
                         <div className="row mt-3 g-4">
-                            { !user?.role || user.role.name !== "seller" ? (
+                            {!user?.role || user.role.name !== "seller" ? (
                                 <>
-                                    <div className="col-12 col-sm-6" onClick={() => router.push('/request')}>
+                                    <div className="col-12 col-sm-6" onClick={() => router.push("/request")}>
                                         <div className="specific_part">
-                                            <h3 className="text-white bg-image-text semifont m-0 selling-text"><FormattedMessage id="NEED_A" /> <br /><FormattedMessage id="SPECIFIC_PART"/></h3>
+                                            <h3 className="text-white bg-image-text semifont m-0 selling-text">
+                                                <FormattedMessage id="NEED_A" /> <br />
+                                                <FormattedMessage id="SPECIFIC_PART" />
+                                            </h3>
                                         </div>
                                     </div>
-                                    <div className="col-12 col-sm-6 my-3 my-md-0" onClick={() => router.push('/seller-registration')}>
+                                    <div
+                                        className="col-12 col-sm-6 my-3 my-md-0"
+                                        onClick={() => router.push("/seller-registration")}
+                                    >
                                         <div className="start_selling">
-                                            <h3 className="text-white bg-image-text semifont m-0 selling-text"><FormattedMessage id="START_SELL"/><br /><FormattedMessage id="WITH_US"/></h3>
+                                            <h3 className="text-white bg-image-text semifont m-0 selling-text">
+                                                <FormattedMessage id="START_SELL" />
+                                                <br />
+                                                <FormattedMessage id="WITH_US" />
+                                            </h3>
                                         </div>
                                     </div>
                                 </>
@@ -738,16 +855,35 @@ function Home() {
                     <section className="categories-wrapper">
                         <div className="row mt-md-5">
                             <div className="col-12 d-sm-flex justify-content-sm-between ubo-nav-tab">
-                                <div className='col-12 col-sm-auto mb-3 mb-sm-0 text-center text-sm-left pointer p-0'>
-                                    <button onClick={() => setSelectedHomecontent("category")} 
-                                        className={`saleoffers mobile-full-width regularfont body-sub-titles p-2 ${selectedHomeContent == "category" ? 'active' : ''}`}
+                                <div className="col-12 col-sm-auto mb-3 mb-sm-0 text-center text-sm-left pointer p-0">
+                                    <button
+                                        onClick={() => setSelectedHomecontent("category")}
+                                        className={`saleoffers mobile-full-width regularfont body-sub-titles p-2 ${
+                                            selectedHomeContent == "category" ? "active" : ""
+                                        }`}
                                     >
-                                        <FormattedMessage id="POPULAR"/>
+                                        <FormattedMessage id="POPULAR" />
                                     </button>
                                 </div>
-                                <div className='d-flex justify-content-between d-sm-block flex-column flex-sm-row mobile-gap'>
-                                    <button type="button" onClick={() => setSelectedHomecontent("saleOffers")}  className={`saleoffers regularfont body-sub-titles p-2 ${selectedHomeContent == "saleOffers" ? 'active' : ''}`}><FormattedMessage id="SALE_OFFERS" /></button>
-                                    <button type="button" onClick={() => setSelectedHomecontent("topSellings")} className={`saleoffers regularfont body-sub-titles p-2 ${selectedHomeContent == "topSellings" ? 'active' : ''}`}><FormattedMessage id="TOP_SELLING" /></button>
+                                <div className="d-flex justify-content-between d-sm-block flex-column flex-sm-row mobile-gap">
+                                    <button
+                                        type="button"
+                                        onClick={() => setSelectedHomecontent("saleOffers")}
+                                        className={`saleoffers regularfont body-sub-titles p-2 ${
+                                            selectedHomeContent == "saleOffers" ? "active" : ""
+                                        }`}
+                                    >
+                                        <FormattedMessage id="SALE_OFFERS" />
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setSelectedHomecontent("topSellings")}
+                                        className={`saleoffers regularfont body-sub-titles p-2 ${
+                                            selectedHomeContent == "topSellings" ? "active" : ""
+                                        }`}
+                                    >
+                                        <FormattedMessage id="TOP_SELLING" />
+                                    </button>
                                 </div>
                             </div>
                             <div className="col"></div>
@@ -761,73 +897,117 @@ function Home() {
                     </section>
                     <section className="categories-products-wrapper">
                         <div className="row mt-5 mt-lg-4 mt-xxl-5 g-4">
-                        {
-                        selectedHomeContent == "category" ? 
-                             (
-                                 categoriesDetail.length > 0 ? categoriesDetail.slice(0, 4).map((item:any, index:any) => {
-                                return (
-                                <div key={index} className="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 my-3 my-lg-0">
-                                    <div className="prod-cats card">
-                                    {item.attributes.category_image.data ? (
-                                            <AppImage style={{height: "270px", objectFit: "contain"}} 
-                                                src={BASE_URL + item.attributes.category_image.data[0].attributes.url} className="card-img-top" 
-                                            />
-                                        ) : (
-                                            <AppImage style={{height: "270px", objectFit: "contain"}} src='' className="card-img-top" />
-                                        )}
-                                            <div className="card-body">
-                                                <a href="" className="boldfont body-sub-titles">{item.attributes.category_name}</a>
-                                            </div>
-                                        </div>
-                                </div>
-                                )
-                            }) : "" 
-                        ) : selectedHomeContent == "saleOffers" ? 
-                            (
-                                saleOffers && saleOffers.slice(0,4).map((product: any, index: any) => {
-                                    return (
-                                        <div className="col-12 col-sm-6 col-lg-4 col-xl-3 mb-4" key={index}>
-                                            {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null) && (
-                                                <span  className="sale-tag position-absolute">Sale Live</span>
-                                            )}
-                                            <div className="latest-prods card card-shadows " style={{height: "100%"}} >   
-                                                <AppImage 
-                                                    src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.url} 
-                                                    className="card-img-top img-prod-height pointer "
-                                                    style={{height: '20rem', objectFit: 'contain', borderTopLeftRadius: "30px", borderTopRightRadius: "30px", filter:`${product.attributes.stock_count == 0 ? "blur(3px)" : "none"}`}} 
-                                                    onClick={() => handleProductClick(product)}    
-                                                />
-                                                {product.attributes.stock_count == 0 &&  
-                                                    <div onClick={() => handleProductClick(product)} className='out-of-stock d-flex position-absolute justify-content-center align-items-center' >
-                                                        <p className='text-out-of-stock mb-0'>
-                                                        <FormattedMessage id="OUT_OF_STOCK" />
-                                                        </p>
-                                                    </div>
-                                                }
-                                                <div className="card-body">
-                                                    <div className="row g-1">
-                                                        <div className="col-12">
-                                                            <span className="article-number regularfont mini-text"
-                                                            >
-                                                               <FormattedMessage id="ARTICLE" /> #{product?.attributes?.article_number}
-                                                            </span>
-                                                        </div>
-                                                        <div className="col-12">
-                                                            <span className="product-name regularfont"
-                                                                style={{"cursor": "pointer"}} 
-                                                                onClick={() => handleProductClick(product)}
-                                                            >{product?.attributes?.title}</span>
-                                                        </div>
-                                                        <div className="col-12 d-flex justify-content-between">
-                                                        {
-                                                            (product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null) ?
-                                                            <span className="product-price">
-                                                                <s>€{product?.attributes?.price}</s> 
-                                                                €{discountedPrice(product.attributes.price, product.attributes.sale.data.attributes.discount_percentage_value)}
-                                                            </span> :
-                                                            <span className="product-price">€{product?.attributes?.price}</span>
-                                                        }
-                                                            {/* {product.attributes.stock_count === 0 ? 
+                            {selectedHomeContent == "category"
+                                ? categoriesDetail.length > 0
+                                    ? categoriesDetail.slice(0, 4).map((item: any, index: any) => {
+                                          return (
+                                              <div
+                                                  key={index}
+                                                  className="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 my-3 my-lg-0"
+                                              >
+                                                  <div className="prod-cats card">
+                                                      {item.attributes.category_image.data ? (
+                                                          <AppImage
+                                                              style={{ height: "270px", objectFit: "contain" }}
+                                                              src={
+                                                                  BASE_URL +
+                                                                  item.attributes.category_image.data[0].attributes.url
+                                                              }
+                                                              className="card-img-top"
+                                                          />
+                                                      ) : (
+                                                          <AppImage
+                                                              style={{ height: "270px", objectFit: "contain" }}
+                                                              src=""
+                                                              className="card-img-top"
+                                                          />
+                                                      )}
+                                                      <div className="card-body">
+                                                          <a href="" className="boldfont body-sub-titles">
+                                                              {item.attributes.category_name}
+                                                          </a>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          );
+                                      })
+                                    : ""
+                                : selectedHomeContent == "saleOffers"
+                                ? saleOffers &&
+                                  saleOffers.slice(0, 4).map((product: any, index: any) => {
+                                      return (
+                                          <div className="col-12 col-sm-6 col-lg-4 col-xl-3 mb-4" key={index}>
+                                              {product.attributes?.sale?.data?.attributes?.discount_percentage_value !=
+                                                  0 &&
+                                                  product.attributes.sale.data != null && (
+                                                      <span className="sale-tag position-absolute">Sale Live</span>
+                                                  )}
+                                              <div
+                                                  className="latest-prods card card-shadows "
+                                                  style={{ height: "100%" }}
+                                              >
+                                                  <AppImage
+                                                      src={
+                                                          BASE_URL +
+                                                          product?.attributes?.product_image?.data?.attributes?.url
+                                                      }
+                                                      className="card-img-top img-prod-height pointer "
+                                                      style={{
+                                                          height: "20rem",
+                                                          objectFit: "contain",
+                                                          borderTopLeftRadius: "30px",
+                                                          borderTopRightRadius: "30px",
+                                                          filter: `${
+                                                              product.attributes.stock_count == 0 ? "blur(3px)" : "none"
+                                                          }`,
+                                                      }}
+                                                      onClick={() => handleProductClick(product)}
+                                                  />
+                                                  {product.attributes.stock_count == 0 && (
+                                                      <div
+                                                          onClick={() => handleProductClick(product)}
+                                                          className="out-of-stock d-flex position-absolute justify-content-center align-items-center"
+                                                      >
+                                                          <p className="text-out-of-stock mb-0">
+                                                              <FormattedMessage id="OUT_OF_STOCK" />
+                                                          </p>
+                                                      </div>
+                                                  )}
+                                                  <div className="card-body">
+                                                      <div className="row g-1">
+                                                          <div className="col-12">
+                                                              <span className="article-number regularfont mini-text">
+                                                                  <FormattedMessage id="ARTICLE" /> #
+                                                                  {product?.attributes?.article_number}
+                                                              </span>
+                                                          </div>
+                                                          <div className="col-12">
+                                                              <span
+                                                                  className="product-name regularfont"
+                                                                  style={{ cursor: "pointer" }}
+                                                                  onClick={() => handleProductClick(product)}
+                                                              >
+                                                                  {product?.attributes?.title}
+                                                              </span>
+                                                          </div>
+                                                          <div className="col-12 d-flex justify-content-between">
+                                                              {product.attributes?.sale?.data?.attributes
+                                                                  ?.discount_percentage_value != 0 &&
+                                                              product.attributes.sale.data != null ? (
+                                                                  <span className="product-price">
+                                                                      <s>€{product?.attributes?.price}</s>€
+                                                                      {discountedPrice(
+                                                                          product.attributes.price,
+                                                                          product.attributes.sale.data.attributes
+                                                                              .discount_percentage_value
+                                                                      )}
+                                                                  </span>
+                                                              ) : (
+                                                                  <span className="product-price">
+                                                                      €{product?.attributes?.price}
+                                                                  </span>
+                                                              )}
+                                                              {/* {product.attributes.stock_count === 0 ? 
                                                                 (<AppImage
                                                                     src="images/cart-svg.svg"
                                                                     className="pointer add_to_cart"
@@ -843,59 +1023,75 @@ function Home() {
                                                                     className="pointer add_to_cart"                      
                                                                 />)
                                                             } */}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        )
-                                    })
-                            ) : selectedHomeContent == "topSellings" ? 
-                            (
-                                topSellings && topSellings.map((product: any, index: any) => {
-                                    return (
-                                        <div className="col-12 col-sm-6 col-lg-4 col-xl-3 mb-4" key={index}>
-                                            {/* {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null) && (
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      );
+                                  })
+                                : selectedHomeContent == "topSellings"
+                                ? topSellings &&
+                                  topSellings.map((product: any, index: any) => {
+                                      return (
+                                          <div className="col-12 col-sm-6 col-lg-4 col-xl-3 mb-4" key={index}>
+                                              {/* {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null) && (
                                                 <span  className="sale-tag position-absolute">Sale Live</span>
                                             )} */}
-                                            <div className="latest-prods card card-shadows " style={{height: "100%"}} >   
-                                                <AppImage 
-                                                    src={BASE_URL + product?.product_image} 
-                                                    className="card-img-top img-prod-height pointer "
-                                                    style={{height: '20rem', objectFit: 'contain', borderTopLeftRadius: "30px", borderTopRightRadius: "30px"}} 
-                                                    onClick={() => handleProductClick(product)}    
-                                                />
-                                                {product.stock_count == 0 &&  
-                                                    <div onClick={() => handleProductClick(product)} className='out-of-stock d-flex position-absolute justify-content-center align-items-center' >
-                                                        <p className='text-out-of-stock mb-0'>
-                                                        <FormattedMessage id="OUT_OF_STOCK" />
-                                                        </p>
-                                                    </div>
-                                                }
-                                                <div className="card-body">
-                                                    <div className="row g-1">
-                                                        <div className="col-12">
-                                                            <span className="article-number regularfont mini-text"
-                                                            >
-                                                               <FormattedMessage id="ARTICLE" /> #{product?.article_number}
-                                                            </span>
-                                                        </div>
-                                                        <div className="col-12">
-                                                            <span className="product-name regularfont"
-                                                                style={{"cursor": "pointer"}} 
-                                                                onClick={() => handleProductClick(product)}
-                                                            >{product?.product_name}</span>
-                                                        </div>
-                                                        <div className="col-12 d-flex justify-content-between">
-                                                        {
-                                                            (product?.discount_price != 0 ) ?
-                                                            <span className="product-price">
-                                                                <s>€{product?.product_price}</s> 
-                                                                €{product?.product_price - product.discount_price}
-                                                            </span> :
-                                                            <span className="product-price">€{product?.product_price}</span>
-                                                        }
-                                                            {/* {product?.stock_count === 0 ? 
+                                              <div
+                                                  className="latest-prods card card-shadows "
+                                                  style={{ height: "100%" }}
+                                              >
+                                                  <AppImage
+                                                      src={BASE_URL + product?.product_image}
+                                                      className="card-img-top img-prod-height pointer "
+                                                      style={{
+                                                          height: "20rem",
+                                                          objectFit: "contain",
+                                                          borderTopLeftRadius: "30px",
+                                                          borderTopRightRadius: "30px",
+                                                      }}
+                                                      onClick={() => handleProductClick(product)}
+                                                  />
+                                                  {product.stock_count == 0 && (
+                                                      <div
+                                                          onClick={() => handleProductClick(product)}
+                                                          className="out-of-stock d-flex position-absolute justify-content-center align-items-center"
+                                                      >
+                                                          <p className="text-out-of-stock mb-0">
+                                                              <FormattedMessage id="OUT_OF_STOCK" />
+                                                          </p>
+                                                      </div>
+                                                  )}
+                                                  <div className="card-body">
+                                                      <div className="row g-1">
+                                                          <div className="col-12">
+                                                              <span className="article-number regularfont mini-text">
+                                                                  <FormattedMessage id="ARTICLE" /> #
+                                                                  {product?.article_number}
+                                                              </span>
+                                                          </div>
+                                                          <div className="col-12">
+                                                              <span
+                                                                  className="product-name regularfont"
+                                                                  style={{ cursor: "pointer" }}
+                                                                  onClick={() => handleProductClick(product)}
+                                                              >
+                                                                  {product?.product_name}
+                                                              </span>
+                                                          </div>
+                                                          <div className="col-12 d-flex justify-content-between">
+                                                              {product?.discount_price != 0 ? (
+                                                                  <span className="product-price">
+                                                                      <s>€{product?.product_price}</s>€
+                                                                      {product?.product_price - product.discount_price}
+                                                                  </span>
+                                                              ) : (
+                                                                  <span className="product-price">
+                                                                      €{product?.product_price}
+                                                                  </span>
+                                                              )}
+                                                              {/* {product?.stock_count === 0 ? 
                                                                 (<AppImage
                                                                     src="images/cart-svg.svg"
                                                                     className="pointer add_to_cart"
@@ -911,102 +1107,156 @@ function Home() {
                                                                     className="pointer add_to_cart"                      
                                                                 />)
                                                             } */}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        )
-                                    })
-                            ) : ""
-                    }            
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      );
+                                  })
+                                : ""}
                         </div>
                     </section>
-                <section className='d-flex align-items-center justify-content-center ubo-brands-slider-wrapper'>
-                   <div className='p-4 d-flex flex-column flex-xl-row align-items-center justify-content-center'>
-                        <div className='ubo-brands-slider-title'>
-                            <span className='h4 d-sm-block'><FormattedMessage id="SEARCH_BY" /> </span>
-                            <span className='h4'><FormattedMessage id="CAR_BRAND" /></span>
+                </div>
+                {/* new logo slider */}
+                <section className="bg-white my-5">
+                    <div className="align-items-center container d-flex flex-column flex-xl-row justify-content-center">
+                        <div className="col-12 col-xl-2 py-2 text-center">
+                            <span className="h4 d-xl-block">
+                                <FormattedMessage id="SEARCH_BY" />{" "}
+                            </span>
+                            <span className="h4">
+                                <FormattedMessage id="CAR_BRAND" />
+                            </span>
                         </div>
-                        <div className='d-flex align-items-center'>
-                        <div className='ubo-brands-slider'>
-                        {slicedData && slicedData.map((item :any, index:any) => (
-                            <div key={index} onClick={() => handleMakeClick(item.id)}>
-                                <img src={item.make_logo ? 
-                                        BASE_URL + item.make_logo : ""} 
-                                    alt="" style={{ cursor: 'pointer', objectFit: "contain" }} 
-                                />
-                            </div>
-                        ))}
+
+                        <div className="col-10">
+                            <Slider {...settings}>
+                                {makeData &&
+                                    makeData.map((item: any, index: any) => (
+                                        <div key={index} onClick={() => handleMakeClick(item.id)}>
+                                            <img
+                                                src={item.make_logo ? BASE_URL + item.make_logo : ""}
+                                                alt=""
+                                                style={{ cursor: "pointer", objectFit: "contain" }}
+                                            />
+                                        </div>
+                                    ))}
+                            </Slider>
                         </div>
-                        <button 
-                        disabled={startIndex === 0 ? true : false}
-                        className='ubo-brands-slider-nav'
-                        onClick={handleLeftArrowClick}
-                        style={{cursor: `${startIndex === 0 ? "not-allowed": "pointer"}`}}
-                        >
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                    width="20" height="20" fill="currentColor"
-                                    className="bi bi-arrow-left" viewBox="0 0 16 16"
-                                >
-                                    <path fillRule="evenodd"
-                                        d="M15 8a.5.5 0 0 1-.5.5H2.207l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 0 1 .708.708L2.207 7.5H14.5A.5.5 0 0 1 15 8z"
-                                        transform="scaleX(-1)"
-                                    />
-                                </svg>
-                        </button>
-                      
-                        <button className='ubo-brands-slider-nav ml-2' onClick={handleArrowClick}>
-                            <svg xmlns="http://www.w3.org/2000/svg" 
-                                width="20" height="20" fill="currentColor" 
-                                className="bi bi-arrow-right" viewBox="0 0 16 16"
-                            >
-                                <path fillRule="evenodd" 
-                                    d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" 
-                                />
-                            </svg>
-                        </button>
-                        </div>
-                   </div>
+                    </div>
                 </section>
-                <section className="latest-products-wrapper">
+                {/* new logo slider ends */}
+                <div className="container">
+                    {/* <section className="d-flex align-items-center justify-content-center ubo-brands-slider-wrapper">
+                        <div className="p-4 d-flex flex-column flex-xl-row align-items-center justify-content-center">
+                            <div className="ubo-brands-slider-title">
+                                <span className="h4 d-sm-block">
+                                    <FormattedMessage id="SEARCH_BY" />{" "}
+                                </span>
+                                <span className="h4">
+                                    <FormattedMessage id="CAR_BRAND" />
+                                </span>
+                            </div>
+                            <div className="d-flex align-items-center">
+                                <div className="ubo-brands-slider">
+                                    {slicedData &&
+                                        slicedData.map((item: any, index: any) => (
+                                            <div key={index} onClick={() => handleMakeClick(item.id)}>
+                                                <img
+                                                    src={item.make_logo ? BASE_URL + item.make_logo : ""}
+                                                    alt=""
+                                                    style={{ cursor: "pointer", objectFit: "contain" }}
+                                                />
+                                            </div>
+                                        ))}
+                                </div>
+                                <button
+                                    disabled={startIndex === 0 ? true : false}
+                                    className="ubo-brands-slider-nav"
+                                    onClick={handleLeftArrowClick}
+                                    style={{ cursor: `${startIndex === 0 ? "not-allowed" : "pointer"}` }}
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="20"
+                                        height="20"
+                                        fill="currentColor"
+                                        className="bi bi-arrow-left"
+                                        viewBox="0 0 16 16"
+                                    >
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M15 8a.5.5 0 0 1-.5.5H2.207l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 0 1 .708.708L2.207 7.5H14.5A.5.5 0 0 1 15 8z"
+                                            transform="scaleX(-1)"
+                                        />
+                                    </svg>
+                                </button>
+
+                                <button className="ubo-brands-slider-nav ml-2" onClick={handleArrowClick}>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="20"
+                                        height="20"
+                                        fill="currentColor"
+                                        className="bi bi-arrow-right"
+                                        viewBox="0 0 16 16"
+                                    >
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
+                                        />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </section> */}
+                    <section className="latest-products-wrapper">
                         <div className="row mt-5">
                             <div className="col-12 d-lg-flex justify-content-sm-between ubo-nav-tab">
-                                <div className='col-12 col-lg-auto mb-3 mb-lg-0 text-center text-lg-left'>
+                                <div className="col-12 col-lg-auto mb-3 mb-lg-0 text-center text-lg-left">
                                     <span className="popular_categories body-sub-titles regularfont">
-                                       <FormattedMessage id="LATEST_PRODUCTS" />
+                                        <FormattedMessage id="LATEST_PRODUCTS" />
                                     </span>
                                 </div>
-                                  <div className='d-flex justify-content-between d-sm-block flex-column flex-sm-row mobile-gap'>
+                                <div className="d-flex justify-content-between d-sm-block flex-column flex-sm-row mobile-gap">
                                     <button
                                         type="button"
-                                        className={`saleoffers regularfont body-sub-titles p-2 ${selectedItem === 'All' ? 'active' : ''}`}
-                                        onClick={() => handleCategoryClick('All')}
+                                        className={`saleoffers regularfont body-sub-titles p-2 ${
+                                            selectedItem === "All" ? "active" : ""
+                                        }`}
+                                        onClick={() => handleCategoryClick("All")}
                                     >
-                                       <FormattedMessage id="ALL" />
+                                        <FormattedMessage id="ALL" />
                                     </button>
                                     <button
                                         type="button"
-                                        className={`saleoffers regularfont body-sub-titles p-2 ${selectedItem === 'Audio' ? 'active' : ''}`}
-                                        onClick={() => handleCategoryClick('Audio')}
+                                        className={`saleoffers regularfont body-sub-titles p-2 ${
+                                            selectedItem === "Audio" ? "active" : ""
+                                        }`}
+                                        onClick={() => handleCategoryClick("Audio")}
                                     >
                                         <FormattedMessage id="AUDIO" />
                                     </button>
                                     <button
                                         type="button"
-                                        className={`saleoffers regularfont body-sub-titles p-2 ${selectedItem === 'Lights' ? 'active' : ''}`}
-                                        onClick={() => handleCategoryClick('Lights')}
+                                        className={`saleoffers regularfont body-sub-titles p-2 ${
+                                            selectedItem === "Lights" ? "active" : ""
+                                        }`}
+                                        onClick={() => handleCategoryClick("Lights")}
                                     >
                                         <FormattedMessage id="LIGHTS" />
                                     </button>
-                                   <button
+                                    <button
                                         type="button"
-                                        className={`saleoffers regularfont body-sub-titles p-2 ${selectedItem === 'Body Parts ' ? 'active' : ''}`}
-                                        onClick={() => handleCategoryClick('Body Parts ')}
-                                   >
-                                    <FormattedMessage id="BODY_PARTS" />
+                                        className={`saleoffers regularfont body-sub-titles p-2 ${
+                                            selectedItem === "Body Parts " ? "active" : ""
+                                        }`}
+                                        onClick={() => handleCategoryClick("Body Parts ")}
+                                    >
+                                        <FormattedMessage id="BODY_PARTS" />
                                     </button>
-                                 </div>
+                                </div>
                             </div>
                             <div className="col"></div>
                             <div className="col text-end">
@@ -1019,53 +1269,83 @@ function Home() {
                     </section>
                     <section className="latest-products-second-wrapper">
                         <div className="row mt-5 mt-lg-4 mt-xxl-5 g-4">
-                        {!latestItems.length && <div className='w-100 text-center mt-4'>
-                            <p className=''>No products available</p>
-                        </div>}
-                        {latestItems && latestItems.map((product: any, index: any) => {
-                            return (
-                                <div className="col-12 col-sm-6 col-lg-4 col-xl-3 mb-4" key={index}>
-                                    {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null) && (
-                                        <span  className="sale-tag position-absolute">Sale Live</span>
-                                    )}
-                                    <div className="latest-prods card card-shadows " style={{height: "100%"}} >   
-                                        <AppImage 
-                                            src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.url} 
-                                            className="card-img-top img-prod-height pointer "
-                                            style={{height: '20rem', objectFit: 'contain', borderTopLeftRadius: "30px", borderTopRightRadius: "30px", filter:`${product.attributes.stock_count == 0 ? "blur(3px)" : "none"}`}} 
-                                            onClick={() => handleProductClick(product)}    
-                                        />
-                                        {product.attributes.stock_count == 0 &&  
-                                            <div onClick={() => handleProductClick(product)} className='out-of-stock d-flex position-absolute justify-content-center align-items-center' >
-                                                <p className='text-out-of-stock mb-0'>
-                                                <FormattedMessage id="OUT_OF_STOCK" />
-                                                </p>
-                                            </div>
-                                        }
-                                        <div className="card-body">
-                                            <div className="row g-1">
-                                                <div className="col-12">
-                                                    <span className="article-number regularfont mini-text"
-                                                    >
-                                                       <FormattedMessage id="ARTICLE" /> #{product?.attributes?.article_number}
-                                                    </span>
-                                                </div>
-                                                <div className="col-12">
-                                                    <span className="product-name regularfont"
-                                                        style={{"cursor": "pointer"}} 
+                            {!latestItems.length && (
+                                <div className="w-100 text-center mt-4">
+                                    <p className="">No products available</p>
+                                </div>
+                            )}
+                            {latestItems &&
+                                latestItems.map((product: any, index: any) => {
+                                    return (
+                                        <div className="col-12 col-sm-6 col-lg-4 col-xl-3 mb-4" key={index}>
+                                            {product.attributes?.sale?.data?.attributes?.discount_percentage_value !=
+                                                0 &&
+                                                product.attributes.sale.data != null && (
+                                                    <span className="sale-tag position-absolute">Sale Live</span>
+                                                )}
+                                            <div className="latest-prods card card-shadows " style={{ height: "100%" }}>
+                                                <AppImage
+                                                    src={
+                                                        BASE_URL +
+                                                        product?.attributes?.product_image?.data?.attributes?.url
+                                                    }
+                                                    className="card-img-top img-prod-height pointer "
+                                                    style={{
+                                                        height: "20rem",
+                                                        objectFit: "contain",
+                                                        borderTopLeftRadius: "30px",
+                                                        borderTopRightRadius: "30px",
+                                                        filter: `${
+                                                            product.attributes.stock_count == 0 ? "blur(3px)" : "none"
+                                                        }`,
+                                                    }}
+                                                    onClick={() => handleProductClick(product)}
+                                                />
+                                                {product.attributes.stock_count == 0 && (
+                                                    <div
                                                         onClick={() => handleProductClick(product)}
-                                                    >{product?.attributes?.title}</span>
-                                                </div>
-                                                <div className="col-12 d-flex justify-content-between">
-                                                {
-                                                    (product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product.attributes.sale.data != null) ?
-                                                    <span className="product-price">
-                                                        <s>€{product?.attributes?.price}</s> 
-                                                        €{discountedPrice(product.attributes.price, product.attributes.sale.data.attributes.discount_percentage_value)}
-                                                    </span> :
-                                                    <span className="product-price">€{product?.attributes?.price}</span>
-                                                }
-                                                    {/* {product.attributes.stock_count === 0 ? 
+                                                        className="out-of-stock d-flex position-absolute justify-content-center align-items-center"
+                                                    >
+                                                        <p className="text-out-of-stock mb-0">
+                                                            <FormattedMessage id="OUT_OF_STOCK" />
+                                                        </p>
+                                                    </div>
+                                                )}
+                                                <div className="card-body">
+                                                    <div className="row g-1">
+                                                        <div className="col-12">
+                                                            <span className="article-number regularfont mini-text">
+                                                                <FormattedMessage id="ARTICLE" /> #
+                                                                {product?.attributes?.article_number}
+                                                            </span>
+                                                        </div>
+                                                        <div className="col-12">
+                                                            <span
+                                                                className="product-name regularfont"
+                                                                style={{ cursor: "pointer" }}
+                                                                onClick={() => handleProductClick(product)}
+                                                            >
+                                                                {product?.attributes?.title}
+                                                            </span>
+                                                        </div>
+                                                        <div className="col-12 d-flex justify-content-between">
+                                                            {product.attributes?.sale?.data?.attributes
+                                                                ?.discount_percentage_value != 0 &&
+                                                            product.attributes.sale.data != null ? (
+                                                                <span className="product-price">
+                                                                    <s>€{product?.attributes?.price}</s>€
+                                                                    {discountedPrice(
+                                                                        product.attributes.price,
+                                                                        product.attributes.sale.data.attributes
+                                                                            .discount_percentage_value
+                                                                    )}
+                                                                </span>
+                                                            ) : (
+                                                                <span className="product-price">
+                                                                    €{product?.attributes?.price}
+                                                                </span>
+                                                            )}
+                                                            {/* {product.attributes.stock_count === 0 ? 
                                                         (<AppImage
                                                             src="images/cart-svg.svg"
                                                             className="pointer add_to_cart"
@@ -1081,13 +1361,13 @@ function Home() {
                                                             className="pointer add_to_cart"                      
                                                         />)
                                                     } */}
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                )
-                            })}   
+                                    );
+                                })}
                         </div>
                     </section>
                 </div>

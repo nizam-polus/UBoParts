@@ -190,16 +190,25 @@ function SellerRegistration() {
         if (!incomplete) {
             if (!user || (user && !user.id)) {
                 sellerData.password = cnfrmPassword;
+
                 APIs.register(sellerData).then(response => {
-                    localStorage.setItem('usertoken', response.data.jwt);
-                    getAndSaveUser(response.data.user.id);
-                    toast.success(()=>(<FormattedMessage id="SELLER_SUCCESS" />))
+                    APIs.getSellerAccount({
+                        "country_iso": formData.country == "uk" ? "GBR" : "NLD",
+                        "email": formData.email.toLowerCase(),
+                        "kvk_number": formData.kvk_number
+                    }).then((res) =>{
+                        console.log("getselleraccount response",res)
+                        localStorage.setItem('usertoken', response.data.jwt);
+                        getAndSaveUser(response.data.user.id);
+                        toast.success(()=>(<FormattedMessage id="SELLER_SUCCESS" />))
+                    })
                 }).catch(err => {
                     let errMessage = err?.response?.data?.error?.message || 'Something went wrong!';
                     toast.error(errMessage);
                     console.log(err.response.data.error);
                 })
             } else {
+                
                 APIs.updateSpecificUser(user.id, sellerData).then(response => {
                     getAndSaveUser(response.data.id);
                     APIs.userToSeller({user_email_id: sellerData.email, lang: language.value})
@@ -222,7 +231,6 @@ function SellerRegistration() {
             router.push('/homepage');
         })
     }
-    
 
     return (
         <>
@@ -433,7 +441,7 @@ function SellerRegistration() {
                                                                     />
                                                                 </td>
                                                             </tr>
-                                                            <tr className="single">
+                                                            {/* <tr className="single">
                                                                 <td colSpan={2}>
                                                                     <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">{locale == "nl" ? "KVK Kamer van Koophandel Nummer" : "KVK Chamber of Commerce Number"}  <span className="required">*</span></label>
                                                                     <input type="text" value={formData.kvk_number}
@@ -442,9 +450,20 @@ function SellerRegistration() {
                                                                         onChange={(e) => handleFormChange(e)}
                                                                     />
                                                                 </td>
-                                                            </tr>
+                                                            </tr> */}
                                                         </>
                                                     }
+                                                    {/* for merchant account */}
+                                                            <tr className="single">
+                                                                <td colSpan={2}>
+                                                                    <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">{locale == "nl" ? "KVK Kamer van Koophandel Nummer" : "KVK Chamber of Commerce Number"}  <span className="required">*</span></label>
+                                                                    <input type="text" value={formData.kvk_number}
+                                                                        className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.kvk_number ? 'required-field' : 'border-0'}`}
+                                                                        name="kvk_number" placeholder={placeholderTranslations[locale]['kvk_number']}
+                                                                        onChange={(e) => handleFormChange(e)}
+                                                                    />
+                                                                </td>
+                                                            </tr>
                                                     <tr className="single">
                                                         <td colSpan={2}>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="COUNTRY"/> <span className="required">*</span></label>

@@ -147,6 +147,10 @@ const APIs = {
 
     newsletter: (email: string) => axios.post(BACKEND_URL + 'newsletters', {data: {email}}, {headers}),
 
+    getSellerAccount: (data: any) => axios.post(BACKEND_URL + "seller-merchant-account", data, {headers}),
+
+    paymentRefund: (data: any) => axios.post(BACKEND_URL + "refund-amount", data, {headers}),
+
 
         /* ---------------- jwt token based apis ----------------- */
 
@@ -198,7 +202,18 @@ const APIs = {
 
     getAdminStatus: () => ds.get(BACKEND_URL + 'merchant-profile-data'),
 
-    getAccountStatus: (data: any) => ds.post(BACKEND_URL + "merchant-specific-bank-details", data)
+    getAccountStatus: (data: any) => ds.post(BACKEND_URL + "merchant-specific-bank-details", data),
+
+    getMerchantStatus: (data: any) => ds.post(BACKEND_URL + "seller-merchant-profile-data", data),
+
+    getAllSellers: () => ds.get(BACKEND_URL + "users?populate=*&sort[0]=createdAt:desc&pagination[page]=1&pagination[pageSize]=10&filters[$and][0][user_type][$eq]=seller"),
+
+    approveAccount: (data: any) => ds.post(BACKEND_URL + "approve-bank-account", data),
+
+    approveContact: (data: any) => ds.post(BACKEND_URL + "approve-contact", data),
+
+    approveUbo: (data: any) => ds.post(BACKEND_URL + "approve-ubo", data)
+
 }
 
 export default APIs

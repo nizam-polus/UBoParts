@@ -38,7 +38,7 @@ function Contact_us() {
             };
             APIs.contactUs(contactData)
             .then(() => {
-                toast.success('Form submitted.');
+                toast.success(() => ( <FormattedMessage id="FORM_SUCCESS" /> ));
                 setName('');
                 setEmail('');
                 setSubject('');

@@ -23,6 +23,7 @@ function OrderDetails() {
     const [total, setTotal] = useState<number>(0);
     const [hide, setHide] = useState(true)
     const [shippingCost, setShippingCost] = useState(0)
+    const [status, setStatus] = useState("")
 
 
     useEffect(() => {
@@ -31,8 +32,10 @@ function OrderDetails() {
             setOrderDetails(orders);
             let invoiceID = orders[0]?.attributes?.invoice_id
             let shippingCost = orders[0]?.attributes?.shipping_cost
+            let status = orders[0]?.attributes?.status
             setInvoiceId(invoiceID)
             setShippingCost(shippingCost)
+            setStatus(status)
             if (orders.length) {
                 let total = 0;
                 let totalDiscount = 0;
@@ -97,6 +100,9 @@ function OrderDetails() {
                                             <span className="pl-1">#</span>
                                             <span className=" order-no regularfont body-sub-titles">{orderId}</span>
                                         </span>
+                                        <span data-value={status} className="badge badge-pill badge-info px-3 py-2 ml-2 ubo-badge">
+                                                        {status}
+                                            </span>
                                     </div>
                                    
                                     <div className="col-4 d-flex flex-row-reverse">

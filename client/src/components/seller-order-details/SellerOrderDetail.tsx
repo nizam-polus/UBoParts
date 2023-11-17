@@ -8,6 +8,7 @@ import { UserContext } from "../account_/UserContext";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { FormattedMessage } from "react-intl";
+import { toast } from "react-toastify";
 
 function SellerOrderDetails() {
 
@@ -24,6 +25,7 @@ function SellerOrderDetails() {
     const [customer, setCustomer] = useState<any>();
     const [hide, setHide] = useState(true)
     const [shippngCost, setShippingCost] = useState(0)
+    const [transactionId, setTransactionId] = useState("")
 
     useEffect(() => {
         APIs.getOrderDetails(orderId).then(response => {
@@ -33,9 +35,11 @@ function SellerOrderDetails() {
             let invoiceID = orders[0]?.attributes?.invoice_id
             let shippingCost = orders[0]?.attributes?.shipping_cost
             let status = orders[0]?.attributes?.status
+            let transactionId = orders[0]?.attributes?.transaction_id
             setInvoiceId(invoiceID)
             setShippingCost(shippingCost)
             setStatus(status)
+            setTransactionId(transactionId)
             APIs.getSpecificUser(customerId).then(response => {
                 setCustomer(response.data);
                 console.log(response.data)
@@ -86,6 +90,19 @@ function SellerOrderDetails() {
         setHide(false);
       };
 
+      const paymentRefundFunction = () =>{
+        APIs.paymentRefund({
+            "transactionUid": transactionId,
+            "payoutDescription": "Your transaction refunded due to technical reasons"
+        }).then((res) =>{
+            console.log(res)
+            toast.success("refunded")
+        }).catch((err) =>{
+            console.log(err)
+            toast.error(err)
+        })
+    }
+
     return (
         <> 
             <div className="main-body pb-2 mb-5">
@@ -107,8 +124,13 @@ function SellerOrderDetails() {
                                             <span data-value={status} className="badge badge-pill badge-info px-3 py-2 ml-2 ubo-badge">
                                                         {status}
                                             </span>
+                                            {
+                                            status == "completed" ? 
+                                                <button onClick={paymentRefundFunction} className="badge badge-pill badge-warning px-3 py-2 ml-2 ubo-badge">Click to Refund</button>
+                                            :
+                                                ""
+                                            }
                                         </div>
-                                    
                                         <div className="col-4 d-flex flex-row-reverse">
                                             <button onClick={downloadPdf} className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2" style={{visibility: hide ? "visible" : "hidden"}}><FormattedMessage id="DOWNLOAD"/></button>
                                         </div>

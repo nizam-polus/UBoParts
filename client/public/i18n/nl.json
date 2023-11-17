@@ -409,7 +409,7 @@
     "CONTACT_US": "Neem contact met ons op",
     
     "REQUEST_PARTS": "Vraag onderdelen bij ons aan",
-    "REQUEST_PART": "Onderdelen aanvragen",
+    "REQUEST_PART": "Bestel je onderdelen",
     "REQUEST_DISCRIPTION" : "Blader door ons uitgebreide aanbod met honderden merken en tienduizenden kwaliteitsonderdelen.",
     "PLATE_NO": "Plaat nummer",
     "AUTO_MODEL": "Automodel",
@@ -569,8 +569,8 @@
   "FOLLOW_US": "Volg ons op sociale netwerken",
 
   "SELL_QUALITY_PARTS": "Verkoop kwaliteitsonderdelen",
-  "SELL_CAR_PARTS": "Auto-onderdelen verkopen",
-  "IN_A_CLICK": "in één klik",
+  "SELL_CAR_PARTS": "Onderdelen verkopen is",
+  "IN_A_CLICK": "nooit zo makkelijk geweest",
   "CREATE_PASSWORD": "Maak een wachtwoord",
   "ACCEPT_TERMS_AND_CONDITIONS": "Accepteer algemene voorwaarden",
 
@@ -660,6 +660,7 @@
   "NOT_DELIVERABLE": "Productgewicht of bezorgregio komt niet in aanmerking voor verzending.",
   "COMPLETE_PROFILE": "Vul alstublieft uw profiel in om verder te gaan.",
   "PAYMENT_INITIATED": "De betaling is al gestart.",
+  "SOME_OUT_OF_STOCK": "Sommige producten zijn niet op voorraad",
   "COMPLETE_PROFILE_LOGIN": "Vul alstublieft uw profiel in. Negeer als dit al is gedaan.",
   "ENTER_EMAIL_PASSWORD": "Voer alstublieft uw e-mail en wachtwoord in.",
   "INVALID_CRED": "Ongeldige inloggegevens.",
@@ -670,8 +671,27 @@
   "PASSWORD_CONDITION": "Wachtwoord moet tenminste 6 tekens bevatten",
   "PASSWORD_NOT_MATCH": "Wachtwoord komt niet overeen",
   "LATEST": "Nieuwste",
-    "PRICE_H_L": "Prijs: Hoog naar Laag",
-    "PRICE_L_H": "Prijs: Laag naar Hoog"
+  "PRICE_H_L": "Prijs: Hoog naar Laag",
+  "PRICE_L_H": "Prijs: Laag naar Hoog",
+  "ORDER_SUMMARY": "Overzicht van de bestelling",
+  "ORDER_PLACED_SUCCESS": "Bestelling succesvol geplaatst",
+  "PAYMENT_TRANSACTION": "Betalingstransactie",
+  "REDIRECT_TO_HOME": "U wordt doorgestuurd naar de startpagina.",
+  "PAYMENT_TRANSACTION_PENDING": "Betalingstransactie is in behandeling...",
+  "REQUEST_PROCESSED": "Uw verzoek wordt verwerkt...",
+
+  "SELL_DESCRIPTION_1": "Verkoop je onderdelen moeiteloos met slechts een paar klikken.",
+  "SELL_DESCRIPTION_2": "Snel en efficiënt jouw onderdelen verkopen",
+  "DISMANTLE_TITLE": "Uw hele auto verkopen?",
+  "DISMANTLE_TITLE_2": "Wij halen uw auto binnen 24 uur op ",
+
+  "DISMANTLE_DESCRIPTION_1": "Eenvoudig je auto verkopen, zonder gedoe.",
+  "DISMANTLE_DESCRIPTION_2": "Wij zorgen voor een vlotte afhandeling en halen je auto snel op.",
+
+  "REQUEST_DESCRIPTION_1": "Bestel nu voor een verbeterde rijervaring en betrouwbare prestaties op de weg",
+  "REQUEST_DESCRIPTION_2": "Vertrouw op ons voor de beste kwaliteit en snelle levering.",
+
+  "ACCOUNT": "Rekening"
   }
   
   

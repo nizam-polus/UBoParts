@@ -2,6 +2,7 @@ import { BASE_URL } from "configuration";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { FormattedMessage } from "react-intl";
 import { toast } from "react-toastify";
 import { UserContext } from "~/components/account_/UserContext";
 import APIs from "~/services/apiService";
@@ -48,6 +49,14 @@ function PaymentResult() {
                             setStatus('expired');
                             setPaymentStatus('expired')
                             break;
+                        case 'planned' :
+                            setStatus("planned")
+                            paymentRefundFunction()
+                            break;
+                        case 'reserved' :
+                            setStatus("reserved");
+                            paymentRefundFunction()
+                            break;
                         default:
                             setPath('/homepage');
                             setStatus(status);
@@ -86,6 +95,24 @@ function PaymentResult() {
         }, 1000 * 60 * 60);
     }, [status])
 
+    const paymentRefundFunction = () =>{
+        let transactionId;
+        if (typeof window !== 'undefined') {
+            transactionId = localStorage.getItem('uid') || '';
+        }
+        APIs.paymentRefund({
+            "transactionUid": transactionId,
+            "payoutDescription": "Refunded due to transaction is pending"
+        }).then((res) =>{
+            console.log(res)
+            toast.success(res)
+        }).catch((err) =>{
+            console.log(err)
+            toast.error(err)
+        })
+
+    }
+
     const getOrderDetails = () => {
         let transactionId;
         if (typeof window !== 'undefined') {
@@ -110,26 +137,27 @@ function PaymentResult() {
             }
         }).catch(err => console.log(err));
     }
+    console.log(status)
 
     return (
         <>
             {(!status || status === 'created') ? 
                 <div style={{textAlign: 'center', position: 'relative', marginTop: '10%'}}>
-                    <h2>Your request is being processed ...</h2>  
+                    <h2><FormattedMessage id="REQUEST_PROCESSED"/></h2>  
                     <h4>
                         {`${Math.floor(time / 60)}`.padStart(2, '0')}:{`${time % 60}`.padStart(2, '0')}
                     </h4>
                 </div> : status === 'pending' ? 
                 <div style={{textAlign: 'center', position: 'relative', marginTop: '5%'}} className="mb-4">
-                    <h2 className="" >{'Payment transaction is pending...'}</h2>
+                    <h2 className="" ><FormattedMessage id="PAYMENT_TRANSACTION_PENDING" /></h2>
                     <h4>
                         {`${Math.floor(time / 60)}`.padStart(2, '0')}:{`${time % 60}`.padStart(2, '0')}
                     </h4>
                 </div> : 
                 <div style={{textAlign: 'center', position: 'relative', marginTop: '5%'}} className="mb-4">
                     {status === 'completed' && <i className="fa fa-check-circle pb-2" style={{fontSize: '3rem', color: '#587E50'}}></i>}
-                    <h2 className="" >{status === 'completed' ? 'Order placed successfully' : 'Payment transaction ' + status }</h2>
-                    <p>{ status !== 'completed' && 'You will be redirected to homepage.' }</p>
+                    <h2 className="" >{status === 'completed' ? <FormattedMessage id="ORDER_PLACED_SUCCESS" /> : "Payment " + status }</h2>
+                    <p>{ status !== 'completed' && <FormattedMessage id="REDIRECT_TO_HOME" /> }</p>
                 </div>
             }
             {status === 'completed' &&
@@ -138,13 +166,13 @@ function PaymentResult() {
                         <div className="container">
                             <section className="quote-wrapper my-5">
                                 <div className="row">
-                                    <div className="col-3"></div>
-                                    <div className="col-6">
+                                    <div className="col-3 d-none d-lg-block"></div>
+                                    <div className="col-lg-6 col-12">
                                         <div className="coulmn-bg-color-1 rounded px-3 pb-5 pt-3">
                                             <div className="m-0 pt-3 ml-3">
                                                 <div className="row">
                                                     <div className="col-12">
-                                                        <span className="custom-color-2 boldfont body-sub-titles">Order Summary</span>
+                                                        <span className="custom-color-2 boldfont body-sub-titles"><FormattedMessage id="ORDER_SUMMARY"/></span>
                                                         <p className="custom-color-2 regularfont body-sub-titles-2">Order Id: {products[0]?.attributes?.orderid}</p>
                                                         <hr />
                                                     </div>
@@ -165,7 +193,7 @@ function PaymentResult() {
                                                                                     </td>
                                                                                     <td className="custom-color-2 boldfont placeholderfontsize border-0 pl-4 ps-3 pb-3 pt-3 align-middle w-75">
                                                                                         <Link href={'/products_/' + product?.attributes?.product_id}>{product?.attributes?.product_name}</Link><br />
-                                                                                        <span className="lightfont body-sub-titles-2">Quantity: {product?.attributes?.quantity}</span>
+                                                                                        <span className="lightfont body-sub-titles-2"><FormattedMessage id="QUANTITY"/>: {product?.attributes?.quantity}</span>
                                                                                     </td>
                                                                                     <td className="w-25">€{(product?.attributes?.total_price - product.attributes.discount_price * product.attributes.quantity).toFixed(2)}</td>
                                                                                 </tr>
@@ -182,7 +210,7 @@ function PaymentResult() {
                                                     <table className="w-100">
                                                         <tbody>
                                                             <tr>
-                                                                <td className="w-75 pl-4">Shipping Cost</td>
+                                                                <td className="w-75 pl-4"><FormattedMessage id="SHIPPING"/></td>
                                                                 <td className="w-25">€{shippingCost}</td>
                                                             </tr>
                                                         </tbody>
@@ -193,7 +221,7 @@ function PaymentResult() {
                                                     <table className="w-100">
                                                         <tbody>
                                                             <tr>
-                                                                <td className="w-75 pl-4 boldfont">Total</td>
+                                                                <td className="w-75 pl-4 boldfont"><FormattedMessage id="TOTAL"/></td>
                                                                 <td className="w-25 boldfont">€{(total + shippingCost - totalDiscount).toFixed(2)}</td>
                                                             </tr>
                                                         </tbody>
@@ -202,7 +230,7 @@ function PaymentResult() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-3"></div>
+                                    <div className="col-3 d-none d-lg-block"></div>
                                 </div>
                             </section>
                         </div>
