@@ -101,7 +101,8 @@ function PaymentResult() {
             transactionId = localStorage.getItem('uid') || '';
         }
         APIs.paymentRefund({
-            "transactionUid": transactionId
+            "transactionUid": transactionId,
+            "payoutDescription": "Refunded due to transaction is pending"
         }).then((res) =>{
             console.log(res)
             toast.success(res)
