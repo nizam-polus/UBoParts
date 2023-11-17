@@ -128,12 +128,12 @@ function SellerAccount() {
                                                     <div className="px-sm-3">
                                                         <ul>
                                                             <div>
-                                                                {merchantRequirements &&
+                                                                {merchantRequirements.length ?
                                                                     merchantRequirements.map((item: any, index: any) => {
                                                                         return (
                                                                             <li>
                                                                                 {item.type.replace(/\.required$/, '')} :{" "}
-                                                                                <span className="badge badge-pill badge-info ml-2">
+                                                                                <span className={`badge badge-pill ${item.status == "unverified" ? "badge-danger" : "badge-warning"} ml-2`}>
                                                                                     {" "}
                                                                                     {item.status}
                                                                                 </span>
@@ -146,7 +146,7 @@ function SellerAccount() {
                                                                                 
                                                                             </li>
                                                                         );
-                                                                    })}
+                                                                    }) : "Nil"}
                                                             </div>
                                                         </ul>
                                                     </div>
