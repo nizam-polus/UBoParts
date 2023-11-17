@@ -50,11 +50,11 @@ function PaymentResult() {
                             setPaymentStatus('expired')
                             break;
                         case 'planned' :
-                            setStatus("planned")
+                            setStatus("pending")
                             paymentRefundFunction()
                             break;
                         case 'reserved' :
-                            setStatus("reserved");
+                            setStatus("pending");
                             paymentRefundFunction()
                             break;
                         default:
@@ -106,6 +106,7 @@ function PaymentResult() {
         }).then((res) =>{
             console.log(res)
             toast.success(res)
+            router.push("/")
         }).catch((err) =>{
             console.log(err)
             toast.error(err)
