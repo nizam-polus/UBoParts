@@ -8,9 +8,12 @@ import { BASE_URL } from 'configuration';
 import { UserContext } from '../account_/UserContext';
 import { toast } from 'react-toastify';
 import { FormattedMessage } from 'react-intl';
-import { withAuth } from '~/utils/withAuth';
+// import UseAuth from "../UseAuth"
+
 
 function Cart() {
+
+    // UseAuth(['seller', 'authenticated']);
 
     const { user, saveUser, setCartCount, language } = UserContext();
     const [cartProducts, setCartProducts] = useState<any>([]);
@@ -70,9 +73,9 @@ function Cart() {
                 setTotalDiscount(totalDiscount)
             }
         })
-            .catch((error) => {
-                // setError(error);
-            });
+        .catch((error) => {
+            // setError(error);
+        });
     }, []);
 
     const handleCartItemDelete = (product: any) => {
@@ -157,6 +160,7 @@ function Cart() {
                 }
             }).catch((error) => {
                 console.error(error);
+                toast.error("Someting went wrong")
             });
            
         }).catch(err => {

@@ -65,7 +65,6 @@ function Request() {
     const [incomplete, setIncomplete] = useState(false);
     const [licensePlate, setLicenseplate] = useState("")
 
-
     const checkFormStatus = () => {
         let incomplete = true;
         incomplete = !(!!formData.plate_number && !!formData.auto_model && !!imageData && 

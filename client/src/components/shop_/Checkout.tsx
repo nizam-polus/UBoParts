@@ -143,8 +143,6 @@ function Checkout() {
                 });
                 let totalShippingCost = 0;
                 let shippingcostapidataArray: any = [];
-        
-                // Create an array of promises for each seller's shipping data
                 const shippingDataPromises = sellerIdsArray.map((sellerId: any) => {
                     return APIs.getSpecificUser(sellerId).then((res) => {
                         let shippingCountryCode = getContryCode(res.data.shippingaddress_country, countries);
@@ -181,10 +179,7 @@ function Checkout() {
                         if (!res || (res && !res.data.length) ) {
                             setTotal(Number(total));
                         } else {
-                            // Calculate the total shipping cost
-                            const shippingCostArray = res.data; // Assuming res.data is your array
-                    
-                            // Use reduce to sum up the shipping costs
+                            const shippingCostArray = res.data; 
                             const totalShippingCost = shippingCostArray.reduce((total: any, item: any) => {
                                 return total + parseFloat(item.price_details);
                             }, 0);                    

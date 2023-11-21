@@ -102,13 +102,11 @@ function Create_new_listing() {
         const userid = userDetailsJSON.id;
         setUname(username)
         setUid(userid)
-        // Fetch categories data
         APIs.getCategories().then((response) => {
-            const categoriesData = response.data.data; // Access the "data" property
-            // Extract category names
+            const categoriesData = response.data.data; 
             const categoryNames = categoriesData.map((category: any) => category.attributes.category_name);
             setCategoriesDetails(categoryNames);
-            setCategoriesData(categoriesData); // Set categoriesData state here
+            setCategoriesData(categoriesData); 
         }).catch((error) => {
             setError(error);
         });
@@ -116,9 +114,9 @@ function Create_new_listing() {
         APIs.getCarMake().then((response: any) => {
             setMakesArray(response.data.rows);
         })
-            .catch((error) => {
-                setError(error);
-            });
+        .catch((error) => {
+            setError(error);
+        });
     }, []);
 
     useEffect(() => {
@@ -316,7 +314,6 @@ function Create_new_listing() {
         const selectedCategory = event.target.value;
         setSelectedCategory(selectedCategory);
 
-        // Find the selected category's ID based on its name
         const selectedCategoryData = categoriesData.find(
             (category: any) => category.attributes.category_name === selectedCategory
         );
@@ -324,21 +321,18 @@ function Create_new_listing() {
         if (selectedCategoryData) {
             const selectedCategoryId = selectedCategoryData.id;
             setSelectedCategoryId(selectedCategoryId);
-            // Fetch subcategories based on the selected category's ID
             APIs.getSubcategories(selectedCategoryId)
                 .then((response) => {
-                    // Extract subcategory data
                     const subcategoryData = response.data.rows;
                     setSubcategories(subcategoryData);
-                    // Reset the selected subcategory ID to an empty string when the category changes
-                    setSelectedSubcategoryId(""); // This line resets the selected subcategory ID
-                    // You can optionally select the first subcategory by default if needed
+                    setSelectedSubcategoryId(""); 
                     if (subcategoryData.length > 0) {
                         setSelectedSubcategoryId(subcategoryData[0].id);
                     }
                 })
                 .catch((error) => {
                     console.error('Error fetching subcategories:', error);
+                    toast.error("Error fetching subcategories")
                 });
         }
     };
@@ -358,7 +352,6 @@ function Create_new_listing() {
     };
 
     const handlePartSelect = (partName: any) => {
-        // Update the listName state with the selected part
         setSelectedItem(partName);
         setListName(partName);
         setInputValue(partName);
@@ -527,16 +520,12 @@ function Create_new_listing() {
                             })(i);
                         }
                     } else {
-                        // Handle the case where productImage is not defined
                         console.error("No product image selected.");
                         setClicked(false)
                     }
-
-                    // Wait for all image upload promises to complete
                     return Promise.all(uploadPromises);
                 })
                 .then(() => {
-                    // All images have been uploaded, now you can navigate to the new page
                     router.push('/seller/listings');
                     setClicked(false)
                 })

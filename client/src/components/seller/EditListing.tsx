@@ -108,15 +108,15 @@ function EditListing() {
         setCategoriesDetails(categoryNames);
         setCategoriesData(categoriesData); 
       }).catch((error) => {
-                  setError(error);
-              });
+        setError(error);
+      });
       APIs.getCarMake().then((response: any) => {
           setMakesArray(response.data.rows);
           getCardetails();
       })
-        .catch((error) => {
-            setError(error);
-        });
+      .catch((error) => {
+        setError(error);
+      });
     }, []);
 
     useEffect(() => {
@@ -126,6 +126,7 @@ function EditListing() {
         })
         .catch(error => {
           console.error('Error fetching data:', error);
+          toast.error("Error fetching sale offers")
         });
     }, []); 
 
@@ -166,7 +167,6 @@ function EditListing() {
       setLocationText(response.data.data.attributes.product_location_warehouse.slice(3))
       APIs.getSubcategories(response.data.data.attributes.category.data.id)
         .then((response) => {
-          // Extract subcategory data
           const subcategoryData = response.data.rows;
           setSubcategories(subcategoryData);
           const initialSubcategory: any = subcategories.find(
@@ -175,7 +175,6 @@ function EditListing() {
           if (initialSubcategory) {
             setSelectedSubcategoryId(initialSubcategory.id);
           }
-
           setSelectedMake(make)
           getModel(make)
           setSelectedModel(model)

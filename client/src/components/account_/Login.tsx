@@ -104,12 +104,14 @@ function Login(props: any) {
                 .catch((error) => {
                     setInvalidCred(true)
                     console.log('error ', error);
+                    toast.error(error)
                 });
             } else {
                 setInvalidInput(true)
             }
         } catch (error) {
             console.error('Login failed:', error);
+            toast.error("Login failed")
         }
     };
 

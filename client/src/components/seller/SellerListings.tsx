@@ -6,7 +6,6 @@ import SellerSideBar from './SellerSideBar';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import APIs from '~/services/apiService';
-import WidgetSearch from '../widgets/WidgetSearch';
 import { UserContext } from '../account_/UserContext';
 import { FormattedMessage } from 'react-intl';
 
@@ -14,8 +13,8 @@ import { FormattedMessage } from 'react-intl';
 function SellerListings() {
     
     const {user} = UserContext();
-
     const router = useRouter();
+
     const [uname, setUname] = useState<any>("");
     const [sellerList, setSellerList] = useState<any>([]);
     const [isDeleting, setIsDeleting] = useState(false);
