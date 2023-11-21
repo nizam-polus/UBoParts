@@ -81,20 +81,15 @@ function Productsingle() {
            
             APIs.getCartData({ customerid: user.id }).then(response => {
                 let productCartItems = response.data.rows;
-                // Find the quantity of the product with the given product ID
                 for (const cartItem of productCartItems) {
                     if (cartItem.product_id === productData?.id) {
                         productQuantityInCart = cartItem.quantity + quantity;
                         break; 
                     }
                 }
-                // Fetch the product stock count
                 APIs.getProduct(cartData.productid).then(response => {
                     let productStock = response.data.data.attributes.stock_count;
-        
-                    // Check if the quantity exceeds the stock count
                     if ((productQuantityInCart <= productStock )&& (quantity <= productStock)) {
-                        // Quantity is within stock limit, add to cart
                         APIs.addToCart(cartData).then(response => {
                             toast.success(() => (
                                 <>
@@ -113,7 +108,6 @@ function Productsingle() {
                             setAddToCartCompleted(true)
                         });
                     } else {
-                        // Quantity exceeds stock limit, display a toast message
                         toast.error(() => (
                             <>
                             <FormattedMessage id="STOCK_EXCEEDED" />
@@ -156,16 +150,14 @@ function Productsingle() {
 
        
     useEffect(() => {
-           // Function to filter and get the latest 4 items based on category
         const getLatestItemsByCategory = (categoryName: any) => {
            
         if (!products || products.length === 0) {
-             return []; // Handle the case when products array is empty
+             return []; 
         }
         if (categoryName === 'All') {
             return products.slice(0, 4);
         } else {
-                   // Check if the category exists in the data before filtering
                 const filteredProducts = products.filter(
                 (product: any) => (
                 (product.attributes.category.data.attributes.category_name === categoryName ) && (product.id != id)
@@ -174,8 +166,6 @@ function Productsingle() {
             return  filteredProducts.slice(0, 4);
         }
     };
-       
-           // Call the function and set the latest items whenever products or selectedCategory changes
         setLatestItems(getLatestItemsByCategory(productCategory));
     }, [products, productCategory]);
    
@@ -403,10 +393,6 @@ function Productsingle() {
                                         <div className="tab-pane fade show active custom-color-3 regularfont select-options" id="description" role="tabpanel" aria-labelledby="description-tab">
                                             {productData?.attributes?.description}
                                         </div>
-                                        {/* <div className="tab-pane fade custom-color-3 regularfont select-options" id="specifications" role="tabpanel" aria-labelledby="specifications-tab">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.</div>
-                                        <div className="tab-pane fade custom-color-3 regularfont select-options" id="features" role="tabpanel" aria-labelledby="features-tab">It is a long established fact that a reader will be distracted by the readable content of a page when looking</div>
-                                        <div className="tab-pane fade custom-color-3 regularfont select-options" id="faq" role="tabpanel" aria-labelledby="faq-tab">It is a long established fact that a reader will be distracted by the readable content of a page when looking</div>
-                                        <div className="tab-pane fade custom-color-3 regularfont select-options" id="ratings" role="tabpanel" aria-labelledby="ratings-tab">It is a long established fact that a reader will be distracted by the readable content of a page when looking</div> */}
                                     </div>
                                 </div>
                             </div>
@@ -417,12 +403,6 @@ function Productsingle() {
                             <div className="col-12 d-lg-flex justify-content-between">
                                 <div><span className="popular_categories body-sub-titles regularfont"><FormattedMessage id="RELATED_PRODUCTS"/></span>
                                 </div>
-                                {/* <div className="mt-3 mt-lg-0">
-                                    <button type="button" className="saleoffers regularfont body-sub-titles active">All</button>
-                                    <button type="button" className="saleoffers regularfont body-sub-titles">Audio</button>
-                                    <button type="button" className="saleoffers regularfont body-sub-titles">Lights</button>
-                                    <button type="button" className="saleoffers regularfont body-sub-titles">Body Parts</button>
-                                </div> */}
                             </div>
                         </div>
                     </section>

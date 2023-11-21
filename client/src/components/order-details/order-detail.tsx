@@ -55,7 +55,6 @@ function OrderDetails() {
     
           if (input) {
             const mainPdf = new jsPDF('p', 'mm', 'a4', true);
-    
             html2canvas(input, { logging: true, allowTaint: false, useCORS: true, onclone: function (clonedDoc: any) {
                 // I made the div hidden and here I am changing it to visible
                clonedDoc.getElementById('footer1').style.visibility = 'visible';

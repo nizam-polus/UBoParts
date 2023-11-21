@@ -4,7 +4,6 @@ import { UserContext } from '../account_/UserContext';
 
 function AdminSideBar() {
 
-    const {user} = UserContext();
     const router = useRouter();
     
     return (

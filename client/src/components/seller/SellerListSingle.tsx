@@ -1,7 +1,6 @@
 // react
 import React, { useCallback, useEffect, useState, useRef } from 'react';
 import AppImage from '../shared/AppImage';
-import Header_logged_in from '../header_/Header-logged-in';
 import Footer from '../footer_/Footer';
 import { useRouter } from 'next/router';
 import 'react-toastify/dist/ReactToastify.css';

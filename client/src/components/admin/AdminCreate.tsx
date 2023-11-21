@@ -152,7 +152,7 @@ function AdminCreate() {
                                                     <div className="px-sm-3">
                                                         <ul>
                                                             <div>
-                                                                {adminRequirements.length ?
+                                                                {adminRequirements?.length ?
                                                                     adminRequirements.map((item: any, index: any) => {
                                                                         console.log(item.object_type);
                                                                         return (
@@ -343,68 +343,14 @@ function AdminCreate() {
                                                                             </tr>
                                                                         </tbody>
                                                                     </table>
-                                                                </div>
-)
-        })
-        }
-      </div>
-    </div>
-  </div>
-
-  </div>
-
-                                {/* <div className="table-responsive">
-                                    <table className="table profile-table-1 coulmn-bg-color-1 rounded-2 mt-2">
-                                        <tbody>
-                                            <tr>
-                                                <th
-                                                    colSpan={2}
-                                                    className="px-5 pt-3 pb-3 custom-color-3 regularfont subtitles border-top-0 border-bottom "
-                                                >
-                                                    <div className="float-left pt-2">Change Bank Account</div>
-                                                </th>
-                                            </tr>
-                                            <tr className="single">
-                                                <td>
-                                                    <div className="px-sm-3">
-                                                        <label className="custom-color-2 regularfont products-name pb-2">
-                                                            Account Number
-                                                        </label>
-                                                        <input
-                                                            type="text"
-                                                            value={accountNumber}
-                                                            className="form-control input-bg-color-2 border-0 products-name"
-                                                            name="account_number"
-                                                            readOnly
-                                                        />
-                                                    </div>
-                                                    <div className="mb-3 px-sm-3 pt-2">
-                                                        <label className="custom-color-2 regularfont products-name pb-2">
-                                                            Account Name
-                                                        </label>
-                                                        <input
-                                                            type="text"
-                                                            value={accountName}
-                                                            className={`form-control input-bg-color-2 products-name `}
-                                                            name="account_name"
-                                                            readOnly
-                                                        />
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr></tr>
-                                            <div className="row mt-3 mx-2 mb-2 ml-5">
-                                                {verificationURL && (
-                                                    <div className="col">
-                                                        <div className="custom-color-7 mediumfont rounded border-0 button-bg-color-1 pb-2 pt-2 px-5 d-flex align-items-center justify-content-center ubo-btn-mobile">
-                                                            <Link href={verificationURL}>Change Account</Link>
                                                         </div>
-                                                    </div>
-                                                )}
+                                                    )
+                                                })
+                                                }
                                             </div>
-                                        </tbody>
-                                    </table>
-                                </div> */}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </section>

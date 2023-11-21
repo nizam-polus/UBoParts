@@ -42,7 +42,6 @@ function SellerOrderDetails() {
             setTransactionId(transactionId)
             APIs.getSpecificUser(customerId).then(response => {
                 setCustomer(response.data);
-                console.log(response.data)
             })
             if (orders.length) {
                 let total = 0;
