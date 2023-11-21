@@ -14,18 +14,7 @@ function SellerDetails() {
         userdetails = localStorage.getItem('userdetails');
         userdetails = JSON.parse(userdetails);
     }
-    const { user, saveUser } = UserContext();
-    const router = useRouter();
 
-    const [accountName, setAccountName] = useState<any>("");
-    const [accountNumber, setAccountNumber] = useState<any>("")
-    const [incomplete, setIncomplete] = useState<any>(false);
-    const [profilePicURL, setProfilePicURL] = useState<string>('');
-    const [countries, setCountries] = useState<any>([]);
-    const [adminDetails, setAdminDetails] = useState<any>([])
-    const [adminRequirements, setAdminRequirements] = useState<any>([])
-    const [verificationURL, setVerificationURL] = useState("")
-    const [uid, setUid] = useState()
     const [sellersData, setSellersData] = useState([])
     const [sellerAccountData, setSellerAccountData] = useState<any>()
     const [merchantId, steMerchantId] = useState("")
@@ -34,15 +23,14 @@ function SellerDetails() {
 
     useEffect(() => {
         APIs.getAllSellers().then((res) => {
-
             setSellersData(res.data)
             console.log(res.data)
         }).catch((err) => toast.error(err))
     }, []);
 
-    const handleBankAccountShow = () => {
-        document.getElementById('defaultAccount')?.classList.toggle('show');
-    }
+    // const handleBankAccountShow = () => {
+    //     document.getElementById('defaultAccount')?.classList.toggle('show');
+    // }
     const toggleChangeSellerAccountView = (id: any, sellerId: string) => {
         setloading(true)
         setOpenSellerId(openSellerId === sellerId ? null : sellerId);
@@ -128,7 +116,7 @@ function SellerDetails() {
                                     </table>
                                 </div>
                                 {
-                                    sellersData && sellersData.map((item: any, index: any) => {
+                                    sellersData.length && sellersData?.map((item: any, index: any) => {
                                         const sellerId = `seller-${index}`;
                                         return (
                                             <div className="accordion rounded-2 mt-2" id="newBankAccounts" key={index}>

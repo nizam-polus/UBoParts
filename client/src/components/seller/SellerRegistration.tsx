@@ -190,8 +190,8 @@ function SellerRegistration() {
         if (!incomplete) {
             if (!user || (user && !user.id)) {
                 sellerData.password = cnfrmPassword;
-
                 APIs.register(sellerData).then(response => {
+                    console.log("registration response",response)
                     APIs.getSellerAccount({
                         "country_iso": formData.country == "uk" ? "GBR" : "NLD",
                         "email": formData.email.toLowerCase(),
