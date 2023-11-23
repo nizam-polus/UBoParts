@@ -93,6 +93,7 @@ function SellerRegistration() {
     const [countries, setCountries] = useState<any>([]);
     const [newPwdVisible, setNewPwdVisible] = useState(false);
     const [confrmpwdVisible, setConfrmpwdVisible] = useState(false);
+    const [loading, setLoading] = useState(false)
 
 
     useEffect(() => {
@@ -152,6 +153,7 @@ function SellerRegistration() {
 
     const handleSubmit = (event: any) => {
         event.preventDefault();
+        
         let incomplete = checkFormStatus();
         setIncomplete(incomplete);
         let reqElement = document.getElementById('required');
@@ -188,6 +190,7 @@ function SellerRegistration() {
             lang: language.value
         };
         if (!incomplete) {
+            setLoading(true)
             if (!user || (user && !user.id)) {
                 sellerData.password = cnfrmPassword;
                 APIs.register(sellerData).then(response => {
@@ -201,26 +204,33 @@ function SellerRegistration() {
                         localStorage.setItem('usertoken', response.data.jwt);
                         getAndSaveUser(response.data.user.id);
                         toast.success(()=>(<FormattedMessage id="SELLER_SUCCESS" />))
+                        setLoading(false)
                     })
                 }).catch(err => {
                     let errMessage = err?.response?.data?.error?.message || 'Something went wrong!';
                     toast.error(errMessage);
                     console.log(err.response.data.error);
+                    setLoading(false)
                 })
             } else {
                 
                 APIs.updateSpecificUser(user.id, sellerData).then(response => {
                     getAndSaveUser(response.data.id);
                     APIs.userToSeller({user_email_id: sellerData.email, lang: language.value})
-                    .then()
-                    .catch(err => console.log(err))
+                    .then(() => setLoading(false))
+                    .catch((err) => {
+                        console.log(err)
+                        setLoading(false)
+                    })
                 }).catch((err) => {
                     let errMessage = err?.response?.data?.error?.message || 'Something went wrong!';
                     toast.error(errMessage);
                     console.log(err.response.data.error);
+                    setLoading(false)
                 });
             }
         }
+        
     }
 
     const getAndSaveUser = (id: number) => {
@@ -540,8 +550,12 @@ function SellerRegistration() {
                                                     <tr className="single">
                                                         <td colSpan={2} className="">
                                                             <button type="submit" 
+                                                                disabled={loading}
                                                                 className="place-quote text-white mediumfont body-sub-titles-1 rounded-lg border-0 button-bg-color-1 h-auto p-2"
-                                                            ><FormattedMessage id="SUBMIT"/></button>
+                                                                style={{cursor: `${!loading ? "pointer" : "not-allowed"}`}}
+                                                            >
+                                                                {loading ? <FormattedMessage id="LOADING"/> :<FormattedMessage id="SUBMIT"/>}
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 </tbody>

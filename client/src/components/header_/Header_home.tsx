@@ -44,9 +44,11 @@ function Header_home(props: any) {
     }, []);
 
     useEffect(() =>{
-       APIs.getSpecificUser(user.id).then((res) =>{
-        saveUser(res.data)
-       })
+        if(user.id){
+            APIs.getSpecificUser(user.id).then((res) =>{
+             saveUser(res.data)
+            })
+        }
     },[userToken])
 
     useEffect(() => {

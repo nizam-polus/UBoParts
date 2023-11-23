@@ -178,7 +178,7 @@ function SellerDetails() {
                                                                 <div className="px-sm-3">
                                                                     <ul>
                                                                         <div>
-                                                                            {sellerAccountData?.compliance_requirements.length ?
+                                                                            {sellerAccountData?.compliance_requirements?.length ?
                                                                                 sellerAccountData?.compliance_requirements.map((item: any, index: any) => {
                                                                                     console.log(item.object_type);
                                                                                     return (

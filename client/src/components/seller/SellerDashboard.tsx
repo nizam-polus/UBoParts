@@ -165,10 +165,10 @@ function SellerDashboard() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {orderDetails.map((order: any) => {
+                                                {orderDetails.map((order: any, index: any) => {
                                                     return (
                                                         <>
-                                                            <tr>
+                                                            <tr key={index}>
                                                                 <td className="custom-color-2 lightfont placeholderfontsize border-0 pl-4 ps-3 pb-3 pt-3 align-middle">
                                                                     <Link href={'/seller/seller-orders/' + order?.orderid}>{order?.orderid}</Link>
                                                                 </td>

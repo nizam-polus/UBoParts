@@ -691,7 +691,12 @@
   "REQUEST_DESCRIPTION_1": "Bestel nu voor een verbeterde rijervaring en betrouwbare prestaties op de weg",
   "REQUEST_DESCRIPTION_2": "Vertrouw op ons voor de beste kwaliteit en snelle levering.",
 
-  "ACCOUNT": "Rekening"
+  "ACCOUNT": "Rekening",
+  "LOADING": "Laden..",
+
+  "VARIFY_EMAIL": "Even geduld. Uw e-mail wordt geverifieerd...",
+  "VARIFY_SUCCESS": "E-mail succesvol geverifieerd",
+  "REDIRECT_HOME": "U wordt binnenkort doorgestuurd naar de inlogpagina"
   }
   
   
