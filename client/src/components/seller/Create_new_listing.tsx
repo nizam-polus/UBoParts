@@ -104,7 +104,11 @@ function Create_new_listing() {
         setUid(userid)
         APIs.getCategories().then((response) => {
             const categoriesData = response.data.data; 
-            const categoryNames = categoriesData.map((category: any) => ({name: category.attributes.category_name, name_nl: category.attributes.category_name_nl}));
+            const categoryNames = categoriesData.map((category: any) => (
+                {
+                    name: category.attributes.category_name,
+                    name_nl: category.attributes.category_name_nl ? category.attributes.category_name_nl : category.attributes.category_name
+                }));
             setCategoriesDetails(categoryNames);
             setCategoriesData(categoriesData); 
         }).catch((error) => {

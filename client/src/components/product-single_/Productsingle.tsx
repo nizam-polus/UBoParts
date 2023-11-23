@@ -278,7 +278,7 @@ function Productsingle() {
                                             </div> */}
                                             <div className="row pt-1 pb-1 border-bottom-row">
                                                 <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3"><FormattedMessage id="CATEGORY" />:</span></div>
-                                                <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">{locale == "nl" ? productData?.attributes?.category?.data?.attributes?.category_name_nl : productData?.attributes?.category?.data?.attributes?.category_name}</span></div>
+                                                <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">{locale == "nl" && productData?.attributes?.category?.data?.attributes?.category_name_nl  ? productData?.attributes?.category?.data?.attributes?.category_name_nl : productData?.attributes?.category?.data?.attributes?.category_name}</span></div>
                                             </div>
                                             <div className="row pt-1 pb-1 border-bottom-row">
                                                 <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3"><FormattedMessage id="ARTICLE" /> #</span></div>

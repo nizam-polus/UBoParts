@@ -167,7 +167,7 @@ function SellerListings() {
                                                     <div className="card-body p-4">
                                                         <div className="row g-2">
                                                             <div className="col-12  d-flex justify-content-between">
-                                                                <span className="article-number regularfont mini-text"  onClick={() => handleProductClick(item)}>{local == "nl" ? item.attributes.category?.data?.attributes?.category_name_nl : item.attributes.category?.data?.attributes?.category_name}</span>
+                                                                <span className="article-number regularfont mini-text"  onClick={() => handleProductClick(item)}>{local == "nl" && item.attributes.category?.data?.attributes?.category_name_nl ? item.attributes.category?.data?.attributes?.category_name_nl : item.attributes.category?.data?.attributes?.category_name}</span>
                                                                 {item.attributes.stock_count > 0  ?
                                                                  <span className='button-bg-color-1' style={{  color: 'white', padding: '5px 12px', borderRadius: '20px' }}>
                                                                  {item.attributes.stock_count}          

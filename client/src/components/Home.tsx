@@ -297,7 +297,7 @@ function Home() {
 
     const categoriesArray = (resData: any) => {
         return [...new Set(resData.map((item: any) => (
-            {name: item.attributes.category_name, name_nl: item.attributes.category_name_nl}
+            {name: item.attributes.category_name, name_nl: item.attributes.category_name_nl ? item.attributes.category_name_nl : item.attributes.category_name}
         )
             
      ))];
