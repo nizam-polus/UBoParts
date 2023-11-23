@@ -104,7 +104,11 @@ function Create_new_listing() {
         setUid(userid)
         APIs.getCategories().then((response) => {
             const categoriesData = response.data.data; 
-            const categoryNames = categoriesData.map((category: any) => category.attributes.category_name);
+            const categoryNames = categoriesData.map((category: any) => (
+                {
+                    name: category.attributes.category_name,
+                    name_nl: category.attributes.category_name_nl ? category.attributes.category_name_nl : category.attributes.category_name
+                }));
             setCategoriesDetails(categoryNames);
             setCategoriesData(categoriesData); 
         }).catch((error) => {
@@ -683,7 +687,7 @@ function Create_new_listing() {
                                                         >
                                                             <option value="" disabled={!!categoriesDetails}>{locale == "nl" ? "Selecteer categorie": "Select category"}</option>
                                                             {categoriesDetails && categoriesDetails.map((category: any, index: any) => (
-                                                                <option key={index} value={category}>{category}</option>
+                                                                <option key={index} value={category.name}>{locale == "nl" ? category.name_nl : category.name}</option>
                                                             ))}
                                                         </select>
                                                     </td>

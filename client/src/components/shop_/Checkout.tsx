@@ -539,9 +539,9 @@ function Checkout() {
                                                 <td className="pb-0 pt-0 pr-0 pl-3 semifont boldfontsize border-top-0"> <hr className="p-0 m-0 " /></td>
                                                 <td className="pb-0 pt-0 pl-0 pr-4 regularfont boldfontsize border-top-0"> <hr className="p-0 m-0"/></td>
                                             </tr>
-                                            {checkoutProducts?.map((product: any) => {
+                                            {checkoutProducts?.map((product: any, index: any) => {
                                                 return (
-                                                    <tr>
+                                                    <tr key={index}>
                                                         <td className="pb-0 pt-3 pl-3 regularfont mini-text-1 border-0">{product?.title}</td>
                                                         <td className="pb-0 pt-3 pr-4 regularfont mini-text-1 border-0 text-right">€{(product?.price * product.quantity - product.discount_price).toFixed(2)}</td>
                                                         
