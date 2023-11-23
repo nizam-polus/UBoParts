@@ -70,11 +70,11 @@ function Shop() {
         return [...new Set(resData.map((item: any) => ({
                 id: item.id,
                 category_name: item.attributes.category_name,
-                category_name_nl: item.attributes.category_name_nl,
+                category_name_nl: item.attributes.category_name_nl ? item.attributes.category_name_nl : item.attributes.category_name,
                 subcategories: item.attributes.sub_categories.data.map((subItem: any) => ({
                     id: subItem.id,
                     name: subItem.attributes.name,
-                    name_nl: subItem.attributes.name_nl
+                    name_nl: subItem.attributes.name_nl ? subItem.attributes.name_nl : subItem.attributes.name
                 }))
             })
         ))];
