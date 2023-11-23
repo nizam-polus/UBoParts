@@ -12,15 +12,15 @@ function About_us() {
                     <section className="about-content-wrapper">
                         <div className="row ps-5 pe-5 pt-4 pb-4">
                             <div className="col-12">
-                                <p className="semifont heading_text custom-color-1"><FormattedMessage id="ABOUT_US"/></p>
-                                <p className="body-sub-titles-1 lightfont custom-color-1"><FormattedMessage id="ABOUT_US_DISCRIPTION"/></p>
+                                <div className="semifont heading_text custom-color-1"><FormattedMessage id="ABOUT_US"/></div>
+                                <div className="body-sub-titles-1 lightfont custom-color-1"><FormattedMessage id="ABOUT_US_DISCRIPTION"/></div>
                             </div>
                         </div>
                     </section>
                     <section className="about-proffessionals-wrapper mt-4 pt-1">
                         <div className="row mt-3 mt-md-3 mt-xl-5">
                             <div className="col-12">
-                                <p className="semifont text-size-3 custom-color-1 text-center pb-3 pt-3"><FormattedMessage id="MEET_OUR_TEAM"/></p>
+                                <div className="semifont text-size-3 custom-color-1 text-center pb-3 pt-3"><FormattedMessage id="MEET_OUR_TEAM"/></div>
                             </div>
                         </div>
                         <div className="row mt-2 g-3">
@@ -59,10 +59,10 @@ function About_us() {
                     <section className="about-quote-wrapper pt-5 ps-xl-5 pe-xl-5">
                         <div className="row ps-5 pe-5 mt-3 mt-md-3 mt-xl-5">
                             <div className="col-12">
-                                <p className="custom-color-1 text-center font-italic sub-subtext px-xl-5 mx-5 px-md-2">"<FormattedMessage id="ABOUT_QUOTES"/>” </p>
+                                <div className="custom-color-1 text-center font-italic sub-subtext px-xl-5 mx-5 px-md-2">"<FormattedMessage id="ABOUT_QUOTES"/>” </div>
                             </div>
                             <div className="col-12">
-                                <p className="regularfont subtitles custom-color-1 text-center">— John Maxwell</p>
+                                <div className="regularfont subtitles custom-color-1 text-center">— John Maxwell</div>
                             </div>
                         </div>
                     </section>

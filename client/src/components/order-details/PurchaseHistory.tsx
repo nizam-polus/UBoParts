@@ -58,9 +58,9 @@ function PurchaseHistory() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {displayedOrders && displayedOrders.length > 0 ? displayedOrders.map((order: any) => {
+                                                {displayedOrders && displayedOrders.length > 0 ? displayedOrders.map((order: any, index: any) => {
                                                     return (
-                                                        <tr>
+                                                        <tr key={index}>
                                                             <td className="custom-color-2 lightfont placeholderfontsize border-0 pl-4 ps-3 pb-3 pt-3 align-middle">
                                                                 <Link href={'/purchase-history/' + order?.orderid}>{order?.orderid}</Link>
                                                             </td>

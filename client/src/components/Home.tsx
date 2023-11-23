@@ -32,7 +32,7 @@ function Home() {
     const key = router.query.key;
 
     const {user, setCartCount, language} = UserContext();
-    const [data, setData] = useState([]);
+    // const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [makesArray, setMakesArray] = useState<any>([]);
@@ -164,13 +164,13 @@ function Home() {
         if (pwd_reset_id && key) {
             setOpenReset(true);
         }
-        APIs.getCarDetails().then((response: any) => {
-            setData(response.data.data);
-            setLoading(false);
-        }).catch((error) => {
-            setError(error);
-            setLoading(false);
-        });
+        // APIs.getCarDetails().then((response: any) => {
+        //     setData(response.data.data);
+        //     setLoading(false);
+        // }).catch((error) => {
+        //     setError(error);
+        //     setLoading(false);
+        // });
 
         APIs.getCategories().then((response: any) => {
             setCategories(categoriesArray(response.data.data));
@@ -296,7 +296,11 @@ function Home() {
     }
 
     const categoriesArray = (resData: any) => {
-        return [...new Set(resData.map((item: any) => item.attributes.category_name))];
+        return [...new Set(resData.map((item: any) => (
+            {name: item.attributes.category_name, name_nl: item.attributes.category_name_nl}
+        )
+            
+     ))];
     }
 
     const handleMakeChange = (event: any) => {
@@ -740,8 +744,8 @@ function Home() {
                                                                     : "Select category"}
                                                             </option>
                                                             {categories.map((category: any, index: any) => (
-                                                                <option key={index} value={category}>
-                                                                    {category}
+                                                                <option key={index} value={category.name}>
+                                                                    {locale == "nl" ? category.name_nl : category.name}
                                                                 </option>
                                                             ))}
                                                         </select>
@@ -924,7 +928,7 @@ function Home() {
                                                       )}
                                                       <div className="card-body">
                                                           <a href="" className="boldfont body-sub-titles">
-                                                              {item.attributes.category_name}
+                                                              {locale == "nl" ? item.attributes.category_name_nl : item.attributes.category_name}
                                                           </a>
                                                       </div>
                                                   </div>

@@ -212,10 +212,9 @@ function SellerOrderDetails() {
                                                             </tr>
                                                         </thead>
                                                         <tbody className="text-center">
-                                                            {orderDetails.map((order: any) => {
+                                                            {orderDetails.map((order: any, index: any) => {
                                                                 return (
-                                                                    <>
-                                                                        <tr className="order-data">                                                   
+                                                                        <tr className="order-data" key={index}>                                                   
                                                                             <td className="custom-color-2 regularfont body-sub-titles-2 py-3 border-bottom w-50">
                                                                                 <div className="d-inline-flex">
                                                                                     <div className="col-3"> <AppImage style={{height: '2.9rem', width: '2.9rem', objectFit: 'cover'}} src={BASE_URL + order?.attributes?.product_image} className="rounded mr-4" /></div>
@@ -226,7 +225,6 @@ function SellerOrderDetails() {
                                                                            <td className="custom-color-2 regularfont body-sub-titles-2 py-3 border-bottom text-center"> {(order?.attributes?.product_price - (order?.attributes?.discount_price / order?.attributes?.quantity)).toFixed(2)}</td>
                                                                             <td className="custom-color-2 regularfont body-sub-titles-2 py-3 border-bottom text-center">{(order?.attributes?.total_price - order?.attributes?.discount_price).toFixed(2)}</td>
                                                                         </tr>
-                                                                    </>
                                                                 )
                                                             })}
                                                         </tbody>

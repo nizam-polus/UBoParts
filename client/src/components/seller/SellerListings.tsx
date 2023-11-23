@@ -128,7 +128,7 @@ function SellerListings() {
                                     </div>
                                     <div className="row g-4 p-4 pb-4 pt-2">
                                         {sellerList && sellerList.map((item: any, index: any) => {
-                                            return <div className="col-12 col-sm-6 col-lg-4">
+                                            return <div className="col-12 col-sm-6 col-lg-4" key={index}>
                                                 <div className="latest-prods mb-5 card card-shadows seller-listing-products">
                                                     {(item.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && item.attributes.sale.data != null) && (
                                                         local === "nl" ? 
@@ -167,7 +167,7 @@ function SellerListings() {
                                                     <div className="card-body p-4">
                                                         <div className="row g-2">
                                                             <div className="col-12  d-flex justify-content-between">
-                                                                <span className="article-number regularfont mini-text"  onClick={() => handleProductClick(item)}>{item.attributes.category?.data?.attributes?.category_name}</span>
+                                                                <span className="article-number regularfont mini-text"  onClick={() => handleProductClick(item)}>{local == "nl" ? item.attributes.category?.data?.attributes?.category_name_nl : item.attributes.category?.data?.attributes?.category_name}</span>
                                                                 {item.attributes.stock_count > 0  ?
                                                                  <span className='button-bg-color-1' style={{  color: 'white', padding: '5px 12px', borderRadius: '20px' }}>
                                                                  {item.attributes.stock_count}          
@@ -240,7 +240,7 @@ function SellerListings() {
                                                     </li>
                                                     {pageRange.map((page: number, idx: number) => {
                                                         return (
-                                                            <li className={`page-item ${page === pagination.page ? 'active': ''}`}>
+                                                            <li className={`page-item ${page === pagination.page ? 'active': ''}`} key={idx}>
                                                                 <a onClick={() => handlePageChange(page)} className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">{page}</a>
                                                             </li>
                                                         )

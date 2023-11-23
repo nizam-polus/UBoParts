@@ -70,9 +70,11 @@ function Shop() {
         return [...new Set(resData.map((item: any) => ({
                 id: item.id,
                 category_name: item.attributes.category_name,
+                category_name_nl: item.attributes.category_name_nl,
                 subcategories: item.attributes.sub_categories.data.map((subItem: any) => ({
                     id: subItem.id,
-                    name: subItem.attributes.name
+                    name: subItem.attributes.name,
+                    name_nl: subItem.attributes.name_nl
                 }))
             })
         ))];
@@ -122,6 +124,7 @@ function Shop() {
         });
         APIs.getCategories().then((response: any) => {
             let categories = categoriesArray(response.data.data)
+            console.log("category response",response.data.data)
             setCategories(categories);
             setAvailableCategories(categories);
             filterToggle.categories = true;
@@ -497,7 +500,7 @@ function Shop() {
                                                 value={selectedCategory} onChange={handleCategoryChange}>
                                                 <option value="" disabled={true}>{locale == "nl" ? "Selecteer categorie": "Select category"}</option>
                                                 {categories.map((category: any, index: any) => (
-                                                    <option key={index} value={category.category_name}>{category.category_name}</option>
+                                                    <option key={index} value={category.category_name}>{locale == "nl" ?  category.category_name_nl : category.category_name}</option>
                                                 ))}
                                             </select>
                                         </div>
@@ -534,7 +537,6 @@ function Shop() {
                                                 {
                                                     viewFilter ? "Hide Filter" :  <FormattedMessage id="VIEW_FILTER"/>
                                                 }
-                                               
                                             </button>
                                         </div>
                                         <div className="desktop-filter" style={{display: `${viewFilter ? "block" : "none"}`}}>
@@ -548,23 +550,25 @@ function Shop() {
                                                 </button>
                                                 {filterToggle.categories && <div className=" p-3">
                                                     {categories.map((category: any, idx: any) => 
-                                                        <div>
-                                                            <div className="form-check mb-2" key={idx}>
+                                                    
+                                                        <div key={idx}>
+                                                            {console.log("test",category)}
+                                                            <div className="form-check mb-2">
                                                                 <input type="checkbox" 
                                                                     className="form-check-input border-0" checked={!!filterCategory.find((ele: any) => ele === category.category_name)}
                                                                     id={idx} name={category.category_name} value={category.category_name} 
                                                                     onChange={(e) => handleCategoryFilter(e)}
                                                                 />
-                                                                <label className="form-check-label" htmlFor={idx}>{category.category_name}</label>
+                                                                <label className="form-check-label" htmlFor={idx}>{locale == "nl" ? category.category_name_nl : category.category_name}</label>
                                                                 {filterCategory.map((item: any) => item === category.category_name && category.subcategories.map((subcategory: any) => (
-                                                                    <div>
-                                                                        <div className="form-check mb-2" key={idx}>
+                                                                    <div key={idx}>
+                                                                        <div className="form-check mb-2">
                                                                             <input type="checkbox" 
                                                                                 className="form-check-input border-0" checked={!!filterSubcategory.find((ele: any) => ele === subcategory.name)}
                                                                                 id={subcategory.name} name={subcategory.name} value={subcategory.name} 
                                                                                 onChange={(e) => handleSubcategoryFilter(e)}
                                                                                 />
-                                                                            <label className="form-check-label" htmlFor={subcategory.name}>{subcategory.name}</label>
+                                                                            <label className="form-check-label" htmlFor={subcategory.name}>{locale == "nl" ? subcategory.name_nl : subcategory.name}</label>
                                                                         </div>
                                                                     </div>
                                                                 )))}
@@ -697,7 +701,7 @@ function Shop() {
                                         </div>
                                         <div className="row g-4 pt-3">
                                             {!searchedProducts.length && <div className='w-100 text-center mt-4'>
-                                                <p>No products available</p>
+                                                <div>No products available</div>
                                             </div>}
                                             {searchedProducts.map((product: any, index: any) => {
                                                 return (
@@ -785,7 +789,8 @@ function Shop() {
                                                 )
                                             })}
                                         </div>
-                                        <div className="row mt-5">
+                                        {pageCount && 
+                                            <div className="row mt-5">
                                             <div className="col text-center">
                                                 <ul className="pagination d-inline-flex">
                                                     <li className="page-item">
@@ -808,7 +813,7 @@ function Shop() {
                                                     </li>
                                                     {pageRange.map((page: number, idx: number) => {
                                                         return (
-                                                            <li className={`page-item ${page === pagination.page ? 'active': ''}`}>
+                                                            <li className={`page-item ${page === pagination.page ? 'active': ''}`} key={idx}>
                                                                 <a onClick={() => handlePageChange(page)} className="page-link border-0 custom-color-3 regularfont mini-text-1" href="#">{page}</a>
                                                             </li>
                                                         )
@@ -835,6 +840,8 @@ function Shop() {
                                                 </ul>
                                             </div>
                                         </div>
+                                        }
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -848,130 +855,6 @@ function Shop() {
                             </div>
                         </div>
                     </section>
-                </div>
-            </div>
-            <div className="modal fade" id="view-filters" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div className="modal-dialog" role="document">
-                    <div className="modal-content">
-                        <div className="modal-header border-0">
-                            <button type="button" className="close border-0 semifont heading_text" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div className="modal-body">
-                            <div className="card border-0">
-                                <div className="card-body">
-                                    <h3 className="card-title text-center heading_text semifont">Filters</h3>
-                                    <div className="responsive-filter p-4">
-                                        <div className="row mb-2">
-                                            <button className="btn coulmn-bg-color-1 border-0 text-start justify-content-between d-flex align-items-center">
-                                                <span>Categories</span><i className="fa fa-angle-up"></i>
-                                            </button>
-                                            <div className="group-check p-3">
-                                                <div className="form-check mb-2">
-                                                    <input type="checkbox" className="form-check-input border-0" id="check1" name="option1" value="something" checked />
-                                                    <label className="form-check-label" htmlFor="check1">All</label>
-                                                </div>
-                                                <div className="form-check mb-2">
-                                                    <input type="checkbox" className="form-check-input border-0" id="check2" name="option1" value="something" />
-                                                    <label className="form-check-label" htmlFor="check2">Audio</label>
-                                                </div>
-                                                <div className="form-check mb-2">
-                                                    <input type="checkbox" className="form-check-input border-0" id="check3" name="option1" value="something" />
-                                                    <label className="form-check-label" htmlFor="check3">Lights</label>
-                                                </div>
-                                                <div className="form-check">
-                                                    <input type="checkbox" className="form-check-input border-0" id="check4" name="option1" value="something" />
-                                                    <label className="form-check-label" htmlFor="check4">Body Parts</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="row mb-2">
-                                            <button className="btn coulmn-bg-color-1 border-0 text-start justify-content-between d-flex align-items-center">
-                                                <span>Price</span><i className="fa fa-angle-up"></i>
-                                            </button>
-                                            <div className="group-check p-3">
-
-                                            </div>
-                                        </div>
-                                        {/* <div className="row mb-2">
-                                            <button className="btn coulmn-bg-color-1 border-0 text-start justify-content-between d-flex align-items-center">
-                                                <span>Ratings</span><i className="fa fa-angle-up"></i>
-                                            </button>
-                                            <div className="group-check p-3">
-                                                <div className="mb-2">
-                                                    <span className="ratings">
-                                                        <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                        <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                        <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                        <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
-                                                    </span>
-                                                    <span className="rating-count regularfont mini-text-1">& up</span>
-                                                </div>
-                                                <div className="mb-2">
-                                                    <span className="ratings">
-                                                        <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                        <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                        <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                        <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
-                                                    </span>
-                                                    <span className="rating-count regularfont mini-text-1">& up</span>
-                                                </div>
-                                                <div className="mb-2">
-                                                    <span className="ratings">
-                                                        <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                        <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                        <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                        <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
-                                                    </span>
-                                                    <span className="rating-count regularfont mini-text-1">& up</span>
-                                                </div>
-                                                <div>
-                                                    <span className="ratings">
-                                                        <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                        <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                        <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
-                                                        <i className="fa fa-star placeholderfontsize" aria-hidden="true"></i>
-                                                    </span>
-                                                    <span className="rating-count regularfont mini-text-1">& up</span>
-                                                </div>
-                                            </div>
-                                        </div> */}
-                                        <div className="row mb-2">
-                                            <button className="btn coulmn-bg-color-1 border-0 text-start justify-content-between d-flex align-items-center">
-                                                <span>Brands</span><i className="fa fa-angle-up"></i>
-                                            </button>
-                                            <div className="group-check p-3">
-                                                <div className="form-check mb-2">
-                                                    <input type="checkbox" className="form-check-input border-0" id="check1" name="option1" value="something" checked />
-                                                    <label className="form-check-label" htmlFor="check1">All</label>
-                                                </div>
-                                                <div className="form-check mb-2">
-                                                    <input type="checkbox" className="form-check-input border-0" id="check2" name="option1" value="something" />
-                                                    <label className="form-check-label" htmlFor="check2">Audio</label>
-                                                </div>
-                                                <div className="form-check mb-2">
-                                                    <input type="checkbox" className="form-check-input border-0" id="check3" name="option1" value="something" />
-                                                    <label className="form-check-label" htmlFor="check3">Lights</label>
-                                                </div>
-                                                <div className="form-check">
-                                                    <input type="checkbox" className="form-check-input border-0" id="check4" name="option1" value="something" />
-                                                    <label className="form-check-label" htmlFor="check4">Body Parts</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <button type="submit" className="boldfont text-white button-bg-color-1 boldfontsize border-0">Filter</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="modal-footer" >
-                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary">Save changes</button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </>

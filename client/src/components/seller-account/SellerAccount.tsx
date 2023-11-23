@@ -45,8 +45,8 @@ function SellerAccount() {
             }).then((res) => {
                 console.log(res.data)
                 setMerchantAccountDetails(res.data)
-                setMerchantRequirements(res.data.compliance_requirements)
-                const bankVerification = res.data.compliance_requirements.find(
+                setMerchantRequirements(res?.data?.compliance_requirements)
+                const bankVerification = res?.data?.compliance_requirements?.find(
                     (requirement : any) => requirement.type === 'bank_account.verification.required'
                 );
                 
@@ -138,7 +138,7 @@ function SellerAccount() {
                                                     <div className="px-sm-3">
                                                         <ul>
                                                             <div>
-                                                                {merchantRequirements.length ?
+                                                                {merchantRequirements?.length ?
                                                                     merchantRequirements.map((item: any, index: any) => {
                                                                         return (
                                                                             <li>
