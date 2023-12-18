@@ -547,11 +547,11 @@ function Create_new_listing() {
     const printBarcode = () =>{
         const input = componentRef.current;
         if (input) {
-          const mainPdf = new jsPDF('landscape', 'in', [4.5, 2.1], true);
+          const mainPdf = new jsPDF('landscape', 'in', [4.33, 2], true);
           html2canvas(input, { logging: true, allowTaint: false, useCORS: true, onclone: function (clonedDoc: any) {
            } }).then((canvas) => {
             const imgData = canvas.toDataURL('image/png');
-            mainPdf.addImage(imgData, 'PNG', 0, 0, 4.5 , 2.1 );
+            mainPdf.addImage(imgData, 'PNG', 0, 0, 4.33, 2);
             const pdfBlob = mainPdf.output('blob');
             const pdfUrl = URL.createObjectURL(pdfBlob);
             const newWindow : any= window.open(pdfUrl, '_blank', 'width=800,height=800');
@@ -687,7 +687,7 @@ function Create_new_listing() {
                                                         >
                                                             <option value="" disabled={!!categoriesDetails}>{locale == "nl" ? "Selecteer categorie": "Select category"}</option>
                                                             {categoriesDetails && categoriesDetails.map((category: any, index: any) => (
-                                                                <option key={index} value={category.name}>{locale == "nl" ? category.name_nl : category.name}</option>
+                                                                <option key={index} value={category.name}>{locale == "nl" && category.name_nl ? category.name_nl : category.name}</option>
                                                             ))}
                                                         </select>
                                                     </td>
@@ -706,7 +706,7 @@ function Create_new_listing() {
                                                             {subcategories &&
                                                                 subcategories.map((subcategory: any, index: any) => (
                                                                     <option key={index} value={subcategory.id}>
-                                                                        {subcategory.name}
+                                                                        {locale == "nl" && subcategory.name_nl ? subcategory.name_nl :subcategory.name}
                                                                     </option>
                                                                 ))}
                                                         </select>
@@ -805,27 +805,30 @@ function Create_new_listing() {
                                                 <tr className="single">
                                                     <td colSpan={2} className='px-5 pb-4 pt-2 border-0'>
                                                         <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="BAR_CODE" /> :</label>
-                                                            <div className='d-flex align-items-center justify-content-center flex-column ubo-barcode-container'
-                                                                ref={componentRef}
-                                                                >
-                                                                <div className="details d-flex flex-column flex-sm-row" style={{ width: "100%", fontWeight: "bolder", padding: "0px 10px 0 10px", fontSize: "17px" }}>
-                                                                    <div className='d-flex justify-content-between mr-2' style={{ minWidth: "180px" }}>
-                                                                        {listBarcode && <Qrgenerator qrValue={listBarcode} />}
+                                                            
+                                                            <div style={{ padding: "5px", background: `#ffcf00`, width: "415px", height: "190px" }}
+                                                            className='d-flex align-items-center justify-content-center flex-column'
+                                                            ref={componentRef}
+                                                            >
+                                                            <div className="details d-flex" style={{ width: "100%", fontWeight: "bolder", fontSize: "15px" }}>
+                                                                <div className='d-flex justify-content-between' style={{ minWidth: "180px" }}>
+                                                                    {listBarcode && <Qrgenerator qrValue={listBarcode} />}
+                                                                </div>
+                                                                <div className='d-flex flex-column' style={{width: "100%", letterSpacing: "0.6px"}}>
+                                                                    <div>
+                                                                        <div>UBOPARTS</div>
+                                                                        <div>{upperCaseListName}</div>
                                                                     </div>
-                                                                    <div className='d-flex flex-column w-100' style={{letterSpacing: "0.6px"}}>
-                                                                        <div>
-                                                                            <div>UBOPARTS</div>
-                                                                            <div>{upperCaseListName}</div>
-                                                                        </div>
-                                                                        <div style={{ minWidth: "110px" }}>
-                                                                            <div>REK NUMMER : {listLocation}</div>
-                                                                            {/* <div> {productData?.attributes?.product_location_warehouse}</div> */}
-                                                                        </div>
-                                                                        <div>ARTICLE NO : {listArticle}</div>
-                                                                        <div>{makeName} {modelName} {year} </div>
+                                                                    <div style={{ minWidth: "110px" }}>
+                                                                        <div>REK NUMMER : {listLocation}</div>
+                                                                        {/* <div> {productData?.attributes?.product_location_warehouse}</div> */}
                                                                     </div>
+                                                                    <div>ARTICLE NO : {listArticle}</div>
+                                                                    <div>{makeName} {modelName} {year} </div>
                                                                 </div>
                                                             </div>
+                                                        </div>
+
                                                         <div>
                                                             {/* <ReactToPrint
                                                                 pageStyle={`

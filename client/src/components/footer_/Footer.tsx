@@ -87,7 +87,7 @@ function Footer() {
                                     </Link>
                                 </p>
                                 <p className="regularfont short-labels-1 label-color-1 mb-2">
-                                    <Link href="/cookie">
+                                    <Link href="/terms">
                                     <span className='pointer'><FormattedMessage id="TERMS_CONDITIONS"/></span>
                                     </Link>
                                 </p>
