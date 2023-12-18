@@ -64,13 +64,13 @@ const SellerListSingle = () => {
     const handleDownload = () => {
         const input = componentRef.current;
         if (input) {
-          const mainPdf = new jsPDF('landscape', 'in', [4.5, 2.1], true);
+          const mainPdf = new jsPDF('landscape', 'in', [4.33, 2], true);
           html2canvas(input, { logging: true, allowTaint: false, useCORS: true, onclone: function (clonedDoc: any) {
            } }).then((canvas) => {
             const imgData = canvas.toDataURL('image/png');
             // const pdfWidth = 2; // 11cm in mm
             // const pdfHeight = 4; // 5cm in mm
-            mainPdf.addImage(imgData, 'PNG', 0, 0, 4.5 , 2.1 );
+            mainPdf.addImage(imgData, 'PNG', 0, 0, 4.33, 2);
             mainPdf.save('barcode.pdf');
           });
         }
@@ -79,13 +79,13 @@ const SellerListSingle = () => {
       const printBarcode = () =>{
         const input = componentRef.current;
         if (input) {
-          const mainPdf = new jsPDF('landscape', 'in', [4.5, 2.1], true);
+          const mainPdf = new jsPDF('landscape', 'in', [4.33, 2], true);
           html2canvas(input, { logging: true, allowTaint: false, useCORS: true, onclone: function (clonedDoc: any) {
            } }).then((canvas) => {
             const imgData = canvas.toDataURL('image/png');
             const pdfWidth = 2; // 11cm in mm
             const pdfHeight = 4; // 5cm in mm
-            mainPdf.addImage(imgData, 'PNG', 0, 0, 4.5 , 2.1 );
+            mainPdf.addImage(imgData, 'PNG', 0, 0, 4.33 , 2 );
             // mainPdf.save('invoice.pdf');
             const pdfBlob = mainPdf.output('blob');
             const pdfUrl = URL.createObjectURL(pdfBlob);
@@ -207,10 +207,10 @@ const SellerListSingle = () => {
                                     <div className="row p-1" style={{ display: "grid", placeContent: "center" }}>
                                         <div className="col-12 text-center" style={{background: "#fff", padding: "20px", marginTop: "20px", borderRadius: "10px"}}>
                                             <div className="qr-image" ref={componentRef}>
-                                                <div style={{ padding: "5px", background: `#ffcf00`, width: "450px", height: "190px" }} 
+                                                <div style={{ padding: "5px", background: `#ffcf00`, width: "415px", height: "190px" }} 
                                                     className='d-flex align-items-center justify-content-center flex-column'>
-                                                    <div className="details d-flex" style={{ width: "100%", fontWeight: "bolder", padding: "0px 10px 0 10px", fontSize: "17px" }}>
-                                                        <div className='d-flex justify-content-between mr-2' style={{minWidth: "180px"}}>
+                                                    <div className="details d-flex" style={{ width: "100%", fontWeight: "bolder", fontSize: "15px" }}>
+                                                        <div className='d-flex justify-content-between' style={{minWidth: "180px"}}>
                                                             <Qrgenerator qrValue={productData?.attributes?.part_no_barcode_no}/>
                                                         </div>
                                                         <div className='d-flex flex-column' style={{letterSpacing: "0.6px"}}>
@@ -222,7 +222,7 @@ const SellerListSingle = () => {
                                                                 <div>REK NUMMER : {productData?.attributes?.product_location_warehouse}</div>
                                                                 {/* <div> {productData?.attributes?.product_location_warehouse}</div> */}
                                                             </div>
-                                                            <div className='text-left'>ARTICLE NO {productData?.attributes?.article_number}</div>
+                                                            <div className='text-left'>ARTICLE NO : {productData?.attributes?.article_number}</div>
                                                             <div className='text-left'>{productData?.attributes?.make?.data?.attributes?.make_name} {productData?.attributes?.model?.data?.attributes?.model_name} {productData?.attributes?.year?.data?.attributes?.year}</div>
                                                         </div>
                                                     </div>

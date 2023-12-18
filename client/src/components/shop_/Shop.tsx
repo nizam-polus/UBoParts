@@ -264,43 +264,31 @@ function Shop() {
     }
 
     const handleCategoryFilter = (event: any) => {
-        let tempCategories = categories;
-        let tempFilteredSubcategories = filterSubcategory;
-        let filteredCategories: any = filterCategory;
-        let category = event.target.value;
-        if (event.target.checked) {
-            setFiltertoggle((prevValue: any) => ({...prevValue}));
-            filteredCategories.push(category)
-        } else {
-            setFiltertoggle((prevValue: any) => ({...prevValue}));
-            filteredCategories = filteredCategories.filter((item: any) => item !== category);
-            // remove subcategories that are related to parent category
-            [tempCategories] = tempCategories.filter((item: any) => (item.category_name === category));
-            filterSubcategory.forEach((filteredSubItem: any) => {
-                tempCategories.subcategories.forEach((tempSubCat: any) => {
-                    if (tempSubCat.name === filteredSubItem) {
-                        tempFilteredSubcategories = tempFilteredSubcategories.filter((subItem: any) => filteredSubItem !== subItem);
-                    }
-                })
-            });
-            setFilterSubcategory(tempFilteredSubcategories);
-            setSubcategory(tempFilteredSubcategories);
-        }
-        setFilterCategory(filteredCategories);
-        setCategory(filteredCategories);
-    }
+        const category = event.target.value;
+        setFilterCategory((prevCategories: any) => {
+            if (event.target.checked) {
+                return [...prevCategories, category];
+            } else {
+                // Remove category and related subcategories
+                const updatedCategories = prevCategories.filter((item: any) => item !== category);
+                setFilterSubcategory((prevSubcategories: any) =>
+                    prevSubcategories.filter((subItem: any) => !categories.find((cat: any) => cat.category_name === category)?.subcategories.includes(subItem))
+                );
+                return updatedCategories;
+            }
+        });
+    };
 
     const handleSubcategoryFilter = (event: any) => {
-        let filteredSubcategories: any = filterSubcategory;
-        let subcategory = event.target.value;
-        if (event.target.checked) {
-            filteredSubcategories.push(subcategory)
-        } else {
-            filteredSubcategories = filteredSubcategories.filter((item: any) => item !== subcategory);
-        }
-        setFilterSubcategory(filteredSubcategories);
-        setSubcategory(filteredSubcategories);
-    }
+        const subcategory = event.target.value;
+        setFilterSubcategory((prevSubcategories: any) => {
+            if (event.target.checked) {
+                return [...prevSubcategories, subcategory];
+            } else {
+                return prevSubcategories.filter((item: any) => item !== subcategory);
+            }
+        });
+    };
 
     const handleApplyFilter = (event: any) => {
         event.preventDefault();
@@ -550,9 +538,7 @@ function Shop() {
                                                 </button>
                                                 {filterToggle.categories && <div className=" p-3">
                                                     {categories.map((category: any, idx: any) => 
-                                                    
                                                         <div key={idx}>
-                                                            {console.log("test",category)}
                                                             <div className="form-check mb-2">
                                                                 <input type="checkbox" 
                                                                     className="form-check-input border-0" checked={!!filterCategory.find((ele: any) => ele === category.category_name)}
@@ -560,8 +546,8 @@ function Shop() {
                                                                     onChange={(e) => handleCategoryFilter(e)}
                                                                 />
                                                                 <label className="form-check-label" htmlFor={idx}>{locale == "nl" ? category.category_name_nl : category.category_name}</label>
-                                                                {filterCategory.map((item: any) => item === category.category_name && category.subcategories.map((subcategory: any) => (
-                                                                    <div key={idx}>
+                                                                {filterCategory.map((item: any) => item === category.category_name && category.subcategories.map((subcategory: any, index : any) => (
+                                                                    <div key={index}>
                                                                         <div className="form-check mb-2">
                                                                             <input type="checkbox" 
                                                                                 className="form-check-input border-0" checked={!!filterSubcategory.find((ele: any) => ele === subcategory.name)}
@@ -703,7 +689,7 @@ function Shop() {
                                             {!searchedProducts.length && <div className='w-100 text-center mt-4'>
                                                 <div>No products available</div>
                                             </div>}
-                                            {searchedProducts.map((product: any, index: any) => {
+                                            { searchedProducts && searchedProducts.map((product: any, index: any) => {
                                                 return (
                                                     <div className="col-12 col-sm-12 col-md-6 col-xl-4  mb-4" key={index}>
                                                     {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product?.attributes?.sale?.data != null)&& (
@@ -789,7 +775,7 @@ function Shop() {
                                                 )
                                             })}
                                         </div>
-                                        {pageCount && 
+                                        {pageCount ?
                                             <div className="row mt-5">
                                             <div className="col text-center">
                                                 <ul className="pagination d-inline-flex">
@@ -840,6 +826,8 @@ function Shop() {
                                                 </ul>
                                             </div>
                                         </div>
+                                        :
+                                        ""
                                         }
                                         
                                     </div>
