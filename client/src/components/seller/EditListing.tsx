@@ -780,7 +780,7 @@ function EditListing() {
                                                             className='d-flex align-items-center justify-content-center flex-column'
                                                             ref={componentRef}
                                                             >
-                                                            <div className="details d-flex" style={{ width: "100%", fontWeight: "bolder", fontSize: "15px" }}>
+                                                            <div className="details d-flex" style={{ width: "100%", fontWeight: "bolder", fontSize: "16px" }}>
                                                                 <div className='d-flex justify-content-between' style={{ minWidth: "180px" }}>
                                                                     {listBarcode && <Qrgenerator qrValue={listBarcode} />}
                                                                 </div>
