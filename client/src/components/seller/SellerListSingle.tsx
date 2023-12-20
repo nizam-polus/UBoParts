@@ -209,7 +209,7 @@ const SellerListSingle = () => {
                                             <div className="qr-image" ref={componentRef}>
                                                 <div style={{ padding: "5px", background: `#ffcf00`, width: "415px", height: "190px" }} 
                                                     className='d-flex align-items-center justify-content-center flex-column'>
-                                                    <div className="details d-flex" style={{ width: "100%", fontWeight: "bolder", fontSize: "15px" }}>
+                                                    <div className="details d-flex" style={{ width: "100%", fontWeight: "bolder", fontSize: "16px" }}>
                                                         <div className='d-flex justify-content-between' style={{minWidth: "180px"}}>
                                                             <Qrgenerator qrValue={productData?.attributes?.part_no_barcode_no}/>
                                                         </div>
