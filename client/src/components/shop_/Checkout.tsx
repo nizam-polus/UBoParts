@@ -4,6 +4,8 @@ import { UserContext } from '../account_/UserContext';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
 import { FormattedMessage } from 'react-intl';
+import PaymentDropdown from '../PaymentDropdown/PaymentDropdown';
+import router from 'next/router';
 
 function Checkout() {
 
@@ -56,6 +58,7 @@ function Checkout() {
     const [checkoutProducts, setCheckoutProducts]: any = useState([]);
     const [total, setTotal]: any = useState(0);
     const [totalShippingCost, setTotalShippingCost] = useState<any>(0)
+    const [shippingCostArray, setShippingCostArray] = useState<any>([])
     const [countries, setCountries] = useState([])
     const [formData, setFormData] = useState({
         first_name: '',
@@ -83,6 +86,8 @@ function Checkout() {
     });
     const [incomplete, setIncomplete] = useState<any>(false);
     const [shippingIncomplete, setShippingIncomplete] = useState(false);
+    const [paymentMethodSelected, setPaymentMethodSelected] = useState(false)
+
 
     const getContryCode = (country: string, countries: any[]) =>{
        let countryData: any = countries.find((item: any, index) => item.attributes.country == country);
@@ -180,6 +185,7 @@ function Checkout() {
                             setTotal(Number(total));
                         } else {
                             const shippingCostArray = res.data; 
+                            setShippingCostArray(shippingCostArray)
                             const totalShippingCost = shippingCostArray.reduce((total: any, item: any) => {
                                 return total + parseFloat(item.price_details);
                             }, 0);                    
@@ -246,22 +252,33 @@ function Checkout() {
                 let cartData: any = [];
                 checkoutProducts.forEach((element: any) => {
                     let product = {
+                        // seller_id : '',
+                        // product_id : '',
                         name: '',
                         price: 0,
                         quantity: ''
                     };
+                    // product.seller_id = element.seller_id;
+                    // product.product_id = element.id
                     product.name = element.title;
                     product.price = typeof (element.price) == 'string' ? (Number(element.price) - Number(element.discount_price)) * 100 : ((element.price ) - Number(element.discount_price)) * 100;
                     product.quantity = element.quantity;
+                  
                     cartData.push(product);
                 });
                 let totalPrice = typeof (total) == 'string' ? Number(total) * 100 : total * 100;
+                // let checkoutData = {
+                //     products: cartData, 
+                //     total_price: totalPrice, 
+                //     customerid: user.id, 
+                //     shipping_costs : shippingCostArray,
+                //     shipping_cost: totalShippingCost,
+                //     lang: language.value
+                // }
                 let checkoutData = {
-                    products: cartData, 
-                    total_price: totalPrice, 
-                    customerid: user.id, 
-                    shipping_cost: totalShippingCost,
-                    lang: language.value
+                    "customerid":user.id,
+                    "shipping_cost": totalShippingCost,
+                    "lang": language.value
                 }
                 APIs.getCartData({ customerid: user.id }).then(response => {
                     let cartData = response.data.rows;
@@ -272,13 +289,24 @@ function Checkout() {
                     } else if(hasZeroStock){
                         toast.warning(() => (<FormattedMessage id="SOME_OUT_OF_STOCK" />))
                     } else {
-                        APIs.cartPayment(checkoutData).then(response => {
-                            if (response.data.redirect_url) {
-                                let redirectUrl = response.data.redirect_url
-                                let transactionId = response.data.uid
+                        // APIs.cartPayment(checkoutData).then(response => {
+                        //     if (response.data.redirect_url) {
+                        //         let redirectUrl = response.data.redirect_url
+                        //         let transactionId = response.data.uid
+                        //         localStorage.setItem('uid', transactionId);
+                        //         localStorage.setItem('redirect', redirectUrl);
+                        //         window.location.assign(redirectUrl);
+                        //     }
+                        //     // router.push("/payment-result")
+                        // }).catch(err => console.log(err));
+                        APIs.newPayment(checkoutData).then(response => {
+                            if (response.data) {
+                                let transactionId = response.data
                                 localStorage.setItem('uid', transactionId);
-                                localStorage.setItem('redirect', redirectUrl);
-                                window.location.assign(redirectUrl);
+                                console.log(response.data)
+                                router.push("/payment-result")
+                            }else{
+                                toast.warning("something went wrong")
                             }
                         }).catch(err => console.log(err));
                     }
@@ -564,6 +592,17 @@ function Checkout() {
                                                 <td className="pb-2 pt-1 px-3 semifont body-sub-titles-1 fw-bold border-0"><FormattedMessage id="TOTAL"/></td>
                                                 <td className="pb-2 pt-1 pr-4 semifont body-sub-titles-1 fw-bold border-0 text-right">€{(total + totalShippingCost).toFixed(2)}</td>
                                             </tr>
+                                            {/* <tr className="border-bottom ">
+                                                <th colSpan={2} className="pb-2 pt-4 ps-3 pe-3 custom-color-3 regularfont subtitles-1 border-top-0"><FormattedMessage id="PAYMENT_METHOD"/></th>
+                                            </tr>
+                                            <tr>
+                                                <td colSpan={2}>
+                                                    <div className='pt-1 pb-3'>
+
+                                                    <PaymentDropdown selectFn={setPaymentMethodSelected}/>
+                                                    </div>
+                                                </td>
+                                            </tr> */}
                                             <tr className='w-100'>
                                                 <td colSpan={2}>
                                                     <div className="form-group regularfont body-sub-titles-2 mb-0" style={{color: 'black', fontSize: '0.9rem'}}>
@@ -573,7 +612,7 @@ function Checkout() {
                                             </tr>
                                             <tr><td colSpan={2} className="p-3">
                                             {
-                                                clicked ? 
+                                                clicked  ? 
                                                     <button type="button" 
                                                     disabled
                                                     className="proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"
@@ -587,6 +626,21 @@ function Checkout() {
                                                     ><FormattedMessage id="PROCEED_TO_PAYMENT"/>
                                                     </button>
                                                 }
+                                                 {/* {
+                                                clicked || !paymentMethodSelected ? 
+                                                    <button type="button" 
+                                                    disabled
+                                                    className="proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"
+                                                    style={{cursor: "not-allowed"}}
+                                                    ><FormattedMessage id={`${!paymentMethodSelected ? "Select Bank to Proceed" : "Please wait..."} `}/>
+                                                    </button>
+                                                :
+                                                    <button type="button" disabled={!checkoutProducts?.length}
+                                                    className="proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0 button-bg-color-1"
+                                                    onClick={handlepayment}
+                                                    ><FormattedMessage id="PROCEED_TO_PAYMENT"/>
+                                                    </button>
+                                                } */}
                                             </td></tr>
                                         </tbody>
                                     </table>
