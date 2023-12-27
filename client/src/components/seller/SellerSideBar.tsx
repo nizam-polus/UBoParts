@@ -69,12 +69,12 @@ function SellerSideBar() {
                                     {router.pathname.includes('/purchase-history') && <span className="arrow-right"></span>}
                                 </td>
                             </tr>
-                            <tr>
+                            {/* <tr>
                                 <td className={"pointer " + (router.pathname.includes('/account') ? "active p-1 pl-2" : "")}>
                                     <a onClick={() => router.push('/seller/account')} className="custom-color-2 regularfont products-name"><FormattedMessage id="ACCOUNT"/></a>
                                     {router.pathname.includes('/account') && <span className="arrow-right"></span>}
                                 </td>
-                            </tr>
+                            </tr> */}
                             {/* <tr>
                                 <td className={"pointer " + (router.pathname.includes('/password') ? "active p-1 pl-2" : "")}>
                                     <a onClick={() => router.push('/seller/password')} className="custom-color-2 regularfont products-name">Password</a>

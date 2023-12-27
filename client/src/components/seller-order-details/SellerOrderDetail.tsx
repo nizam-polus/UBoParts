@@ -89,18 +89,18 @@ function SellerOrderDetails() {
         setHide(false);
       };
 
-      const paymentRefundFunction = () =>{
-        APIs.paymentRefund({
-            "transactionUid": transactionId,
-            "payoutDescription": "Your transaction refunded due to technical reasons"
-        }).then((res) =>{
-            console.log(res)
-            toast.success("refunded")
-        }).catch((err) =>{
-            console.log(err)
-            toast.error(err)
-        })
-    }
+    //   const paymentRefundFunction = () =>{
+    //     APIs.paymentRefund({
+    //         "transactionUid": transactionId,
+    //         "payoutDescription": "Your transaction refunded due to technical reasons"
+    //     }).then((res) =>{
+    //         console.log(res)
+    //         toast.success("refunded")
+    //     }).catch((err) =>{
+    //         console.log(err)
+    //         toast.error(err)
+    //     })
+    // }
 
     return (
         <> 
@@ -123,12 +123,12 @@ function SellerOrderDetails() {
                                             <span data-value={status} className="badge badge-pill badge-info px-3 py-2 ml-2 ubo-badge">
                                                     {status == "chargeback" ? "refunded"  : status}
                                             </span>
-                                            {
+                                            {/* {
                                             status == "completed" ? 
                                                 <button onClick={paymentRefundFunction} className="badge badge-pill badge-warning px-3 py-2 ml-2 ubo-badge">Click to Refund</button>
                                             :
                                                 ""
-                                            }
+                                            } */}
                                         </div>
                                         <div className="col-4 d-flex flex-row-reverse">
                                             <button onClick={downloadPdf} className="delete edit rounded custom-color-6 boldfont mini-text-1 custom-border-1 p-2" style={{visibility: hide ? "visible" : "hidden"}}><FormattedMessage id="DOWNLOAD"/></button>

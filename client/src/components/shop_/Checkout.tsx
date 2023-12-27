@@ -4,7 +4,7 @@ import { UserContext } from '../account_/UserContext';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
 import { FormattedMessage } from 'react-intl';
-import PaymentDropdown from '../PaymentDropdown/PaymentDropdown';
+// import PaymentDropdown from '../PaymentDropdown/PaymentDropdown';
 import router from 'next/router';
 
 function Checkout() {
