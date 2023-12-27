@@ -194,18 +194,18 @@ function SellerRegistration() {
             if (!user || (user && !user.id)) {
                 sellerData.password = cnfrmPassword;
                 APIs.register(sellerData).then(response => {
-                    console.log("registration response",response)
-                    APIs.getSellerAccount({
-                        "country_iso": formData.country == "uk" ? "GBR" : "NLD",
-                        "email": formData.email.toLowerCase(),
-                        "kvk_number": formData.kvk_number
-                    }).then((res) =>{
-                        console.log("getselleraccount response",res)
+                    // console.log("registration response",response)
+                    // APIs.getSellerAccount({
+                    //     "country_iso": formData.country == "uk" ? "GBR" : "NLD",
+                    //     "email": formData.email.toLowerCase(),
+                    //     "kvk_number": formData.kvk_number
+                    // }).then((res) =>{
+                    //     console.log("getselleraccount response",res)
                         localStorage.setItem('usertoken', response.data.jwt);
                         getAndSaveUser(response.data.user.id);
                         toast.success(()=>(<FormattedMessage id="SELLER_SUCCESS" />))
                         setLoading(false)
-                    })
+                    // })
                 }).catch(err => {
                     let errMessage = err?.response?.data?.error?.message || 'Something went wrong!';
                     toast.error(errMessage);
