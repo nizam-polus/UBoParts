@@ -10,7 +10,7 @@ const getToken = () => {
     }
 }
 
-const token = 'f7a6b0263f2c433d17994cefee193b9d8e6a7fed0daa9ae53599bd1f5d2d63ea1a2b00eeea638bff0833d169d8da8413ef49cc5ac03e1e601025c924e93c9039b07a384ad6fee46b1069c79d34b68951f10580b87d59142351ae682cf14a091c81acff1ed6c2ff62e66e966e62d9a6226bbbcac88961692f5bf7dd5378e47c0d';
+const token = '2a4742b063e8156500a62fc657027a83aa41be7b8197de3915f8f86a5cad2325bca5f99841d3619d6a47513485a758d8db2855dc4908f779d2baf1b19a77e45b8180d2a71d6ef37501aef7ee260454243543f1ac488e9270ded2b06bb92c4dd87e918b4a3b8a507673c979e26d60ddaab7c9ee9e726322d20b7292302e5f586b';
 
 const headers = {
     Authorization: `Bearer ${token}`,
@@ -150,6 +150,8 @@ const APIs = {
     getSellerAccount: (data: any) => axios.post(BACKEND_URL + "seller-merchant-account", data, {headers}),
 
     paymentRefund: (data: any) => axios.post(BACKEND_URL + "refund-amount", data, {headers}),
+
+    newPayment: (productsData: {}) => axios.post(BACKEND_URL + 'payment-status-update', productsData, {headers}),
 
 
         /* ---------------- jwt token based apis ----------------- */
