@@ -566,6 +566,7 @@
   "WORKING_HOURS": "Working Hours",
   "MONDAY_TO_FRIDAY": "Monday - Friday",
   "OUR_LOCATION": "Our Location",
+  "OUR_EMAIL": "Our Email",
   "INFORMATION": "Information",
   "USEFULL_LINKS": "Useful Links",
   "NEWS_LETTER": "Newsletter",
@@ -704,7 +705,9 @@
 
   "VARIFY_EMAIL": "Please wait. Verifying your email...",
   "VARIFY_SUCCESS": "Email verified successfully",
-  "REDIRECT_HOME": "You will be redirected to Login page shortly"
+  "REDIRECT_HOME": "You will be redirected to Login page shortly",
+
+  "PAYMENT_METHOD": "Payment Method"
 
 
 

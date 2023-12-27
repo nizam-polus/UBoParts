@@ -71,11 +71,11 @@ function Footer() {
                                             08:00 - 17:00</p>
                                     </div>
                                     <div className="col">
-                                        <p className="regularfont short-labels label-color-1 mb-1"><FormattedMessage id="OUR_LOCATION" /></p>
+                                        <p className="regularfont short-labels label-color-1 mb-1"><FormattedMessage id="OUR_EMAIL" /></p>
                                         <p className="text-white regularfont short-labels-1 mb-3">Info@uboparts.com</p>
-                                        <p className="regularfont short-labels label-color-1 mb-1">Our Location</p>
-                                        <p className="text-white regularfont short-labels-1 mb-3">UBO Parts,<br/> 
-                                            Zomerdijk 11, 1505HW<br/> Zaandam, The Netherlands</p>
+                                        <p className="regularfont short-labels label-color-1 mb-1"><FormattedMessage id="OUR_LOCATION" /></p>
+                                        <p className="text-white regularfont short-labels-1 mb-3">UBO Parts,
+                                        Rotterdam<br/>  The Netherlands</p>
                                     </div>
                                 </div>
                             </div>

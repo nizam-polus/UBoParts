@@ -558,6 +558,8 @@
   "WORKING_HOURS": "Werkuren",
   "MONDAY_TO_FRIDAY": "Maandag - vrijdag",
   "OUR_LOCATION": "onze locatie",
+  "OUR_EMAIL": "Onze e-mail",
+
   "INFORMATION": "Informatie",
   "USEFULL_LINKS": "handige links",
   "NEWS_LETTER": "Nieuwsbrief",
@@ -696,7 +698,10 @@
 
   "VARIFY_EMAIL": "Even geduld. Uw e-mail wordt geverifieerd...",
   "VARIFY_SUCCESS": "E-mail succesvol geverifieerd",
-  "REDIRECT_HOME": "U wordt binnenkort doorgestuurd naar de inlogpagina"
+  "REDIRECT_HOME": "U wordt binnenkort doorgestuurd naar de inlogpagina",
+
+
+  "PAYMENT_METHOD": "Betalingsmiddel"
   }
   
   
