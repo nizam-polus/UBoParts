@@ -139,9 +139,9 @@ function EditShop() {
                                                             </td>
                                                             <td>
                                                                 <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="COMMISSION_AMOUNT"/> <span className="required">*</span></label>
-                                                                <input type="text" value={formData.commission_amount}
+                                                                <input type="text" value={formData.commission_amount ? formData.commission_amount : 0}
                                                                     className={`form-control input-bg-color-2 body-sub-titles `}
-                                                                    name="commission_amount" placeholder="5$"
+                                                                    name="commission_amount" 
                                                                     readOnly
                                                                 />
                                                             </td>
