@@ -31,7 +31,7 @@ function SellerDashboard() {
             if (response.data.data.length) {
                 let total = 0;
                 for (const obj of response.data.data) {
-                    total += obj.attributes.total_price;
+                    total += obj.attributes.total_price - obj.attributes.discount_price;
                 }
                 setTotal(total);
             }
@@ -50,6 +50,7 @@ function SellerDashboard() {
                 product_price: order.attributes.product_price,
                 quantity: order.attributes.quantity,
                 total_price: order.attributes.total_price,
+                total_discount: order.attributes.discount_price,
                 status: order.attributes.status,
                 purchased_year: purchasedYear,
                 purchased_month: purchasedMonth
@@ -59,10 +60,10 @@ function SellerDashboard() {
         currentYear = new Date().getFullYear();
         // calculating sales data
         formattedOrders.forEach((order: any) => {
-            (order.purchased_month === currentMonth) && (thisMonthSales += order.total_price);
-            (order.purchased_month === currentMonth - 1) && (lastMonthSales += order.total_price);
-            (order.purchased_year === currentYear) && (thisYearSales += order.total_price);
-            (order.purchased_year === currentYear - 1) && (lastYearSales += order.total_price);
+            (order.purchased_month === currentMonth) && (thisMonthSales += order.total_price - order.total_discount);
+            (order.purchased_month === currentMonth - 1) && (lastMonthSales += order.total_price - order.total_discount);
+            (order.purchased_year === currentYear) && (thisYearSales += order.total_price - order.total_discount);
+            (order.purchased_year === currentYear - 1) && (lastYearSales += order.total_price - order.total_discount);
         });
         salesData.thisMonth = thisMonthSales;
         salesData.lastMonth = lastMonthSales;

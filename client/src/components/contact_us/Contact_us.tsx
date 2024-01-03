@@ -5,6 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import { UserContext } from '../account_/UserContext';
 import APIs from '~/services/apiService';
 import { toast } from 'react-toastify';
+import Link from 'next/link';
 
 function Contact_us() {
 
@@ -46,8 +47,7 @@ function Contact_us() {
             })
             .catch(err => {
                 console.log(err);
-                let errorMsg = err?.response?.data?.error?.message || 'Something went wrong!';
-                toast.error(errorMsg);
+                toast.error(<FormattedMessage id="SOMETHING_WRONG" />);
             })
         }
     }
@@ -88,9 +88,10 @@ function Contact_us() {
 
                                         <div className="contact-us__address">
                                             <p>
-                                                UboParts, Zomerdijk 11, 1505HW Zaandam, The Netherlands
+                                                UboParts,  Rotterdam <br />
+                                                The Netherlands
                                                 <br />
-                                                Email: Info@uboparts.com
+                                                Email:<Link href="mailto:info@uboparts.com">info@uboparts.com</Link> 
                                                 <br />
                                                 Phone Number: +316 334-907-82
                                             </p>

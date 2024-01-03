@@ -19,7 +19,12 @@ function Login(props: any) {
 
     const router = useRouter();
     const {user, saveUser} = UserContext();
+    let locale: any;
     
+    if(typeof window !== 'undefined'){
+        locale = localStorage.getItem("locale")
+    }
+
     const [loginformData, setLoginFormData] = useState({
         username: props.username || '',
         password: ''
@@ -111,7 +116,7 @@ function Login(props: any) {
             }
         } catch (error) {
             console.error('Login failed:', error);
-            toast.error("Login failed")
+            toast.error(<FormattedMessage id="LOGIN_FAILED"/>)
         }
     };
 
@@ -178,7 +183,7 @@ function Login(props: any) {
                                                     <input type="email" 
                                                         className="form-control body-sub-titles-1 mediumfont inputformtxt" 
                                                         id="email" name="username" 
-                                                        placeholder="Enter your email" 
+                                                        placeholder={locale == "nl" ? "Voer uw e-mailadres in" : "Enter your email"}
                                                         value={loginformData.username} 
                                                         onChange={onLoginFormDataChange}
                                                     />
@@ -189,7 +194,7 @@ function Login(props: any) {
                                                     <input type={pwdVisible ? "text" : "password"} 
                                                         className="form-control body-sub-titles-1 mediumfont inputformtxt" 
                                                         id="password" name="password" 
-                                                        placeholder="Enter your password" 
+                                                        placeholder={locale == "nl" ? "Voer uw wachtwoord in" : "Enter your password"}
                                                         value={loginformData.password} 
                                                         onChange={onLoginFormDataChange}
                                                     />
@@ -217,7 +222,7 @@ function Login(props: any) {
                                                         onClick={showForgotPassword}
                                                     ><FormattedMessage id="FORGOT_PASSWORD"/></button>
                                                 </div>
-                                                <button type="submit" className="btn btn-default body-sub-titles-1 mediumfont" onClick={(e) => onFormSubmit(e)}>Login</button>
+                                                <button type="submit" className="btn btn-default body-sub-titles-1 mediumfont" onClick={(e) => onFormSubmit(e)}><FormattedMessage id="LOGIN"/></button>
                                             </form>
                                         </div>
                                         <div className="ac-card-footer mt-2">

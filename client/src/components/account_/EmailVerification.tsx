@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { FormattedMessage } from "react-intl";
 import APIs from "~/services/apiService";
 
 function EmailVerification() {
@@ -30,11 +31,11 @@ function EmailVerification() {
     return (
         <>
             <div style={{textAlign: 'center', position: 'relative', marginTop: '10%'}}>
-                {!verified ? <p className="body-sub-titles-1 regularfont mt-2">Please wait. Verifying your email...</p> :
+                {!verified ? <p className="body-sub-titles-1 regularfont mt-2"><FormattedMessage id="VARIFY_EMAIL"/></p> :
                     <div>
                         <i className="fa fa-check-circle" style={{fontSize: '4rem', color: '#587E50'}}></i>
-                        <p className="body-sub-titles-1 regularfont mt-2">Email verified successfully</p>
-                        <p className="body-sub-titles-2 regularfont m-0">You will be redirected to Login page shortly</p>
+                        <p className="body-sub-titles-1 regularfont mt-2"><FormattedMessage id="VARIFY_SUCCESS"/></p>
+                        <p className="body-sub-titles-2 regularfont m-0"><FormattedMessage id="REDIRECT_HOME"/></p>
                     </div>
                 }
             </div>

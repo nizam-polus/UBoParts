@@ -78,7 +78,7 @@ function SellerRegistration() {
         postcode: '',
         company_name: '',
         Account_type: '',
-        Account_title: '',
+        account_title: '',
         Bank_name: '',
         iban_number: '',
         password: '',
@@ -133,7 +133,7 @@ function SellerRegistration() {
             !!formData.email && !!formData.company_name && 
             !!formData.phone_number && !!formData.streetaddress_housenumber && 
             !!formData.city && !!formData.country && !!formData.state && 
-            !!formData.postcode && !!formData.Account_type && agreement);
+            !!formData.postcode && !!formData.Account_type && !!formData.account_title && agreement);
         return incomplete;
     }
 
@@ -172,7 +172,7 @@ function SellerRegistration() {
             postcode: formData.postcode,
             company_name: formData.company_name,
             Account_type: formData.Account_type,
-            Account_title: formData.Account_title,
+            account_title: formData.account_title,
             bank_name: formData.Bank_name,
             iban_number: formData.iban_number,
             user_type: "seller",
@@ -207,7 +207,7 @@ function SellerRegistration() {
                         setLoading(false)
                     // })
                 }).catch(err => {
-                    let errMessage = err?.response?.data?.error?.message || 'Something went wrong!';
+                    let errMessage = err?.response?.data?.error?.message || <FormattedMessage id="SOMETHING_WRONG" />;
                     toast.error(errMessage);
                     console.log(err.response.data.error);
                     setLoading(false)
@@ -223,7 +223,7 @@ function SellerRegistration() {
                         setLoading(false)
                     })
                 }).catch((err) => {
-                    let errMessage = err?.response?.data?.error?.message || 'Something went wrong!';
+                    let errMessage = err?.response?.data?.error?.message || <FormattedMessage id="SOMETHING_WRONG" />;
                     toast.error(errMessage);
                     console.log(err.response.data.error);
                     setLoading(false)
@@ -333,7 +333,7 @@ function SellerRegistration() {
                                                             </span>
                                                             </div>
                                                             </div>
-                                                            {(password.length < 6 && incomplete && !user.id) && <span className="required-text">Password must be at least 6 characters </span>}
+                                                            {(password.length < 6 && incomplete && !user.id) && <span className="required-text"><FormattedMessage id="PASSWORD_MUST_BE_SIX"/> </span>}
                                                         </td>
                                                         <td>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="CONFIRM_PASSWORD"/>  <span className="required">*</span></label>
@@ -394,9 +394,9 @@ function SellerRegistration() {
                                                     <tr className="single">
                                                         <td colSpan={2}>
                                                             <label className="custom-color-2 regularfont body-sub-titles-1 pb-2"><FormattedMessage id="ACCOUNT_TITLE"/> <span className="required">*</span></label>
-                                                            <input type="text" value={formData.Account_title}
-                                                                className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.Account_title ? 'required-field' : 'border-0'}`}
-                                                                name="Account_title" placeholder={placeholderTranslations[locale]['Account_title']}
+                                                            <input type="text" value={formData.account_title}
+                                                                className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.account_title ? 'required-field' : 'border-0'}`}
+                                                                name="account_title" placeholder={placeholderTranslations[locale]['Account_title']}
                                                                 onChange={(e) => handleFormChange(e)}
                                                             />
                                                         </td>
