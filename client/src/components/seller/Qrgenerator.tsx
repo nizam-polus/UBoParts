@@ -15,6 +15,7 @@ const Qrgenerator =  React.forwardRef(({ qrValue }: any, ref: any) => {
 
   return (
     <div ref={ref} style={{ paddingTop: "10px" }}>
+      <div className='text-left pl-2'>UBOPARTS</div>
       <img ref={inputRef} style={{maxWidth: "100%", height: "120px"}} />
     </div>
   )

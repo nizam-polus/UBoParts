@@ -209,13 +209,12 @@ const SellerListSingle = () => {
                                             <div className="qr-image" ref={componentRef}>
                                                 <div style={{ padding: "5px", background: `#ffcf00`, width: "415px", height: "190px" }} 
                                                     className='d-flex align-items-center justify-content-center flex-column'>
-                                                    <div className="details d-flex" style={{ width: "100%", fontWeight: "500", fontFamily: "poppinsregular", fontSize: "17px" }}>
+                                                    <div className="details d-flex" style={{ width: "100%", fontWeight: "600", fontFamily: "poppinsregular", fontSize: "16px" }}>
                                                         <div className='d-flex justify-content-between' style={{minWidth: "180px"}}>
                                                             <Qrgenerator qrValue={productData?.attributes?.part_no_barcode_no}/>
                                                         </div>
-                                                        <div className='d-flex flex-column' style={{letterSpacing: "0.6px"}}>
+                                                        <div className='d-flex flex-column' style={{letterSpacing: "0.4px"}}>
                                                             <div>
-                                                                 <div className='text-left'>UBOPARTS</div>
                                                                  <div className='text-left'>{productData?.attributes?.title.toUpperCase()}</div>
                                                             </div>
                                                             <div className='text-left' style={{minWidth: "110px"}}>

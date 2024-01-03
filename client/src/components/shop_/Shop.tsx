@@ -447,7 +447,7 @@ function Shop() {
                                 <div className="row g-4 flex-column flex-lg-row mt-2">
                                     <div className="col">
                                         <div className="form-group">
-                                            <select className="form-select semifont placeholderfontsize" name="make" id="makeOption"
+                                            <select className="form-select semifont cardetails-font-size" name="make" id="makeOption"
                                                 value={selectedMake} onChange={handleMakeChange}
                                             >
                                                 <option value="" disabled={true}>{locale == "nl" ? "Selecteer merk" : "Select Make"}</option>
@@ -459,7 +459,7 @@ function Shop() {
                                     </div>
                                     <div className="col">
                                         <div className="form-group">
-                                            <select disabled={!selectedMake} className="form-select semifont placeholderfontsize" name="model" id="modelOption"
+                                            <select disabled={!selectedMake} className="form-select semifont cardetails-font-size" name="model" id="modelOption"
                                                 value={selectedModel} onChange={handleModelChange}
                                             >
                                                 <option value="" disabled={true}>{locale == "nl"? "Selecteer Model" : "Select Model"}</option>
@@ -472,7 +472,7 @@ function Shop() {
                                     <div className="col">
                                         <div className="form-group">
                                             <select disabled={!selectedModel || (yearArray && yearArray.length && !yearArray[0].year)} 
-                                                className="form-select semifont placeholderfontsize" name="year" id="yearOption"
+                                                className="form-select semifont cardetails-font-size" name="year" id="yearOption"
                                                 value={selectedYear} onChange={handleYearChange}
                                             >
                                                 <option value="" disabled={true}>{locale == "nl"? "Selecteer Jaar" : "Select Year"}</option>
@@ -484,7 +484,7 @@ function Shop() {
                                     </div>
                                     <div className="col">
                                         <div className="form-group">
-                                            <select disabled={!selectedYear} className="form-select semifont placeholderfontsize" name="category" id="categoryOption"
+                                            <select disabled={!selectedYear} className="form-select semifont cardetails-font-size" name="category" id="categoryOption"
                                                 value={selectedCategory} onChange={handleCategoryChange}>
                                                 <option value="" disabled={true}>{locale == "nl" ? "Selecteer categorie": "Select category"}</option>
                                                 {categories.map((category: any, index: any) => (
@@ -687,7 +687,7 @@ function Shop() {
                                         </div>
                                         <div className="row g-4 pt-3">
                                             {!searchedProducts.length && <div className='w-100 text-center mt-4'>
-                                                <div>No products available</div>
+                                                <div><FormattedMessage id="NO_PRODUCTS_AVAILABLE" /></div>
                                             </div>}
                                             { searchedProducts && searchedProducts.map((product: any, index: any) => {
                                                 return (

@@ -306,7 +306,7 @@ function Checkout() {
                                 console.log(response.data)
                                 router.push("/payment-result")
                             }else{
-                                toast.warning("something went wrong")
+                                toast.warning(<FormattedMessage id="SOMETHING_WRONG" />)
                             }
                         }).catch(err => console.log(err));
                     }

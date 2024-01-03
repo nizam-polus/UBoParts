@@ -443,6 +443,7 @@
   "DRIVABLE": "Drivable",
   "NOT_DRIVABLE": "Not Drivable",
   "TYPE": "Type",
+  "CATALYSER_TYPE" : "Catalyser Type",
   "CATALYSER": "Catalyser",
   "IMITATION": "Imitation",
   "ORIGINAL": "Original",
@@ -654,6 +655,7 @@
   "SOMETHING_WRONG": "Something went wrong.",
   "SOMETHING_WRONG_CART": "Something went wrong while adding to cart!.",
   "SOMETHING_WRONG_FETCHING": "Something went wrong while fetching product information.",
+  "PASSWORD_MUST_BE_SIX" : "Password must be at least 6 characters",
   "STOCK_EXCEEDED": "Stock exceeded. Cannot add this item to the cart.",
   "CART": "cart",
   "ITEM_ADDED_TO": "Item successfully added to ",
@@ -663,6 +665,7 @@
   "FILL_ALL_CREATE": "Fill all fields for Edit list",
   "PROFILE_SUCCESS": "Profile updated successfully.",
   "ERROR_PROFILE": "Error updating profle. Please try again after sometimes.",
+  "ERROR_FETCHING": "Error fetching data",
   "SELECT_VALIED_IMAGE": "Please select a valid image file.",
   "PASSWORD_SUCCESS": "Password updated successfully. Please login with the new password",
   "CART_IS_EMPTY": "Your cart is Empty",
@@ -707,7 +710,15 @@
   "VARIFY_SUCCESS": "Email verified successfully",
   "REDIRECT_HOME": "You will be redirected to Login page shortly",
 
-  "PAYMENT_METHOD": "Payment Method"
+  "VERIFY_EMAIL_SEND": "Verification mail has been sent to your email.",
+  "VERIFY_EMAIL": "Please verify your email!",
+
+  "LOGIN_FAILED" : "Login failed",
+
+  "PAYMENT_METHOD": "Payment Method",
+  "NO_PRODUCTS_AVAILABLE": "No Products Available",
+
+  "SUBSCRIPTION_ADDED" : "Your subscription is registered."
 
 
 

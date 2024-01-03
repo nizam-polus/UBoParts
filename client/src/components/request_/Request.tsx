@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { toast } from 'react-toastify';
@@ -5,6 +6,7 @@ import APIs from '~/services/apiService';
 
 function Request() {
 
+    const router = useRouter()
     let locale: any;
     
     if(typeof window !== 'undefined'){
@@ -64,6 +66,18 @@ function Request() {
     const [imageData, setImageData] = useState('');
     const [incomplete, setIncomplete] = useState(false);
     const [licensePlate, setLicenseplate] = useState("")
+    const [makesArray, setMakesArray] = useState<any>([]);
+    const [modelArray, setModelArray] = useState<any>([]);
+    const [yearArray, setYearArray] = useState<any>([]);
+    const [selectedMake, setSelectedMake] = useState('');
+    const [selectedModel, setSelectedModel] = useState('');
+    const [selectedYear, setSelectedYear] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('');
+    const [showInvaidLicense, setShowInvaidLicense] = useState(false);
+    const [makeName, setMakeName] = useState('')
+    const [modelName, setModelName] = useState('')
+    const [year, setYear] = useState('')
+    const [error, setError] = useState(null);
 
     const checkFormStatus = () => {
         let incomplete = true;
@@ -90,6 +104,86 @@ function Request() {
         setImageData(file);
     }
 
+    useEffect(() => {
+        if (licensePlate && licensePlate.length > 5) {
+            const getData = setTimeout(() => {
+                APIs.getCarDetailsUsingLicence(licensePlate).then((response: any) => {
+                    if (response.data.licenseplate) {
+                        let make = response.data.make.toUpperCase();
+                        let model = response.data.model.toUpperCase();
+                        let year = response.data.year;
+                        for (let makeObj of makesArray) {
+                            if (makeObj.make.toUpperCase() === make) {
+                                setSelectedMake(makeObj.id);
+                                setMakeNameFn(makeObj.id)
+                                setSelectedModel('');
+                                setSelectedYear('');
+                                APIs.getCarModel(makeObj.id).then(response => {
+                                    let modelArray = response.data.rows;
+                                    setModelArray(modelArray);
+                                    let similarModels: any = [], i = 0;
+                                    for (let modelObj of modelArray) {
+                                        if (modelObj.model.toUpperCase() === model) {
+                                            setSelectedModel(modelObj.id);
+                                            setModelNameFn(modelObj.id, modelArray)
+                                            APIs.getCarYear(modelObj.id).then(response => {
+                                                let yearArray = response.data.rows;
+                                                setYearArray(yearArray);
+                                                for (let yearObj of yearArray) {
+                                                    if (yearObj.year === year) {
+                                                        setSelectedYear(yearObj.id);
+                                                        setYearChangeFn(yearObj.id, yearArray)
+                                                    }
+                                                }
+                                            })
+                                            break;
+                                        } else {
+                                            if (modelObj.model.toUpperCase().includes(model)) {
+                                                i += 1;
+                                                similarModels.push(modelObj);
+                                                if (i === 1) {
+                                                    setSelectedModel(modelObj.id);
+                                                    setModelNameFn(modelObj.id, modelArray)
+                                                    APIs.getCarYear(modelObj.id).then(response => {
+                                                        let yearArray = response.data.rows;
+                                                        setYearArray(yearArray);
+                                                        for (let yearObj of yearArray) {
+                                                            if (yearObj.year === year) {
+                                                                setSelectedYear(yearObj.id);
+                                                                setYearChangeFn(yearObj.id, yearArray)
+                                                            }
+                                                        }
+                                                    })
+                                                } 
+                                            }
+                                        }
+                                    }
+                                })
+                            }
+                        }
+                        setShowInvaidLicense(false);
+                    } else {
+                        setShowInvaidLicense(true);
+                        setSelectedMake('');
+                        setSelectedModel('');
+                        setSelectedYear('');
+                        setSelectedCategory('')
+                    }
+                });
+            }, 1000);
+            return () => clearTimeout(getData);
+        }
+    }, [licensePlate]);
+
+    useEffect(() =>{
+        APIs.getCarMake().then((response: any) => {
+            setMakesArray(response.data.rows);
+        })
+        .catch((error) => {
+            setError(error);
+        });
+    },[])
+
     const handleLicenseChange = (event: any) => {
         let licensePlate = event.target.value.toUpperCase();
         setLicenseplate(licensePlate)
@@ -98,12 +192,85 @@ function Request() {
         setTimeout(() => {
             APIs.getCarDetailsUsingLicence(licensePlate).then(response => {
                 formData.make = response.data.make;
+                setSelectedMake(response.data.make)
                 formData.auto_model = response.data.model;
+                setSelectedModel(response.data.model)
                 formData.year = response.data.year;
+                setSelectedYear(response.data.year)
                 setFormData({...formData});
             })
         }, 1000);
     }
+
+    const setMakeNameFn = (Id: any) => {
+        const selectedMake = makesArray.find((make: any) => make.id == Id);
+        if (selectedMake) {
+            setMakeName(selectedMake.make);
+            formData.make= selectedMake.make
+        }
+    }
+
+    const setModelNameFn = (Id: any, modelArray: any) => {
+        const selectedModelName = modelArray.find((model: any) => model.id == Id);
+
+        if(selectedModelName){
+            setModelName(selectedModelName.model)
+            formData.auto_model = selectedModelName.model
+        }
+    }
+
+    const setYearChangeFn = (Id: any, yearArray: any) => {
+        const selectedYearName = yearArray.find((year: any) => year.id == Id);
+        if(selectedYearName){
+            setYear(selectedYearName.year)
+            formData.year = selectedYearName.year
+        } 
+    }
+
+    const handleMakeChange = (event: any) => {
+        const selectedValue = event.target.value;
+        setSelectedMake(selectedValue);
+        getModel(selectedValue)
+        setMakeNameFn(selectedValue)
+
+    };
+
+    const getModel = (makeId: any) => {
+        // const setData : any = { 'param_make': make }
+        Number(makeId)
+        APIs.getCarModel(makeId).then((response: any) => {
+            setModelArray(response.data.rows);
+        })
+            .catch((error) => {
+                setError(error);
+            });
+    }
+
+    const getYear = (make: string, modelId: any) => {
+        const setData : any = { 'param_make': make, 'param_model': modelId }
+        APIs.getCarYear(Number(modelId)).then((response: any) => {
+            setYearArray(response.data.rows);
+        })
+            .catch((error) => {
+                setError(error);
+            });
+    }
+
+    const handleModelChange = (event: any) => {
+        const selectedValue = event.target.value;
+        setSelectedModel(event.target.value);
+        setSelectedYear('');
+        setSelectedCategory('');
+        getYear(selectedModel, event.target.value);
+        setModelNameFn(selectedValue, modelArray)
+    };
+
+    const handleYearChange = (event: any) => {
+        const selectedValue = event.target.value;
+        setSelectedYear(event.target.value);
+        setSelectedCategory('');
+        setYearChangeFn(selectedValue, yearArray)
+    };
 
     const handleRequestSubmit = (event: any) => {
         event.preventDefault();
@@ -125,6 +292,7 @@ function Request() {
                 }
                 APIs.uploadImageForDismantle(picData).then()
                 toast.success(()=>( <FormattedMessage id="FORM_SUCCESS"/>), {autoClose: 4000})
+                router.push("/")
             }).catch(err => {
                 console.log(err);
                 toast.error(()=>( <FormattedMessage id="SOMETHING_WRONG"/>), {autoClose: 4000});
@@ -173,36 +341,59 @@ function Request() {
                                                         />
                                                     </td>
                                                     <td>
-                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2 ">
-                                                            <FormattedMessage id="AUTO_MODEL"/> <span className="required">*</span>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
+                                                            <FormattedMessage id="MAKE"/> <span className="required">*</span>
                                                         </label>
-                                                        <input type="text" 
-                                                            className={`form-control input-bg-color-2 body-sub-titles-1 ${incomplete && !formData.auto_model ? 'required-field' : 'border-0'}`}
-                                                            name="auto_model" placeholder={placeholderTranslations[locale]['auto_model']} value={formData.auto_model}
+                                                        {/* <input type="text" 
+                                                            className={`form-control input-bg-color-2 body-sub-titles-1 ${incomplete && !formData.make ? 'required-field' : 'border-0'}`}
+                                                            name="make" placeholder={placeholderTranslations[locale]['make']} value={formData.make}
                                                             onChange={handleFormChange}
-                                                        />
+                                                        /> */}
+                                                        <select className={`form-select input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !selectedMake ? 'required-field' : 'border-0'}`} name="make" id="makeOption"
+                                                            value={selectedMake} onChange={handleMakeChange}>
+                                                            <option value="" disabled={true}>{locale == "nl" ? "Selecteer merk" : "Select Make"}</option>
+                                                            {makesArray && makesArray.map((make: any, index: any) => (
+                                                                <option key={index} value={make.id}>{make.make}</option>
+                                                            ))}
+                                                        </select>
                                                     </td>
                                                 </tr>
                                                 <tr className="double">
                                                     <td>
-                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
-                                                            <FormattedMessage id="YEAR"/> <span className="required">*</span>
+                                                        <label className="custom-color-2 regularfont body-sub-titles-1 pb-2 ">
+                                                            <FormattedMessage id="AUTO_MODEL"/> <span className="required">*</span>
                                                         </label>
-                                                        <input type="text" 
-                                                            className={`form-control input-bg-color-2 body-sub-titles-1 ${incomplete && !formData.year ? 'required-field' : 'border-0'}`} 
-                                                            name="year" placeholder={placeholderTranslations[locale]['year']} value={formData.year}
+                                                        {/* <input type="text" 
+                                                            className={`form-control input-bg-color-2 body-sub-titles-1 ${incomplete && !formData.auto_model ? 'required-field' : 'border-0'}`}
+                                                            name="auto_model" placeholder={placeholderTranslations[locale]['auto_model']} value={formData.auto_model}
                                                             onChange={handleFormChange}
-                                                        />
+                                                        /> */}
+                                                        <select disabled={!selectedMake} className={`form-select input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !selectedModel ? 'required-field' : 'border-0'}`} name="model" id="modelOption"
+                                                            value={selectedModel} onChange={handleModelChange}>
+                                                            <option value="" disabled={!selectedMake}>{locale == "nl"? "Selecteer Model" : "Select Model"}</option>
+                                                            {modelArray && modelArray.map((model: any, index: any) => (
+                                                                <option key={index} value={model.id}>{model.model}</option>
+                                                            ))}
+                                                        </select>
                                                     </td>
                                                     <td>
                                                         <label className="custom-color-2 regularfont body-sub-titles-1 pb-2">
-                                                            <FormattedMessage id="MAKE"/> <span className="required">*</span>
+                                                            <FormattedMessage id="YEAR"/> <span className="required">*</span>
                                                         </label>
-                                                        <input type="text" 
-                                                            className={`form-control input-bg-color-2 body-sub-titles-1 ${incomplete && !formData.make ? 'required-field' : 'border-0'}`}
-                                                            name="make" placeholder={placeholderTranslations[locale]['make']} value={formData.make}
+                                                        {/* <input type="text" 
+                                                            className={`form-control input-bg-color-2 body-sub-titles-1 ${incomplete && !formData.year ? 'required-field' : 'border-0'}`} 
+                                                            name="year" placeholder={placeholderTranslations[locale]['year']} value={formData.year}
                                                             onChange={handleFormChange}
-                                                        />
+                                                        /> */}
+                                                        <select disabled={!selectedModel || (yearArray && yearArray.length && !yearArray[0].year)} 
+                                                            className={`form-select input-bg-color-2 border-0 products-name custom-color-2 ${incomplete && !selectedYear ? 'required-field' : 'border-0'}`} 
+                                                            name="year" id="yearOption"
+                                                            value={selectedYear} onChange={handleYearChange}>
+                                                            <option value="" disabled={!selectedModel}>{locale == "nl"? "Selecteer Jaar" : "Select Year"}</option>
+                                                            {yearArray && yearArray.map((year: any, index: any) => (
+                                                                <option key={index} value={year.id}>{year.year}</option>
+                                                            ))}
+                                                        </select>
                                                     </td>
                                                 </tr>
                                                 <tr className="double">

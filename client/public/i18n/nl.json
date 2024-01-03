@@ -439,6 +439,7 @@
     "DRIVABLE": "Rijdbaar",
     "NOT_DRIVABLE": "Niet rijdbaar",
     "TYPE": "Type",
+    "CATALYSER_TYPE": "Katalyseer type",
     "CATALYSER": "Katalyseren",
     "IMITATION": "Imitatie",
     "ORIGINAL": "Origineel",
@@ -451,7 +452,7 @@
     "FILL_REQUIRED_FIELDS": "Vul de verplichte velden in",
     "AGREE_TO_THE_TERMS": "Ga akkoord met de voorwaarden",
     
-    "LOGIN": "Log in",
+    "LOGIN": "inloggen",
     "LOGIN_DETAILS": "Welkom terug! Voer uw gegevens in",
     "PASSWORD": "Wachtwoord",
     "CONFIRM_PASSWORD": "Bevestig wachtwoord",
@@ -647,6 +648,7 @@
   "SOMETHING_WRONG": "Er is iets misgegaan.",
   "SOMETHING_WRONG_CART": "Er is iets misgegaan bij het toevoegen aan de winkelwagen.",
   "SOMETHING_WRONG_FETCHING": "Er is iets misgegaan bij het ophalen van productinformatie.",
+  "PASSWORD_MUST_BE_SIX" : "Wachtwoord moet tenminste 6 tekens bevatten",
   "STOCK_EXCEEDED": "Voorraad overschreden. Dit item kan niet aan de winkelwagen worden toegevoegd.",
   "CART": "winkelwagen",
   "ITEM_ADDED_TO": "Item succesvol toegevoegd aan ",
@@ -656,6 +658,7 @@
   "FILL_ALL_CREATE": "Vul alle velden in voor maken.",
   "PROFILE_SUCCESS": "Profiel succesvol bijgewerkt.",
   "ERROR_PROFILE": "Fout bij het bijwerken van het profiel. Probeer het later opnieuw.",
+  "ERROR_FETCHING": "Fout bij het ophalen van gegevens",
   "SELECT_VALIED_IMAGE": "Selecteer alstublieft een geldig afbeeldingsbestand.",
   "PASSWORD_SUCCESS": "Wachtwoord succesvol bijgewerkt. Log in met het nieuwe wachtwoord.",
   "CART_IS_EMPTY": "Uw winkelwagen is leeg.",
@@ -700,8 +703,18 @@
   "VARIFY_SUCCESS": "E-mail succesvol geverifieerd",
   "REDIRECT_HOME": "U wordt binnenkort doorgestuurd naar de inlogpagina",
 
+  "VERIFY_EMAIL_SEND": "Er is een verificatiemail naar uw e-mailadres verzonden.",
+  "VERIFY_EMAIL": "Controleer uw e-mailadres!",
 
-  "PAYMENT_METHOD": "Betalingsmiddel"
+
+  "LOGIN_FAILED" : "Aanmelden mislukt",
+
+  "PAYMENT_METHOD": "Betalingsmiddel",
+  "NO_PRODUCTS_AVAILABLE": "Geen producten beschikbaar",
+
+  "SUBSCRIPTION_ADDED" : "YUw abonnement is geregistreerd."
+
+
   }
   
   
