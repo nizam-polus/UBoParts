@@ -666,7 +666,7 @@ function Home() {
                                                 <div className="col">
                                                     <div className="form-group">
                                                         <select
-                                                            className="form-select semifont placeholderfontsize"
+                                                            className="form-select semifont cardetails-font-size"
                                                             name="make"
                                                             id="makeOption"
                                                             value={selectedMake}
@@ -687,7 +687,7 @@ function Home() {
                                                     <div className="form-group">
                                                         <select
                                                             disabled={!selectedMake}
-                                                            className="form-select semifont placeholderfontsize"
+                                                            className="form-select semifont cardetails-font-size"
                                                             name="model"
                                                             id="modelOption"
                                                             value={selectedModel}
@@ -711,7 +711,7 @@ function Home() {
                                                                 !selectedModel ||
                                                                 (yearArray && yearArray.length && !yearArray[0].year)
                                                             }
-                                                            className="form-select semifont placeholderfontsize"
+                                                            className="form-select semifont cardetails-font-size"
                                                             name="year"
                                                             id="yearOption"
                                                             value={selectedYear}
@@ -732,7 +732,7 @@ function Home() {
                                                     <div className="form-group">
                                                         <select
                                                             disabled={!selectedYear}
-                                                            className="form-select semifont placeholderfontsize"
+                                                            className="form-select semifont cardetails-font-size"
                                                             name="category"
                                                             id="categoryOption"
                                                             value={selectedCategory}
@@ -1275,7 +1275,7 @@ function Home() {
                         <div className="row mt-5 mt-lg-4 mt-xxl-5 g-4">
                             {!latestItems.length && (
                                 <div className="w-100 text-center mt-4">
-                                    <p className="">No products available</p>
+                                    <p className=""><FormattedMessage id="NO_PRODUCTS_AVAILABLE" /></p>
                                 </div>
                             )}
                             {latestItems &&

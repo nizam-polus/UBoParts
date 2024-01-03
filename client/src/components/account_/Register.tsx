@@ -177,7 +177,7 @@ function Register(props: any) {
                                             <label htmlFor="text" className="body-sub-titles-1 mediumfont"><FormattedMessage id="USER_NAME"/></label>
                                             <input type="text" 
                                                 className="form-control body-sub-titles-1 mediumfont" 
-                                                id="name" name="username" placeholder="Enter your username" 
+                                                id="name" name="username" placeholder={language.value == "nl" ? "Typ je gebruikersnaam" : "Enter your username"}
                                                 value={regformData.username} onChange={onRegFormDataChange}
                                             />
                                             <p className="form_validerrors">{errors?.username}</p>
@@ -186,7 +186,7 @@ function Register(props: any) {
                                             <label htmlFor="email" className="body-sub-titles-1 mediumfont"><FormattedMessage id="EMAIL_ADDRESS"/></label>
                                             <input type="email" 
                                                 className="form-control body-sub-titles-1 mediumfont" 
-                                                id="email" name="email" placeholder="Enter your email" 
+                                                id="email" name="email" placeholder={language.value == "nl" ? "Voer uw e-mailadres in" : "Enter your email"} 
                                                 value={regformData.email} onChange={onRegFormDataChange}
                                             />
                                             <p className="form_validerrors">{errors?.email}</p>
@@ -196,7 +196,7 @@ function Register(props: any) {
                                                         <div className="position-relative">
                                                         <input type={pwdVisible ? "text" : "password"} 
                                                             className="form-control body-sub-titles-1 mediumfont" 
-                                                            id="password" name="password" placeholder="Enter your password" 
+                                                            id="password" name="password" placeholder={language.value == "nl" ? "Voer uw wachtwoord in" : "Enter your Password"} 
                                                             value={regformData.password} onChange={onRegFormDataChange}
                                                         />
                                                         <div className="position-absolute p-3" style={{right: 0, top: 0}}>
@@ -220,7 +220,7 @@ function Register(props: any) {
 
                                                         <input type={confrmpwdVisible ? "text" : "password"}
                                                             className="form-control body-sub-titles-1 mediumfont" 
-                                                            id="confirmpassword" name="confirmpassword" placeholder="Confirm password" 
+                                                            id="confirmpassword" name="confirmpassword" placeholder={language.value == "nl" ? "Bevestig wachtwoord" : "Confirm password"}
                                                             value={regformData.confirmpassword} onChange={onRegFormDataChange}
                                                         />
                                                         <div className='position-absolute p-3' style={{right: 0, top: 0}}>
@@ -253,8 +253,8 @@ function Register(props: any) {
                                         {errors?.status === 400 && <p className='text-center' style={{color: 'rgb(255 102 102)'}}>{errors?.message}</p>}
                                         {registered && 
                                             <>
-                                                <p className='text-center mb-0' style={{color: 'rgb(25, 135, 84)'}}>Verification mail has been sent to your email.</p>
-                                                <p className='text-center' style={{color: 'rgb(25, 135, 84)'}}>Please verify your email!</p>
+                                                <p className='text-center mb-0' style={{color: 'rgb(25, 135, 84)'}}><FormattedMessage id="VERIFY_EMAIL_SEND"/></p>
+                                                <p className='text-center' style={{color: 'rgb(25, 135, 84)'}}><FormattedMessage id="VERIFY_EMAIL"/></p>
                                             </>
                                         }
                                         <button type="submit" className="btn btn-default body-sub-titles-1 mediumfont" onClick={(e) => onFormSubmit(e)}><FormattedMessage id="REGISTER"/></button>

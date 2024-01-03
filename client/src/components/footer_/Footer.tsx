@@ -17,9 +17,12 @@ function Footer() {
     const [email, setEmail] = useState<string>('');
     
     let tokendata : any;  
+    let locale: any;
+    const { language } = UserContext();
 
     if(typeof window !== 'undefined'){
         tokendata = localStorage.getItem('usertoken');
+        locale = localStorage.getItem("locale")
     }
 
     const onLoginModalClose = () => {
@@ -47,10 +50,13 @@ function Footer() {
     const handleSubscribe = (event: any) => {
         event.preventDefault();
         APIs.newsletter(email)
-        .then(() => toast.success('Your subscription is registered.'))
+        .then(() => {
+            toast.success(<FormattedMessage id="SUBSCRIPTION_ADDED" />)
+            setEmail("")
+        })
         .catch(err => {
             console.log(err);
-            toast.error('Something went wrong!');
+            toast.error(<FormattedMessage id="SOMETHING_WRONG" />);
         })
     }
 
@@ -72,7 +78,7 @@ function Footer() {
                                     </div>
                                     <div className="col">
                                         <p className="regularfont short-labels label-color-1 mb-1"><FormattedMessage id="OUR_EMAIL" /></p>
-                                        <p className="text-white regularfont short-labels-1 mb-3">Info@uboparts.com</p>
+                                        <p className="text-white regularfont short-labels-1 mb-3">info@uboparts.com</p>
                                         <p className="regularfont short-labels label-color-1 mb-1"><FormattedMessage id="OUR_LOCATION" /></p>
                                         <p className="text-white regularfont short-labels-1 mb-3">UBO Parts,
                                         Rotterdam<br/>  The Netherlands</p>
@@ -124,7 +130,7 @@ function Footer() {
                                 </p>
                                 {!tokendata ?
                                 <p onClick={showLoginModal} className="regularfont short-labels-1 label-color-1 mb-2">                                                                 
-                                    Login
+                                    <FormattedMessage id="LOGIN" />
                                 </p>
                                 : ""
                                 }
@@ -137,7 +143,7 @@ function Footer() {
                                         <div className="col-12 col-lg-9">
                                             <input type="email" 
                                                 className=" lightfont form-control h-auto input-bg-color-1 text-white footer-placeholder-font-size rounded-lg border-0" 
-                                                placeholder="Email Address..." name="email" value={email}
+                                                placeholder={language.value == "nl" ? "e-mailadres" : "Email Address.."} name="email" value={email}
                                                 onChange={(e: any) => setEmail(e.target.value.toLowerCase())}
                                             />
                                         </div>

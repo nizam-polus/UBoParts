@@ -160,7 +160,7 @@ function Cart() {
                 }
             }).catch((error) => {
                 console.error(error);
-                toast.error("Someting went wrong")
+                toast.error(<FormattedMessage id="SOMETHING_WRONG"/>)
             });
            
         }).catch(err => {
