@@ -707,7 +707,7 @@
   "ACCOUNT": "Account",
   "LOADING": "Loading..",
 
-  "VARIFY_EMAIL": "Please wait. Verifying your email...",
+  "VARIFYING_EMAIL": "Please wait. Verifying your email...",
   "VARIFY_SUCCESS": "Email verified successfully",
   "REDIRECT_HOME": "You will be redirected to Login page shortly",
 
