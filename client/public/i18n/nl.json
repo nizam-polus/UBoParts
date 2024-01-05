@@ -700,7 +700,7 @@
   "ACCOUNT": "Rekening",
   "LOADING": "Laden..",
 
-  "VARIFY_EMAIL": "Even geduld. Uw e-mail wordt geverifieerd...",
+  "VARIFYING_EMAIL": "Even geduld. Uw e-mail wordt geverifieerd...",
   "VARIFY_SUCCESS": "E-mail succesvol geverifieerd",
   "REDIRECT_HOME": "U wordt binnenkort doorgestuurd naar de inlogpagina",
 
