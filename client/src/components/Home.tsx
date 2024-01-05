@@ -515,9 +515,16 @@ function Home() {
         if (confrmpwd && (newpwd === confrmpwd)) {
             setMismatch(false);
             APIs.resetPassword({user_email_id: pwd_reset_id, password: confrmpwd, forgetkey: key, lang: language.value}).then(response => {
-                toast.success(response.data.message);
-                setOpenReset(false);
-                setOpenLogin(true);
+                if(response.data.message == "Failed to update password"){
+                    toast.error(<FormattedMessage id="LINK_EXPIRED" />)
+                    setOpenReset(false);
+                    setOpenLogin(true);
+                }else{
+                    toast.success(response.data.message);
+                    setOpenReset(false);
+                    setOpenLogin(true);
+                }
+                
             }).catch(err => toast.error(() => <FormattedMessage id="SOMETHING_WRONG"/>));
         } else {
             setMismatch(true);

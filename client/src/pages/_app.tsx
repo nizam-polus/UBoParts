@@ -1,5 +1,5 @@
 // react
-import React, { ComponentType, useEffect, useMemo } from 'react';
+import React, { ComponentType, useEffect, useMemo, useState } from 'react';
 // third-party
 import AppBase, { AppContext, AppProps } from 'next/app';
 import Head from 'next/head';
@@ -33,6 +33,9 @@ import '../scss/style.all-account.scss';
 import '../scss/header_/style.header.scss';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { UserProvider } from '~/components/account_/UserContext';
+// import Loader from '~/components/loader/Loader';
+// import { showLoader } from '~/services/dataService';
+
 
 interface Props extends AppProps {
     languageInitialProps: ILanguageProviderProps;
@@ -42,10 +45,18 @@ interface Props extends AppProps {
 }
 
 function App(props: Props) {
-    const { Component, pageProps, languageInitialProps } = props;
+    // const [showLoader, setShowLoader] = useState(false);
+    // const { dynamicData } = useData();
+    const { Component, pageProps, languageInitialProps,  } = props;
     const store = useStore();
     const applyClientState = useApplyClientState();
     const loadUserVehicles = useLoadUserVehicles();
+
+    // Loading
+    // useEffect(() => {
+    //     console.log("showLoader",showLoader);
+        
+    // }, [showLoader]);
 
     // Loading and saving state on the client side (cart, wishlist, etc.).
     useEffect(() => {
@@ -85,6 +96,7 @@ function App(props: Props) {
 
         return (
             <Layout>
+                {/* {showLoader && <Loader />}  */}
                 <PageLayout>
                     <Component {...pageProps} />
                 </PageLayout>
@@ -101,6 +113,18 @@ function App(props: Props) {
 
                     <Head>
                         <meta name="viewport" content="width=device-width, initial-scale=1" />
+                        {/* Global site tag (gtag.js) - Google Analytics */}
+                        <script async src={`https://www.googletagmanager.com/gtag/js?id=G-Y69809H4HB`} />
+                        <script
+                            dangerouslySetInnerHTML={{
+                        __html: `
+                          window.dataLayer = window.dataLayer || [];
+                          function gtag(){dataLayer.push(arguments);}
+                          gtag('js', new Date());
+                          gtag('config', 'G-Y69809H4HB');
+                        `,
+                            }}
+                        />
                     </Head>
 
                     {page}

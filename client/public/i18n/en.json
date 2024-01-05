@@ -656,6 +656,7 @@
   "SOMETHING_WRONG_CART": "Something went wrong while adding to cart!.",
   "SOMETHING_WRONG_FETCHING": "Something went wrong while fetching product information.",
   "PASSWORD_MUST_BE_SIX" : "Password must be at least 6 characters",
+  "PASSWORD_RESET_EMAIL_SUCCESS": "Password reset email sent successfully.",
   "STOCK_EXCEEDED": "Stock exceeded. Cannot add this item to the cart.",
   "CART": "cart",
   "ITEM_ADDED_TO": "Item successfully added to ",
@@ -718,7 +719,11 @@
   "PAYMENT_METHOD": "Payment Method",
   "NO_PRODUCTS_AVAILABLE": "No Products Available",
 
-  "SUBSCRIPTION_ADDED" : "Your subscription is registered."
+  "SUBSCRIPTION_ADDED" : "Your subscription is registered.",
+  "REGISTER_AS_A_CUSTOMER" : "Register as a customer",
+
+  "LINK_EXPIRED": "Link Expired. Failed to update password",
+  "ALREADY_VARIFIED": "Already Verified"
 
 
 
