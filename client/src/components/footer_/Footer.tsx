@@ -107,11 +107,11 @@ function Footer() {
                                     <span className='pointer'><FormattedMessage id="CONTACT_US"/></span>
                                     </Link>
                                 </p>
-                                <p className="regularfont short-labels-1 label-color-1 mb-2">
+                                {/* <p className="regularfont short-labels-1 label-color-1 mb-2">
                                     <Link href="/dismantle_car">
                                     <span className='pointer'><FormattedMessage id="ADS_WITH_US"/></span>
                                     </Link>
-                                </p>
+                                </p> */}
                                 <p className="regularfont short-labels-1 label-color-1 mb-2">
                                     <Link href="/cookie">
                                     <span className='pointer'><FormattedMessage id="COOKIES"/></span>
@@ -126,7 +126,7 @@ function Footer() {
                                     </Link>
                                 </p>
                                 <p onClick={showRegister} className="regularfont short-labels-1 label-color-1 mb-2">       
-                                        Register as a customer                  
+                                    <FormattedMessage id="REGISTER_AS_A_CUSTOMER" />                 
                                 </p>
                                 {!tokendata ?
                                 <p onClick={showLoginModal} className="regularfont short-labels-1 label-color-1 mb-2">                                                                 

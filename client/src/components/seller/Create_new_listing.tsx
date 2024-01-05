@@ -806,11 +806,11 @@ function Create_new_listing() {
                                                     <td colSpan={2} className='px-5 pb-4 pt-2 border-0'>
                                                         <label className="custom-color-2 regularfont products-name pb-2"><FormattedMessage id="BAR_CODE" /> :</label>
                                                             
-                                                            <div style={{ padding: "5px", background: `#ffcf00`, width: "415px", height: "190px" }}
+                                                            <div style={{ background: `#ffcf00`, width: "415px", height: "190px" }}
                                                             className='d-flex align-items-center justify-content-center flex-column'
                                                             ref={componentRef}
                                                             >
-                                                            <div className="details d-flex" style={{ width: "100%", fontWeight: "600", fontFamily: "poppinsregular", fontSize: "16px" }}>
+                                                            <div className="details d-flex" style={{ width: "100%", fontWeight: "600", fontSize: "16px" }}>
                                                                 <div className='d-flex justify-content-between' style={{ minWidth: "180px" }}>
                                                                     {listBarcode && <Qrgenerator qrValue={listBarcode} />}
                                                                 </div>
@@ -820,7 +820,6 @@ function Create_new_listing() {
                                                                     </div>
                                                                     <div style={{ minWidth: "110px" }}>
                                                                         <div>REK NUMMER : {listLocation}</div>
-                                                                        {/* <div> {productData?.attributes?.product_location_warehouse}</div> */}
                                                                     </div>
                                                                     <div>ARTICLE NO : {listArticle}</div>
                                                                     <div>{makeName} {modelName} {year} </div>

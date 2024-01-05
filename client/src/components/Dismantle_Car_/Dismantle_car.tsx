@@ -93,6 +93,19 @@ function Dismantle_car() {
     const [modelName, setModelName] = useState('')
     const [year, setYear] = useState('')
     const [error, setError] = useState(null);
+    const [imageDataList, setImageDataList] = useState<any>([]);
+
+    const handleImageUpload = (event: any) => {
+        const files = event.target.files;
+        const newImages = Array.from(files);
+        setImageDataList([...imageDataList, ...newImages]);
+    }
+
+    const handleImageDelete = (index: any) => {
+        const newImages = [...imageDataList];
+        newImages.splice(index, 1);
+        setImageDataList(newImages);        
+    }
 
     useEffect(() => {
         APIs.getCountries().then(response => {
@@ -104,7 +117,7 @@ function Dismantle_car() {
 
     const checkFormStatus = () => {
         let incomplete = true;
-        incomplete = !(!!formData.asking_price && !!formData.auto_model && !!imageData && 
+        incomplete = !(!!formData.asking_price && !!formData.auto_model && !!imageDataList.length && 
                 !!formData.city && !!formData.delivery_type && !!formData.driving_condition && 
                 !!formData.email && !!formData.first_name && !!formData.last_name && !!formData.country.length &&
                 !!formData.make && !!formData.note && !!formData.phone && !!formData.plate_number && !!formData.type &&
@@ -127,10 +140,10 @@ function Dismantle_car() {
         setFormData((prevData: any) => ({...prevData, country: countryId}));
     }
 
-    const handleImageUpload = (event: any) => {
-        const file = event.target.files[0];
-        setImageData(file);
-    }
+    // const handleImageUpload = (event: any) => {
+    //     const file = event.target.files[0];
+    //     setImageData(file);
+    // }
 
     useEffect(() => {
         if (licensePlate && licensePlate.length > 5) {
@@ -312,17 +325,21 @@ function Dismantle_car() {
         if (!incomplete) {
             APIs.dismantleCar(formData).then(response => {
                 const refId = response.data.data.id
+                for(let i=0; i<imageDataList.length; i++){
                 const picData = {
                     ref: 'api::dismantle.dismantle',
                     refId: refId,
                     field: 'car_image',
-                    files: imageData
+                    files: imageDataList[i]
                 }
                 APIs.uploadImageForDismantle(picData).then(()=>{
                     setLicenseplate("")
                     setSelectedMake("")
                     setFormData({})
                 })
+                }
+                
+            }).then(() =>{
                 toast.success(()=>( <FormattedMessage id="FORM_SUCCESS" />), {autoClose: 4000})
                 router.push("/")
             }).catch(err => {
@@ -585,10 +602,28 @@ function Dismantle_car() {
                                                         <label className={`body-sub-titles`}>
                                                             <FormattedMessage id="CAR_IMAGE"/> <span className="required">*</span>
                                                         </label>
-                                                        <input className={`form-control p-2 choosefile ${incomplete && !imageData ? 'required-field' : 'border-0'}`} 
+                                                        {/* <input className={`form-control p-2 choosefile ${incomplete && !imageData ? 'required-field' : 'border-0'}`} 
                                                             type="file" id="formFile" name='car_image'
                                                             onChange={handleImageUpload} 
-                                                        />
+                                                        /> */}
+                                                        <input
+                                                                    className={`form-control p-2 choosefile ${incomplete && !imageDataList.length ? 'required-field' : 'border-0'}`}
+                                                                    type="file"
+                                                                    id="formFile"
+                                                                    name="car_image"
+                                                                    onChange={handleImageUpload}
+                                                                    multiple  // Allow multiple file selection
+                                                                />
+                                                                <div className="selected-gallery-images" style={{ padding: "10px 0", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+                                                                    {imageDataList.map((image: any, index: any) => (
+                                                                        <div key={index} style={{ position: 'relative', maxWidth: "210px" }}>
+                                                                            <img src={URL.createObjectURL(image)} alt={`Image ${index}`} height={200} style={{ width: "100%", borderRadius: "20px"}}/>
+                                                                            <button onClick={() => handleImageDelete(index)} style={{ position: 'absolute', top: '5px', right: '10px', border: "none", color: "red", background: "none" }}>
+                                                                                <i className='fa fa-trash'></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
                                                     </td>
                                                     <td></td>
                                                 </tr>

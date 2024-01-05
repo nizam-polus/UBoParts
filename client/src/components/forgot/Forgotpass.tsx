@@ -35,9 +35,10 @@ function Forgotpass(props: Props) {
     const handleReset = (event: any) => {
         event.preventDefault();
         APIs.forgotPassword({user_email_id: email, lang: language.value}).then(response => {
-            toast.success('Password reset email sent successfully.');
+            toast.success(<FormattedMessage id="PASSWORD_RESET_EMAIL_SUCCESS" />);
+            setEmail('')
         }).catch(err => {
-            toast.error('something went wrong.')
+            toast.error(<FormattedMessage id="SOMETHING_WRONG"/>)
         });
     }
 
@@ -49,7 +50,7 @@ function Forgotpass(props: Props) {
                         <div className="ac-card login-form">
                             <div className="ac-card-body">
                                 <h3 className="ac-card-title text-center"><FormattedMessage id="FORGET_PASSWORD"/></h3>
-                                <p className="ac-card-sub-title text-center"><FormattedMessage id="ENTER_REGISTERD_EMAIL_TO"/> <br/>reset your password</p>
+                                <p className="ac-card-sub-title text-center"><FormattedMessage id="ENTER_REGISTERD_EMAIL_TO"/> <br/> <FormattedMessage id="RESET_PASSWORD"/></p>
                                 <div className="ac-card-text">
                                     <form action="/action_page.php">
                                         <div className="form-group">
