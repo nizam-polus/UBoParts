@@ -112,7 +112,10 @@ function Shop() {
                 searchFilter(filteredCategory, filteredSubcategory, {sort: "sort[0]=createdAt:desc", page: 1});
             } else if (articleNumber) {
                 APIs.getProductUsingArticleNumber(articleNumber).then(response => {
-                    setSearchedProducts(response.data.data)
+                    setTimeout(() => {
+                        setSearchedProducts(response.data.data)
+                        setLoading(false);
+                      }, 1000);
                 })
             } else if (makeId) {
                 searchProducts(makeId, modelId, yearId, category);
@@ -168,7 +171,10 @@ function Shop() {
     const searchProducts = (make: any, model: any, year: any, category: any, pageNumber = '1', sortData = 'sort[0]=createdAt:desc') => {
         setSortState(sortData);
         APIs.searchProducts(make, model, year, category, {sort: sortData, page: pageNumber}, sellerId).then((response: any) => {
-            setSearchedProducts(response.data.data);
+            setTimeout(() => {
+                setSearchedProducts(response.data.data)
+                setLoading(false);
+              }, 1000);
             let pagination = response.data.meta.pagination
             setPagination(pagination);
             setPageRange(pageRangeFinder(pagination.pageCount));
@@ -194,7 +200,10 @@ function Shop() {
             let pagination = response.data.meta.pagination;
             setPageRange(pageRangeFinder(pagination.pageCount));
             setPagination(pagination);
-            setSearchedProducts(response.data.data)
+            setTimeout(() => {
+                setSearchedProducts(response.data.data)
+                setLoading(false);
+              }, 1000);
             setPageCount(response.data.meta.pagination.pageCount)
         }).catch(err => console.log)
     }
@@ -686,10 +695,20 @@ function Shop() {
                                             </div>
                                         </div>
                                         <div className="row g-4 pt-3">
-                                            {!searchedProducts.length && <div className='w-100 text-center mt-4'>
-                                                <div><FormattedMessage id="NO_PRODUCTS_AVAILABLE" /></div>
-                                            </div>}
-                                            { searchedProducts && searchedProducts.map((product: any, index: any) => {
+                                            {loading &&
+                                                <div className='text-center w-100'>
+                                                    <div className="spinner-border" role="status">
+                                                        <span className="sr-only">Loading...</span>
+                                                    </div>
+                                                </div>
+                                            }
+                                            {!loading && searchedProducts.length === 0 && (
+                                                <div className='w-100 text-center mt-4'>
+                                                    <div>No products available</div>
+                                                </div>
+                                            )}
+
+                                            {!loading && searchedProducts.length > 0 && searchedProducts.map((product: any, index: any) => {
                                                 return (
                                                     <div className="col-12 col-sm-12 col-md-6 col-xl-4  mb-4" key={index}>
                                                     {(product.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && product?.attributes?.sale?.data != null)&& (

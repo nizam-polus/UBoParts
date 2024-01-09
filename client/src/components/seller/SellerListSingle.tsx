@@ -10,6 +10,7 @@ import Qrgenerator from './Qrgenerator';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { FormattedMessage } from 'react-intl';
+import ReactImageMagnify from 'react-image-magnify';
 
 const SellerListSingle = () => {
 
@@ -105,8 +106,26 @@ const SellerListSingle = () => {
                     <section className="products-description-wrapper mt-5 mb-5">
                         <div className="row">
                             <div className="col-12 col-md-6 col-lg-4">
-                                <div className="row">
-                                    <AppImage style={{ objectFit: 'contain', height: '30rem' }} className="rounded w-100" src={BASE_URL + productImage} />
+                                <div className="productImage" style={{height: "30rem"}}>
+                                    <ReactImageMagnify {...{
+                                        smallImage: {
+                                            alt: 'Wristwatch by Ted Baker London',
+                                            isFluidWidth: true,
+                                            src: BASE_URL + productImage
+                                        },
+                                        largeImage: {
+                                            src: BASE_URL + productImage,
+                                            width: 1000,
+                                            height: 1500,
+                                        },
+                                        isHintEnabled: true,
+                                        enlargedImagePosition: "over",
+                                        enlargedImageContainerDimensions: {
+                                            width: '120%', height: '30rem'
+                                        }
+                                    }}
+                                        style={{ objectFit: 'contain', height: '30rem' }} className="rounded w-100"  />
+                                    
                                 </div>
                                 <div className="row product-thumbnails g-3 mt-3 justify-content-center">
                                     {productGallery && productGallery.map((galleryImg: any) => {
@@ -209,7 +228,7 @@ const SellerListSingle = () => {
                                             <div className="qr-image" ref={componentRef}>
                                                 <div style={{background: `#ffcf00`, width: "415px", height: "190px" }} 
                                                     className='d-flex align-items-center justify-content-center flex-column'>
-                                                    <div className="details d-flex" style={{ width: "100%", fontWeight: "600", fontSize: "16px" }}>
+                                                    <div className="details d-flex" style={{ width: "100%", fontWeight: "500", fontSize: "16.3px" }}>
                                                         <div className='d-flex justify-content-between' style={{minWidth: "180px"}}>
                                                             <Qrgenerator qrValue={productData?.attributes?.part_no_barcode_no}/>
                                                         </div>

@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/dist/client/link';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ReactImageMagnify from 'react-image-magnify';
 
 import APIs from '~/services/apiService';
 import { BASE_URL } from 'configuration';
@@ -203,8 +204,26 @@ function Productsingle() {
                     <section className="products-description-wrapper mt-5 mb-5">
                         <div className="row">
                             <div className="col-12 col-md-6 col-lg-4">
-                                <div className="row">
-                                    <AppImage style={{objectFit: 'contain', height: '30rem'}} className="rounded w-100" src={BASE_URL + productImage}/>
+                                <div className="productImage" style={{maxHeight: "30rem"}}>
+                                    {/* <AppImage style={{objectFit: 'contain', height: '30rem'}} className="rounded w-100" src={BASE_URL + productImage}/> */}
+                                    <ReactImageMagnify {...{
+                                        smallImage: {
+                                            alt: 'Wristwatch by Ted Baker London',
+                                            isFluidWidth: true,
+                                            src: BASE_URL + productImage,
+                                        },
+                                        largeImage: {
+                                            src: BASE_URL + productImage,
+                                            width: 1000,
+                                            height: 1500,
+                                        },
+                                        isHintEnabled: true,
+                                        enlargedImagePosition: "over",
+                                        enlargedImageContainerDimensions: {
+                                            width: '120%', height: '120%'
+                                        }
+                                        
+                                    }} style={{ objectFit: 'contain', maxHeight: '30rem', width: "100%" }} className="rounded"/>
                                 </div>
                                 <div className="row product-thumbnails g-3 mt-3 justify-content-center">
                                 {productGallery && productGallery.map((galleryImg: any) => {

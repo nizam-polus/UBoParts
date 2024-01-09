@@ -1475,6 +1475,9 @@ header .bar,
     .line-height-1{
         line-height: 1;
     }
+    .productImage{
+        max-width: 280px;
+    }
 }	
 @media screen and (min-width : 1200px){	
     input[type=text], input[type=email], input[type=password] {	
@@ -2477,5 +2480,13 @@ $background-color_1: rgba(0, 0, 0, 0.5);
     font-size: 12px;
   }
   
+  .productImage{
+    height: 400px;
+    width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    object-fit: contain;
+  }
 
   
