@@ -685,6 +685,7 @@
   "REDIRECT_TO_HOME": "U wordt doorgestuurd naar de startpagina.",
   "PAYMENT_TRANSACTION_PENDING": "Betalingstransactie is in behandeling...",
   "REQUEST_PROCESSED": "Uw verzoek wordt verwerkt...",
+  "PAYMENT_FAILED": "Oh nee, je betaling is mislukt 😔",
 
   "SELL_DESCRIPTION_1": "Verkoop je onderdelen moeiteloos met slechts een paar klikken.",
   "SELL_DESCRIPTION_2": "Snel en efficiënt jouw onderdelen verkopen",
@@ -702,7 +703,7 @@
 
   "VARIFYING_EMAIL": "Even geduld. Uw e-mail wordt geverifieerd...",
   "VARIFY_SUCCESS": "E-mail succesvol geverifieerd",
-  "REDIRECT_HOME": "U wordt binnenkort doorgestuurd naar de inlogpagina",
+  "REDIRECT_HOME": "U wordt binnenkort doorgestuurd naar de startpagina",
 
   "VERIFY_EMAIL_SEND": "Er is een verificatiemail naar uw e-mailadres verzonden.",
   "VERIFY_EMAIL": "Controleer uw e-mailadres!",

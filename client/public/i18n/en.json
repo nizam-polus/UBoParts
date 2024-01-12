@@ -692,6 +692,7 @@
   "REDIRECT_TO_HOME": "You will be redirected to homepage.",
   "PAYMENT_TRANSACTION_PENDING": "Payment transaction is pending...",
   "REQUEST_PROCESSED": "Your request is being processed ...",
+  "PAYMENT_FAILED": " Oh no, your payment failed 😔",
 
   
   "SELL_DESCRIPTION_1": "Streamline your selling experience with just a few clicks.",
@@ -709,7 +710,7 @@
 
   "VARIFYING_EMAIL": "Please wait. Verifying your email...",
   "VARIFY_SUCCESS": "Email verified successfully",
-  "REDIRECT_HOME": "You will be redirected to Login page shortly",
+  "REDIRECT_HOME": "You will be redirected to home page shortly",
 
   "VERIFY_EMAIL_SEND": "Verification mail has been sent to your email.",
   "VERIFY_EMAIL": "Please verify your email!",
