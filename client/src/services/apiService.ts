@@ -153,6 +153,7 @@ const APIs = {
 
     newPayment: (productsData: {}) => axios.post(BACKEND_URL + 'payment-status-update', productsData, {headers}),
 
+    newPaymentStrip: (productsData: {}) => axios.post(BACKEND_URL + 'stripe-payment', productsData, {headers}),
 
         /* ---------------- jwt token based apis ----------------- */
 

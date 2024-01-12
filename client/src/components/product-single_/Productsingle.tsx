@@ -58,6 +58,10 @@ function Productsingle() {
             setProductGallery(productGallery);
             setProductImage(productImage);
             setProductCategory(productCategory) 
+            setTimeout(() =>{
+                let productIMAGE = document.getElementById("productIMAGE")
+                console.log("img",productIMAGE)
+            }, 3000)
         }).catch(err => console.log(err))
     }, []);
 
@@ -204,9 +208,9 @@ function Productsingle() {
                     <section className="products-description-wrapper mt-5 mb-5">
                         <div className="row">
                             <div className="col-12 col-md-6 col-lg-4">
-                                <div className="productImage" style={{maxHeight: "30rem"}}>
+                                <div className="productImage"  style={{maxHeight: "30rem", position: "relative"}}>
                                     {/* <AppImage style={{objectFit: 'contain', height: '30rem'}} className="rounded w-100" src={BASE_URL + productImage}/> */}
-                                    <ReactImageMagnify {...{
+                                    <ReactImageMagnify  {...{
                                         smallImage: {
                                             alt: 'Wristwatch by Ted Baker London',
                                             isFluidWidth: true,
@@ -214,16 +218,20 @@ function Productsingle() {
                                         },
                                         largeImage: {
                                             src: BASE_URL + productImage,
-                                            width: 1000,
-                                            height: 1500,
+                                            width: 1500,
+                                            height: 1200,
+                                       
                                         },
                                         isHintEnabled: true,
-                                        enlargedImagePosition: "over",
+                                        // enlargedImagePosition: "over",
                                         enlargedImageContainerDimensions: {
-                                            width: '120%', height: '120%'
+                                            width: '250%', height: '250%',
+                                        },
+                                        enlargedImageStyle: {
+                                            zIndex: 99
                                         }
                                         
-                                    }} style={{ objectFit: 'contain', maxHeight: '30rem', width: "100%" }} className="rounded"/>
+                                    }} className="produtIMAGE"/>
                                 </div>
                                 <div className="row product-thumbnails g-3 mt-3 justify-content-center">
                                 {productGallery && productGallery.map((galleryImg: any) => {

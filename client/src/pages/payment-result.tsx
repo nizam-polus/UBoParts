@@ -22,78 +22,78 @@ function PaymentResult() {
 
     let interavls: any = [];
 
-    // useEffect(() => {
-    //     let redirectUrl = localStorage.getItem('redirect');
-    //     redirectUrl && localStorage.removeItem('redirect');
-    //     let transactionId: string = localStorage.getItem('uid') || '';
-    //     let checkPaymentStatus = setInterval(() => {
-    //         interavls.push(checkPaymentStatus)
-    //         APIs.paymentStatus(transactionId, user.id).then((response: any) => {
-    //             let status = response.data.rows.length ? response.data.rows[0].status : 'failed';
-    //             (status === 'pending') && setStatus(status);
-    //             if (status !== 'created' && status !== 'pending') {
-    //                 clearInterval(checkPaymentStatus);
-    //                 switch(status) {
-    //                     case 'completed':
-    //                         getOrderDetails();
-    //                         setStatus('completed');
-    //                         setPaymentStatus('completed');
-    //                         break;
-    //                     case 'failed':
-    //                         setPath('/homepage');
-    //                         setStatus('failed');
-    //                         setPaymentStatus('failed')
-    //                         break;
-    //                     case 'expired' :
-    //                         setPath('/homepage');
-    //                         setStatus('expired');
-    //                         setPaymentStatus('expired')
-    //                         break;
-    //                     case 'planned' :
-    //                         setStatus("pending")
-    //                         paymentRefundFunction()
-    //                         break;
-    //                     case 'reserved' :
-    //                         setStatus("pending");
-    //                         paymentRefundFunction()
-    //                         break;
-    //                     default:
-    //                         setPath('/homepage');
-    //                         setStatus(status);
-    //                         console.log('unknown status: ', status);
-    //                         break;
-    //                 }
-    //             }
-    //         }).catch(err => console.log(err));
-    //     }, 1000 * 10);
+    useEffect(() => {
+        let redirectUrl = localStorage.getItem('redirect');
+        redirectUrl && localStorage.removeItem('redirect');
+        let transactionId: string = localStorage.getItem('uid') || '';
+        let checkPaymentStatus = setInterval(() => {
+            interavls.push(checkPaymentStatus)
+            APIs.paymentStatus(transactionId, user.id).then((response: any) => {
+                let status = response.data.rows.length ? response.data.rows[0].status : 'failed';
+                (status === 'pending') && setStatus(status);
+                if (status !== 'created' && status !== 'pending') {
+                    clearInterval(checkPaymentStatus);
+                    switch(status) {
+                        case 'complete':
+                            getOrderDetails();
+                            setStatus('completed');
+                            setPaymentStatus('completed');
+                            break;
+                        case 'failed':
+                            setPath('/homepage');
+                            setStatus('failed');
+                            setPaymentStatus('failed')
+                            break;
+                        case 'expired' :
+                            setPath('/homepage');
+                            setStatus('expired');
+                            setPaymentStatus('expired')
+                            break;
+                        // case 'planned' :
+                        //     setStatus("pending")
+                        //     paymentRefundFunction()
+                        //     break;
+                        // case 'reserved' :
+                        //     setStatus("pending");
+                        //     paymentRefundFunction()
+                        //     break;
+                        default:
+                            setPath('/homepage');
+                            setStatus(status);
+                            console.log('unknown status: ', status);
+                            break;
+                    }
+                }
+            }).catch(err => console.log(err));
+        }, 1000 * 10);
 
-    //     let timer = setInterval(() => {
-    //         setTime((time: any) => {
-    //             if (time === 0 ) {
-    //                 clearInterval(timer);
-    //                 return 0;
-    //             } else {
-    //                 return time-1;
-    //             }
-    //         })
-    //     }, 1000)
-    // }, [])
+        let timer = setInterval(() => {
+            setTime((time: any) => {
+                if (time === 0 ) {
+                    clearInterval(timer);
+                    return 0;
+                } else {
+                    return time-1;
+                }
+            })
+        }, 1000)
+    }, [])
 
-    // useEffect(() => {
-    //     let timeout = 1000 * 60 * 15;
-    //     if (status !== 'created' && status !== 'pending') timeout = 5000;
-    //     (status !== 'completed') && setTimeout(() => {
-    //         if (status === 'pending') {
-    //             toast.warn('Payment is still pending...');
-    //             router.push('/homepage');
-    //         };
-    //         router.push(path);
-    //     }, timeout);
-    //     setTimeout(() => {
-    //         (status && status !== 'created' && status !== 'pending') && toast.warn('Payment ' + status);
-    //         interavls.forEach((interval: any) => clearInterval(interval))
-    //     }, 1000 * 60 * 60);
-    // }, [status])
+    useEffect(() => {
+        let timeout = 1000 * 60 * 15;
+        if (status !== 'created' && status !== 'pending') timeout = 5000;
+        (status !== 'completed') && setTimeout(() => {
+            if (status === 'pending') {
+                toast.warn('Payment is still pending...');
+                router.push('/homepage');
+            };
+            router.push(path);
+        }, timeout);
+        setTimeout(() => {
+            (status && status !== 'created' && status !== 'pending') && toast.warn('Payment ' + status);
+            interavls.forEach((interval: any) => clearInterval(interval))
+        }, 1000 * 60 * 60);
+    }, [status])
 
     // const paymentRefundFunction = () =>{
     //     let transactionId;
@@ -113,12 +113,12 @@ function PaymentResult() {
     //     })
 
     // }
-    useEffect(() =>{
-        setStatus('completed');
-        setPaymentStatus('completed');
-        getOrderDetails();
+    // useEffect(() =>{
+    //     setStatus('completed');
+    //     setPaymentStatus('completed');
+    //     getOrderDetails();
 
-    },[])
+    // },[])
 
     const getOrderDetails = () => {
         let transactionId;
@@ -129,6 +129,7 @@ function PaymentResult() {
             setCartCount(response.data.rows.length);
         }).catch(err => console.log(err));
         transactionId && APIs.getOrderWithTransactionid(transactionId).then((response: any) => {
+            console.log("order-details",response)
             let OrderProducts = response.data.data;
             OrderProducts.length && setShippingCost(OrderProducts[0]?.attributes?.shipping_cost)
             setProducts(OrderProducts);

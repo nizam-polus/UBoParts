@@ -254,13 +254,15 @@ function Checkout() {
                     let product = {
                         // seller_id : '',
                         // product_id : '',
-                        name: '',
+                        // name: '',
+                        id: "",
                         price: 0,
                         quantity: ''
                     };
                     // product.seller_id = element.seller_id;
                     // product.product_id = element.id
-                    product.name = element.title;
+                    // product.name = element.title;
+                    product.id = element.product_id;
                     product.price = typeof (element.price) == 'string' ? (Number(element.price) - Number(element.discount_price)) * 100 : ((element.price ) - Number(element.discount_price)) * 100;
                     product.quantity = element.quantity;
                   
@@ -275,10 +277,17 @@ function Checkout() {
                 //     shipping_cost: totalShippingCost,
                 //     lang: language.value
                 // }
+                // let checkoutData = {
+                //     "customerid":user.id,
+                //     "shipping_cost": totalShippingCost,
+                //     "lang": language.value
+                // }
                 let checkoutData = {
+                    products: cartData, 
                     "customerid":user.id,
                     "shipping_cost": totalShippingCost,
                     "lang": language.value
+                    
                 }
                 APIs.getCartData({ customerid: user.id }).then(response => {
                     let cartData = response.data.rows;
@@ -299,16 +308,28 @@ function Checkout() {
                         //     }
                         //     // router.push("/payment-result")
                         // }).catch(err => console.log(err));
-                        APIs.newPayment(checkoutData).then(response => {
-                            if (response.data) {
-                                let transactionId = response.data
-                                localStorage.setItem('uid', transactionId);
-                                console.log(response.data)
-                                router.push("/payment-result")
+                        // APIs.newPayment(checkoutData).then(response => {
+                        //     if (response.data) {
+                        //         let transactionId = response.data
+                        //         localStorage.setItem('uid', transactionId);
+                        //         console.log(response.data)
+                        //         router.push("/payment-result")
+                        //     }else{
+                        //         toast.warning(<FormattedMessage id="SOMETHING_WRONG" />)
+                        //     }
+                        // }).catch(err => console.log(err));
+                        APIs.newPaymentStrip(checkoutData).then(response =>{
+                            if(response.data.url){
+                                console.log("strip call response",response.data)
+                                let transactionId = response.data.id;
+                                let redirectUrl = response.data.url;
+                                localStorage.setItem('uid', transactionId)
+                                localStorage.setItem("redirect", redirectUrl)
+                                window.location.assign(redirectUrl)
                             }else{
-                                toast.warning(<FormattedMessage id="SOMETHING_WRONG" />)
+                                toast.error(<FormattedMessage id="SOMETHING_WRONG" />)
                             }
-                        }).catch(err => console.log(err));
+                        })
                     }
                 })
             })
