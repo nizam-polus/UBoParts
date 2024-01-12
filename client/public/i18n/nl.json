@@ -685,7 +685,7 @@
   "REDIRECT_TO_HOME": "U wordt doorgestuurd naar de startpagina.",
   "PAYMENT_TRANSACTION_PENDING": "Betalingstransactie is in behandeling...",
   "REQUEST_PROCESSED": "Uw verzoek wordt verwerkt...",
-  "PAYMENT_FAILED": "Oh nee, je betaling is mislukt 😔",
+  "PAYMENT_FAILED": "Oh nee, je betaling is mislukt ",
 
   "SELL_DESCRIPTION_1": "Verkoop je onderdelen moeiteloos met slechts een paar klikken.",
   "SELL_DESCRIPTION_2": "Snel en efficiënt jouw onderdelen verkopen",

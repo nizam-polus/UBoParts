@@ -692,7 +692,7 @@
   "REDIRECT_TO_HOME": "You will be redirected to homepage.",
   "PAYMENT_TRANSACTION_PENDING": "Payment transaction is pending...",
   "REQUEST_PROCESSED": "Your request is being processed ...",
-  "PAYMENT_FAILED": " Oh no, your payment failed 😔",
+  "PAYMENT_FAILED": " Oh no, your payment failed ",
 
   
   "SELL_DESCRIPTION_1": "Streamline your selling experience with just a few clicks.",
