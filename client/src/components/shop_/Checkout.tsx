@@ -263,7 +263,7 @@ function Checkout() {
                     // product.product_id = element.id
                     // product.name = element.title;
                     product.id = element.product_id;
-                    product.price = typeof (element.price) == 'string' ? (Number(element.price) - Number(element.discount_price)) * 100 : ((element.price ) - Number(element.discount_price)) * 100;
+                    product.price = typeof (element.price) == 'string' ? (Number(element.price) - Number(element.discount_price)) : ((element.price ) - Number(element.discount_price))
                     product.quantity = element.quantity;
                   
                     cartData.push(product);
@@ -291,8 +291,8 @@ function Checkout() {
                 }
                 APIs.getCartData({ customerid: user.id }).then(response => {
                     let cartData = response.data.rows;
-                    const hasZeroStock = cartData.some((item : any) => item.stock_count <= 0);
-                    if (cartData[0].payment_process === 'true') {
+                    const hasZeroStock = cartData.some((item : any) => item.stock_count <= 0);        
+                    if (cartData[0].payment_process === 'true'){
                         toast.warning(() => ( <FormattedMessage id="PAYMENT_INITIATED" /> ));
                         setClicked(false)
                     } else if(hasZeroStock){
