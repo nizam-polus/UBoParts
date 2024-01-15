@@ -8,6 +8,8 @@ function paymentFailed() {
     const router = useRouter()
 
     useEffect(() => {
+        let redirectUrl = localStorage.getItem('redirect');
+        redirectUrl && localStorage.removeItem('redirect');
         setTimeout(() => {
             router.push("/homepage")
         },5000)
