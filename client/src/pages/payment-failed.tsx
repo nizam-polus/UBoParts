@@ -8,10 +8,8 @@ function paymentFailed() {
     const router = useRouter()
 
     useEffect(() => {
-        let redirectUrl = localStorage.getItem('redirect');
-        redirectUrl && localStorage.removeItem('redirect');
         setTimeout(() => {
-            router.push("/homepage")
+            window.location.assign("/")
         },5000)
     })
 
@@ -24,7 +22,7 @@ function paymentFailed() {
             <div style={{ textAlign: 'center', position: 'relative', margin: '10%' }}>
                 <i className="fas fa-exclamation-triangle" style={{ fontSize: '4rem', color: 'red' }}></i>
                 <p className="body-sub-titles-1 semifont mt-2" style={{fontSize: "2rem"}}>
-                    <FormattedMessage id="PAYMENT_FAILED" />
+                   <FormattedMessage id="PAYMENT_CANCELLED" />
                 </p>
                 <p className="body-sub-titles-2 regularfont m-0">
                     <FormattedMessage id="REDIRECT_HOME" />
