@@ -79,6 +79,8 @@ function Cart() {
     }, []);
 
     const handleCartItemDelete = (product: any) => {
+        let redirectUrl : any = localStorage.getItem('redirect');
+        redirectUrl && localStorage.removeItem('redirect');
         APIs.deleteCartData({ customerid: product.customer_id, id: product.id }).then(response => {
             APIs.getCartData({ "customerid": user.id }).then((response: any) => {
                 setCartProducts(response.data.rows);
