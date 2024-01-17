@@ -627,7 +627,7 @@ function Checkout() {
                                             <tr className='w-100'>
                                                 <td colSpan={2}>
                                                     <div className="form-group regularfont body-sub-titles-2 mb-0" style={{color: 'black', fontSize: '0.9rem'}}>
-                                                        By proceeding you are agreeing to the <a href="https://onlinepaymentplatform.com/terms-policies" target='_blank'>Terms and conditions</a>
+                                                        By proceeding you are agreeing to the <a href="https://stripe.com/en-nl/legal/consumer" target='_blank'>Terms of Service(Strip.com)</a>
                                                     </div>
                                                 </td>
                                             </tr>
