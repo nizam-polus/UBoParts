@@ -212,20 +212,25 @@ function Productsingle() {
                                     {/* <AppImage style={{objectFit: 'contain', height: '30rem'}} className="rounded w-100" src={BASE_URL + productImage}/> */}
                                     <ReactImageMagnify  {...{
                                         smallImage: {
-                                            alt: 'Wristwatch by Ted Baker London',
-                                            isFluidWidth: true,
+                                            alt: 'img',
+                                            isFluidWidth: false,
+                                            height: 300,
+                                            width: 300,
                                             src: BASE_URL + productImage,
                                         },
                                         largeImage: {
                                             src: BASE_URL + productImage,
-                                            width: 1500,
-                                            height: 1200,
-                                       
+                                            width: 1650,
+                                            height: 1190,                                       
+                                        },
+                                        imageStyle: {
+                                            width: 300,
+                                            height: 300
                                         },
                                         isHintEnabled: true,
                                         // enlargedImagePosition: "over",
                                         enlargedImageContainerDimensions: {
-                                            width: '250%', height: '250%',
+                                            width: '400%', height: '260%',
                                         },
                                         enlargedImageStyle: {
                                             zIndex: 99

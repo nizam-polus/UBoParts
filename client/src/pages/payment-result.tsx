@@ -150,11 +150,15 @@ function PaymentResult() {
     return (
         <>
             {(!status || status === 'created') ? 
-                <div style={{textAlign: 'center', position: 'relative', marginTop: '10%'}}>
-                    <h2><FormattedMessage id="REQUEST_PROCESSED"/></h2>  
-                    <h4>
+                <div style={{ textAlign: 'center', position: 'relative', marginTop: '10%' }}>
+                    <div className='text-center w-100'>
+                        <div className="spinner-border" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    {/* <h4>
                         {`${Math.floor(time / 60)}`.padStart(2, '0')}:{`${time % 60}`.padStart(2, '0')}
-                    </h4>
+                    </h4> */}
                 </div> : status === 'pending' ? 
                 <div style={{textAlign: 'center', position: 'relative', marginTop: '5%'}} className="mb-4">
                     <h2 className="" ><FormattedMessage id="PAYMENT_TRANSACTION_PENDING" /></h2>
