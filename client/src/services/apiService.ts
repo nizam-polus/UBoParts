@@ -155,6 +155,10 @@ const APIs = {
 
     newPaymentStrip: (productsData: {}) => axios.post(BACKEND_URL + 'stripe-payment', productsData, {headers}),
 
+    DismantleEmailSend: (data: any) => axios.post(BACKEND_URL + "dismantle-car-request-mail", data, {headers}),
+
+    requestEmailSend: (data: any) => axios.post(BACKEND_URL + "request-parts-mail", data, {headers}),
+
         /* ---------------- jwt token based apis ----------------- */
 
     addToCart: (cartData: {}) => ds.post(BACKEND_URL + 'cartdata', cartData),
@@ -191,6 +195,8 @@ const APIs = {
 
     getCustomerOrder: (username: string) => ds.post(BACKEND_URL + 'order-distinct-user?populate=*&sort[0]=createdAt:desc', {user_name: username}),
 
+    getAllOrders: (pageNum: any) => ds.get(BACKEND_URL + `order-details?populate=*&sort[0]=id:desc&pagination[page]=${pageNum}&pagination[pageSize]=10`),
+
     getOrderDetails: (orderId: string) => ds.get(BACKEND_URL + 'order-details?populate=*&filters[$and][0][orderid][$eq]=' + orderId),
 
     getOrderWithTransactionid: (transactionId: string) => ds.get(BACKEND_URL + 'order-details?populate=*&filters[$and][0][transaction_id][$eq]=' + transactionId),
@@ -215,8 +221,7 @@ const APIs = {
 
     approveContact: (data: any) => ds.post(BACKEND_URL + "approve-contact", data),
 
-    approveUbo: (data: any) => ds.post(BACKEND_URL + "approve-ubo", data)
-
+    approveUbo: (data: any) => ds.post(BACKEND_URL + "approve-ubo", data),
 }
 
 export default APIs

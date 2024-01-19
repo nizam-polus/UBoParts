@@ -18,12 +18,12 @@ import { FormattedMessage } from 'react-intl';
 function Productsingle() {
 
     let locale: any;
-    
-    if(typeof window !== 'undefined'){
+
+    if (typeof window !== 'undefined') {
         locale = localStorage.getItem("locale")
     }
 
-    const {user, saveUser, cartCount, setCartCount} = UserContext();
+    const { user, saveUser, cartCount, setCartCount } = UserContext();
     const router = useRouter();
     const id = router.query.id;
 
@@ -33,34 +33,34 @@ function Productsingle() {
     const [quantity, setQuantity] = useState(1);
     const [openLogin, setOpenLogin] = useState(false);
     const [addToCartCompleted, setAddToCartCompleted] = useState<any>(true)
-    const [stockCount , setStockCount] = useState(1)
+    const [stockCount, setStockCount] = useState(1)
     const [latestItems, setLatestItems] = useState([]);
-    const [products,setProducts] = useState<any>([])
+    const [products, setProducts] = useState<any>([])
     const [productCategory, setProductCategory] = useState("")
-    
+
     useEffect(() => {
         APIs.getProduct(id).then(response => {
             let product = response.data.data;
             let productGallery: any = [];
             let productImage = response.data.data.attributes?.product_image?.data.attributes.url;
-            productGallery.unshift({attributes: {url: productImage}})
+            productGallery.unshift({ attributes: { url: productImage } })
             if (response.data.data.attributes?.product_gallary_image?.data) {
                 let gallery = response.data.data.attributes?.product_gallary_image?.data;
-                for(let obj of gallery) {
+                for (let obj of gallery) {
                     productGallery.push(obj);
                 }
             }
             let productStock = response.data.data.attributes?.stock_count
             let productCategory = response.data.data.attributes?.category.data.attributes.category_name
-           
+
             setStockCount(productStock)
             setProductData(product);
             setProductGallery(productGallery);
             setProductImage(productImage);
-            setProductCategory(productCategory) 
-            setTimeout(() =>{
+            setProductCategory(productCategory)
+            setTimeout(() => {
                 let productIMAGE = document.getElementById("productIMAGE")
-                console.log("img",productIMAGE)
+                console.log("img", productIMAGE)
             }, 3000)
         }).catch(err => console.log(err))
     }, []);
@@ -73,6 +73,8 @@ function Productsingle() {
         if (!user || user && !user.id) {
             setOpenLogin(true);
         } else {
+            let redirectUrl: any = localStorage.getItem('redirect');
+            redirectUrl && localStorage.removeItem('redirect');
             setAddToCartCompleted(false)
             let productQuantityInCart = 0
             let cartData = {
@@ -83,22 +85,22 @@ function Productsingle() {
                 "productWeight": productData?.attributes?.product_weight,
                 "discountPrice": discountAmount(productData?.attributes?.price, productData?.attributes?.sale?.data?.attributes?.discount_percentage_value),
             }
-           
+
             APIs.getCartData({ customerid: user.id }).then(response => {
                 let productCartItems = response.data.rows;
                 for (const cartItem of productCartItems) {
                     if (cartItem.product_id === productData?.id) {
                         productQuantityInCart = cartItem.quantity + quantity;
-                        break; 
+                        break;
                     }
                 }
                 APIs.getProduct(cartData.productid).then(response => {
                     let productStock = response.data.data.attributes.stock_count;
-                    if ((productQuantityInCart <= productStock )&& (quantity <= productStock)) {
+                    if ((productQuantityInCart <= productStock) && (quantity <= productStock)) {
                         APIs.addToCart(cartData).then(response => {
                             toast.success(() => (
                                 <>
-                                    <FormattedMessage id="ITEM_ADDED_TO"/><Link href={"/cartpage"}>{locale == "nl" ? "Winkelwagen" : "cart"}</Link>
+                                    <FormattedMessage id="ITEM_ADDED_TO" /><Link href={"/cartpage"}>{locale == "nl" ? "Winkelwagen" : "cart"}</Link>
                                 </>
                             ));
                             APIs.getCartData({ customerid: user.id }).then(response => {
@@ -107,7 +109,7 @@ function Productsingle() {
                         }).catch(err => {
                             toast.error(() => (
                                 <>
-                                <FormattedMessage id="SOMETHING_WRONG_CART" />
+                                    <FormattedMessage id="SOMETHING_WRONG_CART" />
                                 </>
                             ));
                             setAddToCartCompleted(true)
@@ -115,7 +117,7 @@ function Productsingle() {
                     } else {
                         toast.error(() => (
                             <>
-                            <FormattedMessage id="STOCK_EXCEEDED" />
+                                <FormattedMessage id="STOCK_EXCEEDED" />
                             </>
                         ));
                         setAddToCartCompleted(true)
@@ -123,7 +125,7 @@ function Productsingle() {
                 }).catch(err => {
                     toast.error(() => (
                         <>
-                        <FormattedMessage id="SOMETHING_WRONG_FETCHING" />
+                            <FormattedMessage id="SOMETHING_WRONG_FETCHING" />
                         </>
                     ));
                     setAddToCartCompleted(true)
@@ -131,7 +133,7 @@ function Productsingle() {
             }).catch(err => {
                 toast.error(() => (
                     <>
-                    <FormattedMessage id="SOMETHING_WRONG" />
+                        <FormattedMessage id="SOMETHING_WRONG" />
                     </>
                 ));
                 setAddToCartCompleted(true)
@@ -143,61 +145,61 @@ function Productsingle() {
         setOpenLogin(false);
     };
 
-    const handleQuantityChange = (newValue : any) =>{
-       setQuantity(newValue)
+    const handleQuantityChange = (newValue: any) => {
+        setQuantity(newValue)
     }
 
     useEffect(() => {
-        APIs.getAllProducts('&sort[0]=createdAt:desc').then((response: any) =>{
-           setProducts(response.data.data)
+        APIs.getAllProducts('&sort[0]=createdAt:desc').then((response: any) => {
+            setProducts(response.data.data)
         })
-       }, [])
+    }, [])
 
-       
+
     useEffect(() => {
         const getLatestItemsByCategory = (categoryName: any) => {
-           
-        if (!products || products.length === 0) {
-             return []; 
-        }
-        if (categoryName === 'All') {
-            return products.slice(0, 4);
-        } else {
+
+            if (!products || products.length === 0) {
+                return [];
+            }
+            if (categoryName === 'All') {
+                return products.slice(0, 4);
+            } else {
                 const filteredProducts = products.filter(
-                (product: any) => (
-                (product.attributes.category.data.attributes.category_name === categoryName ) && (product.id != id)
-                )
-            );
-            return  filteredProducts.slice(0, 4);
-        }
-    };
+                    (product: any) => (
+                        (product.attributes.category.data.attributes.category_name === categoryName) && (product.id != id)
+                    )
+                );
+                return filteredProducts.slice(0, 4);
+            }
+        };
         setLatestItems(getLatestItemsByCategory(productCategory));
     }, [products, productCategory]);
-   
+
     const handleProductClick = (product: any) => {
-            const newUrl = `/products_/${product.id}`;
-            window.location.href = newUrl;
+        const newUrl = `/products_/${product.id}`;
+        window.location.href = newUrl;
     }
-    
-    function discountedPrice(originalPrice: any, discountPercentage:any) {
-            const original = parseFloat(originalPrice);
-            const discount = parseFloat(discountPercentage);
-            if (isNaN(discount)) {
-              return original; 
-            }
-            const discountAmount = (original * discount) / 100;
-            const discounted = original - discountAmount;
-            return +discounted.toFixed(2); 
+
+    function discountedPrice(originalPrice: any, discountPercentage: any) {
+        const original = parseFloat(originalPrice);
+        const discount = parseFloat(discountPercentage);
+        if (isNaN(discount)) {
+            return original;
+        }
+        const discountAmount = (original * discount) / 100;
+        const discounted = original - discountAmount;
+        return +discounted.toFixed(2);
     }
 
     function discountAmount(originalPrice: any, discountPercentage: any) {
         const original = parseFloat(originalPrice);
         const discount = parseFloat(discountPercentage);
         if (isNaN(discount)) {
-            return 0; 
+            return 0;
         }
         const discountAmount = (original * discount) / 100;
-        return +discountAmount.toFixed(2); 
+        return +discountAmount.toFixed(2);
     }
 
     return (
@@ -208,7 +210,7 @@ function Productsingle() {
                     <section className="products-description-wrapper mt-5 mb-5">
                         <div className="row">
                             <div className="col-12 col-md-6 col-lg-4">
-                                <div className="productImage"  style={{maxHeight: "30rem", position: "relative"}}>
+                                <div className="productImage" style={{ maxHeight: "30rem", position: "relative" }}>
                                     {/* <AppImage style={{objectFit: 'contain', height: '30rem'}} className="rounded w-100" src={BASE_URL + productImage}/> */}
                                     <ReactImageMagnify  {...{
                                         smallImage: {
@@ -221,7 +223,7 @@ function Productsingle() {
                                         largeImage: {
                                             src: BASE_URL + productImage,
                                             width: 1650,
-                                            height: 1190,                                       
+                                            height: 1190,
                                         },
                                         imageStyle: {
                                             width: 300,
@@ -235,20 +237,20 @@ function Productsingle() {
                                         enlargedImageStyle: {
                                             zIndex: 99
                                         }
-                                        
-                                    }} className="produtIMAGE"/>
+
+                                    }} className="produtIMAGE" />
                                 </div>
                                 <div className="row product-thumbnails g-3 mt-3 justify-content-center">
-                                {productGallery && productGallery.map((galleryImg: any) => {
-                                    return (
-                                        <div className="col-auto px-2" 
-                                            style={{"cursor": "pointer"}}
-                                            onClick={() => handleImageChange(galleryImg?.attributes?.url)}
-                                        >
-                                            <img className="rounded" src={BASE_URL + galleryImg?.attributes?.url}/>
-                                        </div>
-                                    )
-                                })}
+                                    {productGallery && productGallery.map((galleryImg: any) => {
+                                        return (
+                                            <div className="col-auto px-2"
+                                                style={{ "cursor": "pointer" }}
+                                                onClick={() => handleImageChange(galleryImg?.attributes?.url)}
+                                            >
+                                                <img className="rounded" src={BASE_URL + galleryImg?.attributes?.url} />
+                                            </div>
+                                        )
+                                    })}
                                     {/* <div className="col-auto px-2"><img className="rounded" src="/images/cat-prod-1.svg"/></div>
                                     <div className="col-auto px-2"><img className="rounded" src="/images/cat-prod-1.svg"/></div>
                                     <div className="col-auto px-2"><img className="rounded" src="/images/cat-prod-1.svg"/></div>
@@ -270,19 +272,19 @@ function Productsingle() {
                                 <p>
                                     {
                                         (productData.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && productData?.attributes?.sale?.data != null) ?
-                                        <span className="product-price custom-color-3 regularfont boldfontsize"><s>€{productData?.attributes?.price}</s> €{discountedPrice(productData.attributes.price, productData.attributes.sale.data.attributes.discount_percentage_value)}</span>
-                                        :
-                                        <span className="product-price custom-color-3 regularfont boldfontsize">€{productData?.attributes?.price}</span>
+                                            <span className="product-price custom-color-3 regularfont boldfontsize"><s>€{productData?.attributes?.price}</s> €{discountedPrice(productData.attributes.price, productData.attributes.sale.data.attributes.discount_percentage_value)}</span>
+                                            :
+                                            <span className="product-price custom-color-3 regularfont boldfontsize">€{productData?.attributes?.price}</span>
                                     }
                                 </p>
-                                <hr/>
+                                <hr />
                                 <p className="semifont placeholderfontsize custom-color-5 mb-1"><FormattedMessage id="KEY_FEATURES" />:</p>
                                 <ul className="list-group custom-color-2 regularfont placeholderfontsize p-3 pt-0 pb-4">
                                     <li className="mb-1"><FormattedMessage id="MAKE" />: {productData?.attributes?.make?.data?.attributes?.make_name}</li>
                                     <li className="mb-1"><FormattedMessage id="MODEL" />: {productData?.attributes?.model?.data?.attributes?.model_name}</li>
                                     <li><FormattedMessage id="YEAR" />: {productData?.attributes?.year?.data?.attributes?.year}</li>
                                 </ul>
-                                <hr/>
+                                <hr />
                                 {/* <p className="custom-color-6 regularfont mini-text-2">See Full Specifications</p> */}
                             </div>
                             <div className="col-12 col-md-12 col-lg-3 mt-5 mt-lg-0">
@@ -290,17 +292,17 @@ function Productsingle() {
                                     <div className="row d-flex justify-content-between">
                                         <div className="col-auto">
                                             {
-                                                 (productData.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && productData?.attributes?.sale?.data != null) ?
-                                                    <span className="product-price"><s>€{quantity * productData?.attributes?.price}</s> €{discountedPrice(quantity *productData.attributes.price, productData.attributes.sale.data.attributes.discount_percentage_value)}</span>
+                                                (productData.attributes?.sale?.data?.attributes?.discount_percentage_value != 0 && productData?.attributes?.sale?.data != null) ?
+                                                    <span className="product-price"><s>€{quantity * productData?.attributes?.price}</s> €{discountedPrice(quantity * productData.attributes.price, productData.attributes.sale.data.attributes.discount_percentage_value)}</span>
                                                     :
                                                     <span className="product-price custom-color-3 regularfont">€{quantity * productData?.attributes?.price}</span>
                                             }
-                                            
+
                                         </div>
-                                        {stockCount > 0 ? 
-                                         <div className="col-auto"><span className="in-stock custom-color-6 rounded-pill px-3 pb-1 pt-1 d-flex mini-text-2 semifont"><FormattedMessage id="IN_STOCK" /></span></div>
-                                        :
-                                        <div className="col-auto"><span className="in-stock custom-color-6 rounded-pill px-3 pb-1 pt-1 d-flex mini-text-2 semifont"><FormattedMessage id="OUT_OF_STOCK" /></span></div> }
+                                        {stockCount > 0 ?
+                                            <div className="col-auto"><span className="in-stock custom-color-6 rounded-pill px-3 pb-1 pt-1 d-flex mini-text-2 semifont"><FormattedMessage id="IN_STOCK" /></span></div>
+                                            :
+                                            <div className="col-auto"><span className="in-stock custom-color-6 rounded-pill px-3 pb-1 pt-1 d-flex mini-text-2 semifont"><FormattedMessage id="OUT_OF_STOCK" /></span></div>}
                                     </div>
                                     <div className="row mt-3">
                                         <div className="col-12">
@@ -310,7 +312,7 @@ function Productsingle() {
                                             </div> */}
                                             <div className="row pt-1 pb-1 border-bottom-row">
                                                 <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3"><FormattedMessage id="CATEGORY" />:</span></div>
-                                                <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">{locale == "nl" && productData?.attributes?.category?.data?.attributes?.category_name_nl  ? productData?.attributes?.category?.data?.attributes?.category_name_nl : productData?.attributes?.category?.data?.attributes?.category_name}</span></div>
+                                                <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">{locale == "nl" && productData?.attributes?.category?.data?.attributes?.category_name_nl ? productData?.attributes?.category?.data?.attributes?.category_name_nl : productData?.attributes?.category?.data?.attributes?.category_name}</span></div>
                                             </div>
                                             <div className="row pt-1 pb-1 border-bottom-row">
                                                 <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3"><FormattedMessage id="ARTICLE" /> #</span></div>
@@ -319,7 +321,7 @@ function Productsingle() {
                                             <div className="row pt-1 pb-1 border-bottom-row">
                                                 <div className="col-4 col-xl-5"><span className="semifont mini-text-3 custom-color-3"><FormattedMessage id="WEIGHT" />:</span></div>
                                                 <div className="col-8 col-xl-7"><span className="semifont mini-text-3 seller-name">
-                                                {productData?.attributes?.product_weight} KG
+                                                    {productData?.attributes?.product_weight} KG
                                                 </span>
                                                 </div>
                                             </div>
@@ -338,58 +340,58 @@ function Productsingle() {
                                                                 <i className="fa fa-minus mini-text-3" aria-hidden="true"></i>
                                                             </span>
                                                         }
-                                                        <input 
-                                                            type="text" name="quant[1]" 
+                                                        <input
+                                                            type="text" name="quant[1]"
                                                             style={{ maxHeight: '25px' }}
                                                             className="form-control input-number text-center rounded border-0 semifont pb-2 pt-2 mini-text-3 h-auto"
                                                             value={quantity} min="1" max="10"
                                                             onChange={(e) => {
                                                                 const newValue = e.target.value.replace(/[^0-9.]/g, '');
-                                                                if (newValue === '0' || newValue == ""){
+                                                                if (newValue === '0' || newValue == "") {
                                                                     e.target.value = '';
                                                                     // toast.error("Quantity cannot be zero(0) ");
                                                                 }
-                                                                else{
+                                                                else {
                                                                     handleQuantityChange(newValue);
-                                                                }                                                              
+                                                                }
                                                             }}
-                                                            />
-                                                            { quantity == stockCount ? 
-                                                                <span className="input-group-btn minus-icon semifont" 
-                                                                style={{cursor: "not-allowed"}}
-                                                                >
-                                                                    <i className="fa fa-plus mini-text-3" aria-hidden="true"></i>
-                                                                </span>
-                                                                :
-                                                                <span className="input-group-btn minus-icon semifont" 
-                                                                onClick={() => setQuantity(Number(quantity) + 1)}
-                                                                >
+                                                        />
+                                                        {quantity == stockCount ?
+                                                            <span className="input-group-btn minus-icon semifont"
+                                                                style={{ cursor: "not-allowed" }}
+                                                            >
                                                                 <i className="fa fa-plus mini-text-3" aria-hidden="true"></i>
-                                                                </span>
-                                                            }
+                                                            </span>
+                                                            :
+                                                            <span className="input-group-btn minus-icon semifont"
+                                                                onClick={() => setQuantity(Number(quantity) + 1)}
+                                                            >
+                                                                <i className="fa fa-plus mini-text-3" aria-hidden="true"></i>
+                                                            </span>
+                                                        }
                                                     </div>
                                                 </div>
                                                 <div className="col-8 col-md-8 col-lg-12 col-xl-7">
                                                     {stockCount <= 0 ? (
-                                                            <a className="add-to-cart-1 button-bg-color-05 custom-color-7 rounded pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
-                                                                style={{ cursor: 'not-allowed' }}
-                                                            >
-                                                                <FormattedMessage id="OUT_OF_STOCK" />
-                                                            </a>
-                                                        ) : addToCartCompleted ? (
-                                                            <a className="add-to-cart-1 button-bg-color-1 custom-color-7 rounded pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
-                                                                style={{ cursor: 'pointer' }}
-                                                                onClick={handleAddToCart}
-                                                            >
-                                                                <FormattedMessage id="ADD_TO_CART" />
-                                                            </a>
-                                                        ) : (
-                                                            <a className="add-to-cart-1 button-bg-color-05 custom-color-7 rounded pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
-                                                                style={{ cursor: 'not-allowed' }}
-                                                            >
-                                                                <FormattedMessage id="ADDING_TO_CART" />
-                                                            </a>
-                                                        )
+                                                        <a className="add-to-cart-1 button-bg-color-05 custom-color-7 rounded pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
+                                                            style={{ cursor: 'not-allowed' }}
+                                                        >
+                                                            <FormattedMessage id="OUT_OF_STOCK" />
+                                                        </a>
+                                                    ) : addToCartCompleted ? (
+                                                        <a className="add-to-cart-1 button-bg-color-1 custom-color-7 rounded pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
+                                                            style={{ cursor: 'pointer' }}
+                                                            onClick={handleAddToCart}
+                                                        >
+                                                            <FormattedMessage id="ADD_TO_CART" />
+                                                        </a>
+                                                    ) : (
+                                                        <a className="add-to-cart-1 button-bg-color-05 custom-color-7 rounded pb-2 pt-2 mt-3 text-center mini-text-3 text-white"
+                                                            style={{ cursor: 'not-allowed' }}
+                                                        >
+                                                            <FormattedMessage id="ADDING_TO_CART" />
+                                                        </a>
+                                                    )
                                                     }
                                                 </div>
                                             </div>
@@ -433,43 +435,43 @@ function Productsingle() {
                     <section className="latest-products-wrapper">
                         <div className="row mt-5">
                             <div className="col-12 d-lg-flex justify-content-between">
-                                <div><span className="popular_categories body-sub-titles regularfont"><FormattedMessage id="RELATED_PRODUCTS"/></span>
+                                <div><span className="popular_categories body-sub-titles regularfont"><FormattedMessage id="RELATED_PRODUCTS" /></span>
                                 </div>
                             </div>
                         </div>
                     </section>
                     <section className="latest-products-second-wrapper">
                         <div className="row mt-5 mt-lg-4 mt-xxl-5 g-4">
-                        {latestItems
-                         && latestItems
-                             .map((product: any, index: any) => {
-                                                return (
-                                                    <div className="col-12 col-sm-6 col-lg-3 mb-4" key={index}>
-                                                        <div className="latest-prods card card-shadows" style={{height: "100%"}}>   
-                                                            <AppImage 
-                                                                src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url} 
-                                                                className="card-img-top img-prod-height pointer "
-                                                                style={{height: '20rem', objectFit: 'contain', borderTopLeftRadius: "30px", borderTopRightRadius: "30px", filter:`${product.attributes.stock_count == 0 ? "blur(3px)" : "none"}`}} 
-                                                                onClick={() => handleProductClick(product)}    
-                                                            />
-                                                            {
-                                                            product.attributes.stock_count <= 0 &&  
-                                                                <div onClick={() => handleProductClick(product)} className='out-of-stock d-flex position-absolute justify-content-center align-items-center' >
-                                                                   <p className='text-out-of-stock mb-0'>OUT OF STOCK</p>
-                                                                </div>
-                                                             }
-                                                            <div className="card-body">
-                                                                <div className="row g-1">
-                                                                    <div className="col-12">
-                                                                        <span className="article-number regularfont mini-text">Article #{product?.attributes?.article_number}</span>
-                                                                    </div>
-                                                                    <div className="col-12">
-                                                                        <span className="product-name regularfont"
-                                                                            style={{"cursor": "pointer"}} 
-                                                                            onClick={() => handleProductClick(product)}
-                                                                        >{product?.attributes?.title}</span>
-                                                                    </div>
-                                                                    {/* <div className="col-12">
+                            {latestItems
+                                && latestItems
+                                    .map((product: any, index: any) => {
+                                        return (
+                                            <div className="col-12 col-sm-6 col-lg-3 mb-4" key={index}>
+                                                <div className="latest-prods card card-shadows" style={{ height: "100%" }}>
+                                                    <AppImage
+                                                        src={BASE_URL + product?.attributes?.product_image?.data?.attributes?.formats?.medium?.url}
+                                                        className="card-img-top img-prod-height pointer "
+                                                        style={{ height: '20rem', objectFit: 'contain', borderTopLeftRadius: "30px", borderTopRightRadius: "30px", filter: `${product.attributes.stock_count == 0 ? "blur(3px)" : "none"}` }}
+                                                        onClick={() => handleProductClick(product)}
+                                                    />
+                                                    {
+                                                        product.attributes.stock_count <= 0 &&
+                                                        <div onClick={() => handleProductClick(product)} className='out-of-stock d-flex position-absolute justify-content-center align-items-center' >
+                                                            <p className='text-out-of-stock mb-0'>OUT OF STOCK</p>
+                                                        </div>
+                                                    }
+                                                    <div className="card-body">
+                                                        <div className="row g-1">
+                                                            <div className="col-12">
+                                                                <span className="article-number regularfont mini-text">Article #{product?.attributes?.article_number}</span>
+                                                            </div>
+                                                            <div className="col-12">
+                                                                <span className="product-name regularfont"
+                                                                    style={{ "cursor": "pointer" }}
+                                                                    onClick={() => handleProductClick(product)}
+                                                                >{product?.attributes?.title}</span>
+                                                            </div>
+                                                            {/* <div className="col-12">
                                                                     <span className="ratings">
                                                                         <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
                                                                         <i className="fa fa-star active placeholderfontsize" aria-hidden="true"></i>
@@ -478,9 +480,9 @@ function Productsingle() {
                                                                     </span>
                                                                     <span className="rating-count regularfont mini-text-1">675</span>
                                                                 </div> */}
-                                                                    <div className="col-12 d-flex justify-content-between">
-                                                                     <span className="product-price">€{product?.attributes?.price}</span>
-                                                                     {/* { product.attributes.stock_count === 0 ? (
+                                                            <div className="col-12 d-flex justify-content-between">
+                                                                <span className="product-price">€{product?.attributes?.price}</span>
+                                                                {/* { product.attributes.stock_count === 0 ? (
                                                                           <AppImage
                                                                           src="images/cart-svg.svg"
                                                                           className="pointer add_to_cart"
@@ -501,7 +503,7 @@ function Productsingle() {
                                                                           />
                                                                         )
                                                                         } */}
-                                                                        {/* <div className="input-group quanitity-box">
+                                                                {/* <div className="input-group quanitity-box">
                                                                             <span className="input-group-btn plus-icon semifont">
                                                                                 <i className="fa fa-plus mini-text-0 mini-text-0-color" aria-hidden="true"></i>
                                                                             </span>
@@ -510,13 +512,13 @@ function Productsingle() {
                                                                                 <i className="fa fa-minus mini-text-0 mini-text-0-color" aria-hidden="true"></i>
                                                                             </span>
                                                                         </div> */}
-                                                                    </div>
-                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                )
-                                            })}   
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
                         </div>
                     </section>
                 </div>
