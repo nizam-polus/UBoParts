@@ -312,6 +312,11 @@ function Request() {
             }
             }).then(() =>{
                 toast.success(()=>( <FormattedMessage id="FORM_SUCCESS"/>), {autoClose: 4000})
+                APIs.requestEmailSend({"request_part" : formData, "lang": locale }).then((res) =>{
+                    console.log(res)
+                }).catch((err: any) =>{
+                    toast.error(err)
+                })
                 router.push("/")
             }).catch(err => {
                 console.log(err);

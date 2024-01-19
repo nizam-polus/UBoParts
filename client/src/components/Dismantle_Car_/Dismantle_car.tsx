@@ -60,16 +60,20 @@ function Dismantle_car() {
         plate_number: '',
         auto_model: '',
         year: '',
+        mark: '',
         make: '',
         first_name: '',
         last_name: '',
         email: '',
+        phone_number: '',
         phone: '',
         delivery_type: '',
         driving_condition: '',
         type: '',
         asking_price: '',
         streetaddress_housenumber: '',
+        street_address: "",
+        appartment: "",
         streetaddress_apartment: '',
         city: '',
         state: '',
@@ -120,7 +124,7 @@ function Dismantle_car() {
         incomplete = !(!!formData.asking_price && !!formData.auto_model && !!imageDataList.length && 
                 !!formData.city && !!formData.delivery_type && !!formData.driving_condition && 
                 !!formData.email && !!formData.first_name && !!formData.last_name && !!formData.country.length &&
-                !!formData.make && !!formData.note && !!formData.phone && !!formData.plate_number && !!formData.type &&
+                !!formData.mark && !!formData.note && !!formData.phone_number && !!formData.plate_number && !!formData.type &&
                 !!formData.postcode && !!formData.state && !!formData.streetaddress_housenumber && !!formData.year);
         return incomplete;
     }
@@ -139,7 +143,21 @@ function Dismantle_car() {
         let countryId = [Number(event.target.value)];
         setFormData((prevData: any) => ({...prevData, country: countryId}));
     }
+    
+    const handleStreetAddressChange = (event : any) =>{
+        const { name, value } = event.target;
+        setFormData(((prevFormData: any) => ({...prevFormData, [name]: value, "street_address": value})));  
+    }
 
+    const handlePhoneChange = (event: any) =>{
+        const {name,value} = event.target;
+        setFormData((prevFormData: any) => ({...prevFormData, [name]: value, "phone": value}))
+    }
+
+    const handleAppartmentChange = (event : any) =>{
+        const { name, value } = event.target;
+        setFormData(((prevFormData: any) => ({...prevFormData, [name]: value, "appartment": value})));  
+    }
     // const handleImageUpload = (event: any) => {
     //     const file = event.target.files[0];
     //     setImageData(file);
@@ -248,7 +266,8 @@ function Dismantle_car() {
         const selectedMake = makesArray.find((make: any) => make.id == Id);
         if (selectedMake) {
             setMakeName(selectedMake.make);
-            formData.make= selectedMake.make
+            formData.make = selectedMake.make
+            formData.mark = selectedMake.make
         }
     }
 
@@ -337,10 +356,14 @@ function Dismantle_car() {
                     setSelectedMake("")
                     setFormData({})
                 })
-                }
-                
+                }  
             }).then(() =>{
                 toast.success(()=>( <FormattedMessage id="FORM_SUCCESS" />), {autoClose: 4000})
+                APIs.DismantleEmailSend({ "dismantle_car" : formData, "lang" : locale }).then((res: any) =>{
+                    console.log(res)
+                }).catch((err) =>{
+                    toast.error(err)
+                })
                 router.push("/")
             }).catch(err => {
                 console.log(err);
@@ -487,8 +510,8 @@ function Dismantle_car() {
                                                         </label>
                                                         <input type="text" 
                                                             className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.phone ? 'required-field' : 'border-0'}`}
-                                                            name="phone" placeholder="(XXX) XXX-XXXX" 
-                                                            onChange={handleFormChange}
+                                                            name="phone_number" placeholder="(XXX) XXX-XXXX" 
+                                                            onChange={handlePhoneChange}
                                                         />
                                                     </td>
                                                 </tr>
@@ -650,13 +673,13 @@ function Dismantle_car() {
                                                             </label>
                                                             <input type="text" className={`form-control input-bg-color-2 body-sub-titles ${incomplete && !formData.streetaddress_housenumber ? 'required-field' : 'border-0'}`}
                                                                 name="streetaddress_housenumber" placeholder={placeholderTranslations[locale]['streetaddress_housenumber']} 
-                                                                onChange={handleFormChange}
+                                                                onChange={handleStreetAddressChange}
                                                             />
                                                         </div>
                                                         <div>
                                                             <input type="text" className="form-control input-bg-color-2 border-0 body-sub-titles" 
                                                                 name="streetaddress_apartment" placeholder={placeholderTranslations[locale]['streetaddress_apartment']}
-                                                                onChange={handleFormChange}
+                                                                onChange={handleAppartmentChange}
                                                             />
                                                         </div>
                                                     </td>

@@ -136,7 +136,7 @@ function SellerOrderDetails() {
                                         <br />
                                     </div>
                                     <div className="row mt-3">
-                                        <div className="col-12 col-sm-8">
+                                        <div className="col-12 col-sm-8 word-wrap">
                                             <div className="ubo-inner-box ml-sm-3 mr-sm-1 px-sm-4 py-2 py-sm-4">
                                                     {/* <div className="d-flex justify-content-between m-0 pb-4 ml-3">
                                                         <span className="custom-color-2 semifont body-sub-titles-1">Order summary</span><br />
@@ -233,7 +233,7 @@ function SellerOrderDetails() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-12 col-sm-4 pl-sm-2 pr-sm-1">
+                                        <div className="col-12 col-sm-4 pl-sm-2 pr-sm-1 word-wrap">
                                             <div className="ubo-inner-box px-sm-3 py-4 mr-sm-4 mb-4">
                                                 <div className="row">
                                                     <div className="col-12">

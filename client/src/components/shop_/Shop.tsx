@@ -318,6 +318,8 @@ function Shop() {
     }
 
     const handleAddToCart = (productData: any) => {
+        let redirectUrl : any = localStorage.getItem('redirect');
+        redirectUrl && localStorage.removeItem('redirect');
         if (!user || user && !user.id) {
             setOpenLogin(true);
         } else {

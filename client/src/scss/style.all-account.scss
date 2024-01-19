@@ -2407,6 +2407,10 @@ $background-color_1: rgba(0, 0, 0, 0.5);
 	cursor: pointer;
 }
 
+// text-wrap(word-wrap for break text)
+.word-wrap{
+    word-wrap: break-word;
+}
 
 //custom payment dropdown
 // CustomDropdown.scss
@@ -2487,7 +2491,7 @@ $background-color_1: rgba(0, 0, 0, 0.5);
   }
   
   .productImage{
-    height: 400px;
+    height: 350px;
     width: 400px;
     display: flex;
     // align-items: center;
