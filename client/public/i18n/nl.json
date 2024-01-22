@@ -719,7 +719,9 @@
   "REGISTER_AS_A_CUSTOMER": "Registreer als klant",
 
   "LINK_EXPIRED": "Link verlopen. Kan wachtwoord niet updaten",
-  "ALREADY_VARIFIED": "Al geverifieerd"
+  "ALREADY_VARIFIED": "Al geverifieerd",
+  "PICKUP_METHOD": "Ophaalmethode",
+  "PICKUP_TEXT": "Bestelling is gekozen voor Zelfafhalen."
 
   }
   
