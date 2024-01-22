@@ -18,6 +18,7 @@ function PaymentResult() {
     const [total, setTotal] = useState<number>(0);
     const [totalDiscount, setTotalDiscount] = useState<number>(0);
     const [shippingCost, setShippingCost] = useState<number>(0);
+    const [pickupMethod, setPickupMethod] = useState<string>("")
     const [time, setTime] = useState<any>(900);
 
     let interavls: any = [];
@@ -132,6 +133,7 @@ function PaymentResult() {
             console.log("order-details",response)
             let OrderProducts = response.data.data;
             OrderProducts.length && setShippingCost(OrderProducts[0]?.attributes?.shipping_cost)
+            OrderProducts.length && setPickupMethod(OrderProducts[0].attributes.pickup)
             setProducts(OrderProducts);
             if (OrderProducts.length) {
                 let total = 0;
@@ -207,7 +209,7 @@ function PaymentResult() {
                                                                                         <Link href={'/products_/' + product?.attributes?.product_id}>{product?.attributes?.product_name}</Link><br />
                                                                                         <span className="lightfont body-sub-titles-2"><FormattedMessage id="QUANTITY"/>: {product?.attributes?.quantity}</span>
                                                                                     </td>
-                                                                                    <td className="w-25">€{(product?.attributes?.total_price - product.attributes.discount_price * product.attributes.quantity).toFixed(2)}</td>
+                                                                                    <td className="w-25">€{(product?.attributes?.total_price - product.attributes.discount_price).toFixed(2)}</td>
                                                                                 </tr>
                                                                             </>
                                                                         )
@@ -228,6 +230,21 @@ function PaymentResult() {
                                                         </tbody>
                                                     </table>
                                                 </div>
+                                                <hr />
+                                                {
+                                                    shippingCost == 0 && <div className="row">
+                                                    <table className="w-100">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td className="w-75 pl-4"><FormattedMessage id="PICKUP_METHOD"/></td>
+                                                                <td className="w-25">{pickupMethod}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                                }
+                                                
                                                 <hr />
                                                 <div className="row">
                                                     <table className="w-100">

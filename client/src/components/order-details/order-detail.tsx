@@ -134,6 +134,7 @@ function OrderDetails() {
                                                             <tr>
                                                                 <th className="custom-color-2 regularfont body-sub-titles-2 my-0 mx-3"><FormattedMessage id="ORDER_TOTAL"/></th>
                                                             </tr>
+                                                            
                                                         </thead>
                                                     </table>
                                                 </div>
@@ -166,11 +167,18 @@ function OrderDetails() {
                                                                     € {(total - totalDiscount + shippingCost).toFixed(2)}
                                                                 </td>  
                                                             </tr>
+                                                            
                                                         </tbody>
                                                     </table>
                                                 </div>
                                             </div>
                                         </div>
+                                        {
+                                            shippingCost == 0 && <div className="ml-sm-2 mr-sm-1 px-sm-2 py-2 py-sm-2">
+                                            <p>* <FormattedMessage id="PICKUP_TEXT" /></p>
+                                            </div>
+                                        }
+                                        
                                         <div className="coulmn-bg-color-1 rounded mt-4 mb-3">
                                             <div className="ubo-inner-box px-sm-4 py-4 mr-1 ml-sm-3">
                                                 <div className="table-responsive">

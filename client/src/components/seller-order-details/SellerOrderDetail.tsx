@@ -199,6 +199,11 @@ function SellerOrderDetails() {
                                                         </div>
                                                     </div>
                                                 </div>
+                                                {
+                                                    shippngCost == 0 && <div className="ml-sm-2 mr-sm-1 px-sm-2 py-2 py-sm-2">
+                                                        <p>* <FormattedMessage id="PICKUP_TEXT" /></p>
+                                                    </div>
+                                                }
                                                 <div className="coulmn-bg-color-1 rounded mt-4 mb-3">
                                                 <div className="ubo-inner-box px-sm-4 py-4 mr-1 ml-sm-3">
                                                     <div className="table-responsive">
@@ -232,6 +237,8 @@ function SellerOrderDetails() {
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            
                                         </div>
                                         <div className="col-12 col-sm-4 pl-sm-2 pr-sm-1 word-wrap">
                                             <div className="ubo-inner-box px-sm-3 py-4 mr-sm-4 mb-4">

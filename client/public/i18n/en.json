@@ -725,7 +725,9 @@
   "REGISTER_AS_A_CUSTOMER" : "Register as a customer",
 
   "LINK_EXPIRED": "Link Expired. Failed to update password",
-  "ALREADY_VARIFIED": "Already Verified"
+  "ALREADY_VARIFIED": "Already Verified",
+  "PICKUP_METHOD": "Pickup method",
+  "PICKUP_TEXT": "Order is opted for Self-Pickup."
 
 
 
