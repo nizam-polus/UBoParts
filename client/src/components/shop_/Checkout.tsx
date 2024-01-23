@@ -690,9 +690,9 @@ function Checkout() {
                                                         ><FormattedMessage id="WAIT" />
                                                         </button>
                                                         :
-                                                        <button type="button" disabled={!checkoutProducts?.length || !(pickup && selectPickup)}
-                                                            style={{ cursor: `${!(pickup && selectPickup) ? "not-allowed" : "pointer"}` }}
-                                                            className={`proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0  ${!(pickup && selectPickup) ? "button-bg-color-05" : "button-bg-color-1"}`}
+                                                        <button type="button" disabled={!checkoutProducts?.length || (pickup && !selectPickup)}
+                                                            style={{ cursor: `${(pickup && !selectPickup) ? "not-allowed" : "pointer"}` }}
+                                                            className={`proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0  ${(pickup && !selectPickup) ? "button-bg-color-05" : "button-bg-color-1"}`}
                                                             onClick={handlepayment}
                                                         ><FormattedMessage id="PROCEED_TO_PAYMENT" />
                                                         </button>
