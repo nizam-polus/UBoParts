@@ -639,40 +639,69 @@ function Checkout() {
                                                     </div>
                                                 </td>
                                             </tr> */}
-                                            {/* {
-                                                pickup && <tr>
-                                                    <td colSpan={2}>
-                                                        <div className='d-flex'>
-                                                            <input  type="checkbox" value="" onChange={handlePickupChange}/>
-                                                            <label className="form-check-label pl-2" >
-                                                                Select for pickup option to proceed Payment
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            } */}
+                                            
                                             {
                                                 pickup &&
                                                 <tr>
                                                     <td colSpan={2}>
                                                         <div className='d-flex'>
                                                             <label className="form-check-label pl-2" >
-                                                                Select pickup option to proceed Payment
+                                                                Delivery Method
                                                             </label>
                                                             <select
-                                                                className="form-control ml-2"
-                                                                onChange={handlePickupChange}
-                                                               
+                                                                className="ml-2 shipping-method-btn"
+                                                                onChange={handlePickupChange} 
                                                             >
-                                                                <option value=""disabled={!!pickupMethod}>Select</option>
-                                                                <option value="on pickup">Pickup</option>
-                                                                <option disabled value="on request">Request Pickup</option>
+                                                                <option value="" disabled={!!pickupMethod} >Select</option>
+                                                                <option value="on pickup" style={{width: "90%"}}>Self-Pickup</option>
+                                                                <option disabled value="on request">Request Delivery by the Seller</option>
                                                             </select>
                                                         </div>
                                                     </td>
                                                 </tr>
-                                               
                                             }
+                                            
+                                            {/* {
+                                                pickup &&
+                                                <tr>
+                                                    <td colSpan={2}>
+                                                        <div className='d-flex'>
+                                                            <label className="form-check-label pl-2 semifont">
+                                                                Delivery Method
+                                                            </label>
+                                                            <div className="ml-2">
+                                                                <div className="form-check form-check-inline">
+                                                                    <input
+                                                                        type="radio"
+                                                                        id="selfPickupRadio"
+                                                                        name="deliveryMethod"
+                                                                        value="on pickup"
+                                                                        checked={pickupMethod === "on pickup"}
+                                                                        onChange={handlePickupChange}
+                                                                        disabled={pickupMethod === "on request"}
+                                                                    />
+                                                                    <label className="form-check-label pl-2" htmlFor="selfPickupRadio">
+                                                                        Self-Pickup
+                                                                    </label>
+                                                                </div>
+                                                                <div className="form-check form-check-inline">
+                                                                    <input
+                                                                        type="radio"
+                                                                        id="requestDeliveryRadio"
+                                                                        name="deliveryMethod"
+                                                                        value="on request"
+                                                                        checked={pickupMethod === "on request"}
+                                                                        onChange={handlePickupChange}
+                                                                    />
+                                                                    <label className="form-check-label pl-2" htmlFor="requestDeliveryRadio">
+                                                                        Request Delivery by the Seller
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            } */}
                                             <tr className='w-100'>
                                                 <td colSpan={2}>
                                                     <div className="form-group regularfont body-sub-titles-2 mb-0" style={{ color: 'black', fontSize: '0.9rem' }}>
@@ -694,7 +723,7 @@ function Checkout() {
                                                             style={{ cursor: `${(pickup && !selectPickup) ? "not-allowed" : "pointer"}` }}
                                                             className={`proceed-to-checkout custom-color-7 semifont mini-text-3 rounded border-0  ${(pickup && !selectPickup) ? "button-bg-color-05" : "button-bg-color-1"}`}
                                                             onClick={handlepayment}
-                                                        ><FormattedMessage id="PROCEED_TO_PAYMENT" />
+                                                        ><FormattedMessage id="PROCEED_TO_PAYMENT" />                                                        
                                                         </button>
                                                 }
 
