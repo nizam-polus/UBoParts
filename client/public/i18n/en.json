@@ -726,10 +726,10 @@
 
   "LINK_EXPIRED": "Link Expired. Failed to update password",
   "ALREADY_VARIFIED": "Already Verified",
-  "PICKUP_METHOD": "Pickup method",
-  "PICKUP_TEXT": "Order is opted for Self-Pickup."
-
-
-
-
+  "PICKUP_METHOD": "Pickup Method",
+  "PICKUP_TEXT": "Order is opted for Self-Pickup.",
+  "SELECT": "Select",
+  "SELF_PICKUP": "Self-Pickup",
+  "REQUEST_DELIVERY": "Request Delivery by the Seller",
+  "PROCEED_AGREEMENT_STRIP": "By proceeding you are agreeing to the"
 }

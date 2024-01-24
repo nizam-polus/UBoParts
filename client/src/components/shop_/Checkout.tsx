@@ -91,6 +91,10 @@ function Checkout() {
     const [shippingIncomplete, setShippingIncomplete] = useState(false);
     const [paymentMethodSelected, setPaymentMethodSelected] = useState(false)
 
+    let locale: any;
+    if(typeof window !== 'undefined'){
+        locale = localStorage.getItem("locale")
+    }
 
     const getContryCode = (country: string, countries: any[]) => {
         let countryData: any = countries.find((item: any, index) => item.attributes.country == country);
@@ -188,7 +192,6 @@ function Checkout() {
                         const isAnyUnavailable = res.data.some((item: any) => item.price_details === "unavailable");
                         if (!res || (res && isAnyUnavailable)) {
                             setPickup(true)
-                            // toast.warning("you can choose pickup method to proceed payment")
                             setClicked(false)
                         } else {
                             const shippingCostArray = res.data;
@@ -362,7 +365,7 @@ function Checkout() {
                             </div>
                         </div>
                         <div>
-                            {(incomplete || shippingIncomplete) && <p className='required-text' id='required'>* Please fill the required fields</p>}
+                            {(incomplete || shippingIncomplete) && <p className='required-text' id='required'>* <FormattedMessage id="FILL_REQUIRED_FIELDS"/></p>}
                         </div>
                         <div className="row mt-3">
                             <div className="col-12 col-md-9">
@@ -646,15 +649,15 @@ function Checkout() {
                                                     <td colSpan={2}>
                                                         <div className='d-flex'>
                                                             <label className="form-check-label pl-2" >
-                                                                Delivery Method
+                                                                <FormattedMessage id="PICKUP_METHOD" />
                                                             </label>
                                                             <select
                                                                 className="ml-2 shipping-method-btn"
                                                                 onChange={handlePickupChange} 
                                                             >
-                                                                <option value="" disabled={!!pickupMethod} >Select</option>
-                                                                <option value="on pickup" style={{width: "90%"}}>Self-Pickup</option>
-                                                                <option disabled value="on request">Request Delivery by the Seller</option>
+                                                                <option value="" disabled={!!pickupMethod} >{locale == "nl" ? "Selecteer" : "Select"}</option>
+                                                                <option value="on pickup" style={{width: "90%"}}>{locale == "nl" ? "Zelf-Ophalen" : "Self-Pickup"}</option>
+                                                                <option disabled value="on request">{locale == "nl" ? "Vraag keverubg door de verkoper aan" : "Request Delivery by the Seller" }</option>
                                                             </select>
                                                         </div>
                                                     </td>
@@ -705,7 +708,7 @@ function Checkout() {
                                             <tr className='w-100'>
                                                 <td colSpan={2}>
                                                     <div className="form-group regularfont body-sub-titles-2 mb-0" style={{ color: 'black', fontSize: '0.9rem' }}>
-                                                        By proceeding you are agreeing to the <a href="https://stripe.com/en-nl/legal/consumer" target='_blank'>Terms of Service (Stripe.com)</a>
+                                                        <FormattedMessage id="PROCEED_AGREEMENT_STRIP"/> <a href="https://stripe.com/en-nl/legal/consumer" target='_blank'>{locale == "nl" ? "Servicevoorwaarden" : "Terms of Service"} (Stripe.com)</a>
                                                     </div>
                                                 </td>
                                             </tr>
