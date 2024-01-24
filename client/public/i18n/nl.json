@@ -720,7 +720,7 @@
 
   "LINK_EXPIRED": "Link verlopen. Kan wachtwoord niet updaten",
   "ALREADY_VARIFIED": "Al geverifieerd",
-  "PICKUP_METHOD": "Ophaalmethode",
+  "PICKUP_METHOD": "Leveringsmethode",
   "PICKUP_TEXT": "Bestelling is gekozen voor Zelfafhalen.",
   "SELECT": "Selecteer",
   "SELF_PICKUP": "Zelf-Ophalen",

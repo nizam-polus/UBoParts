@@ -726,7 +726,7 @@
 
   "LINK_EXPIRED": "Link Expired. Failed to update password",
   "ALREADY_VARIFIED": "Already Verified",
-  "PICKUP_METHOD": "Pickup Method",
+  "PICKUP_METHOD": "Delivery Method",
   "PICKUP_TEXT": "Order is opted for Self-Pickup.",
   "SELECT": "Select",
   "SELF_PICKUP": "Self-Pickup",
