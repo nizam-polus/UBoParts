@@ -22,6 +22,11 @@ function PaymentResult() {
     const [time, setTime] = useState<any>(900);
 
     let interavls: any = [];
+    let locale: any;
+
+    if(typeof window !== 'undefined'){
+        locale = localStorage.getItem("locale")
+    }
 
     useEffect(() => {
         let redirectUrl = localStorage.getItem('redirect');
@@ -133,7 +138,16 @@ function PaymentResult() {
             console.log("order-details",response)
             let OrderProducts = response.data.data;
             OrderProducts.length && setShippingCost(OrderProducts[0]?.attributes?.shipping_cost)
-            OrderProducts.length && setPickupMethod(OrderProducts[0].attributes.pickup)
+            // OrderProducts.length && setPickupMethod(OrderProducts[0].attributes.pickup == "on pickup" ? "Self-Pickup" : "Request Delivery by the Seller")
+            if (OrderProducts.length) {
+                if(locale == "nl"){
+                    const pickupValue = OrderProducts[0].attributes.pickup === "on pickup" ? "Zelf-Ophalen" : "Vraag levering door de verkoper aan";
+                    setPickupMethod(pickupValue);
+                }else{
+                    const pickupValue = OrderProducts[0].attributes.pickup === "on pickup" ? "Self-Pickup" : "Request Delivery by the Seller";
+                    setPickupMethod(pickupValue);
+                }
+              }
             setProducts(OrderProducts);
             if (OrderProducts.length) {
                 let total = 0;

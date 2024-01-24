@@ -721,8 +721,11 @@
   "LINK_EXPIRED": "Link verlopen. Kan wachtwoord niet updaten",
   "ALREADY_VARIFIED": "Al geverifieerd",
   "PICKUP_METHOD": "Ophaalmethode",
-  "PICKUP_TEXT": "Bestelling is gekozen voor Zelfafhalen."
-
+  "PICKUP_TEXT": "Bestelling is gekozen voor Zelfafhalen.",
+  "SELECT": "Selecteer",
+  "SELF_PICKUP": "Zelf-Ophalen",
+  "REQUEST_DELIVERY": "Vraag levering door de verkoper aan",
+  "PROCEED_AGREEMENT_STRIP": "Door verder te gaan, gaat u akkoord met de"
   }
   
   
