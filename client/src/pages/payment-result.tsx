@@ -18,82 +18,88 @@ function PaymentResult() {
     const [total, setTotal] = useState<number>(0);
     const [totalDiscount, setTotalDiscount] = useState<number>(0);
     const [shippingCost, setShippingCost] = useState<number>(0);
+    const [pickupMethod, setPickupMethod] = useState<string>("")
     const [time, setTime] = useState<any>(900);
 
     let interavls: any = [];
+    let locale: any;
 
-    // useEffect(() => {
-    //     let redirectUrl = localStorage.getItem('redirect');
-    //     redirectUrl && localStorage.removeItem('redirect');
-    //     let transactionId: string = localStorage.getItem('uid') || '';
-    //     let checkPaymentStatus = setInterval(() => {
-    //         interavls.push(checkPaymentStatus)
-    //         APIs.paymentStatus(transactionId, user.id).then((response: any) => {
-    //             let status = response.data.rows.length ? response.data.rows[0].status : 'failed';
-    //             (status === 'pending') && setStatus(status);
-    //             if (status !== 'created' && status !== 'pending') {
-    //                 clearInterval(checkPaymentStatus);
-    //                 switch(status) {
-    //                     case 'completed':
-    //                         getOrderDetails();
-    //                         setStatus('completed');
-    //                         setPaymentStatus('completed');
-    //                         break;
-    //                     case 'failed':
-    //                         setPath('/homepage');
-    //                         setStatus('failed');
-    //                         setPaymentStatus('failed')
-    //                         break;
-    //                     case 'expired' :
-    //                         setPath('/homepage');
-    //                         setStatus('expired');
-    //                         setPaymentStatus('expired')
-    //                         break;
-    //                     case 'planned' :
-    //                         setStatus("pending")
-    //                         paymentRefundFunction()
-    //                         break;
-    //                     case 'reserved' :
-    //                         setStatus("pending");
-    //                         paymentRefundFunction()
-    //                         break;
-    //                     default:
-    //                         setPath('/homepage');
-    //                         setStatus(status);
-    //                         console.log('unknown status: ', status);
-    //                         break;
-    //                 }
-    //             }
-    //         }).catch(err => console.log(err));
-    //     }, 1000 * 10);
+    if(typeof window !== 'undefined'){
+        locale = localStorage.getItem("locale")
+    }
 
-    //     let timer = setInterval(() => {
-    //         setTime((time: any) => {
-    //             if (time === 0 ) {
-    //                 clearInterval(timer);
-    //                 return 0;
-    //             } else {
-    //                 return time-1;
-    //             }
-    //         })
-    //     }, 1000)
-    // }, [])
+    useEffect(() => {
+        let redirectUrl = localStorage.getItem('redirect');
+        redirectUrl && localStorage.removeItem('redirect');
+        let transactionId: string = localStorage.getItem('uid') || '';
+        let checkPaymentStatus = setInterval(() => {
+            interavls.push(checkPaymentStatus)
+            APIs.paymentStatus(transactionId, user.id).then((response: any) => {
+                let status = response.data.rows.length ? response.data.rows[0].status : 'failed';
+                (status === 'pending') && setStatus(status);
+                if (status !== 'created' && status !== 'pending') {
+                    clearInterval(checkPaymentStatus);
+                    switch(status) {
+                        case 'complete':
+                            getOrderDetails();
+                            setStatus('completed');
+                            setPaymentStatus('completed');
+                            break;
+                        case 'failed':
+                            setPath('/homepage');
+                            setStatus('failed');
+                            setPaymentStatus('failed')
+                            break;
+                        case 'expired' :
+                            setPath('/homepage');
+                            setStatus('expired');
+                            setPaymentStatus('expired')
+                            break;
+                        // case 'planned' :
+                        //     setStatus("pending")
+                        //     paymentRefundFunction()
+                        //     break;
+                        // case 'reserved' :
+                        //     setStatus("pending");
+                        //     paymentRefundFunction()
+                        //     break;
+                        default:
+                            setPath('/homepage');
+                            setStatus(status);
+                            console.log('unknown status: ', status);
+                            break;
+                    }
+                }
+            }).catch(err => console.log(err));
+        }, 1000 * 10);
 
-    // useEffect(() => {
-    //     let timeout = 1000 * 60 * 15;
-    //     if (status !== 'created' && status !== 'pending') timeout = 5000;
-    //     (status !== 'completed') && setTimeout(() => {
-    //         if (status === 'pending') {
-    //             toast.warn('Payment is still pending...');
-    //             router.push('/homepage');
-    //         };
-    //         router.push(path);
-    //     }, timeout);
-    //     setTimeout(() => {
-    //         (status && status !== 'created' && status !== 'pending') && toast.warn('Payment ' + status);
-    //         interavls.forEach((interval: any) => clearInterval(interval))
-    //     }, 1000 * 60 * 60);
-    // }, [status])
+        let timer = setInterval(() => {
+            setTime((time: any) => {
+                if (time === 0 ) {
+                    clearInterval(timer);
+                    return 0;
+                } else {
+                    return time-1;
+                }
+            })
+        }, 1000)
+    }, [])
+
+    useEffect(() => {
+        let timeout = 1000 * 60 * 15;
+        if (status !== 'created' && status !== 'pending') timeout = 5000;
+        (status !== 'completed') && setTimeout(() => {
+            if (status === 'pending') {
+                toast.warn('Payment is still pending...');
+                router.push('/homepage');
+            };
+            router.push(path);
+        }, timeout);
+        setTimeout(() => {
+            (status && status !== 'created' && status !== 'pending') && toast.warn('Payment ' + status);
+            interavls.forEach((interval: any) => clearInterval(interval))
+        }, 1000 * 60 * 60);
+    }, [status])
 
     // const paymentRefundFunction = () =>{
     //     let transactionId;
@@ -113,12 +119,12 @@ function PaymentResult() {
     //     })
 
     // }
-    useEffect(() =>{
-        setStatus('completed');
-        setPaymentStatus('completed');
-        getOrderDetails();
+    // useEffect(() =>{
+    //     setStatus('completed');
+    //     setPaymentStatus('completed');
+    //     getOrderDetails();
 
-    },[])
+    // },[])
 
     const getOrderDetails = () => {
         let transactionId;
@@ -129,8 +135,19 @@ function PaymentResult() {
             setCartCount(response.data.rows.length);
         }).catch(err => console.log(err));
         transactionId && APIs.getOrderWithTransactionid(transactionId).then((response: any) => {
+            console.log("order-details",response)
             let OrderProducts = response.data.data;
             OrderProducts.length && setShippingCost(OrderProducts[0]?.attributes?.shipping_cost)
+            // OrderProducts.length && setPickupMethod(OrderProducts[0].attributes.pickup == "on pickup" ? "Self-Pickup" : "Request Delivery by the Seller")
+            if (OrderProducts.length) {
+                if(locale == "nl"){
+                    const pickupValue = OrderProducts[0].attributes.pickup === "on pickup" ? "Zelf-Ophalen" : "Vraag levering door de verkoper aan";
+                    setPickupMethod(pickupValue);
+                }else{
+                    const pickupValue = OrderProducts[0].attributes.pickup === "on pickup" ? "Self-Pickup" : "Request Delivery by the Seller";
+                    setPickupMethod(pickupValue);
+                }
+              }
             setProducts(OrderProducts);
             if (OrderProducts.length) {
                 let total = 0;
@@ -149,11 +166,15 @@ function PaymentResult() {
     return (
         <>
             {(!status || status === 'created') ? 
-                <div style={{textAlign: 'center', position: 'relative', marginTop: '10%'}}>
-                    <h2><FormattedMessage id="REQUEST_PROCESSED"/></h2>  
-                    <h4>
+                <div style={{ textAlign: 'center', position: 'relative', marginTop: '10%' }}>
+                    <div className='text-center w-100'>
+                        <div className="spinner-border" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    {/* <h4>
                         {`${Math.floor(time / 60)}`.padStart(2, '0')}:{`${time % 60}`.padStart(2, '0')}
-                    </h4>
+                    </h4> */}
                 </div> : status === 'pending' ? 
                 <div style={{textAlign: 'center', position: 'relative', marginTop: '5%'}} className="mb-4">
                     <h2 className="" ><FormattedMessage id="PAYMENT_TRANSACTION_PENDING" /></h2>
@@ -202,7 +223,7 @@ function PaymentResult() {
                                                                                         <Link href={'/products_/' + product?.attributes?.product_id}>{product?.attributes?.product_name}</Link><br />
                                                                                         <span className="lightfont body-sub-titles-2"><FormattedMessage id="QUANTITY"/>: {product?.attributes?.quantity}</span>
                                                                                     </td>
-                                                                                    <td className="w-25">€{(product?.attributes?.total_price - product.attributes.discount_price * product.attributes.quantity).toFixed(2)}</td>
+                                                                                    <td className="w-25">€{(product?.attributes?.total_price - product.attributes.discount_price).toFixed(2)}</td>
                                                                                 </tr>
                                                                             </>
                                                                         )
@@ -223,6 +244,21 @@ function PaymentResult() {
                                                         </tbody>
                                                     </table>
                                                 </div>
+                                                <hr />
+                                                {
+                                                    shippingCost == 0 && <div className="row">
+                                                    <table className="w-100">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td className="w-75 pl-4"><FormattedMessage id="PICKUP_METHOD"/></td>
+                                                                <td className="w-25">{pickupMethod}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                                }
+                                                
                                                 <hr />
                                                 <div className="row">
                                                     <table className="w-100">

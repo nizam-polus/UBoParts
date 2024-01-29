@@ -685,6 +685,8 @@
   "REDIRECT_TO_HOME": "U wordt doorgestuurd naar de startpagina.",
   "PAYMENT_TRANSACTION_PENDING": "Betalingstransactie is in behandeling...",
   "REQUEST_PROCESSED": "Uw verzoek wordt verwerkt...",
+  "PAYMENT_FAILED": "Oh nee, je betaling is mislukt ",
+  "PAYMENT_CANCELLED": "Betaling geannuleerd",
 
   "SELL_DESCRIPTION_1": "Verkoop je onderdelen moeiteloos met slechts een paar klikken.",
   "SELL_DESCRIPTION_2": "Snel en efficiënt jouw onderdelen verkopen",
@@ -702,7 +704,7 @@
 
   "VARIFYING_EMAIL": "Even geduld. Uw e-mail wordt geverifieerd...",
   "VARIFY_SUCCESS": "E-mail succesvol geverifieerd",
-  "REDIRECT_HOME": "U wordt binnenkort doorgestuurd naar de inlogpagina",
+  "REDIRECT_HOME": "U wordt binnenkort doorgestuurd naar de startpagina",
 
   "VERIFY_EMAIL_SEND": "Er is een verificatiemail naar uw e-mailadres verzonden.",
   "VERIFY_EMAIL": "Controleer uw e-mailadres!",
@@ -717,8 +719,13 @@
   "REGISTER_AS_A_CUSTOMER": "Registreer als klant",
 
   "LINK_EXPIRED": "Link verlopen. Kan wachtwoord niet updaten",
-  "ALREADY_VARIFIED": "Al geverifieerd"
-
+  "ALREADY_VARIFIED": "Al geverifieerd",
+  "PICKUP_METHOD": "Leveringsmethode",
+  "PICKUP_TEXT": "Bestelling is gekozen voor Zelfafhalen.",
+  "SELECT": "Selecteer",
+  "SELF_PICKUP": "Zelf-Ophalen",
+  "REQUEST_DELIVERY": "Vraag levering door de verkoper aan",
+  "PROCEED_AGREEMENT_STRIP": "Door verder te gaan, gaat u akkoord met de"
   }
   
   

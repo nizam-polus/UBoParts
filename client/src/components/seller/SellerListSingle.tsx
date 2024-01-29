@@ -106,25 +106,35 @@ const SellerListSingle = () => {
                     <section className="products-description-wrapper mt-5 mb-5">
                         <div className="row">
                             <div className="col-12 col-md-6 col-lg-4">
-                                <div className="productImage" style={{height: "30rem"}}>
-                                    <ReactImageMagnify {...{
+                            <div className="productImage"  style={{maxHeight: "30rem", position: "relative"}}>
+                                    {/* <AppImage style={{objectFit: 'contain', height: '30rem'}} className="rounded w-100" src={BASE_URL + productImage}/> */}
+                                    <ReactImageMagnify  {...{
                                         smallImage: {
-                                            alt: 'Wristwatch by Ted Baker London',
-                                            isFluidWidth: true,
-                                            src: BASE_URL + productImage
+                                            alt: 'img',
+                                            isFluidWidth: false,
+                                            height: 300,
+                                            width: 300,
+                                            src: BASE_URL + productImage,
                                         },
                                         largeImage: {
                                             src: BASE_URL + productImage,
-                                            width: 1000,
-                                            height: 1500,
+                                            width: 1650,
+                                            height: 1190,
                                         },
                                         isHintEnabled: true,
-                                        enlargedImagePosition: "over",
+                                        // enlargedImagePosition: "over",
                                         enlargedImageContainerDimensions: {
-                                            width: '120%', height: '30rem'
+                                            width: '400%', height: '260%',
+                                        },
+                                        imageStyle: {
+                                            width: 300,
+                                            height: 300
+                                        },
+                                        enlargedImageStyle: {
+                                            zIndex: 99
                                         }
-                                    }}
-                                        style={{ objectFit: 'contain', height: '30rem' }} className="rounded w-100"  />
+                                        
+                                    }} className="produtIMAGE"/>
                                     
                                 </div>
                                 <div className="row product-thumbnails g-3 mt-3 justify-content-center">

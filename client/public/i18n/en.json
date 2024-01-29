@@ -692,6 +692,8 @@
   "REDIRECT_TO_HOME": "You will be redirected to homepage.",
   "PAYMENT_TRANSACTION_PENDING": "Payment transaction is pending...",
   "REQUEST_PROCESSED": "Your request is being processed ...",
+  "PAYMENT_FAILED": " Oh no, your payment failed ",
+  "PAYMENT_CANCELLED": "Payment cancelled",
 
   
   "SELL_DESCRIPTION_1": "Streamline your selling experience with just a few clicks.",
@@ -709,7 +711,7 @@
 
   "VARIFYING_EMAIL": "Please wait. Verifying your email...",
   "VARIFY_SUCCESS": "Email verified successfully",
-  "REDIRECT_HOME": "You will be redirected to Login page shortly",
+  "REDIRECT_HOME": "You will be redirected to home page shortly",
 
   "VERIFY_EMAIL_SEND": "Verification mail has been sent to your email.",
   "VERIFY_EMAIL": "Please verify your email!",
@@ -723,9 +725,11 @@
   "REGISTER_AS_A_CUSTOMER" : "Register as a customer",
 
   "LINK_EXPIRED": "Link Expired. Failed to update password",
-  "ALREADY_VARIFIED": "Already Verified"
-
-
-
-
+  "ALREADY_VARIFIED": "Already Verified",
+  "PICKUP_METHOD": "Delivery Method",
+  "PICKUP_TEXT": "Order is opted for Self-Pickup.",
+  "SELECT": "Select",
+  "SELF_PICKUP": "Self-Pickup",
+  "REQUEST_DELIVERY": "Request Delivery by the Seller",
+  "PROCEED_AGREEMENT_STRIP": "By proceeding you are agreeing to the"
 }

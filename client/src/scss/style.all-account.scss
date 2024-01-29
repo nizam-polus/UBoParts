@@ -2407,6 +2407,10 @@ $background-color_1: rgba(0, 0, 0, 0.5);
 	cursor: pointer;
 }
 
+// text-wrap(word-wrap for break text)
+.word-wrap{
+    word-wrap: break-word;
+}
 
 //custom payment dropdown
 // CustomDropdown.scss
@@ -2425,48 +2429,54 @@ $background-color_1: rgba(0, 0, 0, 0.5);
       background-color: #fff;
   
       img {
-        width: 30px;
+        width: 42px;
         height: 30px;
         margin-right: 10px;
-        border-radius: 50%;
+        object-fit: contain;
       }
     }
   
     .dropdown-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 100%;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      border: 1px solid #ccc;
-      border-top: none;
-      border-radius: 0 0 4px 4px;
-      background-color: #fff;
-  
-      li {
-        display: flex;
-        align-items: center;
-        padding: 10px;
-        cursor: pointer;
-  
-        &:hover {
-          background-color: #f2f2f2;
-        }
-  
-        img {
-          width: 20px;
-          height: 20px;
-          margin-right: 10px;
-          border-radius: 50%;
-        }
-        span{
-            padding: 0 20px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        border: 1px solid #ccc;
+        border-top: none;
+        border-radius: 0 0 4px 4px;
+        background-color: #fff;
+      
+        li {
+          display: grid;
+          grid-template-columns: 0.5fr 1fr 1fr;
+          padding: 10px;
+          cursor: pointer;
+      
+          &:hover {
+            background-color: #f2f2f2;
+          }
+      
+          img {
+            width: 30px;
+            height: 20px;
+            margin-right: 10px;
+            object-fit: contain;
+          }
+      
+          .title {
+            padding-right: 20px;
+          }
+      
+          .subtitle {
+            padding-left: 20px;
+          }
         }
       }
-    }
   
     &.open {
       .dropdown-list {
@@ -2481,12 +2491,34 @@ $background-color_1: rgba(0, 0, 0, 0.5);
   }
   
   .productImage{
-    height: 400px;
+    height: 350px;
     width: 400px;
     display: flex;
-    align-items: center;
+    // align-items: center;
     justify-content: center;
     object-fit: contain;
   }
+  .smallImage{
+    height: "300px";
+    width: "300px";
+  }
 
+  .produtIMAGE div{
+    z-index: 999;
+    margin-top: -20px;
+    
+  }
+  .produtIMAGE img{
+    object-fit: contain;
+  }
+
+  .shipping-method-btn{
+    background: #587e50;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    border: none;
+    outline: none;
+  }
   

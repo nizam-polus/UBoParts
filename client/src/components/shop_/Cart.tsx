@@ -79,6 +79,8 @@ function Cart() {
     }, []);
 
     const handleCartItemDelete = (product: any) => {
+        let redirectUrl : any = localStorage.getItem('redirect');
+        redirectUrl && localStorage.removeItem('redirect');
         APIs.deleteCartData({ customerid: product.customer_id, id: product.id }).then(response => {
             APIs.getCartData({ "customerid": user.id }).then((response: any) => {
                 setCartProducts(response.data.rows);
@@ -111,6 +113,8 @@ function Cart() {
         return +discountAmount.toFixed(2); 
     }  
     const handleQuantityChange = (product: any, valueChange: string, index: number) => {
+        let redirectUrl : any = localStorage.getItem('redirect');
+        redirectUrl && localStorage.removeItem('redirect');
         let newQuantity = product.quantity;
         if (valueChange === 'inc') {
             newQuantity++;
@@ -221,6 +225,8 @@ function Cart() {
     }
 
     const quantityInputOnChange = (product:any, newQuantity:any, index:any) => {
+        let redirectUrl : any = localStorage.getItem('redirect');
+        redirectUrl && localStorage.removeItem('redirect');
         setInputValue(newQuantity);
         setChangeProduct(product);
         updateLocalState(product, newQuantity, index); // Update local state immediately
@@ -244,7 +250,6 @@ function Cart() {
                 });
                 let totalShippingCost = 0;
                 let shippingcostapidataArray: any = [];
-
                 const getContryCode = (country: string, countries: any[]) =>{
                     let countryData: any = countries.find((item: any, index) => item.attributes.country == country);
                     return countryData?.attributes?.code;
@@ -305,6 +310,7 @@ function Cart() {
                         } else if (!isValidShipping){
                             toast.error(() =>(<FormattedMessage id="NOT_DELIVERABLE" />), {autoClose: 4000});
                             setClicked(false)
+                            router.push("/checkoutpage")
                             return;
                         } else {
                             router.push('/checkoutpage');
